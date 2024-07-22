@@ -5,33 +5,42 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SparkSessionCollection model. */
+/**
+ * The SparkSessionCollection model.
+ */
 @Fluent
-public final class SparkSessionCollection {
+public final class SparkSessionCollection implements JsonSerializable<SparkSessionCollection> {
     /*
      * The from property.
      */
-    @JsonProperty(value = "from", required = true)
     private int from;
 
     /*
      * The total property.
      */
-    @JsonProperty(value = "total", required = true)
     private int total;
 
     /*
      * The sessions property.
      */
-    @JsonProperty(value = "sessions")
     private List<SparkSession> sessions;
 
     /**
+     * Creates an instance of SparkSessionCollection class.
+     */
+    public SparkSessionCollection() {
+    }
+
+    /**
      * Get the from property: The from property.
-     *
+     * 
      * @return the from value.
      */
     public int getFrom() {
@@ -40,7 +49,7 @@ public final class SparkSessionCollection {
 
     /**
      * Set the from property: The from property.
-     *
+     * 
      * @param from the from value to set.
      * @return the SparkSessionCollection object itself.
      */
@@ -51,7 +60,7 @@ public final class SparkSessionCollection {
 
     /**
      * Get the total property: The total property.
-     *
+     * 
      * @return the total value.
      */
     public int getTotal() {
@@ -60,7 +69,7 @@ public final class SparkSessionCollection {
 
     /**
      * Set the total property: The total property.
-     *
+     * 
      * @param total the total value to set.
      * @return the SparkSessionCollection object itself.
      */
@@ -71,7 +80,7 @@ public final class SparkSessionCollection {
 
     /**
      * Get the sessions property: The sessions property.
-     *
+     * 
      * @return the sessions value.
      */
     public List<SparkSession> getSessions() {
@@ -80,12 +89,56 @@ public final class SparkSessionCollection {
 
     /**
      * Set the sessions property: The sessions property.
-     *
+     * 
      * @param sessions the sessions value to set.
      * @return the SparkSessionCollection object itself.
      */
     public SparkSessionCollection setSessions(List<SparkSession> sessions) {
         this.sessions = sessions;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("from", this.from);
+        jsonWriter.writeIntField("total", this.total);
+        jsonWriter.writeArrayField("sessions", this.sessions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkSessionCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkSessionCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SparkSessionCollection.
+     */
+    public static SparkSessionCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkSessionCollection deserializedSparkSessionCollection = new SparkSessionCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("from".equals(fieldName)) {
+                    deserializedSparkSessionCollection.from = reader.getInt();
+                } else if ("total".equals(fieldName)) {
+                    deserializedSparkSessionCollection.total = reader.getInt();
+                } else if ("sessions".equals(fieldName)) {
+                    List<SparkSession> sessions = reader.readArray(reader1 -> SparkSession.fromJson(reader1));
+                    deserializedSparkSessionCollection.sessions = sessions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkSessionCollection;
+        });
     }
 }

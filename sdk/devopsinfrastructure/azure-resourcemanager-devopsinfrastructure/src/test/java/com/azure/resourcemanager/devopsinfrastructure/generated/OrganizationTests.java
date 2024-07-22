@@ -12,21 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OrganizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Organization model
-            = BinaryData.fromString("{\"url\":\"fxqeof\",\"projects\":[\"qjhqjbas\"],\"parallelism\":1818222173}")
-                .toObject(Organization.class);
-        Assertions.assertEquals("fxqeof", model.url());
-        Assertions.assertEquals("qjhqjbas", model.projects().get(0));
-        Assertions.assertEquals(1818222173, model.parallelism());
+        Organization model = BinaryData.fromString(
+            "{\"url\":\"spemvtzfk\",\"projects\":[\"bljofxqeof\",\"aeqjhqjbasvms\",\"jqul\"],\"parallelism\":951964300}")
+            .toObject(Organization.class);
+        Assertions.assertEquals("spemvtzfk", model.url());
+        Assertions.assertEquals("bljofxqeof", model.projects().get(0));
+        Assertions.assertEquals(951964300, model.parallelism());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Organization model
-            = new Organization().withUrl("fxqeof").withProjects(Arrays.asList("qjhqjbas")).withParallelism(1818222173);
+        Organization model = new Organization().withUrl("spemvtzfk")
+            .withProjects(Arrays.asList("bljofxqeof", "aeqjhqjbasvms", "jqul"))
+            .withParallelism(951964300);
         model = BinaryData.fromObject(model).toObject(Organization.class);
-        Assertions.assertEquals("fxqeof", model.url());
-        Assertions.assertEquals("qjhqjbas", model.projects().get(0));
-        Assertions.assertEquals(1818222173, model.parallelism());
+        Assertions.assertEquals("spemvtzfk", model.url());
+        Assertions.assertEquals("bljofxqeof", model.projects().get(0));
+        Assertions.assertEquals(951964300, model.parallelism());
     }
 }

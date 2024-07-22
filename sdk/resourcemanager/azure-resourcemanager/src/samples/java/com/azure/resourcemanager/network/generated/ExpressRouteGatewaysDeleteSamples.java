@@ -9,7 +9,9 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ExpressRouteGatewaysDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/ExpressRouteGatewayDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRouteGatewayDelete.
+     * json
      */
     /**
      * Sample code: ExpressRouteGatewayDelete.

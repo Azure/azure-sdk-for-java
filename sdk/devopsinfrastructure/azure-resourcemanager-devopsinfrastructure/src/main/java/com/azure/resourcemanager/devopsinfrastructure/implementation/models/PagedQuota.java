@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The response of a Quota list operation.
+ * Paged collection of Quota items.
  */
 @Immutable
-public final class QuotaListResult implements JsonSerializable<QuotaListResult> {
+public final class PagedQuota implements JsonSerializable<PagedQuota> {
     /*
      * The Quota items on this page
      */
@@ -30,9 +30,9 @@ public final class QuotaListResult implements JsonSerializable<QuotaListResult> 
     private String nextLink;
 
     /**
-     * Creates an instance of QuotaListResult class.
+     * Creates an instance of PagedQuota class.
      */
-    private QuotaListResult() {
+    private PagedQuota() {
     }
 
     /**
@@ -61,13 +61,13 @@ public final class QuotaListResult implements JsonSerializable<QuotaListResult> 
     public void validate() {
         if (value() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property value in model QuotaListResult"));
+                .log(new IllegalArgumentException("Missing required property value in model PagedQuota"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(QuotaListResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PagedQuota.class);
 
     /**
      * {@inheritDoc}
@@ -81,32 +81,32 @@ public final class QuotaListResult implements JsonSerializable<QuotaListResult> 
     }
 
     /**
-     * Reads an instance of QuotaListResult from the JsonReader.
+     * Reads an instance of PagedQuota from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of QuotaListResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of PagedQuota if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the QuotaListResult.
+     * @throws IOException If an error occurs while reading the PagedQuota.
      */
-    public static QuotaListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static PagedQuota fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            QuotaListResult deserializedQuotaListResult = new QuotaListResult();
+            PagedQuota deserializedPagedQuota = new PagedQuota();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
                     List<QuotaInner> value = reader.readArray(reader1 -> QuotaInner.fromJson(reader1));
-                    deserializedQuotaListResult.value = value;
+                    deserializedPagedQuota.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedQuotaListResult.nextLink = reader.getString();
+                    deserializedPagedQuota.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedQuotaListResult;
+            return deserializedPagedQuota;
         });
     }
 }

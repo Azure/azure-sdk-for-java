@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.models.RoleInstances;
+
 import java.util.Arrays;
 
 /**
@@ -18,13 +19,17 @@ public final class CloudServicesDeleteInstancesSamples {
      */
     /**
      * Sample code: Delete Cloud Service Role Instances in a Cloud Service.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
         deleteCloudServiceRoleInstancesInACloudService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServices().deleteInstances("ConstosoRG", "{cs-name}",
-            new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServices()
+            .deleteInstances("ConstosoRG", "{cs-name}",
+                new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
+                com.azure.core.util.Context.NONE);
     }
 }

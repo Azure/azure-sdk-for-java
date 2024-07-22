@@ -155,7 +155,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectFromUrlImpl(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData detectFromUrlRequest,
             RequestOptions requestOptions, Context context);
 
@@ -166,7 +166,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectFromUrlImplSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData detectFromUrlRequest,
             RequestOptions requestOptions, Context context);
 
@@ -177,7 +177,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectImpl(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/octet-stream") BinaryData imageContent,
             RequestOptions requestOptions, Context context);
 
@@ -188,7 +188,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectImplSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/octet-stream") BinaryData imageContent,
             RequestOptions requestOptions, Context context);
 
