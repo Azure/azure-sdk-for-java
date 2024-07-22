@@ -74,8 +74,6 @@ stages:
           displayName: 'Update supported Spring versions'
       MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*
-        # Only run ubuntu agents, since the exception 'CredentialUnavailableException: Encountered error when deserializing response from Azure Power Shell'
-        - pool=.*LINUXPOOL*
       AdditionalSparseCheckoutPaths:
         - 'sdk/spring'
       PreSteps:
