@@ -136,7 +136,7 @@ they occur in real-time. There are three processes to use Multivariate Anomaly D
 
 ### Thread safety
 
-We guarantee that all client instance methods are thread-safe and independent of each other ([guideline](https://azure.github.io/azure-sdk/dotnet_introduction.html#dotnet-service-methods-thread-safety)). This
+We guarantee that all client instance methods are thread-safe and independent of each other. This
 ensures that the recommendation of reusing client instances is always safe, even across threads.
 
 ## Examples
