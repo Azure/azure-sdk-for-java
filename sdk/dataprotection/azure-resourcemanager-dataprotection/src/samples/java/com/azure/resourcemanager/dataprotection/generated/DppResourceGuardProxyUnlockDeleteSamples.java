@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class DppResourceGuardProxyUnlockDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
      * ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
      */
     /**
@@ -23,12 +23,12 @@ public final class DppResourceGuardProxyUnlockDeleteSamples {
      */
     public static void
         unlockDeleteResourceGuardProxy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.dppResourceGuardProxies().unlockDeleteWithResponse("SampleResourceGroup", "sampleVault",
-            "swaggerExample",
-            new UnlockDeleteRequest().withResourceGuardOperationRequests(Arrays.asList(
-                "/subscriptions/f9e67185-f313-4e79-aa71-6458d429369d/resourceGroups/ResourceGuardSecurityAdminRG/providers/Microsoft.DataProtection/resourceGuards/ResourceGuardTestResource/deleteBackupInstanceRequests/default"))
+        manager.dppResourceGuardProxies()
+            .unlockDeleteWithResponse("SampleResourceGroup", "sampleVault", "swaggerExample", new UnlockDeleteRequest()
+                .withResourceGuardOperationRequests(Arrays.asList(
+                    "/subscriptions/f9e67185-f313-4e79-aa71-6458d429369d/resourceGroups/ResourceGuardSecurityAdminRG/providers/Microsoft.DataProtection/resourceGuards/ResourceGuardTestResource/deleteBackupInstanceRequests/default"))
                 .withResourceToBeDeleted(
                     "/subscriptions/5e13b949-1218-4d18-8b99-7e12155ec4f7/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/sampleVault/backupInstances/TestBI9779f4de"),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
