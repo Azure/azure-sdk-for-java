@@ -75,10 +75,9 @@ Calling the realtime endpoint with an input.
 String inputText = "Hello, my name is John Smith.";
 
 DeidentificationContent content = new DeidentificationContent(inputText);
-content.setOperation(OperationType.SURROGATE);
-content.setDataType(DocumentDataType.PLAINTEXT);
 
 DeidentificationResult result = deidentificationClient.deidentify(content);
+
 System.out.println("Deidentified output: " + result.getOutputText());
 // Deidentified output: Hello, my name is Harley Billiard.
 ```
@@ -92,7 +91,6 @@ String jobName = "MyJob-" + Instant.now().toEpochMilli();
 String outputFolder = "_output";
 String inputPrefix = "example_patient_1";
 SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
-sourceStorageLocation.setExtensions(extensions);
 
 DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
 job.setOperation(OperationType.SURROGATE);
