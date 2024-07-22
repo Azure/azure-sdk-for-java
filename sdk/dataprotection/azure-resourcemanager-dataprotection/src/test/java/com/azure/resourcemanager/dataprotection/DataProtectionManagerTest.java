@@ -9,10 +9,18 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.resourcemanager.dataprotection.models.AlertsState;
 import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings;
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
@@ -47,7 +55,7 @@ public class DataProtectionManagerTest extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = TestUtil.getIdentityTestCredential(super.interceptorManager);
+        final TokenCredential credential = getIdentityTestCredential(super.interceptorManager);
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         dataProtectionManager = DataProtectionManager
@@ -135,6 +143,46 @@ public class DataProtectionManagerTest extends TestBase {
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+    }
+
+    /**
+     * Gets a token credential for use in tests.
+     * @param interceptorManager the interceptor manager
+     * @return the TokenCredential
+     */
+    private static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return  new MockTokenCredential();
+        }
+
+        Configuration config = Configuration.getGlobalConfiguration();
+
+        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
+            .addLast(new EnvironmentCredentialBuilder().build())
+            .addLast(new AzureCliCredentialBuilder().build())
+            .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+
+        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+            && !CoreUtils.isNullOrEmpty(clientId)
+            && !CoreUtils.isNullOrEmpty(tenantId)
+            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+            builder.addLast(new AzurePipelinesCredentialBuilder()
+                .systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build());
+        }
+
+        builder.addLast(new AzurePowerShellCredentialBuilder().build());
+        return builder.build();
     }
 
 }
