@@ -12,7 +12,6 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -35,7 +34,6 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.MachineRunCommandsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineRunCommandInner;
 import com.azure.resourcemanager.hybridcompute.models.MachineRunCommandsListResult;
-import com.azure.resourcemanager.hybridcompute.models.MachineRunCommandUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -81,17 +79,6 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
             @PathParam("runCommandName") String runCommandName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") MachineRunCommandInner runCommandProperties,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/runCommands/{runCommandName}")
-        @ExpectedResponses({ 200, 202 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("machineName") String machineName,
-            @PathParam("runCommandName") String runCommandName, @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") MachineRunCommandUpdate runCommandProperties,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -388,261 +375,6 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
         MachineRunCommandInner runCommandProperties, Context context) {
         return createOrUpdateAsync(resourceGroupName, machineName, runCommandName, runCommandProperties, context)
             .block();
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String machineName,
-        String runCommandName, MachineRunCommandUpdate runCommandProperties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (machineName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
-        }
-        if (runCommandName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (runCommandProperties == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter runCommandProperties is required and cannot be null."));
-        } else {
-            runCommandProperties.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, machineName,
-                runCommandName, this.client.getApiVersion(), this.client.getSubscriptionId(), runCommandProperties,
-                accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String machineName,
-        String runCommandName, MachineRunCommandUpdate runCommandProperties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (machineName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
-        }
-        if (runCommandName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runCommandName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (runCommandProperties == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter runCommandProperties is required and cannot be null."));
-        } else {
-            runCommandProperties.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, machineName, runCommandName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), runCommandProperties, accept, context);
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MachineRunCommandInner>, MachineRunCommandInner> beginUpdateAsync(
-        String resourceGroupName, String machineName, String runCommandName,
-        MachineRunCommandUpdate runCommandProperties) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, machineName, runCommandName, runCommandProperties);
-        return this.client.<MachineRunCommandInner, MachineRunCommandInner>getLroResult(mono,
-            this.client.getHttpPipeline(), MachineRunCommandInner.class, MachineRunCommandInner.class,
-            this.client.getContext());
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MachineRunCommandInner>, MachineRunCommandInner> beginUpdateAsync(
-        String resourceGroupName, String machineName, String runCommandName,
-        MachineRunCommandUpdate runCommandProperties, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, machineName, runCommandName, runCommandProperties, context);
-        return this.client.<MachineRunCommandInner, MachineRunCommandInner>getLroResult(mono,
-            this.client.getHttpPipeline(), MachineRunCommandInner.class, MachineRunCommandInner.class, context);
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MachineRunCommandInner>, MachineRunCommandInner> beginUpdate(String resourceGroupName,
-        String machineName, String runCommandName, MachineRunCommandUpdate runCommandProperties) {
-        return this.beginUpdateAsync(resourceGroupName, machineName, runCommandName, runCommandProperties)
-            .getSyncPoller();
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<MachineRunCommandInner>, MachineRunCommandInner> beginUpdate(String resourceGroupName,
-        String machineName, String runCommandName, MachineRunCommandUpdate runCommandProperties, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, machineName, runCommandName, runCommandProperties, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MachineRunCommandInner> updateAsync(String resourceGroupName, String machineName,
-        String runCommandName, MachineRunCommandUpdate runCommandProperties) {
-        return beginUpdateAsync(resourceGroupName, machineName, runCommandName, runCommandProperties).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MachineRunCommandInner> updateAsync(String resourceGroupName, String machineName,
-        String runCommandName, MachineRunCommandUpdate runCommandProperties, Context context) {
-        return beginUpdateAsync(resourceGroupName, machineName, runCommandName, runCommandProperties, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MachineRunCommandInner update(String resourceGroupName, String machineName, String runCommandName,
-        MachineRunCommandUpdate runCommandProperties) {
-        return updateAsync(resourceGroupName, machineName, runCommandName, runCommandProperties).block();
-    }
-
-    /**
-     * The operation to update the run command.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the hybrid machine.
-     * @param runCommandName The name of the run command.
-     * @param runCommandProperties Parameters supplied to the Create Run Command.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Run Command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MachineRunCommandInner update(String resourceGroupName, String machineName, String runCommandName,
-        MachineRunCommandUpdate runCommandProperties, Context context) {
-        return updateAsync(resourceGroupName, machineName, runCommandName, runCommandProperties, context).block();
     }
 
     /**
@@ -1164,9 +896,7 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1192,9 +922,7 @@ public final class MachineRunCommandsClientImpl implements MachineRunCommandsCli
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

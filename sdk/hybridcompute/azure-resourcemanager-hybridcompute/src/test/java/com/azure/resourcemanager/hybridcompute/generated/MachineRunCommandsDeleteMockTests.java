@@ -28,7 +28,7 @@ public final class MachineRunCommandsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.machineRunCommands()
-            .delete("birdsvuwcobiegs", "mninwjizcilng", "gshejjtbxqmulux", com.azure.core.util.Context.NONE);
+            .delete("vuporqzdfuydzv", "fvxcnqmxqpswo", "mvkhlggd", com.azure.core.util.Context.NONE);
 
     }
 }
