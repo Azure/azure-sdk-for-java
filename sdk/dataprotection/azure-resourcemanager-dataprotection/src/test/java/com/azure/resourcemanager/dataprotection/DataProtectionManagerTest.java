@@ -52,7 +52,7 @@ public class DataProtectionManagerTest extends TestBase {
 
     @Override
     public void beforeTest() {
-        ChainedTokenCredentialBuilder chainedTokenCredentialBuilder =
+        final ChainedTokenCredentialBuilder chainedTokenCredentialBuilder =
             new ChainedTokenCredentialBuilder()
                 .addLast(new EnvironmentCredentialBuilder().build())
                 .addLast(new AzureCliCredentialBuilder().build())
