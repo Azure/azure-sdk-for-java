@@ -21,7 +21,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.implementation.models.AddToGroupsRequest;
-import com.azure.messaging.webpubsub.models.WebPubSubClientAccess;
+import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
@@ -59,8 +59,8 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
-        final WebPubSubClientAccess webPubSubClientAccess = options.getWebPubSubClientAccess();
-        final String path = webPubSubClientAccess.equals(WebPubSubClientAccess.MQTT)
+        final WebPubSubClientProtocol webPubSubClientProtocol = options.getWebPubSubClientAccess();
+        final String path = webPubSubClientProtocol.equals(WebPubSubClientProtocol.MQTT)
             ? "clients/mqtt/hubs/" : "client/hubs/";
         if (this.keyCredential == null) {
             return this.serviceClient.generateClientTokenWithResponseAsync(hub,

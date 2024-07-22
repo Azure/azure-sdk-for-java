@@ -16,7 +16,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.webpubsub.models.WebPubSubClientAccess;
+import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
@@ -244,7 +244,7 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetMqttAuthenticationToken() throws ParseException {
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions()
-            .setWebPubSubClientAccess(WebPubSubClientAccess.MQTT);
+            .setWebPubSubClientAccess(WebPubSubClientProtocol.MQTT);
         WebPubSubClientAccessToken token = client.getClientAccessToken(options);
 
         Assertions.assertNotNull(token);

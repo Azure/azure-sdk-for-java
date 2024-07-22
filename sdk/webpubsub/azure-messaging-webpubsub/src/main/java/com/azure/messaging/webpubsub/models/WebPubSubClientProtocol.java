@@ -4,9 +4,9 @@
 package com.azure.messaging.webpubsub.models;
 
 /**
- * Defines values for WebPubSubClientAccess
+ * Defines values for WebPubSubClientProtocol
  */
-public enum WebPubSubClientAccess {
+public enum WebPubSubClientProtocol {
     /**
      * Default WebPubSub Client Endpoint. E.g: <code>wss://exampleHost.com/client/hubs/exampleHub</code>
      */
@@ -18,23 +18,23 @@ public enum WebPubSubClientAccess {
     MQTT("mqtt");
 
     /**
-     * The actual serialized value for a WebPubSubClientAccess.
+     * The actual serialized value for a WebPubSubClientProtocol.
      */
     private final String value;
 
-    WebPubSubClientAccess(String value) {
+    WebPubSubClientProtocol(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a WebPubSubClientAccess instance.
+     * Parses a serialized value to a WebPubSubClientProtocol instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed WebPubSubClientAccess object, or null if unable to parse.
+     * @return the parsed WebPubSubClientProtocol object, or null if unable to parse.
      */
-    public static WebPubSubClientAccess fromString(String value) {
-        WebPubSubClientAccess[] items = WebPubSubClientAccess.values();
-        for (WebPubSubClientAccess item : items) {
+    public static WebPubSubClientProtocol fromString(String value) {
+        WebPubSubClientProtocol[] items = WebPubSubClientProtocol.values();
+        for (WebPubSubClientProtocol item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
