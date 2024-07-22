@@ -23,7 +23,7 @@ public final class AssetEndpointProfileUpdate implements JsonSerializable<AssetE
     private Map<String, String> tags;
 
     /*
-     * The properties property.
+     * The resource-specific properties for this resource.
      */
     private AssetEndpointProfileUpdateProperties properties;
 
@@ -54,7 +54,7 @@ public final class AssetEndpointProfileUpdate implements JsonSerializable<AssetE
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
@@ -63,7 +63,7 @@ public final class AssetEndpointProfileUpdate implements JsonSerializable<AssetE
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: The resource-specific properties for this resource.
      * 
      * @param properties the properties value to set.
      * @return the AssetEndpointProfileUpdate object itself.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ImmutabilityState extends ExpandableStringEnum<ImmutabilitySt
      * @param name a name to look for.
      * @return the corresponding ImmutabilityState.
      */
-    @JsonCreator
     public static ImmutabilityState fromString(String name) {
         return fromString(name, ImmutabilityState.class);
     }

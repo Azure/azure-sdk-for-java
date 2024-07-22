@@ -12,7 +12,7 @@ public final class MachineAssessPatchesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineAssessPatchesResultInner model = BinaryData.fromString(
-            "{\"status\":\"Unknown\",\"assessmentActivityId\":\"08a7a6d7-1403-4a80-962f-c9a14289b4f9\",\"rebootPending\":true,\"availablePatchCountByClassification\":{\"security\":1971435113,\"critical\":435215346,\"definition\":746279797,\"updateRollup\":996509936,\"featurePack\":52556598,\"servicePack\":611656940,\"tools\":1045887723,\"updates\":392832113,\"other\":578889985},\"startDateTime\":\"2021-02-02T01:52:53Z\",\"lastModifiedDateTime\":\"2021-03-12T10:20:21Z\",\"startedBy\":\"User\",\"patchServiceUsed\":\"Unknown\",\"osType\":\"Linux\"}")
+            "{\"status\":\"Succeeded\",\"assessmentActivityId\":\"833fa64f-a779-4ed2-accf-9258e948e640\",\"rebootPending\":false,\"availablePatchCountByClassification\":{\"security\":1638223797,\"critical\":2112719993,\"definition\":2068547199,\"updateRollup\":1070511980,\"featurePack\":767485321,\"servicePack\":683096645,\"tools\":882863713,\"updates\":1945421242,\"other\":1229662931},\"startDateTime\":\"2021-04-06T10:17:39Z\",\"lastModifiedDateTime\":\"2021-02-14T20:25:43Z\",\"startedBy\":\"User\",\"patchServiceUsed\":\"Zypper\",\"osType\":\"Linux\"}")
             .toObject(MachineAssessPatchesResultInner.class);
     }
 

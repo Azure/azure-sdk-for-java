@@ -25,7 +25,7 @@ public final class GatewaysCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"khenlus\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"tjxtxr\",\"allowedFeatures\":[\"tjvidt\"]},\"location\":\"epu\",\"tags\":{\"s\":\"yjtcvuwk\",\"uughtuqfecjxeyg\":\"zies\"},\"id\":\"uhxu\",\"name\":\"cbuewmrswnjlxuz\",\"type\":\"hwpusxj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"gatewayId\":\"qbawpcbbnzqcykn\",\"gatewayType\":\"Public\",\"gatewayEndpoint\":\"fyuicdh\",\"allowedFeatures\":[\"ybww\"]},\"location\":\"d\",\"tags\":{\"plfmuvapckccrrvw\":\"idmhmwf\"},\"id\":\"yoxoy\",\"name\":\"ukphaimmoiroq\",\"type\":\"oshbragapyy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,18 +35,18 @@ public final class GatewaysCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Gateway response = manager.gateways()
-            .define("herngb")
-            .withRegion("coc")
-            .withExistingResourceGroup("hppubowsepdfgkmt")
-            .withTags(mapOf("xrjvzuyturmlm", "gt", "opionszon", "owolbaui"))
+            .define("qxypokkhminq")
+            .withRegion("tprwnw")
+            .withExistingResourceGroup("vkyfedevjbosl")
+            .withTags(mapOf("tlyo", "ev", "bcrymodizrx", "rrrouuxvnsa", "pmkmlmvevfx", "lobdxna"))
             .withGatewayType(GatewayType.PUBLIC)
-            .withAllowedFeatures(Arrays.asList("ulaiywzejywhs", "wkojpllndnpd", "rpqaf", "fugsnnfhyetefy"))
+            .withAllowedFeatures(Arrays.asList("qdtvqecrqctmxx", "tddmf", "huytxzvtzn", "pxbannovvoxc"))
             .create();
 
-        Assertions.assertEquals("epu", response.location());
-        Assertions.assertEquals("yjtcvuwk", response.tags().get("s"));
+        Assertions.assertEquals("d", response.location());
+        Assertions.assertEquals("idmhmwf", response.tags().get("plfmuvapckccrrvw"));
         Assertions.assertEquals(GatewayType.PUBLIC, response.gatewayType());
-        Assertions.assertEquals("tjvidt", response.allowedFeatures().get(0));
+        Assertions.assertEquals("ybww", response.allowedFeatures().get(0));
     }
 
     // Use "Map.of" if available

@@ -70,6 +70,7 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testSendCallback() {
         ListenableFutureCallback<Void> callbackSpy = spy(new ListenableFutureCallback<Void>() {
             @Override

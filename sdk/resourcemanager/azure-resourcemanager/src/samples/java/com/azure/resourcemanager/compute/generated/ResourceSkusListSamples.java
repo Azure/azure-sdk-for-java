@@ -19,8 +19,11 @@ public final class ResourceSkusListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listsAllAvailableResourceSKUs(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getResourceSkus().list(null, null,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getResourceSkus()
+            .list(null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -35,8 +38,11 @@ public final class ResourceSkusListSamples {
      */
     public static void
         listsAllAvailableResourceSKUsForTheSpecifiedRegion(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getResourceSkus().list("location eq 'westus'", null,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getResourceSkus()
+            .list("location eq 'westus'", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -51,7 +57,10 @@ public final class ResourceSkusListSamples {
      */
     public static void listsAllAvailableResourceSKUsWithExtendedLocationInformation(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getResourceSkus().list(null, "true",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getResourceSkus()
+            .list(null, "true", com.azure.core.util.Context.NONE);
     }
 }

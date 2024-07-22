@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ScopeConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerScopeConnectionGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkManagerScopeConnectionGet.json
      */
     /**
      * Sample code: Get Network Manager Scope Connection.

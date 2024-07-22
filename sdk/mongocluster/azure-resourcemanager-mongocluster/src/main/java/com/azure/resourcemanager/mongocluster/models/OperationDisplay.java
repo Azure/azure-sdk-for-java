@@ -99,10 +99,6 @@ public final class OperationDisplay implements JsonSerializable<OperationDisplay
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("provider", this.provider);
-        jsonWriter.writeStringField("resource", this.resource);
-        jsonWriter.writeStringField("operation", this.operation);
-        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 

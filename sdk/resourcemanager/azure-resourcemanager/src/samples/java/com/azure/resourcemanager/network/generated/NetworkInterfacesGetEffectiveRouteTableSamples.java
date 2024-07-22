@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfacesGetEffectiveRouteTableSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceEffectiveRouteTableList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * NetworkInterfaceEffectiveRouteTableList.json
      */
     /**
      * Sample code: Show network interface effective route tables.

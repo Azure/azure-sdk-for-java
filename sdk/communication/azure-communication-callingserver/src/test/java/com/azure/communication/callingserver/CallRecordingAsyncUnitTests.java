@@ -9,6 +9,7 @@ import com.azure.communication.callingserver.models.RecordingStateResult;
 import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
 import reactor.test.StepVerifier;
@@ -27,6 +28,7 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recordingOperationsTest() {
         CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase.getCallAutomationAsyncClient(
             recordingOperationsResponses

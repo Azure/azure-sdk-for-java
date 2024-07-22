@@ -19,13 +19,15 @@ public final class PacketCaptureSettings {
     private Integer fileCount;
 
     /*
-     * Number of bytes captured per packet. Default value in bytes 104857600 (100MB) and maximum in bytes 4294967295 (4GB).
+     * Number of bytes captured per packet. Default value in bytes 104857600 (100MB) and maximum in bytes 4294967295
+     * (4GB).
      */
     @JsonProperty(value = "fileSizeInBytes")
     private Long fileSizeInBytes;
 
     /*
-     * Maximum duration of the capture session in seconds is 604800s (7 days) for a file. Default value in second 86400s (1 day).
+     * Maximum duration of the capture session in seconds is 604800s (7 days) for a file. Default value in second 86400s
+     * (1 day).
      */
     @JsonProperty(value = "sessionTimeLimitInSeconds")
     private Integer sessionTimeLimitInSeconds;

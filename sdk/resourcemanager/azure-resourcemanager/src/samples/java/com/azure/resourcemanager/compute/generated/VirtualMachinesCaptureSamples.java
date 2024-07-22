@@ -21,10 +21,15 @@ public final class VirtualMachinesCaptureSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineCaptureMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().capture("rgcompute", "aaaaaaaaaaaaa",
-            new VirtualMachineCaptureParameters().withVhdPrefix("aaaaaaaaa").withDestinationContainerName("aaaaaaa")
-                .withOverwriteVhds(true),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .capture("rgcompute", "aaaaaaaaaaaaa",
+                new VirtualMachineCaptureParameters().withVhdPrefix("aaaaaaaaa")
+                    .withDestinationContainerName("aaaaaaa")
+                    .withOverwriteVhds(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -38,9 +43,14 @@ public final class VirtualMachinesCaptureSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineCaptureMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines()
-            .capture("rgcompute", "aaaaaaaaaaaaaaaaaaaa", new VirtualMachineCaptureParameters()
-                .withVhdPrefix("aaaaaaaaa").withDestinationContainerName("aaaaaaa").withOverwriteVhds(true),
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .capture("rgcompute", "aaaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineCaptureParameters().withVhdPrefix("aaaaaaaaa")
+                    .withDestinationContainerName("aaaaaaa")
+                    .withOverwriteVhds(true),
                 com.azure.core.util.Context.NONE);
     }
 }

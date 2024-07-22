@@ -87,9 +87,9 @@ public final class ManagedClusterSecurityProfile {
     }
 
     /**
-     * Get the workloadIdentity property: Workload identity settings for the security profile. Workload identity
-     * enables Kubernetes applications to access Azure cloud resources securely with Azure AD. See
-     * https://aka.ms/aks/wi for more details.
+     * Get the workloadIdentity property: Workload identity settings for the security profile. Workload identity enables
+     * Kubernetes applications to access Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for
+     * more details.
      * 
      * @return the workloadIdentity value.
      */
@@ -98,9 +98,9 @@ public final class ManagedClusterSecurityProfile {
     }
 
     /**
-     * Set the workloadIdentity property: Workload identity settings for the security profile. Workload identity
-     * enables Kubernetes applications to access Azure cloud resources securely with Azure AD. See
-     * https://aka.ms/aks/wi for more details.
+     * Set the workloadIdentity property: Workload identity settings for the security profile. Workload identity enables
+     * Kubernetes applications to access Azure cloud resources securely with Azure AD. See https://aka.ms/aks/wi for
+     * more details.
      * 
      * @param workloadIdentity the workloadIdentity value to set.
      * @return the ManagedClusterSecurityProfile object itself.

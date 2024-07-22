@@ -13,20 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class OSProfileLinuxConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSProfileLinuxConfiguration model = BinaryData
-            .fromString("{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"Manual\"}}")
+        OSProfileLinuxConfiguration model = BinaryData.fromString(
+            "{\"patchSettings\":{\"assessmentMode\":\"AutomaticByPlatform\",\"patchMode\":\"Manual\",\"enableHotpatching\":true,\"status\":{\"hotpatchEnablementStatus\":\"Disabled\"}}}")
             .toObject(OSProfileLinuxConfiguration.class);
-        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
         Assertions.assertEquals(PatchModeTypes.MANUAL, model.patchMode());
+        Assertions.assertEquals(true, model.enableHotpatching());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OSProfileLinuxConfiguration model
-            = new OSProfileLinuxConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
-                .withPatchMode(PatchModeTypes.MANUAL);
+            = new OSProfileLinuxConfiguration().withAssessmentMode(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM)
+                .withPatchMode(PatchModeTypes.MANUAL)
+                .withEnableHotpatching(true);
         model = BinaryData.fromObject(model).toObject(OSProfileLinuxConfiguration.class);
-        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
         Assertions.assertEquals(PatchModeTypes.MANUAL, model.patchMode());
+        Assertions.assertEquals(true, model.enableHotpatching());
     }
 }

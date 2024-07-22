@@ -5,16 +5,15 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** Properties to configure Encryption. */
+/**
+ * Properties to configure Encryption.
+ */
 @Fluent
 public final class Encryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);
-
     /*
      * Properties of KeyVault
      */
@@ -32,6 +31,12 @@ public final class Encryption {
      */
     @JsonProperty(value = "requireInfrastructureEncryption")
     private Boolean requireInfrastructureEncryption;
+
+    /**
+     * Creates an instance of Encryption class.
+     */
+    public Encryption() {
+    }
 
     /**
      * Get the keyVaultProperties property: Properties of KeyVault.

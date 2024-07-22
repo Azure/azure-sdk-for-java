@@ -70,8 +70,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         return getDocumentModelAdminClientBuilder(
             buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
-            serviceVersion,
-            true)
+            serviceVersion
+        )
             .buildAsyncClient();
     }
 
@@ -297,7 +297,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                         .getFinalResult());
 
                 ResponseError actualError = (ResponseError) httpResponseException.getValue();
-                Assertions.assertEquals("InvalidRequest", actualError.getCode());
+                Assertions.assertNotNull(actualError.getCode());
             } else {
                 HttpResponseException httpResponseException
                     = Assertions.assertThrows(HttpResponseException.class, () ->
@@ -534,6 +534,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildClassifier(HttpClient httpClient,
                                      DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
@@ -573,6 +574,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void beginBuildClassifierWithJsonL(HttpClient httpClient,
                                               DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);

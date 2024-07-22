@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPoolUpgradeProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Get the controlPlaneProfile property: The list of available upgrade versions for the control plane.
-     * 
+     *
      * @return the controlPlaneProfile value.
      */
     public ManagedClusterPoolUpgradeProfile controlPlaneProfile() {
@@ -44,7 +45,7 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Set the controlPlaneProfile property: The list of available upgrade versions for the control plane.
-     * 
+     *
      * @param controlPlaneProfile the controlPlaneProfile value to set.
      * @return the ManagedClusterUpgradeProfileProperties object itself.
      */
@@ -56,7 +57,7 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Get the agentPoolProfiles property: The list of available upgrade versions for agent pools.
-     * 
+     *
      * @return the agentPoolProfiles value.
      */
     public List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles() {
@@ -65,7 +66,7 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Set the agentPoolProfiles property: The list of available upgrade versions for agent pools.
-     * 
+     *
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ManagedClusterUpgradeProfileProperties object itself.
      */
@@ -77,19 +78,21 @@ public final class ManagedClusterUpgradeProfileProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (controlPlaneProfile() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property controlPlaneProfile in model ManagedClusterUpgradeProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property controlPlaneProfile in model ManagedClusterUpgradeProfileProperties"));
         } else {
             controlPlaneProfile().validate();
         }
         if (agentPoolProfiles() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property agentPoolProfiles in model ManagedClusterUpgradeProfileProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property agentPoolProfiles in model ManagedClusterUpgradeProfileProperties"));
         } else {
             agentPoolProfiles().forEach(e -> e.validate());
         }

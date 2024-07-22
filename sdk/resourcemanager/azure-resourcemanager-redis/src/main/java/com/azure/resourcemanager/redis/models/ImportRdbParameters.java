@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for Redis import operation. */
+/**
+ * Parameters for Redis import operation.
+ */
 @Fluent
 public final class ImportRdbParameters {
     /*
@@ -37,13 +39,15 @@ public final class ImportRdbParameters {
     @JsonProperty(value = "storage-subscription-id")
     private String storageSubscriptionId;
 
-    /** Creates an instance of ImportRdbParameters class. */
+    /**
+     * Creates an instance of ImportRdbParameters class.
+     */
     public ImportRdbParameters() {
     }
 
     /**
      * Get the format property: File format.
-     *
+     * 
      * @return the format value.
      */
     public String format() {
@@ -52,7 +56,7 @@ public final class ImportRdbParameters {
 
     /**
      * Set the format property: File format.
-     *
+     * 
      * @param format the format value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -63,7 +67,7 @@ public final class ImportRdbParameters {
 
     /**
      * Get the files property: files to import.
-     *
+     * 
      * @return the files value.
      */
     public List<String> files() {
@@ -72,7 +76,7 @@ public final class ImportRdbParameters {
 
     /**
      * Set the files property: files to import.
-     *
+     * 
      * @param files the files value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -84,7 +88,7 @@ public final class ImportRdbParameters {
     /**
      * Get the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
      * data archive, specify SAS or ManagedIdentity, default value is SAS.
-     *
+     * 
      * @return the preferredDataArchiveAuthMethod value.
      */
     public String preferredDataArchiveAuthMethod() {
@@ -94,7 +98,7 @@ public final class ImportRdbParameters {
     /**
      * Set the preferredDataArchiveAuthMethod property: Preferred auth method to communicate to storage account used for
      * data archive, specify SAS or ManagedIdentity, default value is SAS.
-     *
+     * 
      * @param preferredDataArchiveAuthMethod the preferredDataArchiveAuthMethod value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -106,7 +110,7 @@ public final class ImportRdbParameters {
     /**
      * Get the storageSubscriptionId property: Subscription id of the storage container containing files to import using
      * Managed Identity.
-     *
+     * 
      * @return the storageSubscriptionId value.
      */
     public String storageSubscriptionId() {
@@ -116,7 +120,7 @@ public final class ImportRdbParameters {
     /**
      * Set the storageSubscriptionId property: Subscription id of the storage container containing files to import using
      * Managed Identity.
-     *
+     * 
      * @param storageSubscriptionId the storageSubscriptionId value to set.
      * @return the ImportRdbParameters object itself.
      */
@@ -127,14 +131,13 @@ public final class ImportRdbParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (files() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property files in model ImportRdbParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property files in model ImportRdbParameters"));
         }
     }
 

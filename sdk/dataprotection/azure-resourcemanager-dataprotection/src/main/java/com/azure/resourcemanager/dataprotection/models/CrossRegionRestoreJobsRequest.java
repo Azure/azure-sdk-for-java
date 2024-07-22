@@ -6,23 +6,25 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of Backup Vault for which CRR Jobs are to be fetched.
  */
 @Fluent
-public final class CrossRegionRestoreJobsRequest {
+public final class CrossRegionRestoreJobsRequest implements JsonSerializable<CrossRegionRestoreJobsRequest> {
     /*
      * The sourceRegion property.
      */
-    @JsonProperty(value = "sourceRegion", required = true)
     private String sourceRegion;
 
     /*
      * The sourceBackupVaultId property.
      */
-    @JsonProperty(value = "sourceBackupVaultId", required = true)
     private String sourceBackupVaultId;
 
     /**
@@ -78,14 +80,57 @@ public final class CrossRegionRestoreJobsRequest {
      */
     public void validate() {
         if (sourceRegion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceRegion in model CrossRegionRestoreJobsRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceRegion in model CrossRegionRestoreJobsRequest"));
         }
         if (sourceBackupVaultId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceBackupVaultId in model CrossRegionRestoreJobsRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceBackupVaultId in model CrossRegionRestoreJobsRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CrossRegionRestoreJobsRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceRegion", this.sourceRegion);
+        jsonWriter.writeStringField("sourceBackupVaultId", this.sourceBackupVaultId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CrossRegionRestoreJobsRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CrossRegionRestoreJobsRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CrossRegionRestoreJobsRequest.
+     */
+    public static CrossRegionRestoreJobsRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CrossRegionRestoreJobsRequest deserializedCrossRegionRestoreJobsRequest
+                = new CrossRegionRestoreJobsRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRegion".equals(fieldName)) {
+                    deserializedCrossRegionRestoreJobsRequest.sourceRegion = reader.getString();
+                } else if ("sourceBackupVaultId".equals(fieldName)) {
+                    deserializedCrossRegionRestoreJobsRequest.sourceBackupVaultId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCrossRegionRestoreJobsRequest;
+        });
+    }
 }
