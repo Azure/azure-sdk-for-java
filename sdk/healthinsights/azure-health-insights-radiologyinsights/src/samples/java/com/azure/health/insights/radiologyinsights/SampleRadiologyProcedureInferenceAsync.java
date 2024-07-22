@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -51,11 +50,11 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document
- * with the Radiology Insights service. It will initialize an asynchronous
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
- * results and display the Critical Results extracted by the Radiology Insights service.
- *
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
+ * with the Radiology Insights service. It will initialize an asynchronous 
+ * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
+ * results and display the Critical Results extracted by the Radiology Insights service.  
+ * 
  */
 public class SampleRadiologyProcedureInferenceAsync {
 
@@ -80,7 +79,7 @@ public class SampleRadiologyProcedureInferenceAsync {
             + "\r\n\nA new US pelvis within the next 6 months is recommended."
             + "\n\nThese results have been discussed with Dr. Jones at 3 PM on November 5 2020.\n "
             + "\r\n";
-
+    
     /**
      * The main method is the entry point for the application. It initializes and uses
      * the RadiologyInsightsAsyncClient to perform Radiology Insights operations.
@@ -89,17 +88,18 @@ public class SampleRadiologyProcedureInferenceAsync {
      */
     public static void main(final String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+        
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-
-        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
-
+        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential);
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob());
-
+        
         CountDownLatch latch = new CountDownLatch(1);
-
+        
         asyncPoller
             .takeUntil(isComplete)
             .doFinally(signal -> {
@@ -140,7 +140,7 @@ public class SampleRadiologyProcedureInferenceAsync {
                     }
                     System.out.println("   Imaging procedures:");
                     List<ImagingProcedure> imagingProcedures = radiologyProcedureInference.getImagingProcedures();
-
+                    
                     for (ImagingProcedure imagingProcedure : imagingProcedures) {
                         System.out.println("      Modality: ");
                         FhirR4CodeableConcept modality = imagingProcedure.getModality();
@@ -177,7 +177,7 @@ public class SampleRadiologyProcedureInferenceAsync {
         }
     }
     // END: com.azure.health.insights.radiologyinsights.displayresults.radiologyprocedure
-
+    
     /**
      * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
      * request.
@@ -213,7 +213,7 @@ public class SampleRadiologyProcedureInferenceAsync {
         // Parse the string to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
         patientDetails.setBirthDate(dateTime.toLocalDate());
-
+        
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -50,11 +49,11 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document
- * with the Radiology Insights service. It will initialize an asynchronous
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
- * results and display the Critical Results extracted by the Radiology Insights service.
- *
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
+ * with the Radiology Insights service. It will initialize an asynchronous 
+ * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
+ * results and display the Critical Results extracted by the Radiology Insights service.  
+ * 
  */
 public class SampleSexMismatchInferenceAsync {
 
@@ -88,17 +87,18 @@ public class SampleSexMismatchInferenceAsync {
      */
     public static void main(final String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+        
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-
-        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
-
+        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential);
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob());
-
+        
         CountDownLatch latch = new CountDownLatch(1);
-
+        
         asyncPoller
             .takeUntil(isComplete)
             .doFinally(signal -> {
@@ -178,7 +178,7 @@ public class SampleSexMismatchInferenceAsync {
         // Parse the string to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
         patientDetails.setBirthDate(dateTime.toLocalDate());
-
+        
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");

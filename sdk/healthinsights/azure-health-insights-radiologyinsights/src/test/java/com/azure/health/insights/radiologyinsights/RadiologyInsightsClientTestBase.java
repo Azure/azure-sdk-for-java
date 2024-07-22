@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -24,52 +23,53 @@ import com.azure.health.insights.radiologyinsights.models.DocumentAuthor;
 import com.azure.health.insights.radiologyinsights.models.DocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
 import com.azure.health.insights.radiologyinsights.models.DocumentType;
-import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Extension;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
 import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
+import com.azure.health.insights.radiologyinsights.models.PatientEncounter;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsModelConfiguration;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * Base class for Radiology Insights clients test.
  */
 
-class RadiologyInsightsClientTestBase extends TestProxyTestBase {
-
-    private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
+abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
+    
     private String documentContent;
     private RadiologyInsightsInferenceType inferenceType;
     private String orderCode;
     private String orderDescription;
 
-    void testRadiologyInsightsWithResponse(Consumer<RadiologyInsightsData> testRunner) {
-        testRunner.accept(createRadiologyInsightsRequest());
+    void testRadiologyInsightsWithResponse(Consumer<RadiologyInsightsJob> testRunner) {
+        testRunner.accept(createRadiologyInsightsJob());
     }
 
     RadiologyInsightsClientBuilder getClientBuilder() {
-        String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_API_KEY", FAKE_API_KEY);
-        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "http://localhost:8080");
-
-        RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder().endpoint(endpoint);
-        if (apiKey != null && !apiKey.equals(FAKE_API_KEY)) {
-            builder = builder.credential(new AzureKeyCredential(apiKey));
-        }
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080/");
+        
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        RadiologyInsightsClientBuilder builder = new RadiologyInsightsClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential);
 
         System.out.println("Test mode: " + getTestMode());
+        
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.PLAYBACK) {
@@ -83,16 +83,18 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         }
         return builder;
     }
-
-    private RadiologyInsightsData createRadiologyInsightsRequest() {
+    
+    private RadiologyInsightsJob createRadiologyInsightsJob() {
         List<PatientRecord> patientRecords = createPatientRecords();
         RadiologyInsightsData radiologyInsightsData = new RadiologyInsightsData(patientRecords);
         RadiologyInsightsModelConfiguration modelConfiguration = createRadiologyInsightsModelConfig();
         radiologyInsightsData.setConfiguration(modelConfiguration);
-        return radiologyInsightsData;
+        RadiologyInsightsJob radiologyInsightsJob = new RadiologyInsightsJob();
+        radiologyInsightsJob.setJobData(radiologyInsightsData);
+        return radiologyInsightsJob;
     }
-
-    private static List<PatientRecord> createPatientRecords() {
+    
+    private List<PatientRecord> createPatientRecords() {
         List<PatientRecord> patientRecords = new ArrayList<>();
         // Patients
         PatientRecord patientRecord = new PatientRecord("Sharona");
@@ -101,10 +103,10 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         patientDetails.setSex(PatientSex.FEMALE);
 
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
+        
+        patientRecord.setDetails(patientDetails);
 
-        patientRecord.setInfo(patientDetails);
-
-        Encounter encounter = new Encounter("encounterid1");
+        PatientEncounter encounter = new PatientEncounter("encounterid1");
 
         TimePeriod period = new TimePeriod();
 
@@ -152,18 +154,18 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
         OffsetDateTime createdDateTime = OffsetDateTime.parse("2021-06-01T00:00:00.000" + "+00:00", formatter);
-        patientDocument.setCreatedDateTime(createdDateTime);
+        patientDocument.setCreatedAt(createdDateTime);
 
         patientRecord.setPatientDocuments(Arrays.asList(patientDocument));
         patientRecords.add(patientRecord);
         return patientRecords;
     }
-
+    
     private PatientDocument getPatientDocument() {
         DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
         return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
     }
-
+   
     private RadiologyInsightsModelConfiguration createRadiologyInsightsModelConfig() {
         RadiologyInsightsModelConfiguration configuration = new RadiologyInsightsModelConfiguration();
         RadiologyInsightsInferenceOptions inferenceOptions = getRadiologyInsightsInferenceOptions();
@@ -174,8 +176,8 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         configuration.setIncludeEvidence(true);
         return configuration;
     }
-
-    private static RadiologyInsightsInferenceOptions getRadiologyInsightsInferenceOptions() {
+    
+    private RadiologyInsightsInferenceOptions getRadiologyInsightsInferenceOptions() {
         RadiologyInsightsInferenceOptions inferenceOptions = new RadiologyInsightsInferenceOptions();
         FollowupRecommendationOptions followupOptions = new FollowupRecommendationOptions();
         FindingOptions findingOptions = new FindingOptions();
@@ -187,7 +189,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         inferenceOptions.setFindingOptions(findingOptions);
         return inferenceOptions;
     }
-
+    
     public String extractEvidence(List<FhirR4Extension> extensions) {
         String evidence = "";
         for (FhirR4Extension extension : extensions) {
@@ -215,7 +217,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
             //System.out.println("Offset: " + offset + ", length: " + length);
             evidence = this.getDocumentContent().substring(offset, Math.min(offset + length, this.getDocumentContent().length()));
         }
-        return evidence;
+        return evidence; 
     }
 
     public static Set<String> getCodeStrings(FhirR4CodeableConcept codeableConcept) {
@@ -230,7 +232,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         }
         return rv;
     }
-
+    
     public String getDocumentContent() {
         return documentContent;
     }
@@ -262,6 +264,6 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     public void setOrderDescription(String orderDescription) {
         this.orderDescription = orderDescription;
     }
-
+    
 
 }

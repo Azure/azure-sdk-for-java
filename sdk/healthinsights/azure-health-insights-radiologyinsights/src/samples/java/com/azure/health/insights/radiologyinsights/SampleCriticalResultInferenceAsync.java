@@ -13,7 +13,6 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
 
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -50,11 +49,11 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document
- * with the Radiology Insights service. It will initialize an asynchronous
- * RadiologyInsightsAsyncClient, build a Radiology Insights job request with the sample document, poll the
- * results and display the Critical Results extracted by the Radiology Insights service.
- *
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
+ * with the Radiology Insights service. It will initialize an asynchronous 
+ * RadiologyInsightsAsyncClient, build a Radiology Insights job request with the sample document, poll the 
+ * results and display the Critical Results extracted by the Radiology Insights service.  
+ * 
  */
 public class SampleCriticalResultInferenceAsync {
 
@@ -89,10 +88,11 @@ public class SampleCriticalResultInferenceAsync {
     public static void main(final String[] args) throws InterruptedException {
         // BEGIN: com.azure.health.insights.radiologyinsights.buildasyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
+        
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-
-        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
-
+        RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
+                .endpoint(endpoint)
+                .credential(credential);
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
         // END: com.azure.health.insights.radiologyinsights.buildasyncclient
 
@@ -100,9 +100,9 @@ public class SampleCriticalResultInferenceAsync {
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
-
+        
         CountDownLatch latch = new CountDownLatch(1);
-
+        
         asyncPoller
             .takeUntil(isComplete)
             .doFinally(signal -> {
@@ -136,7 +136,7 @@ public class SampleCriticalResultInferenceAsync {
                 if (inference instanceof CriticalResultInference) {
                     CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
                     String description = criticalResultInference.getResult().getDescription();
-                    System.out.println("Critical Result Inference found: " + description);
+                    System.out.println("Critical Result Inference found: " + description);                    
                 }
             }
         }
@@ -176,7 +176,7 @@ public class SampleCriticalResultInferenceAsync {
 
         // Use LocalDate to set Date
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-
+        
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");
@@ -287,7 +287,7 @@ public class SampleCriticalResultInferenceAsync {
         return inferenceOptions;
     }
     // END: com.azure.health.insights.radiologyinsights.createrequest
-
+    
     private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
