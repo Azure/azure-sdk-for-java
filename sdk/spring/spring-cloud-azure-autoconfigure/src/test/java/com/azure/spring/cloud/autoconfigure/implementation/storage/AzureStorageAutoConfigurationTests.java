@@ -5,8 +5,10 @@ package com.azure.spring.cloud.autoconfigure.implementation.storage;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.fileshare.AzureStorageFileShareAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.service.implementation.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.spring.cloud.service.implementation.storage.queue.QueueServiceClientBuilderFactory;
@@ -45,9 +47,9 @@ class AzureStorageAutoConfigurationTests {
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureStorageBlobAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageBlobProperties.class);
                 assertThat(context).doesNotHaveBean(AzureStorageFileShareAutoConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureStorageQueueAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageQueueProperties.class);
             });
     }
 
@@ -63,9 +65,9 @@ class AzureStorageAutoConfigurationTests {
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureStorageBlobAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageBlobProperties.class);
                 assertThat(context).doesNotHaveBean(AzureStorageFileShareAutoConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureStorageQueueAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageQueueProperties.class);
             });
     }
 
@@ -83,9 +85,9 @@ class AzureStorageAutoConfigurationTests {
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureStorageBlobAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureStorageBlobProperties.class);
                 assertThat(context).doesNotHaveBean(AzureStorageFileShareAutoConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureStorageQueueAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureStorageQueueProperties.class);
             });
     }
 
