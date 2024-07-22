@@ -3,40 +3,35 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.ModelInfo;
+import com.azure.ai.anomalydetector.models.AlignMode;
+import com.azure.ai.anomalydetector.models.AlignPolicy;
 import com.azure.ai.anomalydetector.models.AnomalyDetectionModel;
+import com.azure.ai.anomalydetector.models.AnomalyState;
+import com.azure.ai.anomalydetector.models.DataSchema;
+import com.azure.ai.anomalydetector.models.ErrorResponse;
+import com.azure.ai.anomalydetector.models.FillNAMethod;
+import com.azure.ai.anomalydetector.models.ModelInfo;
 import com.azure.ai.anomalydetector.models.ModelStatus;
 import com.azure.ai.anomalydetector.models.MultivariateBatchDetectionOptions;
-import com.azure.ai.anomalydetector.models.MultivariateDetectionResult;
 import com.azure.ai.anomalydetector.models.MultivariateBatchDetectionStatus;
+import com.azure.ai.anomalydetector.models.MultivariateDetectionResult;
 import com.azure.ai.anomalydetector.models.MultivariateLastDetectionOptions;
 import com.azure.ai.anomalydetector.models.MultivariateLastDetectionResult;
-import com.azure.ai.anomalydetector.models.DataSchema;
-import com.azure.ai.anomalydetector.models.AlignPolicy;
-import com.azure.ai.anomalydetector.models.ErrorResponse;
-import com.azure.ai.anomalydetector.models.AnomalyState;
-import com.azure.ai.anomalydetector.models.AlignMode;
-import com.azure.ai.anomalydetector.models.FillNAMethod;
-
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.io.InputStream;
-
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import javax.json.Json;
-import javax.json.JsonReader;
-
 
 public class MultivariateSample {
     private static void close(FileOutputStream fos) {
@@ -56,38 +51,31 @@ public class MultivariateSample {
         }
     }
 
-    private static AnomalyDetectorClient getClient(String endpoint, String key) {
-        AnomalyDetectorClient anomalyDetectorClient =
-            new AnomalyDetectorClientBuilder()
-                .credential(new AzureKeyCredential(key))
-                .endpoint(endpoint)
-                .buildClient();
-        return anomalyDetectorClient;
+    private static MultivariateClient getClient(String endpoint, String key) {
+        return new AnomalyDetectorClientBuilder().credential(new AzureKeyCredential(key))
+            .endpoint(endpoint)
+            .buildMultivariateClient();
     }
 
-    private static UUID createModel(AnomalyDetectorClient client, ModelInfo modelInfo) {
+    private static UUID createModel(MultivariateClient client, ModelInfo modelInfo) {
         AnomalyDetectionModel model = client.trainMultivariateModel(modelInfo);
-        UUID modelId = UUID.fromString(model.getModelId());
-        return modelId;
+        return UUID.fromString(model.getModelId());
     }
 
-    private static ModelInfo getModelInfo(AnomalyDetectorClient client, UUID modelId) {
-        AnomalyDetectionModel model = client.getMultivariateModel(modelId.toString());
-        return model.getModelInfo();
+    private static ModelInfo getModelInfo(MultivariateClient client, UUID modelId) {
+        return client.getMultivariateModel(modelId.toString()).getModelInfo();
     }
 
-    private static UUID getResultId(AnomalyDetectorClient client, MultivariateBatchDetectionOptions body, UUID modelId) {
+    private static UUID getResultId(MultivariateClient client, MultivariateBatchDetectionOptions body, UUID modelId) {
         MultivariateDetectionResult detectionResult = client.detectMultivariateBatchAnomaly(modelId.toString(), body);
-        UUID resultId = UUID.fromString(detectionResult.getResultId());
-        return resultId;
+        return UUID.fromString(detectionResult.getResultId());
     }
 
-    private static MultivariateBatchDetectionStatus getInferenceStatus(AnomalyDetectorClient client, UUID resultId) {
-        MultivariateDetectionResult detectionResult = client.getMultivariateBatchDetectionResult(resultId.toString());
-        return detectionResult.getSummary().getStatus();
+    private static MultivariateBatchDetectionStatus getInferenceStatus(MultivariateClient client, UUID resultId) {
+        return client.getMultivariateBatchDetectionResult(resultId.toString()).getSummary().getStatus();
     }
 
-    private static void getModelList(AnomalyDetectorClient client) {
+    private static void getModelList(MultivariateClient client) {
         PagedIterable<AnomalyDetectionModel> response = client.listMultivariateModels();
 
         System.out.println("ModelList: ");
@@ -98,9 +86,9 @@ public class MultivariateSample {
         });
     }
 
-    private static MultivariateLastDetectionResult getLastDetectResult(AnomalyDetectorClient client, MultivariateLastDetectionOptions body, UUID modelId) {
-        MultivariateLastDetectionResult res = client.detectMultivariateLastAnomaly(modelId.toString(), body);
-        return res;
+    private static MultivariateLastDetectionResult getLastDetectResult(MultivariateClient client,
+        MultivariateLastDetectionOptions body, UUID modelId) {
+        return client.detectMultivariateLastAnomaly(modelId.toString(), body);
     }
 
     public static void run(String datasource, DataSchema dataSchema) throws Exception {
@@ -108,15 +96,14 @@ public class MultivariateSample {
         String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
         // Get multivariate client
-        AnomalyDetectorClient client = getClient(endpoint, key);
+        MultivariateClient client = getClient(endpoint, key);
 
         // set training request
         OffsetDateTime startTime = OffsetDateTime.parse("2021-01-02T00:00:00Z");
         OffsetDateTime endTime = OffsetDateTime.parse("2021-01-02T05:00:00Z");
         ModelInfo trainRequest = new ModelInfo(datasource, startTime, endTime);
         trainRequest.setSlidingWindow(200)
-            .setAlignPolicy(new AlignPolicy()
-                .setAlignMode(AlignMode.OUTER)
+            .setAlignPolicy(new AlignPolicy().setAlignMode(AlignMode.OUTER)
                 .setFillNAMethod(FillNAMethod.LINEAR)
                 .setPaddingValue(0.0))
             .setDataSchema(dataSchema)
@@ -128,16 +115,16 @@ public class MultivariateSample {
         // Check model status util the model get ready
         while (true) {
             ModelInfo modelInfo = getModelInfo(client, modelId);
-            ModelStatus modelStatus = ModelStatus.valueOf(modelInfo.getStatus().toString());
+            ModelStatus modelStatus = modelInfo.getStatus();
             if (modelStatus == ModelStatus.READY) {
                 System.out.println("READY");
                 break;
             } else if (modelStatus == ModelStatus.FAILED) {
                 System.out.println("FAILED");
-                String errorStr = "";
+                StringBuilder errorStr = new StringBuilder();
                 for (ErrorResponse errorResponse : modelInfo.getErrors()) {
                     System.out.println(errorResponse.getCode() + errorResponse.getMessage());
-                    errorStr += ";" + errorResponse.getCode() + errorResponse.getMessage();
+                    errorStr.append(";").append(errorResponse.getCode()).append(errorResponse.getMessage());
                 }
                 throw new RuntimeException("Training Failed. Error: " + errorStr);
             }
@@ -147,7 +134,9 @@ public class MultivariateSample {
 
         // Start inference and get the Result ID
         OffsetDateTime endTimeDetect = OffsetDateTime.parse("2021-01-02T12:00:00Z");
-        MultivariateBatchDetectionOptions detectionRequest = new MultivariateBatchDetectionOptions(datasource, 10, startTime, endTimeDetect);
+        MultivariateBatchDetectionOptions detectionRequest = new MultivariateBatchDetectionOptions(datasource,
+            startTime, endTimeDetect)
+            .setTopContributorCount(10);
         UUID resultId = getResultId(client, detectionRequest, modelId);
         System.out.println("resultId: " + resultId);
         while (true) { // Check inference status util the result get ready
@@ -164,16 +153,19 @@ public class MultivariateSample {
         }
 
         // Synchronized anomaly detection
-        InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\sync_infer_body.json");
-        JsonReader reader = Json.createReader(fileInputStream);
-        BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
-        MultivariateLastDetectionOptions lastDetectionRequest = detectBody.toObject(MultivariateLastDetectionOptions.class);
-        MultivariateLastDetectionResult lastDetectionResult = getLastDetectResult(client, lastDetectionRequest, modelId);
+        MultivariateLastDetectionOptions lastDetectionRequest;
+        try (InputStream fileInputStream = new FileInputStream(
+            "azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\sync_infer_body.json");
+            JsonReader jsonReader = JsonProviders.createReader(fileInputStream)) {
+            lastDetectionRequest = MultivariateLastDetectionOptions.fromJson(jsonReader);
+        }
+
+        MultivariateLastDetectionResult lastDetectionResult = getLastDetectResult(client, lastDetectionRequest,
+            modelId);
         for (AnomalyState anomalyState : lastDetectionResult.getResults()) {
-            System.out.println("timestamp: " + anomalyState.getTimestamp().toString()
-                + ", isAnomaly: " + anomalyState.getValue().isAnomaly()
-                + ", Score: " + anomalyState.getValue().getScore()
-            );
+            System.out.println(
+                "timestamp: " + anomalyState.getTimestamp().toString() + ", isAnomaly: " + anomalyState.getValue()
+                    .isAnomaly() + ", Score: " + anomalyState.getValue().getScore());
         }
 
         //Delete model
