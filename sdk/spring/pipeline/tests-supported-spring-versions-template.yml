@@ -75,7 +75,7 @@ stages:
       MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*
         # Only run ubuntu agents, since the exception 'CredentialUnavailableException: Encountered error when deserializing response from Azure Power Shell'
-        - pool=.*(ubuntu).*
+        - pool=.*LINUXPOOL*
       AdditionalSparseCheckoutPaths:
         - 'sdk/spring'
       PreSteps:
