@@ -143,6 +143,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
         ccAsync.createWithResponse(null, publicAccess).block();
@@ -248,6 +249,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
@@ -450,6 +452,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType publicAccess) {
         StepVerifier.create(ccAsync.setAccessPolicyWithResponse(publicAccess, null, null))
             .assertNext(r -> assertTrue(validateBasicHeaders(r.getHeaders())))

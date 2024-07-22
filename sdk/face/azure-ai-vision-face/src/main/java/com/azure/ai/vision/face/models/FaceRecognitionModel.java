@@ -5,7 +5,6 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -56,7 +55,6 @@ public final class FaceRecognitionModel extends ExpandableStringEnum<FaceRecogni
      * @return the corresponding FaceRecognitionModel.
      */
     @Generated
-    @JsonCreator
     public static FaceRecognitionModel fromString(String name) {
         return fromString(name, FaceRecognitionModel.class);
     }

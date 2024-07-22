@@ -11,6 +11,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -23,11 +24,16 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkSecurityPerimeterConfigurationInner;
 import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterConfigurationListResult;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -82,6 +88,16 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("scopeName") String scopeName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}/networkSecurityPerimeterConfigurations/{perimeterName}/reconcile")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> reconcileForPrivateLinkScope(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("scopeName") String scopeName, @PathParam("perimeterName") String perimeterName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -380,11 +396,245 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     }
 
     /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> reconcileForPrivateLinkScopeWithResponseAsync(String resourceGroupName,
+        String scopeName, String perimeterName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (scopeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
+        }
+        if (perimeterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter perimeterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.reconcileForPrivateLinkScope(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), scopeName,
+                perimeterName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> reconcileForPrivateLinkScopeWithResponseAsync(String resourceGroupName,
+        String scopeName, String perimeterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (scopeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scopeName is required and cannot be null."));
+        }
+        if (perimeterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter perimeterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.reconcileForPrivateLinkScope(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), scopeName, perimeterName, accept, context);
+    }
+
+    /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginReconcileForPrivateLinkScopeAsync(String resourceGroupName,
+        String scopeName, String perimeterName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = reconcileForPrivateLinkScopeWithResponseAsync(resourceGroupName, scopeName, perimeterName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginReconcileForPrivateLinkScopeAsync(String resourceGroupName,
+        String scopeName, String perimeterName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = reconcileForPrivateLinkScopeWithResponseAsync(resourceGroupName, scopeName, perimeterName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginReconcileForPrivateLinkScope(String resourceGroupName,
+        String scopeName, String perimeterName) {
+        return this.beginReconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName).getSyncPoller();
+    }
+
+    /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginReconcileForPrivateLinkScope(String resourceGroupName,
+        String scopeName, String perimeterName, Context context) {
+        return this.beginReconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> reconcileForPrivateLinkScopeAsync(String resourceGroupName, String scopeName,
+        String perimeterName) {
+        return beginReconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> reconcileForPrivateLinkScopeAsync(String resourceGroupName, String scopeName,
+        String perimeterName, Context context) {
+        return beginReconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName) {
+        reconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName).block();
+    }
+
+    /**
+     * Forces the network security perimeter configuration to refresh for a private link scope.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param perimeterName The name, in the format {perimeterGuid}.{associationName}, of the Network Security Perimeter
+     * resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName,
+        Context context) {
+        reconcileForPrivateLinkScopeAsync(resourceGroupName, scopeName, perimeterName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -414,9 +664,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

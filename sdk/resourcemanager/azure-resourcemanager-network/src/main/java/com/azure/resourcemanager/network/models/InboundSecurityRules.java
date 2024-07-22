@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -58,7 +57,7 @@ public final class InboundSecurityRules {
 
     /**
      * Get the name property: Name of the rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -67,7 +66,7 @@ public final class InboundSecurityRules {
 
     /**
      * Set the name property: Name of the rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the InboundSecurityRules object itself.
      */
@@ -78,7 +77,7 @@ public final class InboundSecurityRules {
 
     /**
      * Get the protocol property: Protocol. This should be either TCP or UDP.
-     *
+     * 
      * @return the protocol value.
      */
     public InboundSecurityRulesProtocol protocol() {
@@ -87,7 +86,7 @@ public final class InboundSecurityRules {
 
     /**
      * Set the protocol property: Protocol. This should be either TCP or UDP.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the InboundSecurityRules object itself.
      */
@@ -98,7 +97,7 @@ public final class InboundSecurityRules {
 
     /**
      * Get the sourceAddressPrefix property: The CIDR or source IP range.
-     *
+     * 
      * @return the sourceAddressPrefix value.
      */
     public String sourceAddressPrefix() {
@@ -107,7 +106,7 @@ public final class InboundSecurityRules {
 
     /**
      * Set the sourceAddressPrefix property: The CIDR or source IP range.
-     *
+     * 
      * @param sourceAddressPrefix the sourceAddressPrefix value to set.
      * @return the InboundSecurityRules object itself.
      */
@@ -118,7 +117,7 @@ public final class InboundSecurityRules {
 
     /**
      * Get the destinationPortRange property: NVA port ranges to be opened up. One needs to provide specific ports.
-     *
+     * 
      * @return the destinationPortRange value.
      */
     public Integer destinationPortRange() {
@@ -127,7 +126,7 @@ public final class InboundSecurityRules {
 
     /**
      * Set the destinationPortRange property: NVA port ranges to be opened up. One needs to provide specific ports.
-     *
+     * 
      * @param destinationPortRange the destinationPortRange value to set.
      * @return the InboundSecurityRules object itself.
      */
@@ -139,7 +138,7 @@ public final class InboundSecurityRules {
     /**
      * Get the destinationPortRanges property: NVA port ranges to be opened up. One can provide a range of ports.
      * Allowed port value between 0 and 65535.
-     *
+     * 
      * @return the destinationPortRanges value.
      */
     public List<String> destinationPortRanges() {
@@ -149,7 +148,7 @@ public final class InboundSecurityRules {
     /**
      * Set the destinationPortRanges property: NVA port ranges to be opened up. One can provide a range of ports.
      * Allowed port value between 0 and 65535.
-     *
+     * 
      * @param destinationPortRanges the destinationPortRanges value to set.
      * @return the InboundSecurityRules object itself.
      */
@@ -161,7 +160,7 @@ public final class InboundSecurityRules {
     /**
      * Get the appliesOn property: Public IP name in case of Permanent Rule type &amp; Interface Name in case of Auto
      * Expire Rule type.
-     *
+     * 
      * @return the appliesOn value.
      */
     public List<String> appliesOn() {
@@ -171,7 +170,7 @@ public final class InboundSecurityRules {
     /**
      * Set the appliesOn property: Public IP name in case of Permanent Rule type &amp; Interface Name in case of Auto
      * Expire Rule type.
-     *
+     * 
      * @param appliesOn the appliesOn value to set.
      * @return the InboundSecurityRules object itself.
      */
@@ -182,7 +181,7 @@ public final class InboundSecurityRules {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

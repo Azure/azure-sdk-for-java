@@ -10,3 +10,4 @@ extends:
     ServiceDirectory: digitaltwins
     Clouds: 'Preview'
     Location: westus2
+    UseFederatedAuth: true

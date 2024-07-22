@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.fluent.models.ProvisioningIssueProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Details on issues that occurred during provisioning.
  */
 @Immutable
-public final class ProvisioningIssue {
+public final class ProvisioningIssue implements JsonSerializable<ProvisioningIssue> {
     /*
      * Name of the provisioning issue.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Provisioning issue properties
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningIssueProperties innerProperties;
 
     /**
@@ -105,5 +107,42 @@ public final class ProvisioningIssue {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProvisioningIssue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProvisioningIssue if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProvisioningIssue.
+     */
+    public static ProvisioningIssue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProvisioningIssue deserializedProvisioningIssue = new ProvisioningIssue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedProvisioningIssue.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProvisioningIssue.innerProperties = ProvisioningIssueProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProvisioningIssue;
+        });
     }
 }

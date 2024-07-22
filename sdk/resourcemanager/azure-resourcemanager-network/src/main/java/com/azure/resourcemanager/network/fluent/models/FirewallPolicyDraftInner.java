@@ -16,7 +16,6 @@ import com.azure.resourcemanager.network.models.FirewallPolicySnat;
 import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
 
 /**
@@ -44,7 +43,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the firewall policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FirewallPolicyDraftProperties innerProperties() {
@@ -53,7 +52,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -62,7 +61,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -91,7 +90,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the basePolicy property: The parent firewall policy from which rules are inherited.
-     *
+     * 
      * @return the basePolicy value.
      */
     public SubResource basePolicy() {
@@ -100,7 +99,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the basePolicy property: The parent firewall policy from which rules are inherited.
-     *
+     * 
      * @param basePolicy the basePolicy value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -114,7 +113,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
+     * 
      * @return the threatIntelMode value.
      */
     public AzureFirewallThreatIntelMode threatIntelMode() {
@@ -123,7 +122,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the threatIntelMode property: The operation mode for Threat Intelligence.
-     *
+     * 
      * @param threatIntelMode the threatIntelMode value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -137,7 +136,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
-     *
+     * 
      * @return the threatIntelWhitelist value.
      */
     public FirewallPolicyThreatIntelWhitelist threatIntelWhitelist() {
@@ -146,7 +145,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the threatIntelWhitelist property: ThreatIntel Whitelist for Firewall Policy.
-     *
+     * 
      * @param threatIntelWhitelist the threatIntelWhitelist value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -160,7 +159,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the insights property: Insights on Firewall Policy.
-     *
+     * 
      * @return the insights value.
      */
     public FirewallPolicyInsights insights() {
@@ -169,7 +168,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the insights property: Insights on Firewall Policy.
-     *
+     * 
      * @param insights the insights value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -183,7 +182,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
-     *
+     * 
      * @return the snat value.
      */
     public FirewallPolicySnat snat() {
@@ -192,7 +191,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the snat property: The private IP addresses/IP ranges to which traffic will not be SNAT.
-     *
+     * 
      * @param snat the snat value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -206,7 +205,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the sql property: SQL Settings definition.
-     *
+     * 
      * @return the sql value.
      */
     public FirewallPolicySql sql() {
@@ -215,7 +214,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the sql property: SQL Settings definition.
-     *
+     * 
      * @param sql the sql value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -229,7 +228,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the dnsSettings property: DNS Proxy Settings definition.
-     *
+     * 
      * @return the dnsSettings value.
      */
     public DnsSettings dnsSettings() {
@@ -238,7 +237,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the dnsSettings property: DNS Proxy Settings definition.
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -252,7 +251,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the explicitProxy property: Explicit Proxy Settings definition.
-     *
+     * 
      * @return the explicitProxy value.
      */
     public ExplicitProxy explicitProxy() {
@@ -261,7 +260,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the explicitProxy property: Explicit Proxy Settings definition.
-     *
+     * 
      * @param explicitProxy the explicitProxy value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -275,7 +274,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Get the intrusionDetection property: The configuration for Intrusion detection.
-     *
+     * 
      * @return the intrusionDetection value.
      */
     public FirewallPolicyIntrusionDetection intrusionDetection() {
@@ -284,7 +283,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Set the intrusionDetection property: The configuration for Intrusion detection.
-     *
+     * 
      * @param intrusionDetection the intrusionDetection value to set.
      * @return the FirewallPolicyDraftInner object itself.
      */
@@ -298,7 +297,7 @@ public final class FirewallPolicyDraftInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

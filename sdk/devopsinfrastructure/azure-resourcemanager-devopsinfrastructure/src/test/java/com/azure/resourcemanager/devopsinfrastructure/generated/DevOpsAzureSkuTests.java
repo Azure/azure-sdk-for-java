@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DevOpsAzureSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DevOpsAzureSku model = BinaryData.fromString("{\"name\":\"gfgibm\"}").toObject(DevOpsAzureSku.class);
-        Assertions.assertEquals("gfgibm", model.name());
+        DevOpsAzureSku model = BinaryData.fromString("{\"name\":\"wgcu\"}").toObject(DevOpsAzureSku.class);
+        Assertions.assertEquals("wgcu", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DevOpsAzureSku model = new DevOpsAzureSku().withName("gfgibm");
+        DevOpsAzureSku model = new DevOpsAzureSku().withName("wgcu");
         model = BinaryData.fromObject(model).toObject(DevOpsAzureSku.class);
-        Assertions.assertEquals("gfgibm", model.name());
+        Assertions.assertEquals("wgcu", model.name());
     }
 }
