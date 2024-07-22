@@ -11,6 +11,7 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
@@ -120,6 +121,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
 
@@ -265,6 +267,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
         dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
 
@@ -2422,6 +2425,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType access) {
         StepVerifier.create(dataLakeFileSystemAsyncClient.setAccessPolicyWithResponse(access, null,
             null))
@@ -2434,6 +2438,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void setAccessPolicyMinAccess() {
         StepVerifier.create(dataLakeFileSystemAsyncClient.setAccessPolicy(PublicAccessType.CONTAINER, null)
             .then(dataLakeFileSystemAsyncClient.getProperties()))
@@ -2550,6 +2555,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void getAccessPolicy() {
         DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier()
             .setId("0000")

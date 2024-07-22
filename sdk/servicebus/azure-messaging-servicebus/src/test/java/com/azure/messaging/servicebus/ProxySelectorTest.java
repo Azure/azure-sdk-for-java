@@ -68,8 +68,7 @@ public class ProxySelectorTest extends IntegrationTestBase {
         });
 
         final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Hello"));
-        final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
+        final ServiceBusSenderAsyncClient sender = getAuthenticatedBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
             .sender()

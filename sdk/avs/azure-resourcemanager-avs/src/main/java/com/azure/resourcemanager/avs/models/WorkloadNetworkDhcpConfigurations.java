@@ -22,7 +22,7 @@ public interface WorkloadNetworkDhcpConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkDhcp list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkDhcp> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkDhcp> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkDhcp resources by WorkloadNetwork.
@@ -35,8 +35,7 @@ public interface WorkloadNetworkDhcpConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkDhcp list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkDhcp> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkDhcp> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkDhcp.

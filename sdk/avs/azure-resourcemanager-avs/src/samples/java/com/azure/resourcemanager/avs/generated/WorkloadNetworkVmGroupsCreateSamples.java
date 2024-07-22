@@ -9,7 +9,8 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworkVmGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/WorkloadNetworks_CreateVMGroup.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreateVMGroup.json
      */
     /**
      * Sample code: WorkloadNetworks_CreateVMGroup.

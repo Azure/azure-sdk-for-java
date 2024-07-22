@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ProbeNoHealthyBackendsBehavior;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,7 +25,9 @@ public final class ProbePropertiesFormat {
     private List<SubResource> loadBalancingRules;
 
     /*
-     * The protocol of the end point. If 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is required for the probe to be successful.
+     * The protocol of the end point. If 'Tcp' is specified, a received ACK is required for the probe to be successful.
+     * If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is required for the probe to be
+     * successful.
      */
     @JsonProperty(value = "protocol", required = true)
     private ProbeProtocol protocol;
@@ -36,25 +39,38 @@ public final class ProbePropertiesFormat {
     private int port;
 
     /*
-     * The interval, in seconds, for how frequently to probe the endpoint for health status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
+     * The interval, in seconds, for how frequently to probe the endpoint for health status. Typically, the interval is
+     * slightly less than half the allocated timeout period (in seconds) which allows two full probes before taking the
+     * instance out of rotation. The default value is 15, the minimum value is 5.
      */
     @JsonProperty(value = "intervalInSeconds")
     private Integer intervalInSeconds;
 
     /*
-     * The number of probes where if no response, will result in stopping further traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or slower than the typical times used in Azure.
+     * Determines how new connections are handled by the load balancer when all backend instances are probed down.
+     */
+    @JsonProperty(value = "NoHealthyBackendsBehavior")
+    private ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior;
+
+    /*
+     * The number of probes where if no response, will result in stopping further traffic from being delivered to the
+     * endpoint. This values allows endpoints to be taken out of rotation faster or slower than the typical times used
+     * in Azure.
      */
     @JsonProperty(value = "numberOfProbes")
     private Integer numberOfProbes;
 
     /*
-     * The number of consecutive successful or failed probes in order to allow or deny traffic from being delivered to this endpoint. After failing the number of consecutive probes equal to this value, the endpoint will be taken out of rotation and require the same number of successful consecutive probes to be placed back in rotation.
+     * The number of consecutive successful or failed probes in order to allow or deny traffic from being delivered to
+     * this endpoint. After failing the number of consecutive probes equal to this value, the endpoint will be taken out
+     * of rotation and require the same number of successful consecutive probes to be placed back in rotation.
      */
     @JsonProperty(value = "probeThreshold")
     private Integer probeThreshold;
 
     /*
-     * The URI used for requesting health status from the VM. Path is required if a protocol is set to http. Otherwise, it is not allowed. There is no default value.
+     * The URI used for requesting health status from the VM. Path is required if a protocol is set to http. Otherwise,
+     * it is not allowed. There is no default value.
      */
     @JsonProperty(value = "requestPath")
     private String requestPath;
@@ -145,6 +161,29 @@ public final class ProbePropertiesFormat {
      */
     public ProbePropertiesFormat withIntervalInSeconds(Integer intervalInSeconds) {
         this.intervalInSeconds = intervalInSeconds;
+        return this;
+    }
+
+    /**
+     * Get the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
+     * all backend instances are probed down.
+     * 
+     * @return the noHealthyBackendsBehavior value.
+     */
+    public ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior() {
+        return this.noHealthyBackendsBehavior;
+    }
+
+    /**
+     * Set the noHealthyBackendsBehavior property: Determines how new connections are handled by the load balancer when
+     * all backend instances are probed down.
+     * 
+     * @param noHealthyBackendsBehavior the noHealthyBackendsBehavior value to set.
+     * @return the ProbePropertiesFormat object itself.
+     */
+    public ProbePropertiesFormat
+        withNoHealthyBackendsBehavior(ProbeNoHealthyBackendsBehavior noHealthyBackendsBehavior) {
+        this.noHealthyBackendsBehavior = noHealthyBackendsBehavior;
         return this;
     }
 

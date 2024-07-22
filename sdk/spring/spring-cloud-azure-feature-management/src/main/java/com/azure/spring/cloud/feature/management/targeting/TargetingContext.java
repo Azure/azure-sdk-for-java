@@ -10,21 +10,25 @@ import java.util.List;
 public interface TargetingContext {
 
     /**
+     * Return the userId
      * @return the userId
      */
     String getUserId();
 
     /**
+     * Set the userId
      * @param userId the userId to set
      */
     void setUserId(String userId);
 
     /**
+     * Return the groups
      * @return the groups
      */
     List<String> getGroups();
 
     /**
+     * Set the groups
      * @param groups the groups to set
      */
     void setGroups(List<String> groups);

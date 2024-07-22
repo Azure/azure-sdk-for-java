@@ -122,7 +122,6 @@ extends:
   template: /eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
   parameters:
     ServiceDirectory: cosmos
-    EnableBatchRelease: true
     SDKType: client
     Artifacts:
       - name: azure-cosmos
@@ -186,5 +185,3 @@ extends:
         groupId: com.azure
       - name: azure-cosmos-spark_3_2-12
         groupId: com.azure.cosmos.spark
-      - name: azure-spring-data-cosmos
-        groupId: com.azure

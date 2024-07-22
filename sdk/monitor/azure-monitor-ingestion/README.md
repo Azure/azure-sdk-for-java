@@ -10,6 +10,7 @@ that you create in Log Analytics workspace. You can even extend the schema of bu
 
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - A [Data Collection Endpoint][data_collection_endpoint]
 - A [Data Collection Rule][data_collection_rule]

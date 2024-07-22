@@ -21,6 +21,7 @@ import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricValue;
+import com.azure.monitor.query.models.MetricsAudience;
 import com.azure.monitor.query.models.MetricsQueryResourcesResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
@@ -434,7 +435,7 @@ public class ReadmeSamples {
     /**
      * Sample to show how to create a metrics query client using a sovereign cloud endpoint.
      */
-    public void createMetricsClientWithSovereignCloud() {
+    public void createMetricsQueryClientWithSovereignCloud() {
         // BEGIN: readme-sample-createMetricsQueryClientWithSovereignCloud
         MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -443,6 +444,15 @@ public class ReadmeSamples {
         // END: readme-sample-createMetricsQueryClientWithSovereignCloud
     }
 
+    public void createMetricsClientWithSoverignCloud() {
+        // BEGIN: readme-sample-createMetricsClientWithSovereignCloud
+        MetricsClient metricsClient = new MetricsClientBuilder()
+            .endpoint("<endpoint>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .audience(MetricsAudience.AZURE_CHINA)
+            .buildClient();
+        // END: readme-sample-createMetricsClientWithSovereignCloud
+    }
     /**
      * Sample to demonstrate querying Azure Monitor for metrics.
      */

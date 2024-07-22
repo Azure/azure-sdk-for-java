@@ -28,7 +28,7 @@ public interface WorkloadNetworkVmGroupsClient {
      * @return the response of a WorkloadNetworkVMGroup list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkVMGroupInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkVMGroupInner> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkVMGroup resources by WorkloadNetwork.
@@ -42,8 +42,7 @@ public interface WorkloadNetworkVmGroupsClient {
      * @return the response of a WorkloadNetworkVMGroup list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkVMGroupInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkVMGroupInner> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkVMGroup.

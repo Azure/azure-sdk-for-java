@@ -394,7 +394,7 @@ public final class OracleDatabaseResourceManagerImpl implements OracleDatabaseRe
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-09-01-preview";
+        this.apiVersion = "2023-09-01";
         this.operations = new OperationsClientImpl(this);
         this.autonomousDatabases = new AutonomousDatabasesClientImpl(this);
         this.cloudExadataInfrastructures = new CloudExadataInfrastructuresClientImpl(this);

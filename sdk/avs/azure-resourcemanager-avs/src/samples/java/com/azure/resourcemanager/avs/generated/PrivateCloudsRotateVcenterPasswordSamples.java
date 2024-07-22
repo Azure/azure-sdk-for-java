@@ -10,7 +10,7 @@ package com.azure.resourcemanager.avs.generated;
 public final class PrivateCloudsRotateVcenterPasswordSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS/examples/2023-09-01/PrivateClouds_RotateVcenterPassword.json
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/PrivateClouds_RotateVcenterPassword.json
      */
     /**
      * Sample code: PrivateClouds_RotateVcenterPassword.

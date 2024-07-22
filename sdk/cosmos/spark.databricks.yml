@@ -48,7 +48,7 @@ stages:
         inputs:
           mavenPOMFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) -T 1 -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure.cosmos.spark:${{ parameters.SparkVersion }}'
+          options: '$(DefaultOptions) -T 1 -Ppackage-assembly -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos,com.azure:azure-cosmos-test,com.azure.cosmos.spark:${{ parameters.SparkVersion }}'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'

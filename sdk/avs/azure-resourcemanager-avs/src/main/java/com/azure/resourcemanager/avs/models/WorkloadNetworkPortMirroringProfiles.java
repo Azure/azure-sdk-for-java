@@ -23,8 +23,7 @@ public interface WorkloadNetworkPortMirroringProfiles {
      * @return the response of a WorkloadNetworkPortMirroring list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkPortMirroring> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName);
+    PagedIterable<WorkloadNetworkPortMirroring> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkPortMirroring resources by WorkloadNetwork.
@@ -38,7 +37,7 @@ public interface WorkloadNetworkPortMirroringProfiles {
      * @return the response of a WorkloadNetworkPortMirroring list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkPortMirroring> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
+    PagedIterable<WorkloadNetworkPortMirroring> list(String resourceGroupName, String privateCloudName,
         Context context);
 
     /**

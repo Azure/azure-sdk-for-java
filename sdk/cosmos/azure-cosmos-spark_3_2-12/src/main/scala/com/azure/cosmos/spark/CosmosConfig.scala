@@ -132,6 +132,7 @@ private[spark] object CosmosConfigNames {
   val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
   val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
   val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
+  val ClientBuilderInterceptors = "spark.cosmos.account.clientBuilderInterceptors"
 
   // Only meant to be used when throughput control is configured without using dedicated containers
   // Then in this case, we are going to allocate the throughput budget equally across all executors
@@ -223,7 +224,8 @@ private[spark] object CosmosConfigNames {
     SerializationDateTimeConversionMode,
     MetricsEnabledForSlf4j,
     MetricsIntervalInSeconds,
-    MetricsAzureMonitorConnectionString
+    MetricsAzureMonitorConnectionString,
+    ClientBuilderInterceptors
   )
 
   def validateConfigName(name: String): Unit = {
@@ -372,7 +374,8 @@ private case class CosmosAccountConfig(endpoint: String,
                                        subscriptionId: Option[String],
                                        tenantId: Option[String],
                                        resourceGroupName: Option[String],
-                                       azureEnvironmentEndpoints: java.util.Map[String, String])
+                                       azureEnvironmentEndpoints: java.util.Map[String, String],
+                                       clientBuilderInterceptors: Option[String])
 
 private object CosmosAccountConfig {
   private val DefaultAzureEnvironmentEndpoints = AzureEnvironmentType.Azure
@@ -520,6 +523,11 @@ private object CosmosAccountConfig {
       },
       helpMessage = "The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`.")
 
+  private val ClientBuilderInterceptors = CosmosConfigEntry[String](key = CosmosConfigNames.ClientBuilderInterceptors,
+    mandatory = false,
+    parseFromStringFunction = clientBuilderInterceptorFQDN => clientBuilderInterceptorFQDN,
+    helpMessage = "CosmosClientBuilder interceptors (comma separated) - FQDNs of the service implementing the 'CosmosClientBuilderInterceptor' trait.")
+
   private[spark] def parseProactiveConnectionInitConfigs(config: String): java.util.List[CosmosContainerIdentity] = {
     val result = new java.util.ArrayList[CosmosContainerIdentity]
     try {
@@ -552,6 +560,7 @@ private object CosmosAccountConfig {
     val resourceGroupNameOpt = CosmosConfigEntry.parse(cfg, ResourceGroupName)
     val tenantIdOpt = CosmosConfigEntry.parse(cfg, TenantId)
     val azureEnvironmentOpt = CosmosConfigEntry.parse(cfg, AzureEnvironmentTypeEnum)
+    val clientBuilderInterceptors = CosmosConfigEntry.parse(cfg, ClientBuilderInterceptors)
 
     val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
     val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
@@ -612,7 +621,8 @@ private object CosmosAccountConfig {
       subscriptionIdOpt,
       tenantIdOpt,
       resourceGroupNameOpt,
-      azureEnvironmentOpt.get)
+      azureEnvironmentOpt.get,
+      clientBuilderInterceptors)
   }
 }
 

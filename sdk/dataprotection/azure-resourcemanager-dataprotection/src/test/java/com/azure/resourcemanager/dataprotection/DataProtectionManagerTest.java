@@ -10,10 +10,10 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.dataprotection.models.AlertsState;
 import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings;
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
@@ -48,7 +48,7 @@ public class DataProtectionManagerTest extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         dataProtectionManager = DataProtectionManager
@@ -83,7 +83,7 @@ public class DataProtectionManagerTest extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCreateBackupVault() {
         BackupVaultResource resource = null;
         try {

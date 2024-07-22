@@ -53,6 +53,7 @@ import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -610,8 +611,11 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
         return Stream.of(Arguments.of(1L), Arguments.of((Long) null));
     }
 
+    // Live mode does not support copy from URL with immutability policy due to public access
+    // Revisit this and remove public access once default credential is enabled
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
+    @PlaybackOnly
     public void syncCopy() {
         vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null);
         sleepIfRunningAgainstService(30000); // Give time for the policy to take effect

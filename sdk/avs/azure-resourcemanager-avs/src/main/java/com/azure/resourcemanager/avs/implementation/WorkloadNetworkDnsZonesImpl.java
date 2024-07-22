@@ -27,17 +27,16 @@ public final class WorkloadNetworkDnsZonesImpl implements WorkloadNetworkDnsZone
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetworkDnsZone> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName) {
+    public PagedIterable<WorkloadNetworkDnsZone> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<WorkloadNetworkDnsZoneInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName);
+            = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkDnsZoneImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetworkDnsZone> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context) {
+    public PagedIterable<WorkloadNetworkDnsZone> list(String resourceGroupName, String privateCloudName,
+        Context context) {
         PagedIterable<WorkloadNetworkDnsZoneInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkDnsZoneImpl(inner1, this.manager()));
     }
 

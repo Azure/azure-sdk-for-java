@@ -27,17 +27,16 @@ public final class WorkloadNetworkSegmentsImpl implements WorkloadNetworkSegment
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetworkSegment> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName) {
+    public PagedIterable<WorkloadNetworkSegment> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<WorkloadNetworkSegmentInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName);
+            = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkSegmentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetworkSegment> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context) {
+    public PagedIterable<WorkloadNetworkSegment> list(String resourceGroupName, String privateCloudName,
+        Context context) {
         PagedIterable<WorkloadNetworkSegmentInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkSegmentImpl(inner1, this.manager()));
     }
 

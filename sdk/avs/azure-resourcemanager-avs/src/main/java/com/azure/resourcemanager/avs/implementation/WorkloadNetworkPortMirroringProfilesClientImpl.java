@@ -77,7 +77,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPortMirroringList>> listByWorkloadNetwork(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkloadNetworkPortMirroringList>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -133,7 +133,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPortMirroringList>> listByWorkloadNetworkNext(
+        Mono<Response<WorkloadNetworkPortMirroringList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -150,8 +150,8 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>>
-        listByWorkloadNetworkSinglePageAsync(String resourceGroupName, String privateCloudName) {
+    private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>> listSinglePageAsync(String resourceGroupName,
+        String privateCloudName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -170,9 +170,8 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByWorkloadNetwork(this.client.getEndpoint(), this.client.getApiVersion(),
-                    this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
             .<PagedResponse<WorkloadNetworkPortMirroringInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -191,8 +190,8 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>>
-        listByWorkloadNetworkSinglePageAsync(String resourceGroupName, String privateCloudName, Context context) {
+    private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>> listSinglePageAsync(String resourceGroupName,
+        String privateCloudName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -212,8 +211,8 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkloadNetwork(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context)
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, privateCloudName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -230,10 +229,9 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkloadNetworkPortMirroringInner> listByWorkloadNetworkAsync(String resourceGroupName,
-        String privateCloudName) {
-        return new PagedFlux<>(() -> listByWorkloadNetworkSinglePageAsync(resourceGroupName, privateCloudName),
-            nextLink -> listByWorkloadNetworkNextSinglePageAsync(nextLink));
+    private PagedFlux<WorkloadNetworkPortMirroringInner> listAsync(String resourceGroupName, String privateCloudName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateCloudName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -249,10 +247,10 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkloadNetworkPortMirroringInner> listByWorkloadNetworkAsync(String resourceGroupName,
-        String privateCloudName, Context context) {
-        return new PagedFlux<>(() -> listByWorkloadNetworkSinglePageAsync(resourceGroupName, privateCloudName, context),
-            nextLink -> listByWorkloadNetworkNextSinglePageAsync(nextLink, context));
+    private PagedFlux<WorkloadNetworkPortMirroringInner> listAsync(String resourceGroupName, String privateCloudName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateCloudName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -267,9 +265,8 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkloadNetworkPortMirroringInner> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName) {
-        return new PagedIterable<>(listByWorkloadNetworkAsync(resourceGroupName, privateCloudName));
+    public PagedIterable<WorkloadNetworkPortMirroringInner> list(String resourceGroupName, String privateCloudName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, privateCloudName));
     }
 
     /**
@@ -285,9 +282,9 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkloadNetworkPortMirroringInner> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context) {
-        return new PagedIterable<>(listByWorkloadNetworkAsync(resourceGroupName, privateCloudName, context));
+    public PagedIterable<WorkloadNetworkPortMirroringInner> list(String resourceGroupName, String privateCloudName,
+        Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, privateCloudName, context));
     }
 
     /**
@@ -1194,8 +1191,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>>
-        listByWorkloadNetworkNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1204,9 +1200,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByWorkloadNetworkNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<WorkloadNetworkPortMirroringInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1224,8 +1218,8 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>>
-        listByWorkloadNetworkNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<WorkloadNetworkPortMirroringInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1235,7 +1229,7 @@ public final class WorkloadNetworkPortMirroringProfilesClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByWorkloadNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

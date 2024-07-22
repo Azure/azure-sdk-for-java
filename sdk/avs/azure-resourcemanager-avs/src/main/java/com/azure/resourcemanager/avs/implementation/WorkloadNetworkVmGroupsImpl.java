@@ -27,17 +27,16 @@ public final class WorkloadNetworkVmGroupsImpl implements WorkloadNetworkVmGroup
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetworkVMGroup> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName) {
+    public PagedIterable<WorkloadNetworkVMGroup> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<WorkloadNetworkVMGroupInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName);
+            = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkVMGroupImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetworkVMGroup> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context) {
+    public PagedIterable<WorkloadNetworkVMGroup> list(String resourceGroupName, String privateCloudName,
+        Context context) {
         PagedIterable<WorkloadNetworkVMGroupInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkVMGroupImpl(inner1, this.manager()));
     }
 

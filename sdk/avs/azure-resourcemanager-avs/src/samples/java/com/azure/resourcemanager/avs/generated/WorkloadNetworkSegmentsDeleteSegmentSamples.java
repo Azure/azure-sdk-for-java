@@ -9,7 +9,8 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworkSegmentsDeleteSegmentSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/WorkloadNetworks_DeleteSegment.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_DeleteSegment.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteSegment.

@@ -15,6 +15,12 @@ public final class SearchStructuredAddressOptions extends BaseSearchOptions<Sear
     private List<SearchIndexes> extendedPostalCodesFor;
 
     /**
+     * Creates a new instance of {@link SearchStructuredAddressOptions}.
+     */
+    public SearchStructuredAddressOptions() {
+    }
+
+    /**
      * Returns the entity type.
      * @return the entity type
      */

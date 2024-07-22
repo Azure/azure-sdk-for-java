@@ -22,7 +22,7 @@ public interface WorkloadNetworkGateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkGateway list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkGateway> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkGateway> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkGateway resources by WorkloadNetwork.
@@ -35,8 +35,7 @@ public interface WorkloadNetworkGateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkGateway list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkGateway> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkGateway> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkGateway.

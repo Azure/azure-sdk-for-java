@@ -11,7 +11,8 @@ import com.azure.resourcemanager.avs.models.AddonArcProperties;
  */
 public final class AddonsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/Addons_CreateOrUpdate_ArcReg.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/Addons_CreateOrUpdate_ArcReg.json
      */
     /**
      * Sample code: Addons_CreateOrUpdate_ArcReg.

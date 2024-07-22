@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class BastionHostsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/BastionHostDeveloperGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostDeveloperGet.json
      */
     /**
      * Sample code: Get Developer Bastion Host.
@@ -25,7 +26,8 @@ public final class BastionHostsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/BastionHostGetWithZones.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostGetWithZones.json
      */
     /**
      * Sample code: Get Bastion Host With Zones.
@@ -41,7 +43,8 @@ public final class BastionHostsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/BastionHostGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/BastionHostGet.json
      */
     /**
      * Sample code: Get Bastion Host.

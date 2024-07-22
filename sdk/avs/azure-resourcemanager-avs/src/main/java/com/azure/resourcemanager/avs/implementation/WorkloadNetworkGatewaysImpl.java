@@ -27,17 +27,16 @@ public final class WorkloadNetworkGatewaysImpl implements WorkloadNetworkGateway
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetworkGateway> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName) {
+    public PagedIterable<WorkloadNetworkGateway> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<WorkloadNetworkGatewayInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName);
+            = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkGatewayImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetworkGateway> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context) {
+    public PagedIterable<WorkloadNetworkGateway> list(String resourceGroupName, String privateCloudName,
+        Context context) {
         PagedIterable<WorkloadNetworkGatewayInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkGatewayImpl(inner1, this.manager()));
     }
 

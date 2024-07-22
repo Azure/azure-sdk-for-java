@@ -23,7 +23,7 @@ public interface WorkloadNetworkDnsServices {
      * @return the response of a WorkloadNetworkDnsService list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkDnsService> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkDnsService> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkDnsService resources by WorkloadNetwork.
@@ -37,8 +37,7 @@ public interface WorkloadNetworkDnsServices {
      * @return the response of a WorkloadNetworkDnsService list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkDnsService> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkDnsService> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkDnsService.

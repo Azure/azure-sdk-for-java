@@ -6,7 +6,6 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.avs.models.OperationDisplay;
-import org.junit.jupiter.api.Assertions;
 
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
@@ -14,9 +13,5 @@ public final class OperationDisplayTests {
         OperationDisplay model = BinaryData.fromString(
             "{\"provider\":\"cdm\",\"resource\":\"rcryuanzwuxzdxta\",\"operation\":\"lhmwhfpmrqobm\",\"description\":\"kknryrtihf\"}")
             .toObject(OperationDisplay.class);
-        Assertions.assertEquals("cdm", model.provider());
-        Assertions.assertEquals("rcryuanzwuxzdxta", model.resource());
-        Assertions.assertEquals("lhmwhfpmrqobm", model.operation());
-        Assertions.assertEquals("kknryrtihf", model.description());
     }
 }

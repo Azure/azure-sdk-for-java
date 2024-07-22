@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagemover.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response that identifies a Job Run. */
+/**
+ * Response that identifies a Job Run.
+ */
 @Immutable
 public final class JobRunResourceIdInner {
     /*
@@ -16,13 +18,15 @@ public final class JobRunResourceIdInner {
     @JsonProperty(value = "jobRunResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String jobRunResourceId;
 
-    /** Creates an instance of JobRunResourceIdInner class. */
+    /**
+     * Creates an instance of JobRunResourceIdInner class.
+     */
     public JobRunResourceIdInner() {
     }
 
     /**
      * Get the jobRunResourceId property: Fully qualified resource id of the Job Run.
-     *
+     * 
      * @return the jobRunResourceId value.
      */
     public String jobRunResourceId() {
@@ -31,7 +35,7 @@ public final class JobRunResourceIdInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

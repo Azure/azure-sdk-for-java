@@ -22,7 +22,7 @@ public interface WorkloadNetworkSegments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkSegment list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkSegment> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkSegment> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkSegment resources by WorkloadNetwork.
@@ -35,8 +35,7 @@ public interface WorkloadNetworkSegments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkSegment list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkSegment> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkSegment> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkSegment.

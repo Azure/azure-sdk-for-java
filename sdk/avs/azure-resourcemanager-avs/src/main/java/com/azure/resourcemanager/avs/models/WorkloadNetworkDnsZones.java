@@ -22,7 +22,7 @@ public interface WorkloadNetworkDnsZones {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkDnsZone list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkDnsZone> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkDnsZone> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkDnsZone resources by WorkloadNetwork.
@@ -35,8 +35,7 @@ public interface WorkloadNetworkDnsZones {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkDnsZone list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkDnsZone> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkDnsZone> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkDnsZone.

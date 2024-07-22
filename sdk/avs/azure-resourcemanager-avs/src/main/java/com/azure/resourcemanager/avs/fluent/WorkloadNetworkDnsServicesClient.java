@@ -29,8 +29,7 @@ public interface WorkloadNetworkDnsServicesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkDnsServiceInner> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName);
+    PagedIterable<WorkloadNetworkDnsServiceInner> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkDnsService resources by WorkloadNetwork.
@@ -45,8 +44,8 @@ public interface WorkloadNetworkDnsServicesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkDnsServiceInner> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context);
+    PagedIterable<WorkloadNetworkDnsServiceInner> list(String resourceGroupName, String privateCloudName,
+        Context context);
 
     /**
      * Get a WorkloadNetworkDnsService.

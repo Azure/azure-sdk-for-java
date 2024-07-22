@@ -26,7 +26,7 @@ public interface WorkloadNetworkGatewaysClient {
      * @return the response of a WorkloadNetworkGateway list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkGatewayInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkGatewayInner> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkGateway resources by WorkloadNetwork.
@@ -40,8 +40,7 @@ public interface WorkloadNetworkGatewaysClient {
      * @return the response of a WorkloadNetworkGateway list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkGatewayInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkGatewayInner> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkGateway.

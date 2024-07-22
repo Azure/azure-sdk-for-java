@@ -8,6 +8,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -107,6 +108,7 @@ public interface AsyncDocumentClient {
         private CosmosContainerProactiveInitConfig containerProactiveInitConfig;
         private CosmosItemSerializer defaultCustomSerializer;
         private boolean isRegionScopedSessionCapturingEnabled;
+        private List<CosmosOperationPolicy> operationPolicies;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -306,7 +308,9 @@ public interface AsyncDocumentClient {
                     sessionRetryOptions,
                     containerProactiveInitConfig,
                     defaultCustomSerializer,
-                    isRegionScopedSessionCapturingEnabled);
+                    isRegionScopedSessionCapturingEnabled,
+                    operationPolicies
+            );
 
             client.init(state, null);
             return client;
@@ -342,6 +346,11 @@ public interface AsyncDocumentClient {
 
         public AzureKeyCredential getCredential() {
             return credential;
+        }
+
+        public Builder withOperationPolicies(List<CosmosOperationPolicy> operationPolicies) {
+            this.operationPolicies = operationPolicies;
+            return this;
         }
     }
 

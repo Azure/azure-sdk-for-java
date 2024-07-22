@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagemover.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Project properties. */
+/**
+ * Project properties.
+ */
 @Fluent
 public final class ProjectUpdateProperties {
     /*
@@ -16,13 +18,15 @@ public final class ProjectUpdateProperties {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ProjectUpdateProperties class. */
+    /**
+     * Creates an instance of ProjectUpdateProperties class.
+     */
     public ProjectUpdateProperties() {
     }
 
     /**
      * Get the description property: A description for the Project.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -31,7 +35,7 @@ public final class ProjectUpdateProperties {
 
     /**
      * Set the description property: A description for the Project.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProjectUpdateProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class ProjectUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

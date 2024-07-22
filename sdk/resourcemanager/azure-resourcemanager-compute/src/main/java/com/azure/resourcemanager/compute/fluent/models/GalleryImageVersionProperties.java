@@ -26,8 +26,6 @@ public final class GalleryImageVersionProperties {
     private GalleryImageVersionPublishingProfile publishingProfile;
 
     /*
-     * The current state of the gallery or gallery artifact.
-     * 
      * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -84,9 +82,7 @@ public final class GalleryImageVersionProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     * 
-     * The provisioning state, which only appears in the response.
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
      * 
      * @return the provisioningState value.
      */
@@ -173,8 +169,9 @@ public final class GalleryImageVersionProperties {
             publishingProfile().validate();
         }
         if (storageProfile() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageProfile in model GalleryImageVersionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageProfile in model GalleryImageVersionProperties"));
         } else {
             storageProfile().validate();
         }

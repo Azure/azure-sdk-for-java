@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 
 package com.azure.ai.translation.text;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-import java.util.Map;
 import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
 import com.azure.ai.translation.text.models.LanguageScope;
 import com.azure.ai.translation.text.models.TranslationLanguage;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * You can limit the scope of the response of the languages API by providing the optional parameter scope.

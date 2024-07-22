@@ -15,7 +15,8 @@ import java.util.Arrays;
  */
 public final class PlacementPoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/PlacementPolicies_Update.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/PlacementPolicies_Update.json
      */
     /**
      * Sample code: PlacementPolicies_Update.

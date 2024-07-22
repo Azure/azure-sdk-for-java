@@ -11,7 +11,8 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
  */
 public final class WorkloadNetworkSegmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/WorkloadNetworks_UpdateSegments.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_UpdateSegments.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateSegments.

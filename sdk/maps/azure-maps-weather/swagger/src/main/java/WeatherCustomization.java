@@ -1,15 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import java.util.Arrays;
-
-import com.azure.autorest.customization.ConstructorCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.ClassCustomization;
-import com.azure.autorest.customization.MethodCustomization;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
+
+import java.util.function.Consumer;
 
 /**
  * Customization class for Queue Storage.
@@ -19,939 +24,680 @@ public class WeatherCustomization extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         PackageCustomization models = customization.getPackage("com.azure.maps.weather.models");
 
-        // customize classes with latlongpair
-        customizeLatLongPairClasses(models, "StormForecast", "getCoordinates", "setCoordinates");
-        customizeLatLongPairClasses(models, "StormLocation", "getCoordinates", "setCoordinates");
-        customizeLatLongPairClasses(models, "WeatherWindow", "getTopLeft", "setTopLeft");
-        customizeLatLongPairClasses(models, "WeatherWindow", "getBottomRight", "setBottomRight");
-
-        // customize WeatherWindow
-        customizeGeoJsonGeometryProperty(models, "WeatherWindow", "getGeometry", "setGeometry", "geometry");
-        customizeGeoJsonGeometryProperty(models, "StormWindRadiiSummary", "getRadiiGeometry", "setRadiiGeometry",
-            "radiiGeometry");
-
-        // customize classes with the wrong getYear()
-        customizeClassesWithString(models, "ActiveStorm", "getYear", "setYear");
-        customizeClassesWithString(models, "StormSearchResultItem", "getYear", "setYear");
-
-        // Remove setters in ActiveStorm
         customizeActiveStorm(models);
-
-        // Remove setters in ActiveStormResult
         customizeActiveStormResult(models);
-
-        // Remove setters in AirAndPollen
         customizeAirAndPollen(models);
-
-        // Remove setters in AirQuality
         customizeAirQuality(models);
-
-        // Remove setters in AirQualityResult
         customizeAirQualityResult(models);
-
-        // Remove setters in AlertDetails
         customizeAlertDetails(models);
-
-        // Remove setters in ColorValue
         customizeColorValue(models);
-
-        // Remove setters in CurrentConditions
         customizeCurrentConditions(models);
-
-        // Remove setters in DailyAirQuality
         customizeDailyAirQuality(models);
-
-        // Remove setters in DailyAirQualityForecastResult
         customizeDailyAirQualityForecastResult(models);
-
-        // Remove setters in DailyForecast
         customizeDailyForecast(models);
-                 
-        // Remove setters in DailyForecastDetail
         customizeDailyForecastDetail(models);
-
-        // customize WeatherValue
         customizeWeatherValue(models);
-
-        // Remove setters in DailyForecastSummary
         customizeDailyForecastSummary(models);
-
-        // Remove setters in DailyHistoricalActuals
         customizeDailyHistoricalActuals(models);
-
-        // Remove setters in DailyHistoricalActualsResult
         customizeDailyHistoricalActualsResult(models);
-
-        // Remove setters in DailyHistoricalNormals
         customizeDailyHistoricalNormals(models);
-
-        // Remove setters in DailyHistoricalNormalsResult
         customizeDailyHistoricalNormalsResult(models);
-
-        // Remove setters in DailyHistoricalRecords
         customizeDailyHistoricalRecords(models);
-
-        // Remove setters in DailyHistoricalRecordsResult
         customizeDailyHistoricalRecordsResult(models);
-
-        // Remove setters in DailyIndex
         customizeDailyIndex(models);
-
-        // Remove setters in DegreeDaySummary
         customizeDegreeDaySummary(models);
-
-        // Remove setters in ForecastInterval
         customizeForecastInterval(models);
-
-        // Remove setters in HazardDetail
         customizeHazardDetail(models);
-
-        // Remove setters in HourlyForecast
         customizeHourlyForecast(models);
-
-        // Remove setters in IntervalSummary
         customizeIntervalSummary(models);
-
-        // Remove setters in LatestStatus
         customizeLatestStatus(models);
-
-        // Remove setters in LocalSource
         customizeLocalSource(models);
-
-        // Remove setters in MinuteForecastSummary
         customizeMinuteForecastSummary(models);
-
-        // Remove setters in Pollutant
         customizePollutant(models);
-
-        // Remove setters in PrecipitationSummary
         customizePrecipitationSummary(models);
-
-        // Remove setters in PressureTendency
         customizePressureTendency(models);
-
-        // Remove setters in PastHoursTemperature
         customizePastHoursTemperature(models);
-
-        // Remove setters in QuarterDayForecast
         customizeQuarterDayForecast(models);
-
-        // Remove setters in RadiusSector
         customizeRadiusSector(models);
-
-        // Remove setters in SevereWeatherAlert
         customizeSevereWeatherAlert(models);
-
-        // Remove setters in SevereWeatherAlertDescription
         customizeSevereWeatherAlertDescription(models);
-
-        // Remove setters in StormForecast
         customizeStormForecast(models);
-
-        // Remove setters in StormForecastResult
         customizeStormForecastResult(models);
-
-        // Remove setters in StormLocation
         customizeStormLocation(models);
-
-        // Remove setters in StormLocationsResult
         customizeStormLocationsResult(models);
-
-        // Remove setters in StormSearchResult
         customizeStormSearchResult(models);
-
-        // Remove setters in StormSearchResultItem
         customizeStormSearchResultItem(models);
-
-        // Remove setters in StormWindRadiiSummary
         customizeStormWindRadiiSummary(models);
-
-        // Remove setters in SunGlare
         customizeSunGlare(models);
-
-        // Remove setters in TemperatureSummary
         customizeTemperatureSummary(models);
-
-        // Remove setters in WeatherAlongRoutePrecipitation
         customizeWeatherAlongRoutePrecipitation(models);
-
-        // Remove setters in WeatherHazards
         customizeWeatherHazards(models);
-
-        // Remove setters in WeatherNotification
         customizeWeatherNotification(models);
-
-        // Remove setters in WeatherValueMaxMinAvg
         customizeWeatherValueMaxMinAvg(models);
-
-        // Remove setters in WeatherValueRange
         customizeWeatherValueRange(models);
-
-        // Remove setters in WeatherValueYear
         customizeWeatherValueYear(models);
-
-        // Remove setters in WeatherValueYearMax
         customizeWeatherValueYearMax(models);
-
-        // Remove setters in WeatherValueYearMaxMinAvg
         customizeWeatherValueYearMaxMinAvg(models);
-
-        // Remove setters in WeatherWindow
         customizeWeatherWindow(models);
-
-        // Remove setters in WindDetails
         customizeWindDetails(models);
-
-        // Remove setters in WindDirection
         customizeWindDirection(models);
-
-        // Remove setters in WaypointForecast
         customizeWaypointForecast(models);
 
         // customize to make default constructor private
-        customizePrivateConstructor(models, "WindDirection");
-        customizePrivateConstructor(models, "WindDetails");
-        customizePrivateConstructor(models, "WeatherWindow");
-        customizePrivateConstructor(models, "WeatherValueYearMaxMinAvg");
-        customizePrivateConstructor(models, "WeatherValueYearMax");
-        customizePrivateConstructor(models, "WeatherValueYear");
-        customizePrivateConstructor(models, "WeatherValueRange");
-        customizePrivateConstructor(models, "WeatherValueMaxMinAvg");
-        customizePrivateConstructor(models, "WeatherUnitDetails");
-        customizePrivateConstructor(models, "WeatherNotification");
-        customizePrivateConstructor(models, "WeatherHazards");
-        customizePrivateConstructor(models, "WeatherAlongRouteSummary");
-        customizePrivateConstructor(models, "WeatherAlongRouteResult");
-        customizePrivateConstructor(models, "WeatherAlongRoutePrecipitation");
-        customizePrivateConstructor(models, "WaypointForecast");
-        customizePrivateConstructor(models, "TemperatureSummary");
-        customizePrivateConstructor(models, "SunGlare");
-        customizePrivateConstructor(models, "StormWindRadiiSummary");
-        customizePrivateConstructor(models, "StormSearchResultItem");
-        customizePrivateConstructor(models, "StormSearchResult");
-        customizePrivateConstructor(models, "StormLocationsResult");
-        customizePrivateConstructor(models, "StormLocation");
-        customizePrivateConstructor(models, "StormForecastResult");
-        customizePrivateConstructor(models, "StormForecast");
-        customizePrivateConstructor(models, "SevereWeatherAlertsResult");
-        customizePrivateConstructor(models, "SevereWeatherAlertDescription");
-        customizePrivateConstructor(models, "SevereWeatherAlert");
-        customizePrivateConstructor(models, "RadiusSector");
-        customizePrivateConstructor(models, "QuarterDayForecastResult");
-        customizePrivateConstructor(models, "QuarterDayForecast");
-        customizePrivateConstructor(models, "PressureTendency");
-        customizePrivateConstructor(models, "PrecipitationSummary");
-        customizePrivateConstructor(models, "Pollutant");
-        customizePrivateConstructor(models, "PastHoursTemperature");
-        customizePrivateConstructor(models, "MinuteForecastSummary");
-        customizePrivateConstructor(models, "MinuteForecastResult");
-        customizePrivateConstructor(models, "LocalSource");
-        customizePrivateConstructor(models, "LatestStatus");
-        customizePrivateConstructor(models, "IntervalSummary");
-        customizePrivateConstructor(models, "HourlyForecastResult");
-        customizePrivateConstructor(models, "HourlyForecast");
-        customizePrivateConstructor(models, "HazardDetail");
-        customizePrivateConstructor(models, "ForecastInterval");
-        customizePrivateConstructor(models, "DegreeDaySummary");
-        customizePrivateConstructor(models, "DailyIndicesResult");
-        customizePrivateConstructor(models, "DailyIndex");
-        customizePrivateConstructor(models, "DailyHistoricalRecordsResult");
-        customizePrivateConstructor(models, "DailyHistoricalRecords");
-        customizePrivateConstructor(models, "DailyHistoricalNormalsResult");
-        customizePrivateConstructor(models, "DailyHistoricalNormals");
-        customizePrivateConstructor(models, "DailyHistoricalActualsResult");
-        customizePrivateConstructor(models, "DailyHistoricalActuals");
-        customizePrivateConstructor(models, "DailyForecastSummary");
-        customizePrivateConstructor(models, "DailyForecastResult");
-        customizePrivateConstructor(models, "DailyForecastDetail");
-        customizePrivateConstructor(models, "DailyForecast");
-        customizePrivateConstructor(models, "DailyAirQualityForecastResult");
-        customizePrivateConstructor(models, "DailyAirQuality");
-        customizePrivateConstructor(models, "CurrentConditionsResult");
-        customizePrivateConstructor(models, "CurrentConditions");
-        customizePrivateConstructor(models, "ColorValue");
-        customizePrivateConstructor(models, "AlertDetails");
-        customizePrivateConstructor(models, "AirQualityResult");
-        customizePrivateConstructor(models, "AirQuality");
-        customizePrivateConstructor(models, "AirAndPollen");
-        customizePrivateConstructor(models, "ActiveStormResult");
-        customizePrivateConstructor(models, "ActiveStorm");
+        bulkPrivateConstructors(models, "WeatherUnitDetails", "WeatherAlongRouteSummary", "WeatherAlongRouteResult",
+            "SevereWeatherAlertsResult", "QuarterDayForecastResult", "MinuteForecastResult", "HourlyForecastResult",
+            "DailyIndicesResult", "DailyForecastResult", "CurrentConditionsResult");
+
+        addToIntMethod(models, "DayQuarter", "HazardIndex", "IconCode", "UnitType");
     }
 
     // Customizes the StormForecast class
-    private void customizeLatLongPairClasses(PackageCustomization models, String clazz, String getter, String setter) {
-        ClassCustomization classCustomization = models.getClass(clazz);
-        MethodCustomization methodCustomization = classCustomization.getMethod(getter);
-        methodCustomization.setReturnType("GeoPosition", "new GeoPosition(returnValue.getLongitude(), " +
-            "returnValue.getLatitude())");
-        classCustomization.removeMethod(setter);
+    @SuppressWarnings("unchecked")
+    private void customizeLatLongPairClasses(ClassOrInterfaceDeclaration clazz, String propertyName, String getter,
+        String setter) {
+        clazz.findAncestor(CompilationUnit.class).ifPresent(p -> p.addImport("com.azure.core.models.GeoPosition"));
+        clazz.getMethodsByName(getter)
+            .get(0)
+            .setType("GeoPosition")
+            .setBody(StaticJavaParser.parseBlock(
+                "{ return new GeoPosition(this." + propertyName + ".getLongitude(), this." + propertyName
+                    + ".getLatitude()); }"));
+        clazz.getMethodsByName(setter).forEach(Node::remove);
     }
 
     // Customizes the WeatherWindow and StormWindRadiiSummary classes
     // Have to customize it this way because setting return type imports the wrong Utility package.
-    private void customizeGeoJsonGeometryProperty(PackageCustomization models,String clazz, String getter,
-            String setter, String property) {
-        ClassCustomization classCustomization = models.getClass(clazz);
-        classCustomization.removeMethod(getter);
-        classCustomization.removeMethod(setter);
-        classCustomization.addMethod(
-                "public GeoPolygon getPolygon() {\n" +
-                "    return Utility.toGeoPolygon(this." + property + ");\n" +
-                "}")
-            .getJavadoc()
-            .setDescription("Return GeoPolygon")
-            .setReturn("Returns a {@link GeoPolygon} for this weather window");
-        classCustomization.addImports("com.azure.maps.weather.implementation.helpers.Utility");
-        classCustomization.addImports("com.azure.core.models.GeoPolygon");
+    @SuppressWarnings("unchecked")
+    private void customizeGeoJsonGeometryProperty(ClassOrInterfaceDeclaration clazz, String getter, String setter,
+        String property) {
+        clazz.findAncestor(CompilationUnit.class).ifPresent(p -> {
+            p.addImport("com.azure.core.models.GeoPolygon");
+            p.addImport("com.azure.maps.weather.implementation.helpers.Utility");
+        });
+
+        clazz.getMethodsByName(getter).forEach(Node::remove);
+        clazz.getMethodsByName(setter).forEach(Node::remove);
+        clazz.addMethod("getPolygon", Modifier.Keyword.PUBLIC)
+            .setType("GeoPolygon")
+            .setBody(StaticJavaParser.parseBlock("{ return Utility.toGeoPolygon(this." + property + "); }"))
+            .setJavadocComment(new Javadoc(JavadocDescription.parseText("Return GeoPolygon")).addBlockTag("return",
+                "Returns a {@link GeoPolygon} for this weather window"));
     }
 
     // Customizes classes with getYear() as a String
-    private void customizeClassesWithString(PackageCustomization models, String clazz, String getter, String setter) {
-        ClassCustomization classCustomization = models.getClass(clazz);
-        MethodCustomization methodCustomization = classCustomization.getMethod(getter);
-        methodCustomization.setReturnType("Integer", "Integer.valueOf(returnValue)");
-        classCustomization.removeMethod(setter);
+    private void customizeClassesWithString(ClassOrInterfaceDeclaration clazz) {
+        clazz.getMethodsByName("getYear")
+            .get(0)
+            .setType("Integer")
+            .setBody(StaticJavaParser.parseBlock("{ return Integer.valueOf(" + "year" + "); }"));
+        clazz.getMethodsByName("setYear").forEach(Node::remove);
     }
 
     // Customizes to private constructor class
-    private void customizePrivateConstructor(PackageCustomization models, String className) {
-        ClassCustomization classCustomization = models.getClass(className);
-        String constructor = "public " + className + "()";
-        ConstructorCustomization constructorCustomization = classCustomization.getConstructor(constructor);
-        constructorCustomization.setModifier(2);
-        String description = "Set default " + className + " constructor to private";
-        constructorCustomization.getJavadoc().setDescription(description);
+    private void customizePrivateConstructor(ClassOrInterfaceDeclaration clazz) {
+        clazz.getConstructors()
+            .get(0)
+            .setModifiers(Modifier.Keyword.PRIVATE)
+            .setJavadocComment("Set default " + clazz.getNameAsString() + " constructor to private");
     }
 
     // Customizes to remove setter in ActiveStorm
     private void customizeActiveStorm(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("ActiveStorm");
-        classCustomization.removeMethod("setBasinId");
-        classCustomization.removeMethod("setName");
-        classCustomization.removeMethod("setIsActive");
-        classCustomization.removeMethod("setIsSubtropical");
-        classCustomization.removeMethod("setGovId");
+        customizeClass(models, "ActiveStorm", clazz -> {
+            customizePrivateConstructor(clazz);
+            customizeClassesWithString(clazz);
+            bulkRemoveMethods(clazz, "setBasinId", "setName", "setIsActive", "setIsSubtropical", "setGovId");
+        });
     }
 
     // Customizes to remove setter in ActiveStormResult
     private void customizeActiveStormResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("ActiveStormResult");
-        classCustomization.removeMethod("setActiveStorms");
-        classCustomization.removeMethod("setNextLink");
+        customizeClass(models, "ActiveStormResult", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setActiveStorms", "setNextLink");
+        });
     }
 
     // Customizes to remove setter in AirAndPollen
     private void customizeAirAndPollen(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("AirAndPollen");
-        classCustomization.removeMethod("setDescription");
-        classCustomization.removeMethod("setValue");
-        classCustomization.removeMethod("setCategory");
-        classCustomization.removeMethod("setCategoryValue");
-        classCustomization.removeMethod("setAirQualityType");
+        customizeClass(models, "AirAndPollen", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setDescription", "setValue", "setCategory", "setCategoryValue",
+                "setAirQualityType");
+        });
     }
 
     // Customizes to remove setter in AirQuality
     private void customizeAirQuality(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("AirQuality");
-        classCustomization.removeMethod("setTimestamp");
-        classCustomization.removeMethod("setIndex");
-        classCustomization.removeMethod("setGlobalIndex");
-        classCustomization.removeMethod("setDominantPollutant");
-        classCustomization.removeMethod("setCategory");
-        classCustomization.removeMethod("setCategoryColor");
-        classCustomization.removeMethod("setDescription");
-        classCustomization.removeMethod("setPollutants");
+        customizeClass(models, "AirQuality", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setTimestamp", "setIndex", "setGlobalIndex", "setDominantPollutant",
+                "setCategory", "setCategoryColor", "setDescription", "setPollutants");
+        });
     }
 
     // Customizes to remove setter in AirQualityResult
     private void customizeAirQualityResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("AirQualityResult");
-        classCustomization.removeMethod("setAirQualityResults");
-        classCustomization.removeMethod("setNextLink");
+        customizeClass(models, "AirQualityResult", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setAirQualityResults", "setNextLink");
+        });
     }
 
     // Customizes to remove setter in AlertDetails
     private void customizeAlertDetails(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("AlertDetails");
-        classCustomization.removeMethod("setName");
-        classCustomization.removeMethod("setDescription");
-        classCustomization.removeMethod("setStartTime");
-        classCustomization.removeMethod("setEndTime");
-        classCustomization.removeMethod("setLatestStatus");
-        classCustomization.removeMethod("setDetails");
-        classCustomization.removeMethod("setLanguage");
+        customizeClass(models, "AlertDetails", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setName", "setDescription", "setStartTime", "setEndTime", "setLatestStatus",
+                "setDetails", "setLanguage");
+        });
     }
 
     // Customizes to remove setter in ColorValue
     private void customizeColorValue(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("ColorValue");
-        classCustomization.removeMethod("setRed");
-        classCustomization.removeMethod("setGreen");
-        classCustomization.removeMethod("setBlue");
-        classCustomization.removeMethod("setHex");
+        customizeClass(models, "ColorValue", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setRed", "setGreen", "setBlue", "setHex");
+        });
     }
 
     // Customizes to remove setter in CurrentConditions
     private void customizeCurrentConditions(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("CurrentConditions");
-        classCustomization.removeMethod("setDateTime");
-        classCustomization.removeMethod("setDescription");
-        classCustomization.removeMethod("setIconCode");
-        classCustomization.removeMethod("setHasPrecipitation");
-        classCustomization.removeMethod("setIsDaytime");
-        classCustomization.removeMethod("setTemperature");
-        classCustomization.removeMethod("setRealFeelTemperature");
-        classCustomization.removeMethod("setRealFeelTemperatureShade");
-        classCustomization.removeMethod("setRelativeHumidity");
-        classCustomization.removeMethod("setDewPoint");
-        classCustomization.removeMethod("setWind");
-        classCustomization.removeMethod("setWindGust");
-        classCustomization.removeMethod("setUvIndex");
-        classCustomization.removeMethod("setUvIndexDescription");
-        classCustomization.removeMethod("setVisibility");
-        classCustomization.removeMethod("setObstructionsToVisibility");
-        classCustomization.removeMethod("setCloudCover");
-        classCustomization.removeMethod("setCloudCeiling");
-        classCustomization.removeMethod("setPressure");
-        classCustomization.removeMethod("setPressureTendency");
-        classCustomization.removeMethod("setPastTwentyFourHourTemperatureDeparture");
-        classCustomization.removeMethod("setApparentTemperature");
-        classCustomization.removeMethod("setWindChillTemperature");
-        classCustomization.removeMethod("setWetBulbTemperature");
-        classCustomization.removeMethod("setPrecipitationSummary");
-        classCustomization.removeMethod("setTemperatureSummary");
+        customizeClass(models, "CurrentConditions", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setDateTime", "setDescription", "setIconCode", "setHasPrecipitation",
+                "setIsDaytime", "setTemperature", "setRealFeelTemperature", "setRealFeelTemperatureShade",
+                "setRelativeHumidity", "setDewPoint", "setWind", "setWindGust", "setUvIndex", "setUvIndexDescription",
+                "setVisibility", "setObstructionsToVisibility", "setCloudCover", "setCloudCeiling", "setPressure",
+                "setPressureTendency", "setPastTwentyFourHourTemperatureDeparture", "setApparentTemperature",
+                "setWindChillTemperature", "setWetBulbTemperature", "setPrecipitationSummary", "setTemperatureSummary");
+        });
     }
 
     // Customizes to remove setter in DailyAirQuality
     private void customizeDailyAirQuality(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyAirQuality");
-        classCustomization.removeMethod("setTimestamp");
-        classCustomization.removeMethod("setIndex");
-        classCustomization.removeMethod("setGlobalIndex");
-        classCustomization.removeMethod("setDominantPollutant");
-        classCustomization.removeMethod("setCategory");
-        classCustomization.removeMethod("setCategoryColor");
-        classCustomization.removeMethod("setDescription");
+        customizeClass(models, "DailyAirQuality", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setTimestamp", "setIndex", "setGlobalIndex", "setDominantPollutant",
+                "setCategory", "setCategoryColor", "setDescription");
+        });
     }
 
     // Customizes to remove setter in DailyAirQualityForecastResult
     private void customizeDailyAirQualityForecastResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyAirQualityForecastResult");
-        classCustomization.removeMethod("setAirQualityResults");
-        classCustomization.removeMethod("setNextLink");
+        customizeClass(models, "DailyAirQualityForecastResult", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setAirQualityResults", "setNextLink");
+        });
     }
 
     // Customizes to remove setter in DailyForecast
     private void customizeDailyForecast(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyForecast");
-        classCustomization.removeMethod("setDateTime");
-        classCustomization.removeMethod("setTemperature");
-        classCustomization.removeMethod("setRealFeelTemperature");
-        classCustomization.removeMethod("setRealFeelTemperatureShade");
-        classCustomization.removeMethod("setHoursOfSun");
-        classCustomization.removeMethod("setMeanTemperatureDeviation");
-        classCustomization.removeMethod("setAirQuality");
-        classCustomization.removeMethod("setDaytimeForecast");
-        classCustomization.removeMethod("setNighttimeForecast");
-        classCustomization.removeMethod("setSources");
+        customizeClass(models, "DailyForecast", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setDateTime", "setTemperature", "setRealFeelTemperature",
+                "setRealFeelTemperatureShade", "setHoursOfSun", "setMeanTemperatureDeviation", "setAirQuality",
+                "setDaytimeForecast", "setNighttimeForecast", "setSources");
+        });
     }
 
     // Customizes to remove setter in DailyForecastDetail
     private void customizeDailyForecastDetail(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyForecastDetail");
-        classCustomization.removeMethod("setIconCode");
-        classCustomization.removeMethod("setIconPhrase");
-        classCustomization.removeMethod("setLocalSource");
-        classCustomization.removeMethod("setHasPrecipitation");
-        classCustomization.removeMethod("setPrecipitationType");
-        classCustomization.removeMethod("setPrecipitationIntensity");
-        classCustomization.removeMethod("setShortDescription");
-        classCustomization.removeMethod("setLongPhrase");
-        classCustomization.removeMethod("setPrecipitationProbability");
-        classCustomization.removeMethod("setThunderstormProbability");
-        classCustomization.removeMethod("setRainProbability");
-        classCustomization.removeMethod("setSnowProbability");
-        classCustomization.removeMethod("setIceProbability");
-        classCustomization.removeMethod("setWind");
-        classCustomization.removeMethod("setWindGust");
-        classCustomization.removeMethod("setTotalLiquid");
-        classCustomization.removeMethod("setRain");
-        classCustomization.removeMethod("setSnow");
-        classCustomization.removeMethod("setIce");
-        classCustomization.removeMethod("setHoursOfPrecipitation");
-        classCustomization.removeMethod("setHoursOfRain");
-        classCustomization.removeMethod("setHoursOfSnow");
-        classCustomization.removeMethod("setHoursOfIce");
-        classCustomization.removeMethod("setCloudCover");
-        classCustomization.getMethod("isHasPrecipitation").rename("hasPrecipitation");
-        classCustomization.getMethod("getRain").rename("getRainUnitDetails");
-        classCustomization.getMethod("getSnow").rename("getSnowUnitDetails");
-        classCustomization.getMethod("getIce").rename("getIceUnitDetails");
-        classCustomization.getMethod("getWind").rename("getWindUnitDetails");
+        customizeClass(models, "DailyForecastDetail", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setIconCode", "setIconPhrase", "setLocalSource", "setHasPrecipitation",
+                "setPrecipitationType", "setPrecipitationIntensity", "setShortDescription", "setLongPhrase",
+                "setPrecipitationProbability", "setThunderstormProbability", "setRainProbability", "setSnowProbability",
+                "setIceProbability", "setWind", "setWindGust", "setTotalLiquid", "setRain", "setSnow", "setIce",
+                "setHoursOfPrecipitation", "setHoursOfRain", "setHoursOfSnow", "setHoursOfIce", "setCloudCover");
+            clazz.getMethodsByName("isHasPrecipitation").get(0).setName("hasPrecipitation");
+            clazz.getMethodsByName("getRain").get(0).setName("getRainUnitDetails");
+            clazz.getMethodsByName("getSnow").get(0).setName("getSnowUnitDetails");
+            clazz.getMethodsByName("getIce").get(0).setName("getIceUnitDetails");
+            clazz.getMethodsByName("getWind").get(0).setName("getWindUnitDetails");
+        });
     }
 
     // Customize WeatherValue
     private void customizeWeatherValue(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherValue");
-        classCustomization.rename("WeatherUnitDetails");
-        classCustomization.removeMethod("setValue");
-        classCustomization.removeMethod("setUnitLabel");
-        classCustomization.removeMethod("setUnitType");
+        customizeClass(models, "WeatherValue",
+            clazz -> bulkRemoveMethods(clazz, "setValue", "setUnitLabel", "setUnitType"));
+
+        models.getClass("WeatherValue").rename("WeatherUnitDetails");
     }
 
     // Remove setters from DailyForecastSummary
     private void customizeDailyForecastSummary(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyForecastSummary");
-        classCustomization.removeMethod("setStartDate");
-        classCustomization.removeMethod("setEndDate");
-        classCustomization.removeMethod("setSeverity");
-        classCustomization.removeMethod("setPhrase");
-        classCustomization.removeMethod("setCategory");
+        customizeClass(models, "DailyForecastSummary", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setStartDate", "setEndDate", "setSeverity", "setPhrase", "setCategory");
+        });
     }
 
     // Remove setters from DailyHistoricalActuals
     private void customizeDailyHistoricalActuals(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyHistoricalActuals");
-        classCustomization.removeMethod("setTimestamp");
-        classCustomization.removeMethod("setTemperature");
-        classCustomization.removeMethod("setDegreeDaySummary");
-        classCustomization.removeMethod("setPrecipitation");
-        classCustomization.removeMethod("setSnowfall");
-        classCustomization.removeMethod("setSnowDepth");
+        customizeClass(models, "DailyHistoricalActuals", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setTimestamp", "setTemperature", "setDegreeDaySummary", "setPrecipitation",
+                "setSnowfall", "setSnowDepth");
+        });
     }
 
     // Remove setters from DailyHistoricalActualsResult
     private void customizeDailyHistoricalActualsResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyHistoricalActualsResult");
-        classCustomization.removeMethod("setHistoricalActuals");
-        classCustomization.removeMethod("setNextLink");
+        customizeClass(models, "DailyHistoricalActualsResult", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setHistoricalActuals", "setNextLink");
+        });
     }
 
     // Remove setters from DailyHistoricalNormals
     private void customizeDailyHistoricalNormals(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyHistoricalNormals");
-        classCustomization.removeMethod("setTimestamp");
-        classCustomization.removeMethod("setTemperature");
-        classCustomization.removeMethod("setDegreeDaySummary");
-        classCustomization.removeMethod("setPrecipitation");
+        customizeClass(models, "DailyHistoricalNormals", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setTimestamp", "setTemperature", "setDegreeDaySummary", "setPrecipitation");
+        });
     }
 
     // Remove setters from DailyHistoricalNormalsResult
     private void customizeDailyHistoricalNormalsResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyHistoricalNormalsResult");
-        classCustomization.removeMethod("setHistoricalNormals");
-        classCustomization.removeMethod("setNextLink");
+        customizeClass(models, "DailyHistoricalNormalsResult", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setHistoricalNormals", "setNextLink");
+        });
     }
 
     // Remove setters from DailyHistoricalRecords
     private void customizeDailyHistoricalRecords(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyHistoricalRecords");
-        classCustomization.removeMethod("setTimestamp");
-        classCustomization.removeMethod("setTemperature");
-        classCustomization.removeMethod("setSnowfall");
-        classCustomization.removeMethod("setPrecipitation");
+        customizeClass(models, "DailyHistoricalRecords", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setTimestamp", "setTemperature", "setSnowfall", "setPrecipitation");
+        });
     }
 
     // Remove setters from DailyHistoricalRecordsResult
     private void customizeDailyHistoricalRecordsResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyHistoricalRecordsResult");
-        classCustomization.removeMethod("setHistoricalRecords");
-        classCustomization.removeMethod("setNextLink");
+        customizeClass(models, "DailyHistoricalRecordsResult", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setHistoricalRecords", "setNextLink");
+        });
     }
 
     // Remove setters from DailyIndex
     private void customizeDailyIndex(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DailyIndex");
-        classCustomization.removeMethod("setIndexName");
-        classCustomization.removeMethod("setIndexId");
-        classCustomization.removeMethod("setDateTime");
-        classCustomization.removeMethod("setValue");
-        classCustomization.removeMethod("setCategoryDescription");
-        classCustomization.removeMethod("setCategoryValue");
-        classCustomization.removeMethod("setIsAscending");
-        classCustomization.removeMethod("setDescription");
+        customizeClass(models, "DailyIndex", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setIndexName", "setIndexId", "setDateTime", "setValue", "setCategoryDescription",
+                "setCategoryValue", "setIsAscending", "setDescription");
+        });
     }
 
     // Remove setters from DegreeDaySummary
     private void customizeDegreeDaySummary(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("DegreeDaySummary");
-        classCustomization.removeMethod("setHeating");
-        classCustomization.removeMethod("setCooling");
+        customizeClass(models, "DegreeDaySummary", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setHeating", "setCooling");
+        });
     }
 
     // Remove setters from ForecastInterval
     private void customizeForecastInterval(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("ForecastInterval");
-        classCustomization.removeMethod("setStartTime");
-        classCustomization.removeMethod("setMinute");
-        classCustomization.removeMethod("setDecibelRelativeToZ");
-        classCustomization.removeMethod("setShortDescription");
-        classCustomization.removeMethod("setThreshold");
-        classCustomization.removeMethod("setColor");
-        classCustomization.removeMethod("setSimplifiedColor");
-        classCustomization.removeMethod("setPrecipitationType");
-        classCustomization.removeMethod("setIconCode");
-        classCustomization.removeMethod("setCloudCover");
+        customizeClass(models, "ForecastInterval", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setStartMinute", "setMinute", "setDecibelRelativeToZ", "setShortDescription",
+                "setThreshold", "setColor", "setSimplifiedColor", "setPrecipitationType", "setIconCode",
+                "setCloudCover");
+        });
     }
 
     // Remove setters from HazardDetail
     private void customizeHazardDetail(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("HazardDetail");
-        classCustomization.removeMethod("setHazardIndex");
-        classCustomization.removeMethod("setHazardCode");
-        classCustomization.removeMethod("setShortDescription");
+        customizeClass(models, "HazardDetail", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setHazardIndex", "setHazardCode", "setShortDescription");
+        });
     }
 
     // Remove setters from HourlyForecast
     private void customizeHourlyForecast(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("HourlyForecast");
-        classCustomization.removeMethod("setTimestamp");
-        classCustomization.removeMethod("setIconCode");
-        classCustomization.removeMethod("setIconPhrase");
-        classCustomization.removeMethod("setHasPrecipitation");
-        classCustomization.removeMethod("setIsDaylight");
-        classCustomization.removeMethod("setTemperature");
-        classCustomization.removeMethod("setRealFeelTemperature");
-        classCustomization.removeMethod("setWetBulbTemperature");
-        classCustomization.removeMethod("setDewPoint");
-        classCustomization.removeMethod("setWind");
-        classCustomization.removeMethod("setWindGust");
-        classCustomization.removeMethod("setRelativeHumidity");
-        classCustomization.removeMethod("setVisibility");
-        classCustomization.removeMethod("setCloudCeiling");
-        classCustomization.removeMethod("setUvIndex");
-        classCustomization.removeMethod("setUvIndexDescription");
-        classCustomization.removeMethod("setPrecipitationProbability");
-        classCustomization.removeMethod("setRainProbability");
-        classCustomization.removeMethod("setSnowProbability");
-        classCustomization.removeMethod("setIceProbability");
-        classCustomization.removeMethod("setTotalLiquid");
-        classCustomization.removeMethod("setRain");
-        classCustomization.removeMethod("setSnow");
-        classCustomization.removeMethod("setIce");
-        classCustomization.removeMethod("setCloudCover");
+        customizeClass(models, "HourlyForecast", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setTimestamp", "setIconCode", "setIconPhrase", "setHasPrecipitation",
+                "setIsDaylight", "setTemperature", "setRealFeelTemperature", "setWetBulbTemperature", "setDewPoint",
+                "setWind", "setWindGust", "setRelativeHumidity", "setVisibility", "setCloudCeiling", "setUvIndex",
+                "setUvIndexDescription", "setPrecipitationProbability", "setRainProbability", "setSnowProbability",
+                "setIceProbability", "setTotalLiquid", "setRain", "setSnow", "setIce", "setCloudCover");
+        });
     }
 
     // Remove setters from IntervalSummary
     private void customizeIntervalSummary(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("IntervalSummary");
-        classCustomization.removeMethod("setStartMinute");
-        classCustomization.removeMethod("setEndMinute");
-        classCustomization.removeMethod("setTotalMinutes");
-        classCustomization.removeMethod("setShortDescription");
-        classCustomization.removeMethod("setBriefDescription");
-        classCustomization.removeMethod("setLongPhrase");
-        classCustomization.removeMethod("setIconCode");
+        customizeClass(models, "IntervalSummary", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setStartMinute", "setEndMinute", "setTotalMinutes", "setShortDescription",
+                "setBriefDescription", "setLongPhrase", "setIconCode");
+        });
     }
 
     // Remove setters from LatestStatus
     private void customizeLatestStatus(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("LatestStatus");
-        classCustomization.removeMethod("setLocalized");
-        classCustomization.removeMethod("setEnglish");
+        customizeClass(models, "LatestStatus", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setLocalized", "setEnglish");
+        });
     }
 
     // Remove setters from LocalSource
     private void customizeLocalSource(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("LocalSource");
-        classCustomization.removeMethod("setId");
-        classCustomization.removeMethod("setName");
-        classCustomization.removeMethod("setWeatherCode");
+        customizeClass(models, "LocalSource", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setId", "setName", "setWeatherCode");
+        });
     }
 
     // Remove setters from MinuteForecastSummary
     private void customizeMinuteForecastSummary(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("MinuteForecastSummary");
-        classCustomization.removeMethod("setBriefPhrase60");
-        classCustomization.removeMethod("setShortDescription");
-        classCustomization.removeMethod("setBriefDescription");
-        classCustomization.removeMethod("setLongPhrase");
-        classCustomization.removeMethod("setIconCode");
+        customizeClass(models, "MinuteForecastSummary", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setBriefPhrase60", "setShortDescription", "setBriefDescription", "setLongPhrase",
+                "setIconCode");
+        });
     }
 
     // Remove setters from Pollutant
     private void customizePollutant(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("Pollutant");
-        classCustomization.removeMethod("setType");
-        classCustomization.removeMethod("setName");
-        classCustomization.removeMethod("setIndex");
-        classCustomization.removeMethod("setGlobalIndex");
-        classCustomization.removeMethod("setConcentration");
+        customizeClass(models, "Pollutant", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setType", "setName", "setIndex", "setGlobalIndex", "setConcentration");
+        });
     }
 
     // Remove setters from PrecipitationSummary
     private void customizePrecipitationSummary(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("PrecipitationSummary");
-        classCustomization.removeMethod("setPastHour");
-        classCustomization.removeMethod("setPastThreeHours");
-        classCustomization.removeMethod("setPastSixHours");
-        classCustomization.removeMethod("setPastNineHours");
-        classCustomization.removeMethod("setPastTwelveHours");
-        classCustomization.removeMethod("setPastEighteenHours");
-        classCustomization.removeMethod("setPastTwentyFourHours");
+        customizeClass(models, "PrecipitationSummary", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setPastHour", "setPastThreeHours", "setPastSixHours", "setPastNineHours",
+                "setPastTwelveHours", "setPastEighteenHours", "setPastTwentyFourHours");
+        });
     }
 
     // Remove setters from PressureTendency
     private void customizePressureTendency(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("PressureTendency");
-        classCustomization.removeMethod("setDescription");
-        classCustomization.removeMethod("setCode");
+        customizeClass(models, "PressureTendency", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setDescription", "setCode");
+        });
     }
 
     // Remove setters from PastHoursTemperature
     private void customizePastHoursTemperature(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("PastHoursTemperature");
-        classCustomization.removeMethod("setMinimum");
-        classCustomization.removeMethod("setMaximum");
+        customizeClass(models, "PastHoursTemperature", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setMinimum", "setMaximum");
+        });
     }
 
     // Remove setters from QuarterDayForecast
     private void customizeQuarterDayForecast(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("QuarterDayForecast");
-        classCustomization.removeMethod("setDateTime");
-        classCustomization.removeMethod("setEffectiveDate");
-        classCustomization.removeMethod("setQuarter");
-        classCustomization.removeMethod("setIconCode");
-        classCustomization.removeMethod("setIconPhrase");
-        classCustomization.removeMethod("setPhrase");
-        classCustomization.removeMethod("setTemperature");
-        classCustomization.removeMethod("setRealFeelTemperature");
-        classCustomization.removeMethod("setDewPoint");
-        classCustomization.removeMethod("setRelativeHumidity");
-        classCustomization.removeMethod("setWind");
-        classCustomization.removeMethod("setWindGust");
-        classCustomization.removeMethod("setVisibility");
-        classCustomization.removeMethod("setCloudCover");
-        classCustomization.removeMethod("setPrecipitationType");
-        classCustomization.removeMethod("setHasPrecipitation");
-        classCustomization.removeMethod("setPrecipitationIntensity");
-        classCustomization.removeMethod("setPrecipitationProbability");
-        classCustomization.removeMethod("setThunderstormProbability");
-        classCustomization.removeMethod("setTotalLiquid");
-        classCustomization.removeMethod("setRain");
-        classCustomization.removeMethod("setSnow");
-        classCustomization.removeMethod("setIce");
+        customizeClass(models, "QuarterDayForecast", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setDateTime", "setEffectiveDate", "setQuarter", "setIconCode", "setIconPhrase",
+                "setPhrase", "setTemperature", "setRealFeelTemperature", "setDewPoint", "setRelativeHumidity",
+                "setWind", "setWindGust", "setVisibility", "setCloudCover", "setPrecipitationType",
+                "setHasPrecipitation", "setPrecipitationIntensity", "setPrecipitationProbability",
+                "setThunderstormProbability", "setTotalLiquid", "setRain", "setSnow", "setIce");
+        });
     }
 
     // Remove setters from RadiusSector
     private void customizeRadiusSector(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("RadiusSector");
-        classCustomization.removeMethod("setBeginBearing");
-        classCustomization.removeMethod("setEndBearing");
-        classCustomization.removeMethod("setRadius");
+        customizeClass(models, "RadiusSector", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setBeginBearing", "setEndBearing", "setRadius");
+        });
     }
 
     // Remove setters from SevereWeatherAlert
     private void customizeSevereWeatherAlert(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("SevereWeatherAlert");
-        classCustomization.removeMethod("setCountryCode");
-        classCustomization.removeMethod("setAlertId");
-        classCustomization.removeMethod("setDescription");
-        classCustomization.removeMethod("setCategory");
-        classCustomization.removeMethod("setPriority");
-        classCustomization.removeMethod("setClassification");
-        classCustomization.removeMethod("setLevel");
-        classCustomization.removeMethod("setSource");
-        classCustomization.removeMethod("setSourceId");
-        classCustomization.removeMethod("setDisclaimer");
-        classCustomization.removeMethod("setAlertDetails");
+        customizeClass(models, "SevereWeatherAlert", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setCountryCode", "setAlertId", "setDescription", "setCategory", "setPriority",
+                "setClassification", "setLevel", "setSource", "setSourceId", "setDisclaimer", "setAlertDetails");
+        });
     }
 
     // Remove setters from SevereWeatherAlertDescription
     private void customizeSevereWeatherAlertDescription(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("SevereWeatherAlertDescription");
-        classCustomization.removeMethod("setDescription");
-        classCustomization.removeMethod("setStatus");
+        customizeClass(models, "SevereWeatherAlertDescription", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setDescription", "setStatus");
+        });
     }
 
     // Remove setters from StormForecast
     private void customizeStormForecast(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("StormForecast");
-        classCustomization.removeMethod("setTimestamp");
-        classCustomization.removeMethod("setInitializedTimestamp");
-        classCustomization.removeMethod("setMaxWindGust");
-        classCustomization.removeMethod("setSustainedWind");
-        classCustomization.removeMethod("setStatus");
-        classCustomization.removeMethod("setWeatherWindow");
-        classCustomization.removeMethod("setWindRadiiSummary");
+        customizeClass(models, "StormForecast", clazz -> {
+            customizePrivateConstructor(clazz);
+            customizeLatLongPairClasses(clazz, "coordinates", "getCoordinates", "setCoordinates");
+            bulkRemoveMethods(clazz, "setCoordinates", "setTimestamp", "setInitializedTimestamp", "setMaxWindGust",
+                "setSustainedWind", "setStatus", "setWeatherWindow", "setWindRadiiSummary");
+        });
     }
 
     // Remove setters from StormForecastResult
     private void customizeStormForecastResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("StormForecastResult");
-        classCustomization.removeMethod("setStormForecasts");
-        classCustomization.removeMethod("setNextLink");
+        customizeClass(models, "StormForecastResult", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setStormForecasts", "setNextLink");
+        });
     }
 
     // Remove setters from StormLocation
     private void customizeStormLocation(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("StormLocation");
-        classCustomization.removeMethod("setTimestamp");
-        classCustomization.removeMethod("setMaxWindGust");
-        classCustomization.removeMethod("setSustainedWind");
-        classCustomization.removeMethod("setMinimumPressure");
-        classCustomization.removeMethod("setMovement");
-        classCustomization.removeMethod("setStatus");
-        classCustomization.removeMethod("setIsSubtropical");
-        classCustomization.removeMethod("setHasTropicalPotential");
-        classCustomization.removeMethod("setIsPostTropical");
-        classCustomization.removeMethod("setWindRadiiSummary");
+        customizeClass(models, "StormLocation", clazz -> {
+            customizePrivateConstructor(clazz);
+            customizeLatLongPairClasses(clazz, "coordinates", "getCoordinates", "setCoordinates");
+            bulkRemoveMethods(clazz, "setTimestamp", "setMaxWindGust", "setSustainedWind", "setMinimumPressure",
+                "setMovement", "setStatus", "setIsSubtropical", "setHasTropicalPotential", "setIsPostTropical",
+                "setWindRadiiSummary");
+        });
     }
 
     // Remove setters from StormLocationsResult
     private void customizeStormLocationsResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("StormLocationsResult");
-        classCustomization.removeMethod("setStormLocations");
-        classCustomization.removeMethod("setNextLink");
+        customizeClass(models, "StormLocationsResult", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setStormLocations", "setNextLink");
+        });
     }
 
     // Remove setters from StormSearchResult
     private void customizeStormSearchResult(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("StormSearchResult");
-        classCustomization.removeMethod("setStorms");
-        classCustomization.removeMethod("setNextLink");
+        customizeClass(models, "StormSearchResult", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setStorms", "setNextLink");
+        });
     }
 
     // Remove setters from StormSearchResultItem
     private void customizeStormSearchResultItem(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("StormSearchResultItem");
-        classCustomization.removeMethod("setBasinId");
-        classCustomization.removeMethod("setName");
-        classCustomization.removeMethod("setIsActive");
-        classCustomization.removeMethod("setIsRetired");
-        classCustomization.removeMethod("setIsSubtropical");
-        classCustomization.removeMethod("setGovId");
+        models.getClass("StormSearchResultItem")
+            .customizeAst(ast -> ast.getClassByName("StormSearchResultItem").ifPresent(clazz -> {
+                customizePrivateConstructor(clazz);
+                customizeClassesWithString(clazz);
+                bulkRemoveMethods(clazz, "setBasinId", "setName", "setIsActive", "setIsRetired", "setIsSubtropical",
+                    "setGovId");
+            }));
     }
 
     // Remove setters from StormWindRadiiSummary
     private void customizeStormWindRadiiSummary(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("StormWindRadiiSummary");
-        classCustomization.removeMethod("setTimestamp");
-        classCustomization.removeMethod("setWindSpeed");
-        classCustomization.removeMethod("setRadiusSectorData");
+        models.getClass("StormWindRadiiSummary")
+            .customizeAst(ast -> ast.getClassByName("StormWindRadiiSummary").ifPresent(clazz -> {
+                customizePrivateConstructor(clazz);
+                customizeGeoJsonGeometryProperty(clazz, "getRadiiGeometry", "setRadiiGeometry", "radiiGeometry");
+                bulkRemoveMethods(clazz, "setTimestamp", "setWindSpeed", "setRadiusSectorData");
+            }));
     }
 
     // Remove setters from SunGlare
     private void customizeSunGlare(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("SunGlare");
-        classCustomization.removeMethod("setCalculatedVehicleHeading");
-        classCustomization.removeMethod("setGlareIndex");
+        customizeClass(models, "SunGlare", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setCalculatedVehicleHeading", "setGlareIndex");
+        });
     }
 
     // Remove setters from TemperatureSummary
     private void customizeTemperatureSummary(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("TemperatureSummary");
-        classCustomization.removeMethod("setPastSixHours");
-        classCustomization.removeMethod("setPastTwelveHours");
-        classCustomization.removeMethod("setPastTwentyFourHours");
+        customizeClass(models, "TemperatureSummary", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setPastSixHours", "setPastTwelveHours", "setPastTwentyFourHours");
+        });
     }
 
     // Remove setters from WeatherAlongRoutePrecipitation
     private void customizeWeatherAlongRoutePrecipitation(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherAlongRoutePrecipitation");
-        classCustomization.removeMethod("setDbz");
-        classCustomization.removeMethod("setType");
-        classCustomization.getMethod("getDbz").rename("getDeciblesRelativeToZ");
+        customizeClass(models, "WeatherAlongRoutePrecipitation", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setDbz", "setType");
+            clazz.getMethodsByName("getDbz").get(0).setName("getDeciblesRelativeToZ");
+        });
     }
 
     // Remove setters from WeatherAlongRouteSummary
     private void customizeWeatherAlongRouteSummary(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherAlongRouteSummary");
-        classCustomization.removeMethod("setIconCode");
-        classCustomization.removeMethod("setHazards");
+        customizeClass(models, "WeatherAlongRouteSummary",
+            clazz -> bulkRemoveMethods(clazz, "setIconCode", "setHazards"));
     }
 
     // Remove setters from WeatherHazards
     private void customizeWeatherHazards(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherHazards");
-        classCustomization.removeMethod("setMaxHazardIndex");
-        classCustomization.removeMethod("setDetails");
+        customizeClass(models, "WeatherHazards", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setMaxHazardIndex", "setDetails");
+        });
     }
 
     // Remove setters from WeatherNotification
     private void customizeWeatherNotification(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherNotification");
-        classCustomization.removeMethod("setType");
-        classCustomization.removeMethod("setHazardIndex");
-        classCustomization.removeMethod("setHazardCode");
-        classCustomization.removeMethod("setShortDescription");
+        customizeClass(models, "WeatherNotification", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setType", "setHazardIndex", "setHazardCode", "setShortDescription");
+        });
     }
 
     // Remove setters from WeatherValueMaxMinAvg
     private void customizeWeatherValueMaxMinAvg(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherValueMaxMinAvg");
-        classCustomization.removeMethod("setMaximum");
-        classCustomization.removeMethod("setMinimum");
-        classCustomization.removeMethod("setAverage");
+        customizeClass(models, "WeatherValueMaxMinAvg", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setMaximum", "setMinimum", "setAverage");
+        });
     }
 
     // Remove setters from WeatherValueRange
     private void customizeWeatherValueRange(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherValueRange");
-        classCustomization.removeMethod("setMinimum");
-        classCustomization.removeMethod("setMaximum");
+        customizeClass(models, "WeatherValueRange", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setMinimum", "setMaximum");
+        });
     }
 
     // Remove setters from WeatherValueYear
     private void customizeWeatherValueYear(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherValueYear");
-        classCustomization.removeMethod("setValue");
-        classCustomization.removeMethod("setUnit");
-        classCustomization.removeMethod("setUnitType");
-        classCustomization.removeMethod("setYear");
+        customizeClass(models, "WeatherValueYear", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setValue", "setUnit", "setUnitType", "setYear");
+
+            MethodDeclaration fromJson = clazz.getMethodsByName("fromJson").get(0);
+            String body = fromJson.getBody().get().toString();
+            body = body.replace("deserializedWeatherValueYear.year = reader.getNullable(JsonReader::getInt);",
+                String.join("\n",
+                    "if (reader.currentToken() == JsonToken.NUMBER) {",
+                    "    deserializedWeatherValueYear.year = reader.getNullable(JsonReader::getInt);",
+                    "} else if (reader.currentToken() == JsonToken.STRING) {",
+                    "    deserializedWeatherValueYear.year = Integer.parseInt(reader.getString());",
+                    "}"));
+            fromJson.setBody(StaticJavaParser.parseBlock(body));
+        });
     }
 
     // Remove setters from WeatherValueYearMax
     private void customizeWeatherValueYearMax(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherValueYearMax");
-        classCustomization.removeMethod("setMaximum");
+        customizeClass(models, "WeatherValueYearMax", clazz -> {
+            customizePrivateConstructor(clazz);
+            clazz.getMethodsByName("setMaximum").forEach(Node::remove);
+        });
     }
 
     // Remove setters from WeatherValueYearMaxMinAvg
     private void customizeWeatherValueYearMaxMinAvg(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherValueYearMaxMinAvg");
-        classCustomization.removeMethod("setMaximum");
-        classCustomization.removeMethod("setMinimum");
-        classCustomization.removeMethod("setAverage");
+        customizeClass(models, "WeatherValueYearMaxMinAvg", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setMaximum", "setMinimum", "setAverage");
+        });
     }
 
     // Remove setters from WeatherWindow
     private void customizeWeatherWindow(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WeatherWindow");
-        classCustomization.removeMethod("setBeginTimestamp");
-        classCustomization.removeMethod("setEndTimestamp");
-        classCustomization.removeMethod("setBeginStatus");
-        classCustomization.removeMethod("setEndStatus");
+        customizeClass(models, "WeatherWindow", clazz -> {
+            customizePrivateConstructor(clazz);
+            customizeLatLongPairClasses(clazz, "topLeft", "getTopLeft", "setTopLeft");
+            customizeLatLongPairClasses(clazz, "bottomRight", "getBottomRight", "setBottomRight");
+            customizeGeoJsonGeometryProperty(clazz, "getGeometry", "setGeometry", "geometry");
+
+            bulkRemoveMethods(clazz, "setBeginTimestamp", "setEndTimestamp", "setBeginStatus", "setEndStatus");
+        });
     }
 
     // Remove setters from WindDetails
     private void customizeWindDetails(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WindDetails");
-        classCustomization.removeMethod("setDirection");
-        classCustomization.removeMethod("setSpeed");
+        customizeClass(models, "WindDetails", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setDirection", "setSpeed");
+        });
     }
 
     // Remove setters from WindDirection
     private void customizeWindDirection(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WindDirection");
-        classCustomization.removeMethod("setDegrees");
-        classCustomization.removeMethod("setDescription");
+        customizeClass(models, "WindDirection", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setDegrees", "setDescription");
+        });
     }
 
     // Remove setters from WaypointForecast
     private void customizeWaypointForecast(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("WaypointForecast");
-        classCustomization.removeMethod("setIconCode");
-        classCustomization.removeMethod("setShortDescription");
-        classCustomization.removeMethod("setIsDaytime");
-        classCustomization.removeMethod("setCloudCover");
-        classCustomization.removeMethod("setTemperature");
-        classCustomization.removeMethod("setWind");
-        classCustomization.removeMethod("setWindGust");
-        classCustomization.removeMethod("setPrecipitation");
-        classCustomization.removeMethod("setLightningCount");
-        classCustomization.removeMethod("setSunGlare");
-        classCustomization.removeMethod("setHazards");
-        classCustomization.removeMethod("setNotifications");
+        customizeClass(models, "WaypointForecast", clazz -> {
+            customizePrivateConstructor(clazz);
+            bulkRemoveMethods(clazz, "setIconCode", "setIsDaytime", "setCloudCover", "setTemperature", "setWind",
+                "setWindGust", "setPrecipitation", "setLightningCount", "setSunGlare", "setHazards",
+                "setNotifications");
+        });
+    }
+
+    private static void customizeClass(PackageCustomization models, String className,
+        Consumer<ClassOrInterfaceDeclaration> classOrInterfaceDeclarationConsumer) {
+        models.getClass(className)
+            .customizeAst(ast -> ast.getClassByName(className).ifPresent(classOrInterfaceDeclarationConsumer));
+    }
+
+    private static void bulkRemoveMethods(ClassOrInterfaceDeclaration clazz, String... methodsToRemove) {
+        for (String methodToRemove : methodsToRemove) {
+            clazz.getMethodsByName(methodToRemove).forEach(Node::remove);
+        }
+    }
+
+    private void bulkPrivateConstructors(PackageCustomization models, String... classNames) {
+        for (String className : classNames) {
+            customizeClass(models, className, this::customizePrivateConstructor);
+        }
+    }
+
+    private void addToIntMethod(PackageCustomization models, String... classNames) {
+        for (String className : classNames) {
+            customizeClass(models, className, clazz -> clazz.addMethod("toInt").setType("int")
+                .setBody(StaticJavaParser.parseBlock("{ return Integer.parseInt(toString()); }")));
+        }
     }
 }

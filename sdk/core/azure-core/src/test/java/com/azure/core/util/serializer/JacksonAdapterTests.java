@@ -9,13 +9,17 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.models.GeoObjectType;
 import com.azure.core.models.JsonPatchDocument;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.serializer.nojackson.Simple;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -372,6 +376,31 @@ public class JacksonAdapterTests {
             Arguments.of(URL.class, IOException.class), // Thrown when the String isn't a valid URL
             Arguments.of(URI.class, IllegalArgumentException.class) // Thrown when the String isn't a valid URI
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataWithJsonSerializableContainerSupplier")
+    @Execution(ExecutionMode.SAME_THREAD)
+    public void binaryDataWithJsonSerializableContainer(BinaryData binaryData, String expectedJson) {
+        assertEquals(expectedJson, binaryData.toString());
+    }
+
+    private static Stream<Arguments> binaryDataWithJsonSerializableContainerSupplier() {
+        Simple[] array = new Simple[] { new Simple("id", "name") };
+        List<Simple> list = Collections.singletonList(new Simple("id", "name"));
+        Iterable<Simple> iterable = () -> Collections.singletonList(new Simple("id", "name")).iterator();
+        Map<String, Simple> map = Collections.singletonMap("key", new Simple("id", "name"));
+
+        return Stream.of(
+            // Should use modifyArraySerializer
+            Arguments.of(BinaryData.fromObject(array), "[{\"id\":\"id\",\"name\":\"name\"}]"),
+
+            // Should use modifyCollectionSerializer or modifyCollectionLikeSerializer
+            Arguments.of(BinaryData.fromObject(list), "[{\"id\":\"id\",\"name\":\"name\"}]"),
+            Arguments.of(BinaryData.fromObject(iterable), "[{\"id\":\"id\",\"name\":\"name\"}]"),
+
+            // Should use modifyMapSerializer or modifyMapLikeSerializer
+            Arguments.of(BinaryData.fromObject(map), "{\"key\":{\"id\":\"id\",\"name\":\"name\"}}"));
     }
 
     public static final class StronglyTypedHeaders {

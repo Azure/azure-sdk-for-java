@@ -11,7 +11,8 @@ import com.azure.resourcemanager.avs.fluent.models.IscsiPathInner;
  */
 public final class IscsiPathsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/IscsiPaths_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/IscsiPaths_CreateOrUpdate.json
      */
     /**
      * Sample code: IscsiPaths_CreateOrUpdate.

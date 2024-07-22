@@ -27,18 +27,17 @@ public final class WorkloadNetworkVirtualMachinesImpl implements WorkloadNetwork
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetworkVirtualMachine> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName) {
+    public PagedIterable<WorkloadNetworkVirtualMachine> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<WorkloadNetworkVirtualMachineInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName);
+            = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new WorkloadNetworkVirtualMachineImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetworkVirtualMachine> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context) {
+    public PagedIterable<WorkloadNetworkVirtualMachine> list(String resourceGroupName, String privateCloudName,
+        Context context) {
         PagedIterable<WorkloadNetworkVirtualMachineInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new WorkloadNetworkVirtualMachineImpl(inner1, this.manager()));
     }

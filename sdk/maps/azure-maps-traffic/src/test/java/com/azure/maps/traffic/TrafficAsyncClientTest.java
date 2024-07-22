@@ -19,12 +19,10 @@ import com.azure.maps.traffic.models.TrafficFlowTileOptions;
 import com.azure.maps.traffic.models.TrafficFlowTileStyle;
 import com.azure.maps.traffic.models.TrafficIncidentDetailOptions;
 import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,16 +41,11 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     public void testAsyncGetTrafficFlowTile(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficFlowTileOptions trafficFlowTileOptions = new TrafficFlowTileOptions().setZoom(12)
-            .setFormat(TileFormat.PNG).setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
+            .setFormat(TileFormat.PNG)
+            .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
             .setTileIndex(new TileIndex().setX(50).setY(50));
         StepVerifier.create(client.getTrafficFlowTile(trafficFlowTileOptions))
-            .assertNext(actualResults -> {
-                try {
-                    validateGetTrafficFlowTile(actualResults.toBytes());
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get traffic flow tile");
-                }
-            })
+            .assertNext(actualResults -> validateGetTrafficFlowTile(actualResults.toBytes()))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -63,16 +56,12 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
     public void testAsyncGetTrafficFlowTileWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
-        TrafficFlowTileOptions trafficFlowTileOptions = new TrafficFlowTileOptions().setZoom(12).setFormat(TileFormat.PNG).setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
+        TrafficFlowTileOptions trafficFlowTileOptions = new TrafficFlowTileOptions().setZoom(12)
+            .setFormat(TileFormat.PNG)
+            .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
             .setTileIndex(new TileIndex().setX(50).setY(50));
         StepVerifier.create(client.getTrafficFlowTileWithResponse(trafficFlowTileOptions))
-            .assertNext(response -> {
-                try {
-                    validateGetTrafficFlowTileWithResponse(200, response);
-                } catch (IOException e) {
-                    Assertions.fail("unable to traffic flow tile with response");
-                }
-            })
+            .assertNext(TrafficClientTestBase::validateGetTrafficFlowTileWithResponse)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -80,17 +69,17 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetTrafficFlowTileWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetTrafficFlowTileWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficFlowTileOptions trafficFlowTileOptions = new TrafficFlowTileOptions().setZoom(-1000)
-            .setFormat(TileFormat.PNG).setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
+            .setFormat(TileFormat.PNG)
+            .setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
             .setTileIndex(new TileIndex().setX(2044).setY(1360));
-        StepVerifier.create(client.getTrafficFlowTileWithResponse(trafficFlowTileOptions))
-            .expectErrorSatisfies(ex -> {
-                final HttpResponseException httpResponseException = (HttpResponseException) ex;
-                assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            })
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(client.getTrafficFlowTileWithResponse(trafficFlowTileOptions)).expectErrorSatisfies(ex -> {
+            final HttpResponseException httpResponseException = (HttpResponseException) ex;
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+        }).verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get traffic flow segment
@@ -98,16 +87,16 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
     public void testAsyncGetTrafficFlowSegment(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
-        TrafficFlowSegmentOptions trafficFlowSegmentOptions = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE).setOpenLr(false)
-            .setZoom(10).setCoordinates(new GeoPosition(4.84239, 52.41072)).setThickness(2).setUnit(SpeedUnit.MPH);
+        TrafficFlowSegmentOptions trafficFlowSegmentOptions
+            = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
+            .setOpenLr(false)
+            .setZoom(10)
+            .setCoordinates(new GeoPosition(4.84239, 52.41072))
+            .setThickness(2)
+            .setUnit(SpeedUnit.MPH);
         StepVerifier.create(client.getTrafficFlowSegment(trafficFlowSegmentOptions))
-            .assertNext(actualResults -> {
-                try {
-                    validateGetTrafficFlowSegment(TestUtils.getExpectedTrafficFlowSegment(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get traffic flow segment");
-                }
-            })
+            .assertNext(actualResults -> validateGetTrafficFlowSegment(TestUtils.getExpectedTrafficFlowSegment(),
+                actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -116,18 +105,19 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testAsyncGetTrafficFlowSegmentWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
+    public void testAsyncGetTrafficFlowSegmentWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
-        TrafficFlowSegmentOptions trafficFlowSegmentOptions = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE).setOpenLr(false)
-            .setZoom(10).setCoordinates(new GeoPosition(4.84239, 52.41072)).setThickness(2).setUnit(SpeedUnit.MPH);
+        TrafficFlowSegmentOptions trafficFlowSegmentOptions
+            = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
+            .setOpenLr(false)
+            .setZoom(10)
+            .setCoordinates(new GeoPosition(4.84239, 52.41072))
+            .setThickness(2)
+            .setUnit(SpeedUnit.MPH);
         StepVerifier.create(client.getTrafficFlowSegmentWithResponse(trafficFlowSegmentOptions))
-            .assertNext(response -> {
-                try {
-                    validateGetTrafficFlowSegmentWithResponse(TestUtils.getExpectedTrafficFlowSegment(), 200, response);
-                } catch (IOException e) {
-                    Assertions.fail("unable to traffic flow segment with response");
-                }
-            })
+            .assertNext(response -> validateGetTrafficFlowSegmentWithResponse(TestUtils.getExpectedTrafficFlowSegment(),
+                response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -135,10 +125,16 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetTrafficFlowSegmentWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetTrafficFlowSegmentWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
-        TrafficFlowSegmentOptions trafficFlowSegmentOptions = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE).setOpenLr(false)
-            .setZoom(-1000).setCoordinates(new GeoPosition(45, 45)).setThickness(2).setUnit(SpeedUnit.MPH);
+        TrafficFlowSegmentOptions trafficFlowSegmentOptions
+            = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE)
+            .setOpenLr(false)
+            .setZoom(-1000)
+            .setCoordinates(new GeoPosition(45, 45))
+            .setThickness(2)
+            .setUnit(SpeedUnit.MPH);
         StepVerifier.create(client.getTrafficFlowSegmentWithResponse(trafficFlowSegmentOptions))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -154,18 +150,17 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
-            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setBoundingZoom(11)
-            .setTrafficmodelId("1335294634919").setExpandCluster(false).setOriginalPosition(false)
-            .setIncidentGeometryType(IncidentGeometryType.ORIGINAL).setLanguage("en")
+            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(11)
+            .setTrafficmodelId("1335294634919")
+            .setExpandCluster(false)
+            .setOriginalPosition(false)
+            .setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
+            .setLanguage("en")
             .setProjectionStandard(ProjectionStandard.EPSG900913);
         StepVerifier.create(client.getTrafficIncidentDetail(trafficIncidentDetailOptions))
-            .assertNext(actualResults -> {
-                try {
-                    validateTrafficIncidentDetail(TestUtils.getExpectedTrafficIncidentDetail(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get traffic incident detail");
-                }
-            })
+            .assertNext(actualResults -> validateTrafficIncidentDetail(TestUtils.getExpectedTrafficIncidentDetail(),
+                actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -174,21 +169,23 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testAsyncGetTrafficIncidentDetailWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
+    public void testAsyncGetTrafficIncidentDetailWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
-        .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-        .setBoundingZoom(11).setTrafficmodelId("1335294634919").setExpandCluster(false).setOriginalPosition(false)
-        .setIncidentGeometryType(IncidentGeometryType.ORIGINAL).setLanguage("en").setProjectionStandard(ProjectionStandard.EPSG900913);
+            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(11)
+            .setTrafficmodelId("1335294634919")
+            .setExpandCluster(false)
+            .setOriginalPosition(false)
+            .setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
+            .setLanguage("en")
+            .setProjectionStandard(ProjectionStandard.EPSG900913);
         StepVerifier.create(client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions))
-            .assertNext(response -> {
-                try {
-                    validateTrafficIncidentDetailWithResponse(TestUtils.getExpectedTrafficIncidentDetail(), 200, response);
-                } catch (IOException e) {
-                    Assertions.fail("unable to traffic incident detail with response");
-                }
-            })
+            .assertNext(
+                response -> validateTrafficIncidentDetailWithResponse(TestUtils.getExpectedTrafficIncidentDetail(),
+                    response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -196,13 +193,19 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetTrafficIncidentDetailWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetTrafficIncidentDetailWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
         TrafficIncidentDetailOptions trafficIncidentDetailOptions = new TrafficIncidentDetailOptions();
         trafficIncidentDetailOptions.setIncidentDetailStyle(IncidentDetailStyle.S3)
-        .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
-        .setBoundingZoom(-1000).setTrafficmodelId("1335294634919").setExpandCluster(false).setOriginalPosition(false)
-        .setIncidentGeometryType(IncidentGeometryType.ORIGINAL).setLanguage("en").setProjectionStandard(ProjectionStandard.EPSG900913);
+            .setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(-1000)
+            .setTrafficmodelId("1335294634919")
+            .setExpandCluster(false)
+            .setOriginalPosition(false)
+            .setIncidentGeometryType(IncidentGeometryType.ORIGINAL)
+            .setLanguage("en")
+            .setProjectionStandard(ProjectionStandard.EPSG900913);
         StepVerifier.create(client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -216,16 +219,15 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
     public void testAsyncGetTrafficIncidentViewport(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
-        TrafficIncidentViewportOptions trafficIncidentViewportOptions = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setOverview(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(2).setOverviewZoom(2).setCopyright(true);
+        TrafficIncidentViewportOptions trafficIncidentViewportOptions
+            = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(2)
+            .setOverviewZoom(2)
+            .setCopyright(true);
         StepVerifier.create(client.getTrafficIncidentViewport(trafficIncidentViewportOptions))
-            .assertNext(actualResults -> {
-                try {
-                    validateTrafficIncidentViewport(TestUtils.getExpectedTrafficIncidentViewport(), actualResults);
-                } catch (IOException e) {
-                    Assertions.fail("Unable to get traffic incident viewport");
-                }
-            })
+            .assertNext(actualResults -> validateTrafficIncidentViewport(TestUtils.getExpectedTrafficIncidentViewport(),
+                actualResults))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -234,18 +236,19 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     // Case 1: 200
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testAsyncGetTrafficIncidentViewportWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
+    public void testAsyncGetTrafficIncidentViewportWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
-        TrafficIncidentViewportOptions trafficIncidentViewportOptions = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setOverview(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(2).setOverviewZoom(2).setCopyright(true);
+        TrafficIncidentViewportOptions trafficIncidentViewportOptions
+            = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(2)
+            .setOverviewZoom(2)
+            .setCopyright(true);
         StepVerifier.create(client.getTrafficIncidentViewportWithResponse(trafficIncidentViewportOptions))
-            .assertNext(response -> {
-                try {
-                    validateTrafficIncidentViewportWithResponse(TestUtils.getExpectedTrafficIncidentViewport(), 200, response);
-                } catch (IOException e) {
-                    Assertions.fail("unable to traffic incident viewport with response");
-                }
-            })
+            .assertNext(
+                response -> validateTrafficIncidentViewportWithResponse(TestUtils.getExpectedTrafficIncidentViewport(),
+                    response))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -253,10 +256,15 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
     // Case 2: 400 invalid input
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.maps.traffic.TestUtils#getTestParameters")
-    public void testAsyncInvalidGetTrafficIncidentViewportWithResponse(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
+    public void testAsyncInvalidGetTrafficIncidentViewportWithResponse(HttpClient httpClient,
+        TrafficServiceVersion serviceVersion) {
         TrafficAsyncClient client = getTrafficAsyncClient(httpClient, serviceVersion);
-        TrafficIncidentViewportOptions trafficIncidentViewportOptions = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setOverview(new GeoBoundingBox(45, 45, 45, 45))
-            .setBoundingZoom(-1000).setOverviewZoom(2).setCopyright(true);
+        TrafficIncidentViewportOptions trafficIncidentViewportOptions
+            = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45))
+            .setOverview(new GeoBoundingBox(45, 45, 45, 45))
+            .setBoundingZoom(-1000)
+            .setOverviewZoom(2)
+            .setCopyright(true);
         StepVerifier.create(client.getTrafficIncidentViewportWithResponse(trafficIncidentViewportOptions))
             .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;

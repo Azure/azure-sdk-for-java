@@ -23,8 +23,7 @@ public interface WorkloadNetworkVirtualMachines {
      * @return the response of a WorkloadNetworkVirtualMachine list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkVirtualMachine> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName);
+    PagedIterable<WorkloadNetworkVirtualMachine> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkVirtualMachine resources by WorkloadNetwork.
@@ -38,8 +37,8 @@ public interface WorkloadNetworkVirtualMachines {
      * @return the response of a WorkloadNetworkVirtualMachine list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkVirtualMachine> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context);
+    PagedIterable<WorkloadNetworkVirtualMachine> list(String resourceGroupName, String privateCloudName,
+        Context context);
 
     /**
      * Get a WorkloadNetworkVirtualMachine.

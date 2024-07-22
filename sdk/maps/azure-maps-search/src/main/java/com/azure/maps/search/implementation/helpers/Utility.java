@@ -3,26 +3,16 @@
 
 package com.azure.maps.search.implementation.helpers;
 
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.core.models.GeoObject;
 import com.azure.core.models.GeoPosition;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.maps.search.implementation.models.BatchRequestItem;
 import com.azure.maps.search.implementation.models.BoundingBoxCompassNotation;
@@ -44,6 +34,15 @@ import com.azure.maps.search.models.SearchAddressBatchItem;
 import com.azure.maps.search.models.SearchAddressOptions;
 import com.azure.maps.search.models.SearchAddressResult;
 
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
 /**
  * Utility method class.
  */
@@ -59,12 +58,8 @@ public class Utility {
     public static SimpleResponse<BatchSearchResult> createBatchSearchResponse(
             Response<SearchAddressBatchResult> response) {
         BatchSearchResult result = (response.getValue() == null) ? null : toBatchSearchResult(response.getValue());
-        SimpleResponse<BatchSearchResult> simpleResponse = new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            result);
 
-        return simpleResponse;
+        return new SimpleResponse<>(response, result);
     }
 
     /**
@@ -75,12 +70,8 @@ public class Utility {
     public static SimpleResponse<BatchReverseSearchResult> createBatchReverseSearchResponse(
             Response<ReverseSearchAddressBatchResult> response) {
         BatchReverseSearchResult result = (response.getValue() == null) ? null : toBatchReverseSearchResult(response.getValue());
-        SimpleResponse<BatchReverseSearchResult> simpleResponse = new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            result);
 
-        return simpleResponse;
+        return new SimpleResponse<>(response, result);
     }
 
     /**
@@ -94,7 +85,7 @@ public class Utility {
         }
 
         // if not, let's go
-        final String location = headers.getValue("Location");
+        final String location = headers.getValue(HttpHeaderName.LOCATION);
 
         if (location != null) {
             Matcher matcher = UUID_PATTERN.matcher(location);
@@ -145,10 +136,8 @@ public class Utility {
         final GeoPosition topRight = stringToCoordinate(northEastString);
         final GeoPosition bottomLeft = stringToCoordinate(southWestString);
 
-        GeoBoundingBox box = new GeoBoundingBox(bottomLeft.getLongitude(), bottomLeft.getLatitude(),
+        return new GeoBoundingBox(bottomLeft.getLongitude(), bottomLeft.getLatitude(),
             topRight.getLongitude(), topRight.getLatitude());
-
-        return box;
     }
 
     /**
@@ -181,7 +170,7 @@ public class Utility {
     public static BatchSearchResult toBatchSearchResult(SearchAddressBatchResult result) {
         BatchResultSummary summary = result.getBatchSummary();
         List<SearchAddressBatchItem> items = result.getBatchItems().stream()
-            .map(item -> toSearchAddressBatchItem(item))
+            .map(Utility::toSearchAddressBatchItem)
             .collect(Collectors.toList());
 
         return new BatchSearchResult(summary, items);
@@ -201,7 +190,7 @@ public class Utility {
     public static BatchReverseSearchResult toBatchReverseSearchResult(ReverseSearchAddressBatchResult result) {
         BatchResultSummary summary = result.getBatchSummary();
         List<ReverseSearchAddressBatchItem> items = result.getBatchItems().stream()
-            .map(item -> toReverseSearchAddressBatchItem(item))
+            .map(Utility::toReverseSearchAddressBatchItem)
             .collect(Collectors.toList());
 
         return new BatchReverseSearchResult(summary, items);
@@ -233,116 +222,104 @@ public class Utility {
     }
 
     public static BatchRequestItem toSearchBatchRequestItem(SearchAddressOptions options) {
-        Map<String, Object> params = fillCommonSearchParameters(options);
+        UrlBuilder urlBuilder = new UrlBuilder();
+        fillCommonSearchParameters(urlBuilder, options);
 
         // single value parameters
-        params.compute("query", (k, v) -> options.getQuery());
-        params.compute("typeahead", (k, v) -> options.isTypeAhead());
-        params.compute("entityType", (k, v) -> options.getEntityType());
+        addQueryParameterToUrl(urlBuilder, "query", options.getQuery());
+        addQueryParameterToUrl(urlBuilder, "typeahead", options.isTypeAhead());
+        addQueryParameterToUrl(urlBuilder, "entityType", options.getEntityType());
 
         // comma separated parameters
-        params.compute("countrySet", (k, v) -> listToCommaSeparatedString(options.getCountryFilter()));
-        params.compute("extendedPostalCodesFor", (k, v) -> listToCommaSeparatedString(options.getExtendedPostalCodesFor()));
+        addQueryParameterToUrl(urlBuilder, "countrySet", listToCommaSeparatedString(options.getCountryFilter()));
+        addQueryParameterToUrl(urlBuilder, "extendedPostalCodesFor", listToCommaSeparatedString(options.getExtendedPostalCodesFor()));
 
         // double parameters
-        params.compute("lat", (k, v) -> options.getCoordinates().map(GeoPosition::getLatitude).orElse(null));
-        params.compute("lon", (k, v) -> options.getCoordinates().map(GeoPosition::getLongitude).orElse(null));
+        addQueryParameterToUrl(urlBuilder, "lat", options.getCoordinates().map(GeoPosition::getLatitude).orElse(null));
+        addQueryParameterToUrl(urlBuilder, "lon", options.getCoordinates().map(GeoPosition::getLongitude).orElse(null));
 
         // batch request item conversion
-        BatchRequestItem item = convertParametersToRequestItem(params);
-        return item;
+        return new BatchRequestItem().setQuery(urlBuilder.getQueryString());
     }
 
     public static BatchRequestItem toFuzzySearchBatchRequestItem(FuzzySearchOptions options) {
-        Map<String, Object> params = fillCommonSearchParameters(options);
+        UrlBuilder urlBuilder = new UrlBuilder();
+        fillCommonSearchParameters(urlBuilder, options);
 
         // single value parameters
-        params.compute("query", (k, v) -> options.getQuery());
-        params.compute("typeahead", (k, v) -> options.isTypeAhead());
-        params.compute("entityType", (k, v) -> options.getEntityType());
-        params.compute("openingHours", (k, v) -> options.getOperatingHours());
-        params.compute("minFuzzyLevel", (k, v) -> options.getMinFuzzyLevel());
-        params.compute("maxFuzzyLevel", (k, v) -> options.getMaxFuzzyLevel());
+        addQueryParameterToUrl(urlBuilder, "query", options.getQuery());
+        addQueryParameterToUrl(urlBuilder, "typeahead", options.isTypeAhead());
+        addQueryParameterToUrl(urlBuilder, "entityType", options.getEntityType());
+        addQueryParameterToUrl(urlBuilder, "openingHours", options.getOperatingHours());
+        addQueryParameterToUrl(urlBuilder, "minFuzzyLevel", options.getMinFuzzyLevel());
+        addQueryParameterToUrl(urlBuilder, "maxFuzzyLevel", options.getMaxFuzzyLevel());
 
         // comma separated parameters
-        params.compute("countrySet", (k, v) -> listToCommaSeparatedString(options.getCountryFilter()));
-        params.compute("extendedPostalCodesFor", (k, v) -> listToCommaSeparatedString(options.getExtendedPostalCodesFor()));
-        params.compute("idxSet", (k, v) -> listToCommaSeparatedString(options.getIndexFilter()));
-        params.compute("connectorSet", (k, v) -> listToCommaSeparatedString(options.getElectricVehicleConnectorFilter()));
-        params.compute("categorySet", (k, v) -> listToCommaSeparatedString(options.getCategoryFilter()));
-        params.compute("brandSet", (k, v) -> listToCommaSeparatedString(options.getBrandFilter()));
+        addQueryParameterToUrl(urlBuilder, "countrySet", listToCommaSeparatedString(options.getCountryFilter()));
+        addQueryParameterToUrl(urlBuilder, "extendedPostalCodesFor", listToCommaSeparatedString(options.getExtendedPostalCodesFor()));
+        addQueryParameterToUrl(urlBuilder, "idxSet", listToCommaSeparatedString(options.getIndexFilter()));
+        addQueryParameterToUrl(urlBuilder, "connectorSet", listToCommaSeparatedString(options.getElectricVehicleConnectorFilter()));
+        addQueryParameterToUrl(urlBuilder, "categorySet", listToCommaSeparatedString(options.getCategoryFilter()));
+        addQueryParameterToUrl(urlBuilder, "brandSet", listToCommaSeparatedString(options.getBrandFilter()));
 
         // double parameters
-        params.compute("lat", (k, v) -> options.getCoordinates().map(GeoPosition::getLatitude).orElse(null));
-        params.compute("lon", (k, v) -> options.getCoordinates().map(GeoPosition::getLongitude).orElse(null));
+        addQueryParameterToUrl(urlBuilder, "lat", options.getCoordinates().map(GeoPosition::getLatitude).orElse(null));
+        addQueryParameterToUrl(urlBuilder, "lon", options.getCoordinates().map(GeoPosition::getLongitude).orElse(null));
 
         // convert to item
-        BatchRequestItem fuzzyItem = convertParametersToRequestItem(params);
-        return fuzzyItem;
+        return new BatchRequestItem().setQuery(urlBuilder.getQueryString());
     }
 
     public static BatchRequestItem toReverseSearchBatchRequestItem(ReverseSearchAddressOptions options) {
-        Map<String, Object> params = new HashMap<>();
+        UrlBuilder urlBuilder = new UrlBuilder();
 
         // single value parameters
-        params.compute("query", (k, v) -> positionToString(options.getCoordinates()));
-        params.compute("allowFreeformNewline", (k, v) -> options.allowFreeformNewline());
-        params.compute("entityType", (k, v) -> options.getEntityType());
-        params.compute("heading", (k, v) -> options.getHeading());
-        params.compute("number", (k, v) -> options.getNumber());
-        params.compute("radius", (k, v) -> options.getRadiusInMeters());
-        params.compute("returnMatchType", (k, v) -> options.includeMatchType());
-        params.compute("returnSpeedLimit", (k, v) -> options.includeSpeedLimit());
-        params.compute("returnRoadUse", (k, v) -> options.includeRoadUse());
-        params.compute("roadUse", (k, v) -> listToCommaSeparatedString(options.getRoadUse()));
-        params.compute("view", (k, v) -> options.getLocalizedMapView());
+        addQueryParameterToUrl(urlBuilder, "query", positionToString(options.getCoordinates()));
+        addQueryParameterToUrl(urlBuilder, "allowFreeformNewline", options.allowFreeformNewline());
+        addQueryParameterToUrl(urlBuilder, "entityType", options.getEntityType());
+        addQueryParameterToUrl(urlBuilder, "heading", options.getHeading());
+        addQueryParameterToUrl(urlBuilder, "number", options.getNumber());
+        addQueryParameterToUrl(urlBuilder, "radius", options.getRadiusInMeters());
+        addQueryParameterToUrl(urlBuilder, "returnMatchType", options.includeMatchType());
+        addQueryParameterToUrl(urlBuilder, "returnSpeedLimit", options.includeSpeedLimit());
+        addQueryParameterToUrl(urlBuilder, "returnRoadUse", options.includeRoadUse());
+        addQueryParameterToUrl(urlBuilder, "roadUse", listToCommaSeparatedString(options.getRoadUse()));
+        addQueryParameterToUrl(urlBuilder, "view", options.getLocalizedMapView());
 
         // convert to batchrequestitem
-        BatchRequestItem reverseItem = convertParametersToRequestItem(params);
-        return reverseItem;
+        return new BatchRequestItem().setQuery(urlBuilder.getQueryString());
     }
 
-    private static <T extends BaseSearchOptions<T>> Map<String, Object>
-            fillCommonSearchParameters(BaseSearchOptions<T> options) {
-        Map<String, Object> params = new HashMap<>();
+    private static void fillCommonSearchParameters(UrlBuilder urlBuilder, BaseSearchOptions<?> options) {
 
         // single value parameters
-        params.compute("limit", (k, v) -> options.getTop());
-        params.compute("ofs", (k, v) -> options.getSkip());
-        params.compute("language", (k, v) -> options.getLanguage());
-        params.compute("radius", (k, v) -> options.getRadiusInMeters());
-        params.compute("view", (k, v) -> options.getLocalizedMapView());
-        params.compute("topLeft", (k, v) -> options.getBoundingBox()
+        addQueryParameterToUrl(urlBuilder, "limit", options.getTop());
+        addQueryParameterToUrl(urlBuilder, "ofs", options.getSkip());
+        addQueryParameterToUrl(urlBuilder, "language", options.getLanguage());
+        addQueryParameterToUrl(urlBuilder, "radius", options.getRadiusInMeters());
+        addQueryParameterToUrl(urlBuilder, "view", options.getLocalizedMapView());
+        addQueryParameterToUrl(urlBuilder, "topLeft", options.getBoundingBox()
             .map(item -> new GeoPosition(item.getWest(), item.getNorth())).map(Utility::positionToString).orElse(null));
-        params.compute("btmRight", (k, v) -> options.getBoundingBox()
+        addQueryParameterToUrl(urlBuilder, "btmRight", options.getBoundingBox()
             .map(item -> new GeoPosition(item.getEast(), item.getSouth())).map(Utility::positionToString).orElse(null));
-
-        return params;
     }
 
     private static <T> String listToCommaSeparatedString(List<T> list) {
         if (list != null) {
-            return String.join(",", list.stream()
-                .map(item -> item.toString())
-                .collect(Collectors.toList()));
+            return list.stream().map(Object::toString).collect(Collectors.joining(","));
         }
         return null;
     }
 
-    private static BatchRequestItem convertParametersToRequestItem(Map<String, Object> params) {
-        // batch request item conversion
-        BatchRequestItem item = new BatchRequestItem();
-        UrlBuilder urlBuilder = new UrlBuilder();
-
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            try {
-                urlBuilder.addQueryParameter(entry.getKey(), URLEncoder.encode(entry.getValue().toString(), "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                throw new RuntimeException(e);
-            }
+    private static void addQueryParameterToUrl(UrlBuilder urlBuilder, String key, Object value) {
+        if (value == null) {
+            return;
         }
 
-        item.setQuery(urlBuilder.getQueryString());
-        return item;
+        try {
+            urlBuilder.addQueryParameter(key, URLEncoder.encode(value.toString(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

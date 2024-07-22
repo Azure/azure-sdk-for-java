@@ -29,8 +29,7 @@ public interface WorkloadNetworkPublicIpsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkPublicIpInner> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName);
+    PagedIterable<WorkloadNetworkPublicIpInner> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkPublicIP resources by WorkloadNetwork.
@@ -45,7 +44,7 @@ public interface WorkloadNetworkPublicIpsClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkPublicIpInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
+    PagedIterable<WorkloadNetworkPublicIpInner> list(String resourceGroupName, String privateCloudName,
         Context context);
 
     /**

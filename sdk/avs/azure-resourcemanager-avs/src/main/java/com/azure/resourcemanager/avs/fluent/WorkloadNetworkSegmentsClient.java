@@ -28,7 +28,7 @@ public interface WorkloadNetworkSegmentsClient {
      * @return the response of a WorkloadNetworkSegment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkSegmentInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkSegmentInner> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkSegment resources by WorkloadNetwork.
@@ -42,8 +42,7 @@ public interface WorkloadNetworkSegmentsClient {
      * @return the response of a WorkloadNetworkSegment list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkSegmentInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkSegmentInner> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkSegment.

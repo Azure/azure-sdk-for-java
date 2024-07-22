@@ -14,7 +14,8 @@ import java.util.List;
 @Fluent
 public final class NetworkVirtualApplianceInstanceIdsInner {
     /*
-     * The network virtual appliance instance ids. Omitting the network virtual appliance instance ids will result in the operation being performed on all virtual machines belonging to the network virtual appliance.
+     * The network virtual appliance instance ids. Omitting the network virtual appliance instance ids will result in
+     * the operation being performed on all virtual machines belonging to the network virtual appliance.
      */
     @JsonProperty(value = "instanceIds")
     private List<String> instanceIds;

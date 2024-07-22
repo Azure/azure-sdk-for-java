@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class AddonsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/Addons_Get_ArcReg.json
+     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/Addons_Get_ArcReg.json
      */
     /**
      * Sample code: Addons_Get_ArcReg.

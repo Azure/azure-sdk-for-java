@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class DatastoresGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/Datastores_Get.json
+     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/Datastores_Get.json
      */
     /**
      * Sample code: Datastores_Get.

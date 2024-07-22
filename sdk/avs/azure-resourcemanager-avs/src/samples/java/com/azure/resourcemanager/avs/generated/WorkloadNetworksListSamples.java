@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class WorkloadNetworksListSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/WorkloadNetworks_List.json
+     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_List.json
      */
     /**
      * Sample code: WorkloadNetworks_List.

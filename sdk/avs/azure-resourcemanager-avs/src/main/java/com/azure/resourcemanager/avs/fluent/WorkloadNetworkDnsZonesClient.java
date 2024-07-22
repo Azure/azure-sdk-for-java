@@ -28,7 +28,7 @@ public interface WorkloadNetworkDnsZonesClient {
      * @return the response of a WorkloadNetworkDnsZone list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkDnsZoneInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkDnsZoneInner> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkDnsZone resources by WorkloadNetwork.
@@ -42,8 +42,7 @@ public interface WorkloadNetworkDnsZonesClient {
      * @return the response of a WorkloadNetworkDnsZone list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkDnsZoneInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkDnsZoneInner> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkDnsZone.

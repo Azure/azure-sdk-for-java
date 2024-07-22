@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class ValidationScope extends ExpandableStringEnum<ValidationScope>
      * @param name a name to look for.
      * @return the corresponding ValidationScope.
      */
-    @JsonCreator
     public static ValidationScope fromString(String name) {
         return fromString(name, ValidationScope.class);
     }

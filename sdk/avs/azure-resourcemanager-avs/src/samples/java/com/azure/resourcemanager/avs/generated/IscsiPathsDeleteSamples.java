@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class IscsiPathsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/IscsiPaths_Delete.json
+     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/IscsiPaths_Delete.json
      */
     /**
      * Sample code: IscsiPaths_Delete.

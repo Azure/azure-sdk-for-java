@@ -23,7 +23,7 @@ public interface WorkloadNetworkPublicIps {
      * @return the response of a WorkloadNetworkPublicIP list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkPublicIp> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkPublicIp> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkPublicIP resources by WorkloadNetwork.
@@ -37,8 +37,7 @@ public interface WorkloadNetworkPublicIps {
      * @return the response of a WorkloadNetworkPublicIP list operation as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkPublicIp> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkPublicIp> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkPublicIP.

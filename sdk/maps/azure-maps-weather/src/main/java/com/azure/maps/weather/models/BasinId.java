@@ -5,46 +5,69 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BasinId. */
+/**
+ * Defines values for BasinId.
+ */
 public final class BasinId extends ExpandableStringEnum<BasinId> {
-    /** Static value AL for BasinId. */
+    /**
+     * Atlantic.
+     */
     public static final BasinId AL = fromString("AL");
 
-    /** Static value EP for BasinId. */
+    /**
+     * Eastern Pacific.
+     */
     public static final BasinId EP = fromString("EP");
 
-    /** Static value SI for BasinId. */
+    /**
+     * Southwest Indian Ocean.
+     */
     public static final BasinId SI = fromString("SI");
 
-    /** Static value NI for BasinId. */
+    /**
+     * North Indian Ocean.
+     */
     public static final BasinId NI = fromString("NI");
 
-    /** Static value CP for BasinId. */
+    /**
+     * Central Pacific.
+     */
     public static final BasinId CP = fromString("CP");
 
-    /** Static value NP for BasinId. */
+    /**
+     * Northwest Pacific.
+     */
     public static final BasinId NP = fromString("NP");
 
-    /** Static value SP for BasinId. */
+    /**
+     * South Pacific.
+     */
     public static final BasinId SP = fromString("SP");
 
     /**
+     * Creates a new instance of BasinId value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BasinId() {
+    }
+
+    /**
      * Creates or finds a BasinId from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BasinId.
      */
-    @JsonCreator
     public static BasinId fromString(String name) {
         return fromString(name, BasinId.class);
     }
 
     /**
      * Gets known BasinId values.
-     *
+     * 
      * @return known BasinId values.
      */
     public static Collection<BasinId> values() {

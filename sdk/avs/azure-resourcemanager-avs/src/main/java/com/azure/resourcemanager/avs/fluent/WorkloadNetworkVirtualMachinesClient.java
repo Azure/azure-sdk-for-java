@@ -27,8 +27,7 @@ public interface WorkloadNetworkVirtualMachinesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkVirtualMachineInner> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName);
+    PagedIterable<WorkloadNetworkVirtualMachineInner> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkVirtualMachine resources by WorkloadNetwork.
@@ -43,8 +42,8 @@ public interface WorkloadNetworkVirtualMachinesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkVirtualMachineInner> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context);
+    PagedIterable<WorkloadNetworkVirtualMachineInner> list(String resourceGroupName, String privateCloudName,
+        Context context);
 
     /**
      * Get a WorkloadNetworkVirtualMachine.

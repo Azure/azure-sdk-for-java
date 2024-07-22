@@ -9,7 +9,8 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class HcxEnterpriseSitesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/HcxEnterpriseSites_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/HcxEnterpriseSites_CreateOrUpdate.json
      */
     /**
      * Sample code: HcxEnterpriseSites_CreateOrUpdate.

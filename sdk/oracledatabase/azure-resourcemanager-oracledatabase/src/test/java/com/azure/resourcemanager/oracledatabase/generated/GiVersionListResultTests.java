@@ -5,30 +5,15 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.oracledatabase.fluent.models.GiVersionInner;
 import com.azure.resourcemanager.oracledatabase.models.GiVersionListResult;
-import com.azure.resourcemanager.oracledatabase.models.GiVersionProperties;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class GiVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GiVersionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"humaqolbgyc\"},\"id\":\"iertgccymvaolp\",\"name\":\"slqlfmmdn\",\"type\":\"bglzpswi\"},{\"properties\":{\"version\":\"mcwyhzdxssadb\"},\"id\":\"nvdfznuda\",\"name\":\"dvxzbncblylpst\",\"type\":\"bhhxsrzdzuc\"},{\"properties\":{\"version\":\"scdntnevf\"},\"id\":\"jmygtdsslswtmwer\",\"name\":\"ofz\",\"type\":\"yqsemwa\"},{\"properties\":{\"version\":\"ets\"},\"id\":\"szhedplvw\",\"name\":\"wubmwmbesldn\",\"type\":\"wwtppj\"}],\"nextLink\":\"cxogaokonzm\"}")
+            "{\"value\":[{\"properties\":{\"version\":\"hdlxyjrxsagafcn\"},\"id\":\"gwq\",\"name\":\"pnedgf\",\"type\":\"cvkcvqvpkeqdcv\"},{\"properties\":{\"version\":\"vo\"},\"id\":\"sotbob\",\"name\":\"dopcjwvnh\",\"type\":\"ld\"},{\"properties\":{\"version\":\"xcxrsl\"},\"id\":\"utwu\",\"name\":\"egrpkhj\",\"type\":\"niyqslui\"}],\"nextLink\":\"dggkzzlvmbmpa\"}")
             .toObject(GiVersionListResult.class);
-        Assertions.assertEquals("cxogaokonzm", model.nextLink());
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        GiVersionListResult model = new GiVersionListResult()
-            .withValue(Arrays.asList(new GiVersionInner().withProperties(new GiVersionProperties()),
-                new GiVersionInner().withProperties(new GiVersionProperties()),
-                new GiVersionInner().withProperties(new GiVersionProperties()),
-                new GiVersionInner().withProperties(new GiVersionProperties())))
-            .withNextLink("cxogaokonzm");
-        model = BinaryData.fromObject(model).toObject(GiVersionListResult.class);
-        Assertions.assertEquals("cxogaokonzm", model.nextLink());
+        Assertions.assertEquals("dggkzzlvmbmpa", model.nextLink());
     }
 }

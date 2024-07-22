@@ -27,17 +27,16 @@ public final class WorkloadNetworkPublicIpsImpl implements WorkloadNetworkPublic
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetworkPublicIp> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName) {
+    public PagedIterable<WorkloadNetworkPublicIp> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<WorkloadNetworkPublicIpInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName);
+            = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkPublicIpImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetworkPublicIp> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context) {
+    public PagedIterable<WorkloadNetworkPublicIp> list(String resourceGroupName, String privateCloudName,
+        Context context) {
         PagedIterable<WorkloadNetworkPublicIpInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkPublicIpImpl(inner1, this.manager()));
     }
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class PlacementPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/PlacementPolicies_List.json
+     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/PlacementPolicies_List.json
      */
     /**
      * Sample code: PlacementPolicies_List.

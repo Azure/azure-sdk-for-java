@@ -7,21 +7,22 @@ package com.azure.resourcemanager.eventhubs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.Encryption;
 import com.azure.resourcemanager.eventhubs.models.Identity;
+import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventhubs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventhubs.models.TlsVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Single Namespace item in List or Get Operation. */
+/**
+ * Single Namespace item in List or Get Operation.
+ */
 @Fluent
 public final class EHNamespaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceInner.class);
-
     /*
      * Properties of sku resource
      */
@@ -45,6 +46,12 @@ public final class EHNamespaceInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private EHNamespaceProperties innerProperties;
+
+    /**
+     * Creates an instance of EHNamespaceInner class.
+     */
+    public EHNamespaceInner() {
+    }
 
     /**
      * Get the sku property: Properties of sku resource.
@@ -104,17 +111,44 @@ public final class EHNamespaceInner extends Resource {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EHNamespaceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EHNamespaceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    public TlsVersion minimumTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersion();
+    }
+
+    /**
+     * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
         return this;
     }
 
@@ -217,6 +251,31 @@ public final class EHNamespaceInner extends Resource {
             this.innerProperties = new EHNamespaceProperties();
         }
         this.innerProperties().withIsAutoInflateEnabled(isAutoInflateEnabled);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
+     * enabled.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -331,8 +390,8 @@ public final class EHNamespaceInner extends Resource {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the EHNamespaceInner object itself.
      */
-    public EHNamespaceInner withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public EHNamespaceInner
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new EHNamespaceProperties();
         }

@@ -18,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ExpressRoutePortAuthorizationInner extends SubResource {
     /*
-     * ExpressRoute Port Authorization Properties
-     * 
      * ExpressRoutePort properties.
      */
     @JsonProperty(value = "properties")
@@ -50,9 +48,7 @@ public final class ExpressRoutePortAuthorizationInner extends SubResource {
     }
 
     /**
-     * Get the innerProperties property: ExpressRoute Port Authorization Properties
-     * 
-     * ExpressRoutePort properties.
+     * Get the innerProperties property: ExpressRoutePort properties.
      * 
      * @return the innerProperties value.
      */

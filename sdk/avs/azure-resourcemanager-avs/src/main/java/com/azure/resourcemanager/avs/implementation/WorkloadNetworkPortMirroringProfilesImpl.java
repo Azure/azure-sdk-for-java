@@ -27,18 +27,17 @@ public final class WorkloadNetworkPortMirroringProfilesImpl implements WorkloadN
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetworkPortMirroring> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName) {
+    public PagedIterable<WorkloadNetworkPortMirroring> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<WorkloadNetworkPortMirroringInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName);
+            = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new WorkloadNetworkPortMirroringImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetworkPortMirroring> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context) {
+    public PagedIterable<WorkloadNetworkPortMirroring> list(String resourceGroupName, String privateCloudName,
+        Context context) {
         PagedIterable<WorkloadNetworkPortMirroringInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new WorkloadNetworkPortMirroringImpl(inner1, this.manager()));
     }

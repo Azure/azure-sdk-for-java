@@ -12,7 +12,8 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworkVmGroupsUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/WorkloadNetworks_UpdateVMGroup.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_UpdateVMGroup.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateVMGroup.

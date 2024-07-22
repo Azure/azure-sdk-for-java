@@ -13,7 +13,7 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroring;
 public final class WorkloadNetworkPortMirroringProfilesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS/examples/2023-09-01/WorkloadNetworks_UpdatePortMirroring.json
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_UpdatePortMirroring.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdatePortMirroring.

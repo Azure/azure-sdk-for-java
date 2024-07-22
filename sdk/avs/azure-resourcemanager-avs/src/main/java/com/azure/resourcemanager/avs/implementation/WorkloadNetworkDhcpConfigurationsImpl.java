@@ -27,16 +27,14 @@ public final class WorkloadNetworkDhcpConfigurationsImpl implements WorkloadNetw
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetworkDhcp> listByWorkloadNetwork(String resourceGroupName, String privateCloudName) {
-        PagedIterable<WorkloadNetworkDhcpInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName);
+    public PagedIterable<WorkloadNetworkDhcp> list(String resourceGroupName, String privateCloudName) {
+        PagedIterable<WorkloadNetworkDhcpInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkDhcpImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetworkDhcp> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context) {
+    public PagedIterable<WorkloadNetworkDhcp> list(String resourceGroupName, String privateCloudName, Context context) {
         PagedIterable<WorkloadNetworkDhcpInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkDhcpImpl(inner1, this.manager()));
     }
 

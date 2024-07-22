@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storagemover.fluent.models.EndpointInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Endpoints. */
+/**
+ * List of Endpoints.
+ */
 @Immutable
 public final class EndpointList {
     /*
@@ -19,19 +21,21 @@ public final class EndpointList {
     private List<EndpointInner> value;
 
     /*
-     * Request URL that can be used to query next page of containers. Returned when total number of requested
-     * containers exceed maximum page size.
+     * Request URL that can be used to query next page of containers. Returned when total number of requested containers
+     * exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of EndpointList class. */
+    /**
+     * Creates an instance of EndpointList class.
+     */
     public EndpointList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<EndpointInner> value() {
@@ -41,7 +45,7 @@ public final class EndpointList {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of containers. Returned when total
      * number of requested containers exceed maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -50,7 +54,7 @@ public final class EndpointList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

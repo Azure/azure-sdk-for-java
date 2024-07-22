@@ -9,7 +9,7 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class VirtualMachinesListSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/VirtualMachines_List.json
+     * x-ms-original-file: specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/VirtualMachines_List.json
      */
     /**
      * Sample code: VirtualMachines_List.

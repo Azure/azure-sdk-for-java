@@ -4,24 +4,23 @@
 
 package com.azure.resourcemanager.storagemover.generated;
 
-/** Samples for JobDefinitions Delete. */
+/**
+ * Samples for JobDefinitions Delete.
+ */
 public final class JobDefinitionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2023-10-01/examples/JobDefinitions_Delete.json
+     * x-ms-original-file:
+     * specification/storagemover/resource-manager/Microsoft.StorageMover/stable/2024-07-01/examples/
+     * JobDefinitions_Delete.json
      */
     /**
      * Sample code: Projects_Delete.
-     *
+     * 
      * @param manager Entry point to StorageMoverManager.
      */
     public static void projectsDelete(com.azure.resourcemanager.storagemover.StorageMoverManager manager) {
-        manager
-            .jobDefinitions()
-            .delete(
-                "examples-rg",
-                "examples-storageMoverName",
-                "examples-projectName",
-                "examples-jobDefinitionName",
+        manager.jobDefinitions()
+            .delete("examples-rg", "examples-storageMoverName", "examples-projectName", "examples-jobDefinitionName",
                 com.azure.core.util.Context.NONE);
     }
 }

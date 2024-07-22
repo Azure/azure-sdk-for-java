@@ -10,7 +10,7 @@ package com.azure.resourcemanager.avs.generated;
 public final class WorkloadNetworkPortMirroringProfilesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/vmware/Microsoft.AVS/examples/2023-09-01/WorkloadNetworks_DeletePortMirroring.json
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_DeletePortMirroring.json
      */
     /**
      * Sample code: WorkloadNetworks_DeletePortMirroring.

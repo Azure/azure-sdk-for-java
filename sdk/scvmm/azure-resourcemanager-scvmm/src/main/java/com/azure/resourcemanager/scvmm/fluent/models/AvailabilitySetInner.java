@@ -7,52 +7,79 @@ package com.azure.resourcemanager.scvmm.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.scvmm.models.AvailabilitySetProperties;
 import com.azure.resourcemanager.scvmm.models.ExtendedLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The AvailabilitySets resource definition. */
+/**
+ * The AvailabilitySets resource definition.
+ */
 @Fluent
 public final class AvailabilitySetInner extends Resource {
     /*
-     * Resource properties.
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
-    private AvailabilitySetProperties innerProperties;
-
-    /*
-     * The system data.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    private AvailabilitySetProperties properties;
 
     /*
      * The extended location.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
-    /**
-     * Get the innerProperties property: Resource properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private AvailabilitySetProperties innerProperties() {
-        return this.innerProperties;
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of AvailabilitySetInner class.
+     */
+    public AvailabilitySetInner() {
     }
 
     /**
-     * Get the systemData property: The system data.
-     *
-     * @return the systemData value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public AvailabilitySetProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the AvailabilitySetInner object itself.
+     */
+    public AvailabilitySetInner withProperties(AvailabilitySetProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the extendedLocation property: The extended location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -61,7 +88,7 @@ public final class AvailabilitySetInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the AvailabilitySetInner object itself.
      */
@@ -70,14 +97,57 @@ public final class AvailabilitySetInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvailabilitySetInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvailabilitySetInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,71 +155,77 @@ public final class AvailabilitySetInner extends Resource {
     }
 
     /**
-     * Get the availabilitySetName property: Name of the availability set.
-     *
-     * @return the availabilitySetName value.
-     */
-    public String availabilitySetName() {
-        return this.innerProperties() == null ? null : this.innerProperties().availabilitySetName();
-    }
-
-    /**
-     * Set the availabilitySetName property: Name of the availability set.
-     *
-     * @param availabilitySetName the availabilitySetName value to set.
-     * @return the AvailabilitySetInner object itself.
-     */
-    public AvailabilitySetInner withAvailabilitySetName(String availabilitySetName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AvailabilitySetProperties();
-        }
-        this.innerProperties().withAvailabilitySetName(availabilitySetName);
-        return this;
-    }
-
-    /**
-     * Get the vmmServerId property: ARM Id of the vmmServer resource in which this resource resides.
-     *
-     * @return the vmmServerId value.
-     */
-    public String vmmServerId() {
-        return this.innerProperties() == null ? null : this.innerProperties().vmmServerId();
-    }
-
-    /**
-     * Set the vmmServerId property: ARM Id of the vmmServer resource in which this resource resides.
-     *
-     * @param vmmServerId the vmmServerId value to set.
-     * @return the AvailabilitySetInner object itself.
-     */
-    public AvailabilitySetInner withVmmServerId(String vmmServerId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AvailabilitySetProperties();
-        }
-        this.innerProperties().withVmmServerId(vmmServerId);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
-        if (extendedLocation() != null) {
+        if (extendedLocation() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property extendedLocation in model AvailabilitySetInner"));
+        } else {
             extendedLocation().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AvailabilitySetInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailabilitySetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailabilitySetInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AvailabilitySetInner.
+     */
+    public static AvailabilitySetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailabilitySetInner deserializedAvailabilitySetInner = new AvailabilitySetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAvailabilitySetInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.properties = AvailabilitySetProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAvailabilitySetInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailabilitySetInner;
+        });
     }
 }

@@ -6,7 +6,7 @@ module com.azure.maps.render {
     exports com.azure.maps.render;
     exports com.azure.maps.render.models;
 
-    opens com.azure.maps.render.implementation to com.fasterxml.jackson.databind;
-    opens com.azure.maps.render.models to com.fasterxml.jackson.databind;
-    opens com.azure.maps.render.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.maps.render.implementation to com.azure.core;
+    opens com.azure.maps.render.models to com.azure.core;
+    opens com.azure.maps.render.implementation.models to com.azure.core;
 }

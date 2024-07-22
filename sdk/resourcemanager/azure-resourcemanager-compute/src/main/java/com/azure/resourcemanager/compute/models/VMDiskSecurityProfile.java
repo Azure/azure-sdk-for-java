@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VMDiskSecurityProfile {
     /*
-     * Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption of the
-     * managed disk along with VMGuestState blob, VMGuestStateOnly for encryption of just the VMGuestState blob, and
+     * Specifies the EncryptionType of the managed disk. It is set to DiskWithVMGuestState for encryption of the managed
+     * disk along with VMGuestState blob, VMGuestStateOnly for encryption of just the VMGuestState blob, and
      * NonPersistedTPM for not persisting firmware state in the VMGuestState blob.. **Note:** It can be set for only
      * Confidential VMs.
      */

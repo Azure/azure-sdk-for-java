@@ -166,9 +166,8 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateCloudList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+        Mono<Response<PrivateCloudList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -259,7 +258,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateCloudInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -275,7 +274,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateCloudInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1660,7 +1659,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateCloudInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<PrivateCloudInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1669,9 +1668,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PrivateCloudInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1689,8 +1686,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateCloudInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
-        Context context) {
+    private Mono<PagedResponse<PrivateCloudInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1700,7 +1696,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

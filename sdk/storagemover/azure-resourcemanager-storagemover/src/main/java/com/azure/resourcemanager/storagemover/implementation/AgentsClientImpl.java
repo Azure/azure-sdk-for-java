@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AgentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AgentsClient.
+ */
 public final class AgentsClientImpl implements AgentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AgentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StorageMoverClientImpl client;
 
     /**
      * Initializes an instance of AgentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AgentsClientImpl(StorageMoverClientImpl client) {
@@ -65,96 +71,69 @@ public final class AgentsClientImpl implements AgentsClient {
     @Host("{$host}")
     @ServiceInterface(name = "StorageMoverClientAg")
     public interface AgentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AgentList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageMoverName") String storageMoverName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AgentInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @PathParam("agentName") String agentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("agentName") String agentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AgentInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @PathParam("agentName") String agentName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AgentInner agent,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("agentName") String agentName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AgentInner agent,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AgentInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @PathParam("agentName") String agentName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AgentUpdateParameters agent,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("agentName") String agentName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AgentUpdateParameters agent,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/agents/{agentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageMoverName") String storageMoverName,
-            @PathParam("agentName") String agentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageMoverName") String storageMoverName, @PathParam("agentName") String agentName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AgentList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all Agents in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,16 +144,12 @@ public final class AgentsClientImpl implements AgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AgentInner>> listSinglePageAsync(String resourceGroupName, String storageMoverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -186,32 +161,16 @@ public final class AgentsClientImpl implements AgentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<AgentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, storageMoverName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<AgentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all Agents in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -221,19 +180,15 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return list of Agents along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AgentInner>> listSinglePageAsync(
-        String resourceGroupName, String storageMoverName, Context context) {
+    private Mono<PagedResponse<AgentInner>> listSinglePageAsync(String resourceGroupName, String storageMoverName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -246,28 +201,15 @@ public final class AgentsClientImpl implements AgentsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, storageMoverName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all Agents in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,14 +219,13 @@ public final class AgentsClientImpl implements AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AgentInner> listAsync(String resourceGroupName, String storageMoverName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, storageMoverName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageMoverName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all Agents in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -295,14 +236,13 @@ public final class AgentsClientImpl implements AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AgentInner> listAsync(String resourceGroupName, String storageMoverName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, storageMoverName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, storageMoverName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all Agents in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,7 +257,7 @@ public final class AgentsClientImpl implements AgentsClient {
 
     /**
      * Lists all Agents in a Storage Mover.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param context The context to associate with this operation.
@@ -333,7 +273,7 @@ public final class AgentsClientImpl implements AgentsClient {
 
     /**
      * Gets an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -343,19 +283,15 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return an Agent resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentInner>> getWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String agentName) {
+    private Mono<Response<AgentInner>> getWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String agentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -370,24 +306,14 @@ public final class AgentsClientImpl implements AgentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            agentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, storageMoverName, agentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -398,19 +324,15 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return an Agent resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentInner>> getWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String agentName, Context context) {
+    private Mono<Response<AgentInner>> getWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String agentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -425,21 +347,13 @@ public final class AgentsClientImpl implements AgentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                agentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            storageMoverName, agentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -456,7 +370,7 @@ public final class AgentsClientImpl implements AgentsClient {
 
     /**
      * Gets an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -467,14 +381,14 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return an Agent resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgentInner> getWithResponse(
-        String resourceGroupName, String storageMoverName, String agentName, Context context) {
+    public Response<AgentInner> getWithResponse(String resourceGroupName, String storageMoverName, String agentName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, storageMoverName, agentName, context).block();
     }
 
     /**
      * Gets an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -490,30 +404,26 @@ public final class AgentsClientImpl implements AgentsClient {
 
     /**
      * Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Agent resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String agentName, AgentInner agent) {
+    private Mono<Response<AgentInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String storageMoverName, String agentName, AgentInner agent) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -533,29 +443,18 @@ public final class AgentsClientImpl implements AgentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            agentName,
-                            this.client.getApiVersion(),
-                            agent,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, storageMoverName, agentName, this.client.getApiVersion(), agent, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -563,19 +462,15 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the Agent resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String agentName, AgentInner agent, Context context) {
+    private Mono<Response<AgentInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String storageMoverName, String agentName, AgentInner agent, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -595,45 +490,36 @@ public final class AgentsClientImpl implements AgentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                agentName,
-                this.client.getApiVersion(),
-                agent,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            storageMoverName, agentName, this.client.getApiVersion(), agent, accept, context);
     }
 
     /**
      * Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Agent resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentInner> createOrUpdateAsync(
-        String resourceGroupName, String storageMoverName, String agentName, AgentInner agent) {
+    private Mono<AgentInner> createOrUpdateAsync(String resourceGroupName, String storageMoverName, String agentName,
+        AgentInner agent) {
         return createOrUpdateWithResponseAsync(resourceGroupName, storageMoverName, agentName, agent)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -641,56 +527,52 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the Agent resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgentInner> createOrUpdateWithResponse(
-        String resourceGroupName, String storageMoverName, String agentName, AgentInner agent, Context context) {
+    public Response<AgentInner> createOrUpdateWithResponse(String resourceGroupName, String storageMoverName,
+        String agentName, AgentInner agent, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, storageMoverName, agentName, agent, context).block();
     }
 
     /**
      * Creates or updates an Agent resource, which references a hybrid compute machine that can run jobs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Agent resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInner createOrUpdate(
-        String resourceGroupName, String storageMoverName, String agentName, AgentInner agent) {
+    public AgentInner createOrUpdate(String resourceGroupName, String storageMoverName, String agentName,
+        AgentInner agent) {
         return createOrUpdateWithResponse(resourceGroupName, storageMoverName, agentName, agent, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Agent resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentInner>> updateWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String agentName, AgentUpdateParameters agent) {
+    private Mono<Response<AgentInner>> updateWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String agentName, AgentUpdateParameters agent) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -710,29 +592,18 @@ public final class AgentsClientImpl implements AgentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            agentName,
-                            this.client.getApiVersion(),
-                            agent,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, storageMoverName, agentName, this.client.getApiVersion(), agent, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -740,23 +611,15 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the Agent resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String storageMoverName,
-        String agentName,
-        AgentUpdateParameters agent,
-        Context context) {
+    private Mono<Response<AgentInner>> updateWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String agentName, AgentUpdateParameters agent, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -776,45 +639,36 @@ public final class AgentsClientImpl implements AgentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                agentName,
-                this.client.getApiVersion(),
-                agent,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            storageMoverName, agentName, this.client.getApiVersion(), agent, accept, context);
     }
 
     /**
      * Creates or updates an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Agent resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentInner> updateAsync(
-        String resourceGroupName, String storageMoverName, String agentName, AgentUpdateParameters agent) {
+    private Mono<AgentInner> updateAsync(String resourceGroupName, String storageMoverName, String agentName,
+        AgentUpdateParameters agent) {
         return updateWithResponseAsync(resourceGroupName, storageMoverName, agentName, agent)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -822,36 +676,32 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the Agent resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgentInner> updateWithResponse(
-        String resourceGroupName,
-        String storageMoverName,
-        String agentName,
-        AgentUpdateParameters agent,
-        Context context) {
+    public Response<AgentInner> updateWithResponse(String resourceGroupName, String storageMoverName, String agentName,
+        AgentUpdateParameters agent, Context context) {
         return updateWithResponseAsync(resourceGroupName, storageMoverName, agentName, agent, context).block();
     }
 
     /**
      * Creates or updates an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
-     * @param agent The Agent resource.
+     * @param agent The agent parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Agent resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentInner update(
-        String resourceGroupName, String storageMoverName, String agentName, AgentUpdateParameters agent) {
+    public AgentInner update(String resourceGroupName, String storageMoverName, String agentName,
+        AgentUpdateParameters agent) {
         return updateWithResponse(resourceGroupName, storageMoverName, agentName, agent, Context.NONE).getValue();
     }
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -861,19 +711,15 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String agentName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String agentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -888,24 +734,14 @@ public final class AgentsClientImpl implements AgentsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageMoverName,
-                            agentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, storageMoverName, agentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -916,19 +752,15 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String storageMoverName, String agentName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String storageMoverName,
+        String agentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -943,21 +775,13 @@ public final class AgentsClientImpl implements AgentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageMoverName,
-                agentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            storageMoverName, agentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -967,18 +791,16 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String storageMoverName, String agentName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageMoverName,
+        String agentName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, storageMoverName, agentName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -989,19 +811,18 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String storageMoverName, String agentName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageMoverName,
+        String agentName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, storageMoverName, agentName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, storageMoverName, agentName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -1011,14 +832,14 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String storageMoverName, String agentName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
+        String agentName) {
         return this.beginDeleteAsync(resourceGroupName, storageMoverName, agentName).getSyncPoller();
     }
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -1029,14 +850,14 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String storageMoverName, String agentName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageMoverName,
+        String agentName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, storageMoverName, agentName, context).getSyncPoller();
     }
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -1047,14 +868,13 @@ public final class AgentsClientImpl implements AgentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String storageMoverName, String agentName) {
-        return beginDeleteAsync(resourceGroupName, storageMoverName, agentName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, storageMoverName, agentName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -1065,16 +885,15 @@ public final class AgentsClientImpl implements AgentsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String storageMoverName, String agentName, Context context) {
-        return beginDeleteAsync(resourceGroupName, storageMoverName, agentName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String storageMoverName, String agentName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, storageMoverName, agentName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -1089,7 +908,7 @@ public final class AgentsClientImpl implements AgentsClient {
 
     /**
      * Deletes an Agent resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageMoverName The name of the Storage Mover resource.
      * @param agentName The name of the Agent resource.
@@ -1105,9 +924,8 @@ public final class AgentsClientImpl implements AgentsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1119,31 +937,20 @@ public final class AgentsClientImpl implements AgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AgentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AgentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1156,23 +963,13 @@ public final class AgentsClientImpl implements AgentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

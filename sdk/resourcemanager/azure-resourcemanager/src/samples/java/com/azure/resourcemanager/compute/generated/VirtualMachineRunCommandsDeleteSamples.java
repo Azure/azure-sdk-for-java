@@ -19,7 +19,10 @@ public final class VirtualMachineRunCommandsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteARunCommand(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineRunCommands().delete("myResourceGroup",
-            "myVM", "myRunCommand", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineRunCommands()
+            .delete("myResourceGroup", "myVM", "myRunCommand", com.azure.core.util.Context.NONE);
     }
 }

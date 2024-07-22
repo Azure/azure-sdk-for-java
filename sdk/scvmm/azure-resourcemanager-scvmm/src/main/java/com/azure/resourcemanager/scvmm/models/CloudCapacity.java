@@ -4,34 +4,42 @@
 
 package com.azure.resourcemanager.scvmm.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cloud Capacity model. */
-@Fluent
-public final class CloudCapacity {
+/**
+ * Cloud Capacity model.
+ */
+@Immutable
+public final class CloudCapacity implements JsonSerializable<CloudCapacity> {
     /*
-     * CPUCount specifies the maximum number of CPUs that can be allocated in
-     * the cloud.
+     * CPUCount specifies the maximum number of CPUs that can be allocated in the cloud.
      */
-    @JsonProperty(value = "cpuCount")
     private Long cpuCount;
 
     /*
      * MemoryMB specifies a memory usage limit in megabytes.
      */
-    @JsonProperty(value = "memoryMB")
     private Long memoryMB;
 
     /*
      * VMCount gives the max number of VMs that can be deployed in the cloud.
      */
-    @JsonProperty(value = "vmCount")
     private Long vmCount;
 
     /**
+     * Creates an instance of CloudCapacity class.
+     */
+    public CloudCapacity() {
+    }
+
+    /**
      * Get the cpuCount property: CPUCount specifies the maximum number of CPUs that can be allocated in the cloud.
-     *
+     * 
      * @return the cpuCount value.
      */
     public Long cpuCount() {
@@ -39,19 +47,8 @@ public final class CloudCapacity {
     }
 
     /**
-     * Set the cpuCount property: CPUCount specifies the maximum number of CPUs that can be allocated in the cloud.
-     *
-     * @param cpuCount the cpuCount value to set.
-     * @return the CloudCapacity object itself.
-     */
-    public CloudCapacity withCpuCount(Long cpuCount) {
-        this.cpuCount = cpuCount;
-        return this;
-    }
-
-    /**
      * Get the memoryMB property: MemoryMB specifies a memory usage limit in megabytes.
-     *
+     * 
      * @return the memoryMB value.
      */
     public Long memoryMB() {
@@ -59,19 +56,8 @@ public final class CloudCapacity {
     }
 
     /**
-     * Set the memoryMB property: MemoryMB specifies a memory usage limit in megabytes.
-     *
-     * @param memoryMB the memoryMB value to set.
-     * @return the CloudCapacity object itself.
-     */
-    public CloudCapacity withMemoryMB(Long memoryMB) {
-        this.memoryMB = memoryMB;
-        return this;
-    }
-
-    /**
      * Get the vmCount property: VMCount gives the max number of VMs that can be deployed in the cloud.
-     *
+     * 
      * @return the vmCount value.
      */
     public Long vmCount() {
@@ -79,21 +65,49 @@ public final class CloudCapacity {
     }
 
     /**
-     * Set the vmCount property: VMCount gives the max number of VMs that can be deployed in the cloud.
-     *
-     * @param vmCount the vmCount value to set.
-     * @return the CloudCapacity object itself.
-     */
-    public CloudCapacity withVmCount(Long vmCount) {
-        this.vmCount = vmCount;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudCapacity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudCapacity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudCapacity.
+     */
+    public static CloudCapacity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudCapacity deserializedCloudCapacity = new CloudCapacity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpuCount".equals(fieldName)) {
+                    deserializedCloudCapacity.cpuCount = reader.getNullable(JsonReader::getLong);
+                } else if ("memoryMB".equals(fieldName)) {
+                    deserializedCloudCapacity.memoryMB = reader.getNullable(JsonReader::getLong);
+                } else if ("vmCount".equals(fieldName)) {
+                    deserializedCloudCapacity.vmCount = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudCapacity;
+        });
     }
 }

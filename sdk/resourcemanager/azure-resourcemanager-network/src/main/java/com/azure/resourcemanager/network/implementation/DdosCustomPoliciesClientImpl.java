@@ -33,10 +33,9 @@ import com.azure.resourcemanager.network.fluent.models.DdosCustomPolicyInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in DdosCustomPoliciesClient.
@@ -55,7 +54,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Initializes an instance of DdosCustomPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DdosCustomPoliciesClientImpl(NetworkManagementClientImpl client) {
@@ -116,7 +115,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +142,7 @@ public final class DdosCustomPoliciesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, ddosCustomPolicyName,
@@ -153,7 +152,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -181,7 +180,7 @@ public final class DdosCustomPoliciesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, ddosCustomPolicyName, apiVersion,
@@ -190,7 +189,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +206,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -228,7 +227,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,7 +242,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -260,7 +259,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +275,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -293,7 +292,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,7 +306,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -322,7 +321,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Gets information about the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,7 +349,7 @@ public final class DdosCustomPoliciesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -360,7 +359,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Gets information about the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -389,7 +388,7 @@ public final class DdosCustomPoliciesClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, ddosCustomPolicyName,
@@ -398,7 +397,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Gets information about the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,7 +413,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Gets information about the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -431,7 +430,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Gets information about the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,7 +445,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -480,7 +479,7 @@ public final class DdosCustomPoliciesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -490,7 +489,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -525,7 +524,7 @@ public final class DdosCustomPoliciesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, ddosCustomPolicyName, apiVersion,
@@ -534,7 +533,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -555,7 +554,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -577,7 +576,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -594,7 +593,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -613,7 +612,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -631,7 +630,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -650,7 +649,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -667,7 +666,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -685,7 +684,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Update a DDoS custom policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to update DDoS custom policy resource tags.
@@ -719,7 +718,7 @@ public final class DdosCustomPoliciesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -729,7 +728,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Update a DDoS custom policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to update DDoS custom policy resource tags.
@@ -764,7 +763,7 @@ public final class DdosCustomPoliciesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, ddosCustomPolicyName, apiVersion,
@@ -773,7 +772,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Update a DDoS custom policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to update DDoS custom policy resource tags.
@@ -791,7 +790,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Update a DDoS custom policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to update DDoS custom policy resource tags.
@@ -809,7 +808,7 @@ public final class DdosCustomPoliciesClientImpl
 
     /**
      * Update a DDoS custom policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to update DDoS custom policy resource tags.

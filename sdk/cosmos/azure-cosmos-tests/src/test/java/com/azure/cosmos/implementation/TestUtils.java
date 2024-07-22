@@ -41,6 +41,25 @@ public class TestUtils {
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + USERS_PATH_SEGMENT + "/" + userId;
     }
 
+    public static QueryFeedOperationState createDummyQueryFeedOperationStateWithoutPagedFluxOptions(
+        ResourceType resourceType,
+        OperationType operationType,
+        CosmosQueryRequestOptions options,
+        CosmosAsyncClient client) {
+        return new QueryFeedOperationState(
+            client,
+            "SomeSpanName",
+            "SomeDBName",
+            "SomeContainerName",
+            resourceType,
+            operationType,
+            null,
+            options,
+            null
+        );
+    }
+
+
     public static QueryFeedOperationState createDummyQueryFeedOperationState(
         ResourceType resourceType,
         OperationType operationType,

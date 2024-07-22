@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public final class ExclusionManagedRuleGroup {
 
     /**
      * Get the ruleGroupName property: The managed rule group for exclusion.
-     *
+     * 
      * @return the ruleGroupName value.
      */
     public String ruleGroupName() {
@@ -44,7 +43,7 @@ public final class ExclusionManagedRuleGroup {
 
     /**
      * Set the ruleGroupName property: The managed rule group for exclusion.
-     *
+     * 
      * @param ruleGroupName the ruleGroupName value to set.
      * @return the ExclusionManagedRuleGroup object itself.
      */
@@ -56,7 +55,7 @@ public final class ExclusionManagedRuleGroup {
     /**
      * Get the rules property: List of rules that will be excluded. If none specified, all rules in the group will be
      * excluded.
-     *
+     * 
      * @return the rules value.
      */
     public List<ExclusionManagedRule> rules() {
@@ -66,7 +65,7 @@ public final class ExclusionManagedRuleGroup {
     /**
      * Set the rules property: List of rules that will be excluded. If none specified, all rules in the group will be
      * excluded.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ExclusionManagedRuleGroup object itself.
      */
@@ -77,7 +76,7 @@ public final class ExclusionManagedRuleGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

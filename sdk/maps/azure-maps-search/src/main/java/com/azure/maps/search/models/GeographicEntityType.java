@@ -5,49 +5,74 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GeographicEntityType. */
+/**
+ * Defines values for GeographicEntityType.
+ */
 public final class GeographicEntityType extends ExpandableStringEnum<GeographicEntityType> {
-    /** Static value Country for GeographicEntityType. */
+    /**
+     * Static value Country for GeographicEntityType.
+     */
     public static final GeographicEntityType COUNTRY = fromString("Country");
 
-    /** Static value CountrySubdivision for GeographicEntityType. */
+    /**
+     * Static value CountrySubdivision for GeographicEntityType.
+     */
     public static final GeographicEntityType COUNTRY_SUBDIVISION = fromString("CountrySubdivision");
 
-    /** Static value CountrySecondarySubdivision for GeographicEntityType. */
+    /**
+     * Static value CountrySecondarySubdivision for GeographicEntityType.
+     */
     public static final GeographicEntityType COUNTRY_SECONDARY_SUBDIVISION = fromString("CountrySecondarySubdivision");
 
-    /** Static value CountryTertiarySubdivision for GeographicEntityType. */
+    /**
+     * Static value CountryTertiarySubdivision for GeographicEntityType.
+     */
     public static final GeographicEntityType COUNTRY_TERTIARY_SUBDIVISION = fromString("CountryTertiarySubdivision");
 
-    /** Static value Municipality for GeographicEntityType. */
+    /**
+     * Static value Municipality for GeographicEntityType.
+     */
     public static final GeographicEntityType MUNICIPALITY = fromString("Municipality");
 
-    /** Static value MunicipalitySubdivision for GeographicEntityType. */
+    /**
+     * Static value MunicipalitySubdivision for GeographicEntityType.
+     */
     public static final GeographicEntityType MUNICIPALITY_SUBDIVISION = fromString("MunicipalitySubdivision");
 
-    /** Static value Neighbourhood for GeographicEntityType. */
+    /**
+     * Static value Neighbourhood for GeographicEntityType.
+     */
     public static final GeographicEntityType NEIGHBOURHOOD = fromString("Neighbourhood");
 
-    /** Static value PostalCodeArea for GeographicEntityType. */
+    /**
+     * Static value PostalCodeArea for GeographicEntityType.
+     */
     public static final GeographicEntityType POSTAL_CODE_AREA = fromString("PostalCodeArea");
 
     /**
+     * Creates a new instance of GeographicEntityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GeographicEntityType() {
+    }
+
+    /**
      * Creates or finds a GeographicEntityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GeographicEntityType.
      */
-    @JsonCreator
     public static GeographicEntityType fromString(String name) {
         return fromString(name, GeographicEntityType.class);
     }
 
     /**
      * Gets known GeographicEntityType values.
-     *
+     * 
      * @return known GeographicEntityType values.
      */
     public static Collection<GeographicEntityType> values() {

@@ -45,13 +45,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     private SearchIndexerDataContainer container;
 
     /*
-     * An explicit managed identity to use for this datasource. If not specified and the connection string is a managed
-     * identity, the system-assigned managed identity is used. If not specified, the value remains unchanged. If "none"
-     * is specified, the value of this property is cleared.
-     */
-    private SearchIndexerDataIdentity identity;
-
-    /*
      * The data change detection policy for the datasource.
      */
     private DataChangeDetectionPolicy dataChangeDetectionPolicy;
@@ -71,9 +64,9 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * level of encryption-at-rest for your datasource definition when you want full assurance that no one, not even
      * Microsoft, can decrypt your data source definition. Once you have encrypted your data source definition, it will
      * always remain encrypted. The search service will ignore attempts to set this property to null. You can change
-     * this property as needed if you want to rotate your encryption key; Your datasource definition will be
-     * unaffected. Encryption with customer-managed keys is not available for free search services, and is only
-     * available for paid services created on or after January 1, 2019.
+     * this property as needed if you want to rotate your encryption key; Your datasource definition will be unaffected.
+     * Encryption with customer-managed keys is not available for free search services, and is only available for paid
+     * services created on or after January 1, 2019.
      */
     private SearchResourceEncryptionKey encryptionKey;
 
@@ -152,30 +145,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      */
     public SearchIndexerDataSourceConnection setContainer(SearchIndexerDataContainer container) {
         this.container = container;
-        return this;
-    }
-
-    /**
-     * Get the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @return the identity value.
-     */
-    public SearchIndexerDataIdentity getIdentity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @param identity the identity value to set.
-     * @return the SearchIndexerDataSourceConnection object itself.
-     */
-    public SearchIndexerDataSourceConnection setIdentity(SearchIndexerDataIdentity identity) {
-        this.identity = identity;
         return this;
     }
 
@@ -273,6 +242,9 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -281,7 +253,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeJsonField("credentials", this.credentials);
         jsonWriter.writeJsonField("container", this.container);
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("dataChangeDetectionPolicy", this.dataChangeDetectionPolicy);
         jsonWriter.writeJsonField("dataDeletionDetectionPolicy", this.dataDeletionDetectionPolicy);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
@@ -306,7 +277,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
             SearchIndexerDataSourceType type = null;
             DataSourceCredentials credentials = null;
             SearchIndexerDataContainer container = null;
-            SearchIndexerDataIdentity identity = null;
             DataChangeDetectionPolicy dataChangeDetectionPolicy = null;
             DataDeletionDetectionPolicy dataDeletionDetectionPolicy = null;
             String eTag = null;
@@ -325,8 +295,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                     credentials = DataSourceCredentials.fromJson(reader);
                 } else if ("container".equals(fieldName)) {
                     container = SearchIndexerDataContainer.fromJson(reader);
-                } else if ("identity".equals(fieldName)) {
-                    identity = SearchIndexerDataIdentity.fromJson(reader);
                 } else if ("dataChangeDetectionPolicy".equals(fieldName)) {
                     dataChangeDetectionPolicy = DataChangeDetectionPolicy.fromJson(reader);
                 } else if ("dataDeletionDetectionPolicy".equals(fieldName)) {
@@ -346,7 +314,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
                 deserializedSearchIndexerDataSourceConnection.type = type;
                 deserializedSearchIndexerDataSourceConnection.credentials = credentials;
                 deserializedSearchIndexerDataSourceConnection.container = container;
-                deserializedSearchIndexerDataSourceConnection.identity = identity;
                 deserializedSearchIndexerDataSourceConnection.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
                 deserializedSearchIndexerDataSourceConnection.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
                 deserializedSearchIndexerDataSourceConnection.eTag = eTag;

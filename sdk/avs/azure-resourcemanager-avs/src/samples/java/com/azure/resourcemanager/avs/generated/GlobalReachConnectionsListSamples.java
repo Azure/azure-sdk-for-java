@@ -9,7 +9,8 @@ package com.azure.resourcemanager.avs.generated;
  */
 public final class GlobalReachConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/GlobalReachConnections_List.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/GlobalReachConnections_List.json
      */
     /**
      * Sample code: GlobalReachConnections_List.

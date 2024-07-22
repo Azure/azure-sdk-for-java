@@ -27,17 +27,16 @@ public final class WorkloadNetworkDnsServicesImpl implements WorkloadNetworkDnsS
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<WorkloadNetworkDnsService> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName) {
+    public PagedIterable<WorkloadNetworkDnsService> list(String resourceGroupName, String privateCloudName) {
         PagedIterable<WorkloadNetworkDnsServiceInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName);
+            = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkDnsServiceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetworkDnsService> listByWorkloadNetwork(String resourceGroupName,
-        String privateCloudName, Context context) {
+    public PagedIterable<WorkloadNetworkDnsService> list(String resourceGroupName, String privateCloudName,
+        Context context) {
         PagedIterable<WorkloadNetworkDnsServiceInner> inner
-            = this.serviceClient().listByWorkloadNetwork(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkDnsServiceImpl(inner1, this.manager()));
     }
 

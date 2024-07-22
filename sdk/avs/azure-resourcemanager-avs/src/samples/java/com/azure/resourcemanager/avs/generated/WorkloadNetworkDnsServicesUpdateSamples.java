@@ -13,7 +13,8 @@ import java.util.Arrays;
  */
 public final class WorkloadNetworkDnsServicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/WorkloadNetworks_UpdateDnsService.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_UpdateDnsService.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDnsService.

@@ -28,7 +28,7 @@ public interface WorkloadNetworkDhcpConfigurationsClient {
      * @return the response of a WorkloadNetworkDhcp list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkDhcpInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkDhcpInner> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkDhcp resources by WorkloadNetwork.
@@ -42,8 +42,7 @@ public interface WorkloadNetworkDhcpConfigurationsClient {
      * @return the response of a WorkloadNetworkDhcp list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkDhcpInner> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkDhcpInner> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkDhcp.

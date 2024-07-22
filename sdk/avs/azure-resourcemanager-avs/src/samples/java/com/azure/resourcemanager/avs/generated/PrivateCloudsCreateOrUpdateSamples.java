@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public final class PrivateCloudsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/PrivateClouds_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/PrivateClouds_CreateOrUpdate.json
      */
     /**
      * Sample code: PrivateClouds_CreateOrUpdate.

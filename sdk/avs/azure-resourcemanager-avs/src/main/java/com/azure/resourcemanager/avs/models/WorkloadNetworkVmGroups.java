@@ -22,7 +22,7 @@ public interface WorkloadNetworkVmGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkVMGroup list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkVMGroup> listByWorkloadNetwork(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkVMGroup> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetworkVMGroup resources by WorkloadNetwork.
@@ -35,8 +35,7 @@ public interface WorkloadNetworkVmGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetworkVMGroup list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetworkVMGroup> listByWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkVMGroup> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkVMGroup.
