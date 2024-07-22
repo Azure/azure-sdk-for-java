@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -188,11 +189,11 @@ public final class PersonalizerEvaluationOptions implements JsonSerializable<Per
                 if ("name".equals(fieldName)) {
                     deserializedPersonalizerEvaluationOptions.name = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedPersonalizerEvaluationOptions.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerEvaluationOptions.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedPersonalizerEvaluationOptions.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerEvaluationOptions.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("policies".equals(fieldName)) {
                     List<PersonalizerPolicy> policies
                         = reader.readArray(reader1 -> PersonalizerPolicy.fromJson(reader1));

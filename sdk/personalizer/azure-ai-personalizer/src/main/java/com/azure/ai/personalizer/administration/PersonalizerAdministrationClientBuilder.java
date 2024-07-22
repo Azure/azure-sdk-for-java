@@ -93,7 +93,8 @@ public final class PersonalizerAdministrationClientBuilder implements
 
         return new PersonalizerClientV1Preview3ImplBuilder()
             .endpoint(endpoint)
-            .apiVersion(serviceVersion.getVersion())
+            // Fix this, currently hardcoded to v1.1-preview.3
+            // .apiVersion(serviceVersion.getVersion())
             .pipeline(pipeline)
             .buildClient();
     }

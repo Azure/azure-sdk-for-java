@@ -45,7 +45,8 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
     private float explorationPercentage;
 
     /*
-     * Personalizer will start using the most updated trained model for online ranks automatically every specified time period.
+     * Personalizer will start using the most updated trained model for online ranks automatically every specified time
+     * period.
      * For example, PT5M (5 mins). For information about the time format,
      * see http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
@@ -77,7 +78,8 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
     private LearningMode learningMode;
 
     /*
-     * Flag indicating whether Personalizer will automatically optimize Learning Settings by running Offline Evaluations periodically.
+     * Flag indicating whether Personalizer will automatically optimize Learning Settings by running Offline Evaluations
+     * periodically.
      */
     private Boolean isAutoOptimizationEnabled;
 
@@ -89,7 +91,8 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
     private Duration autoOptimizationFrequency;
 
     /*
-     * Date when the first automatic optimization evaluation must be performed. Only relevant if IsAutoOptimizationEnabled is true.
+     * Date when the first automatic optimization evaluation must be performed. Only relevant if
+     * IsAutoOptimizationEnabled is true.
      */
     private OffsetDateTime autoOptimizationStartDate;
 
@@ -452,8 +455,8 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
                 } else if ("logMirrorSasUri".equals(fieldName)) {
                     deserializedPersonalizerServiceProperties.logMirrorSasUrl = reader.getString();
                 } else if ("lastConfigurationEditDate".equals(fieldName)) {
-                    deserializedPersonalizerServiceProperties.lastConfigurationEditDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerServiceProperties.lastConfigurationEditDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("learningMode".equals(fieldName)) {
                     deserializedPersonalizerServiceProperties.learningMode
                         = LearningMode.fromString(reader.getString());
@@ -464,8 +467,8 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
                     deserializedPersonalizerServiceProperties.autoOptimizationFrequency
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("autoOptimizationStartDate".equals(fieldName)) {
-                    deserializedPersonalizerServiceProperties.autoOptimizationStartDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPersonalizerServiceProperties.autoOptimizationStartDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

@@ -39,7 +39,8 @@ public final class PersonalizerRankOptions implements JsonSerializable<Personali
 
     /*
      * The set of action ids to exclude from ranking.
-     * Personalizer will consider the first non-excluded item in the array as the Baseline action when performing Offline Evaluations.
+     * Personalizer will consider the first non-excluded item in the array as the Baseline action when performing
+     * Offline Evaluations.
      */
     private List<String> excludedActions;
 

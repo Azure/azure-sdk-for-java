@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -15,11 +16,41 @@ import java.time.OffsetDateTime;
  * Date range.
  */
 @Immutable
-class PersonalizerLogPropertiesDateRange extends PersonalizerDateRange {
+public final class PersonalizerLogPropertiesDateRange extends PersonalizerDateRange {
+    /*
+     * Start date for the range.
+     */
+    private OffsetDateTime from;
+
+    /*
+     * End date for the range.
+     */
+    private OffsetDateTime to;
+
     /**
      * Creates an instance of PersonalizerLogPropertiesDateRange class.
      */
     public PersonalizerLogPropertiesDateRange() {
+    }
+
+    /**
+     * Get the from property: Start date for the range.
+     * 
+     * @return the from value.
+     */
+    @Override
+    public OffsetDateTime getFrom() {
+        return this.from;
+    }
+
+    /**
+     * Get the to property: End date for the range.
+     * 
+     * @return the to value.
+     */
+    @Override
+    public OffsetDateTime getTo() {
+        return this.to;
     }
 
     /**
@@ -48,11 +79,11 @@ class PersonalizerLogPropertiesDateRange extends PersonalizerDateRange {
                 reader.nextToken();
 
                 if ("from".equals(fieldName)) {
-                    deserializedPersonalizerLogPropertiesDateRange
-                        .setFrom(reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedPersonalizerLogPropertiesDateRange.from = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("to".equals(fieldName)) {
-                    deserializedPersonalizerLogPropertiesDateRange
-                        .setTo(reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedPersonalizerLogPropertiesDateRange.to = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
