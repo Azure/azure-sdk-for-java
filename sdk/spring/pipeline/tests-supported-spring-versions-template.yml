@@ -23,8 +23,8 @@ parameters:
   - name: MatrixConfigs
     type: object
     default:
-      - Name: Java_live_test_base
-        Path: eng/pipelines/templates/stages/platform-matrix.json
+      - Name: Spring_Boot_Supported_Version_Tests
+        Path: sdk/spring/pipeline/tests-supported-version-matrix.json
         Selection: sparse
         GenerateVMJobs: true
         NonSparseParameters:
