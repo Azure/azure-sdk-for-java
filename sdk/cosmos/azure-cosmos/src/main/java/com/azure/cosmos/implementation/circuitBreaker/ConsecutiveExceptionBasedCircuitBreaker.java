@@ -59,6 +59,8 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
                         .build();
                 }
             case Unavailable:
+                // the tests done so far view this as an unreachable piece of code - but not failing the operation
+                // with IllegalStateException and simply logging that a presumed unreachable code path seems to make sense for now
                 logger.warn("Region {} should not be handling failures in {} health status for partition key range : {} and collection RID : {}",
                     regionWithException,
                     locationHealthStatus.getStringifiedLocationHealthStatus(),
@@ -143,6 +145,8 @@ public class ConsecutiveExceptionBasedCircuitBreaker {
 
                 }
             case Unavailable:
+                // the tests done so far view this as an unreachable piece of code - but not failing the operation
+                // and simply logging that a presumed unreachable code path seems to make sense for now
                 logger.warn("Region {} should not be handling successes in {} health status for partition key range : {} and collection RID : {}",
                     regionWithSuccess,
                     locationHealthStatus.getStringifiedLocationHealthStatus(),

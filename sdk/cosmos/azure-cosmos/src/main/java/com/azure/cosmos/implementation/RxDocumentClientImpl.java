@@ -2431,6 +2431,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker = failedRequest.requestContext.getPointOperationContextForCircuitBreaker();
                     checkNotNull(pointOperationContextForCircuitBreaker, "Argument 'pointOperationContextForCircuitBreaker' must not be null!");
 
+                    // scoping the handling of CANCEL signal handling for reasons outside of end-to-end operation timeout
+                    // to purely operations which have end-to-end operation timeout enabled
                     if (pointOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
 
                         if (!pointOperationContextForCircuitBreaker.isRequestHedged() && pointOperationContextForCircuitBreaker.getHasOperationSeenSuccess()) {
