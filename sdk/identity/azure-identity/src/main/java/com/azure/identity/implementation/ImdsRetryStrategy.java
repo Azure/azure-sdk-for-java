@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity.implementation;
 
 import com.azure.core.http.HttpResponse;
@@ -65,13 +68,5 @@ public class ImdsRetryStrategy implements RetryStrategy {
         }
 
         return false;
-    }
-
-    private static Function<Duration, Duration> getIMDSretryTimeoutFunction() {
-        return inputDuration -> {
-            long retries = inputDuration.getSeconds();
-            long delay = (long) (800 * Math.pow(2, retries - 1));
-            return Duration.ofMillis(delay);
-        };
     }
 }
