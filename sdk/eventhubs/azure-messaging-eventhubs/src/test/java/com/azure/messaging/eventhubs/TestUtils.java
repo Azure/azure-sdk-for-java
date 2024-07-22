@@ -5,9 +5,12 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -17,6 +20,8 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.codec.ReadableBuffer;
 import org.apache.qpid.proton.message.Message;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -32,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -40,6 +46,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Contains helper methods for working with AMQP messages
@@ -160,6 +167,52 @@ public final class TestUtils {
         return new ConnectionStringProperties(getConnectionString(withSas));
     }
 
+    /**
+     * Obtain a {@link com.azure.identity.AzurePipelinesCredentialBuilder} when running in Azure pipelines that is
+     * configured with service connections federated identity.
+     *
+     * @return A {@link com.azure.identity.AzurePipelinesCredentialBuilder} when running in Azure pipelines that is
+     *   configured with service connections federated identity, {@code null} otherwise.
+     */
+    private static TokenCredential getPipelineCredential() {
+        final String serviceConnectionId  = getPropertyValue("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        final String clientId = getPropertyValue("AZURESUBSCRIPTION_CLIENT_ID");
+        final String tenantId = getPropertyValue("AZURESUBSCRIPTION_TENANT_ID");
+        final String systemAccessToken = getPropertyValue("SYSTEM_ACCESSTOKEN");
+
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId) || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId) || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            return null;
+        }
+
+        return new AzurePipelinesCredentialBuilder()
+            .systemAccessToken(systemAccessToken)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .build();
+    }
+
+    /**
+     * Obtain the Azure Pipelines credential if running in Azure Pipelines configured with service connections federated identity.
+     *
+     * @return the Azure Pipelines credential.
+     */
+    public static TokenCredential getPipelineCredential(AtomicReference<TokenCredential> credentialCached) {
+        return credentialCached.updateAndGet(cached -> {
+            if (cached != null) {
+                return cached;
+            }
+
+            final TokenCredential tokenCredential = TestUtils.getPipelineCredential();
+
+            assumeTrue(tokenCredential != null, "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
+
+            return request -> Mono.defer(() -> tokenCredential.getToken(request))
+                .subscribeOn(Schedulers.boundedElastic());
+        });
+    }
+
     static String getConnectionString() {
         return getConnectionString(false);
     }
@@ -207,6 +260,14 @@ public final class TestUtils {
             }
         }
         return connectionString;
+    }
+
+    private static String getPropertyValue(String propertyName) {
+        return Configuration.getGlobalConfiguration().get(propertyName, System.getenv(propertyName));
+    }
+
+    private static String getPropertyValue(String propertyName, String defaultValue) {
+        return Configuration.getGlobalConfiguration().get(propertyName, defaultValue);
     }
 
     private TestUtils() {
