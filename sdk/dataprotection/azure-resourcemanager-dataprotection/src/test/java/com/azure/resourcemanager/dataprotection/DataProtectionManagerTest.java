@@ -13,11 +13,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.AzureDeveloperCliCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.resourcemanager.dataprotection.models.AlertsState;
 import com.azure.resourcemanager.dataprotection.models.AzureMonitorAlertSettings;
 import com.azure.resourcemanager.dataprotection.models.BackupVault;
@@ -52,13 +47,7 @@ public class DataProtectionManagerTest extends TestBase {
 
     @Override
     public void beforeTest() {
-        final ChainedTokenCredentialBuilder chainedTokenCredentialBuilder =
-            new ChainedTokenCredentialBuilder()
-                .addLast(new EnvironmentCredentialBuilder().build())
-                .addLast(new AzureCliCredentialBuilder().build())
-                .addLast(new AzureDeveloperCliCredentialBuilder().build())
-                .addLast(new AzurePowerShellCredentialBuilder().build());
-        final TokenCredential credential = chainedTokenCredentialBuilder.build();
+        final TokenCredential credential = TestUtil.getIdentityTestCredential(super.interceptorManager);
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         dataProtectionManager = DataProtectionManager
