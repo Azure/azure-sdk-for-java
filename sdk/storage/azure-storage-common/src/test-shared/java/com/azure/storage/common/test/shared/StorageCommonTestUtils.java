@@ -19,12 +19,14 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.implementation.Constants;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -329,12 +331,12 @@ public final class StorageCommonTestUtils {
                 && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
                 AzurePipelinesCredential pipelinesCredential = new AzurePipelinesCredentialBuilder()
-                .systemAccessToken(systemAccessToken)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .serviceConnectionId(serviceConnectionId)
-                .build();
-                
+                    .systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build();
+
                 builder.addLast(request -> pipelinesCredential.getToken(request).subscribeOn(Schedulers.boundedElastic()));
             }
 
