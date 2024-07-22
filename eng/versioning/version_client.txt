@@ -342,7 +342,7 @@ com.azure.resourcemanager:azure-resourcemanager-devspaces;1.0.0-beta.2;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-devtestlabs;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hanaonazure;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-healthcareapis;1.1.0;1.2.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0-beta.5;1.0.0-beta.6
+com.azure.resourcemanager:azure-resourcemanager-hybridcompute;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-logic;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-maintenance;1.0.0;1.1.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-machinelearningservices;1.0.0-beta.1;1.0.0-beta.2
