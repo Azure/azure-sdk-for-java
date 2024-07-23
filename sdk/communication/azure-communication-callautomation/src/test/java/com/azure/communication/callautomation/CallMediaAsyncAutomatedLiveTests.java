@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallIntelligenceOptions;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
@@ -360,7 +361,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         }
     }
     
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -450,7 +450,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             StopMediaStreamingOptions stopMediaStreamingOptions = new StopMediaStreamingOptions();
            // stopMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
 
-            callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().stopMediaStreamingWithResponse(stopMediaStreamingOptions);
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().stopMediaStreamingWithResponse(stopMediaStreamingOptions).block();
             MediaStreamingStopped mediaStreamingStopped = waitForEvent(MediaStreamingStopped.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(mediaStreamingStopped);
         } catch (Exception ex) {
@@ -467,7 +467,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -506,10 +505,11 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            TranscriptionOptions transcriptionOptions = new TranscriptionOptions("wss://localhost", TranscriptionTransport.WEBSOCKET, "en-US", false);
+            TranscriptionOptions transcriptionOptions = new TranscriptionOptions(TRANSPORT_URL, TranscriptionTransport.WEBSOCKET, "en-US", false);
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                     DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             createCallOptions.setTranscriptionOptions(transcriptionOptions);
+            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
             Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
 
             assertNotNull(createCallResultResponse);
@@ -531,17 +531,22 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
             callDestructors.add(answerCallResult.getCallConnectionAsync());
+
+            // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+
             // Start Transcription
             StartTranscriptionOptions startTranscriptionOptions = new StartTranscriptionOptions();
             startTranscriptionOptions.setLocale("en-US");    
 
-            callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().startTranscriptionWithResponse(startTranscriptionOptions);
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().startTranscriptionWithResponse(startTranscriptionOptions).block();
             TranscriptionStarted transcriptionStarted = waitForEvent(TranscriptionStarted.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(transcriptionStarted);
 
             // Stop Transcription
             StopTranscriptionOptions stopTranscriptionOptions = new StopTranscriptionOptions();
-            callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().stopTranscriptionWithResponse(stopTranscriptionOptions);
+            callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().stopTranscriptionWithResponse(stopTranscriptionOptions).block();
             TranscriptionStopped transcriptionStopped = waitForEvent(TranscriptionStopped.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(transcriptionStopped);
         } catch (Exception ex) {
@@ -742,7 +747,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -785,6 +789,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
             Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -837,7 +842,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -881,6 +885,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
             Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -933,7 +938,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -977,6 +981,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
             Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -1028,7 +1033,6 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -1072,6 +1076,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             List<CommunicationIdentifier> targets = Collections.singletonList(receiver);
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            createCallOptions.setCallIntelligenceOptions(new CallIntelligenceOptions().setCognitiveServicesEndpoint(COGNITIVE_SERVICE_ENDPOINT));
             Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();

@@ -63,6 +63,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     protected static final String TRANSPORT_URL = Configuration.getGlobalConfiguration()
         .get("TRANSPORT_URL",
             "https://REDACTED");
+    protected static final String COGNITIVE_SERVICE_ENDPOINT = Configuration.getGlobalConfiguration()
+        .get("COGNITIVE_SERVICE_ENDPOINT",
+            "https://REDACTED");
     protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
         .get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
 
