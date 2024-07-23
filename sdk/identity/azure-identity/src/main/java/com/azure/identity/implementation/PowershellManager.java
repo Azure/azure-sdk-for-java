@@ -54,7 +54,7 @@ public class PowershellManager {
 
     String[] getCommandLine(String input) {
         return Platform.isWindows()
-            ? new String[]{powershellPath, "-Command", "-NoProfile", input}
+            ? new String[]{powershellPath, "-NoProfile", "-Command", input}
             : new String[]{"/bin/bash", "-c", String.format("%s -NoProfile -Command '%s'", powershellPath, input)};
     }
 }
