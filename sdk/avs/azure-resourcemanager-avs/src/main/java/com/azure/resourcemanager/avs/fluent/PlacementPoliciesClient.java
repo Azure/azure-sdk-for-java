@@ -12,7 +12,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.PlacementPolicyInner;
-import com.azure.resourcemanager.avs.models.PlacementPoliciesUpdateResponse;
 import com.azure.resourcemanager.avs.models.PlacementPolicyUpdate;
 
 /**
@@ -161,15 +160,34 @@ public interface PlacementPoliciesClient {
      * @param clusterName Name of the cluster.
      * @param placementPolicyName Name of the placement policy.
      * @param placementPolicyUpdate The placement policy properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginUpdate(String resourceGroupName,
+        String privateCloudName, String clusterName, String placementPolicyName,
+        PlacementPolicyUpdate placementPolicyUpdate);
+
+    /**
+     * Update a PlacementPolicy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param placementPolicyName Name of the placement policy.
+     * @param placementPolicyUpdate The placement policy properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return the {@link SyncPoller} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PlacementPoliciesUpdateResponse updateWithResponse(String resourceGroupName, String privateCloudName,
-        String clusterName, String placementPolicyName, PlacementPolicyUpdate placementPolicyUpdate, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginUpdate(String resourceGroupName,
+        String privateCloudName, String clusterName, String placementPolicyName,
+        PlacementPolicyUpdate placementPolicyUpdate, Context context);
 
     /**
      * Update a PlacementPolicy.
@@ -187,6 +205,24 @@ public interface PlacementPoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     PlacementPolicyInner update(String resourceGroupName, String privateCloudName, String clusterName,
         String placementPolicyName, PlacementPolicyUpdate placementPolicyUpdate);
+
+    /**
+     * Update a PlacementPolicy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param placementPolicyName Name of the placement policy.
+     * @param placementPolicyUpdate The placement policy properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PlacementPolicyInner update(String resourceGroupName, String privateCloudName, String clusterName,
+        String placementPolicyName, PlacementPolicyUpdate placementPolicyUpdate, Context context);
 
     /**
      * Delete a PlacementPolicy.

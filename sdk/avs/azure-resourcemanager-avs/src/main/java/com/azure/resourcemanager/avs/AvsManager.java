@@ -38,19 +38,9 @@ import com.azure.resourcemanager.avs.implementation.OperationsImpl;
 import com.azure.resourcemanager.avs.implementation.PlacementPoliciesImpl;
 import com.azure.resourcemanager.avs.implementation.PrivateCloudsImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptCmdletsImpl;
-import com.azure.resourcemanager.avs.implementation.ScriptExecutionsImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptPackagesImpl;
 import com.azure.resourcemanager.avs.implementation.VirtualMachinesImpl;
-import com.azure.resourcemanager.avs.implementation.WorkloadNetworkDhcpConfigurationsImpl;
-import com.azure.resourcemanager.avs.implementation.WorkloadNetworkDnsServicesImpl;
-import com.azure.resourcemanager.avs.implementation.WorkloadNetworkDnsZonesImpl;
-import com.azure.resourcemanager.avs.implementation.WorkloadNetworkGatewaysImpl;
-import com.azure.resourcemanager.avs.implementation.WorkloadNetworkPortMirroringProfilesImpl;
-import com.azure.resourcemanager.avs.implementation.WorkloadNetworkPublicIpsImpl;
-import com.azure.resourcemanager.avs.implementation.WorkloadNetworkSegmentsImpl;
 import com.azure.resourcemanager.avs.implementation.WorkloadNetworksImpl;
-import com.azure.resourcemanager.avs.implementation.WorkloadNetworkVirtualMachinesImpl;
-import com.azure.resourcemanager.avs.implementation.WorkloadNetworkVmGroupsImpl;
 import com.azure.resourcemanager.avs.models.Addons;
 import com.azure.resourcemanager.avs.models.Authorizations;
 import com.azure.resourcemanager.avs.models.CloudLinks;
@@ -64,19 +54,9 @@ import com.azure.resourcemanager.avs.models.Operations;
 import com.azure.resourcemanager.avs.models.PlacementPolicies;
 import com.azure.resourcemanager.avs.models.PrivateClouds;
 import com.azure.resourcemanager.avs.models.ScriptCmdlets;
-import com.azure.resourcemanager.avs.models.ScriptExecutions;
 import com.azure.resourcemanager.avs.models.ScriptPackages;
 import com.azure.resourcemanager.avs.models.VirtualMachines;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpConfigurations;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsServices;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZones;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkGateways;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroringProfiles;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkPublicIps;
 import com.azure.resourcemanager.avs.models.WorkloadNetworks;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkSegments;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkVirtualMachines;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkVmGroups;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -105,26 +85,6 @@ public final class AvsManager {
 
     private GlobalReachConnections globalReachConnections;
 
-    private WorkloadNetworks workloadNetworks;
-
-    private WorkloadNetworkSegments workloadNetworkSegments;
-
-    private WorkloadNetworkDhcpConfigurations workloadNetworkDhcpConfigurations;
-
-    private WorkloadNetworkGateways workloadNetworkGateways;
-
-    private WorkloadNetworkPortMirroringProfiles workloadNetworkPortMirroringProfiles;
-
-    private WorkloadNetworkVmGroups workloadNetworkVmGroups;
-
-    private WorkloadNetworkVirtualMachines workloadNetworkVirtualMachines;
-
-    private WorkloadNetworkDnsServices workloadNetworkDnsServices;
-
-    private WorkloadNetworkDnsZones workloadNetworkDnsZones;
-
-    private WorkloadNetworkPublicIps workloadNetworkPublicIps;
-
     private CloudLinks cloudLinks;
 
     private Addons addons;
@@ -137,9 +97,9 @@ public final class AvsManager {
 
     private ScriptCmdlets scriptCmdlets;
 
-    private ScriptExecutions scriptExecutions;
-
     private IscsiPaths iscsiPaths;
+
+    private WorkloadNetworks workloadNetworks;
 
     private final AvsClient clientObject;
 
@@ -449,136 +409,6 @@ public final class AvsManager {
     }
 
     /**
-     * Gets the resource collection API of WorkloadNetworks.
-     * 
-     * @return Resource collection API of WorkloadNetworks.
-     */
-    public WorkloadNetworks workloadNetworks() {
-        if (this.workloadNetworks == null) {
-            this.workloadNetworks = new WorkloadNetworksImpl(clientObject.getWorkloadNetworks(), this);
-        }
-        return workloadNetworks;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworkSegments. It manages WorkloadNetworkSegment.
-     * 
-     * @return Resource collection API of WorkloadNetworkSegments.
-     */
-    public WorkloadNetworkSegments workloadNetworkSegments() {
-        if (this.workloadNetworkSegments == null) {
-            this.workloadNetworkSegments
-                = new WorkloadNetworkSegmentsImpl(clientObject.getWorkloadNetworkSegments(), this);
-        }
-        return workloadNetworkSegments;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworkDhcpConfigurations. It manages WorkloadNetworkDhcp.
-     * 
-     * @return Resource collection API of WorkloadNetworkDhcpConfigurations.
-     */
-    public WorkloadNetworkDhcpConfigurations workloadNetworkDhcpConfigurations() {
-        if (this.workloadNetworkDhcpConfigurations == null) {
-            this.workloadNetworkDhcpConfigurations
-                = new WorkloadNetworkDhcpConfigurationsImpl(clientObject.getWorkloadNetworkDhcpConfigurations(), this);
-        }
-        return workloadNetworkDhcpConfigurations;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworkGateways.
-     * 
-     * @return Resource collection API of WorkloadNetworkGateways.
-     */
-    public WorkloadNetworkGateways workloadNetworkGateways() {
-        if (this.workloadNetworkGateways == null) {
-            this.workloadNetworkGateways
-                = new WorkloadNetworkGatewaysImpl(clientObject.getWorkloadNetworkGateways(), this);
-        }
-        return workloadNetworkGateways;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworkPortMirroringProfiles. It manages
-     * WorkloadNetworkPortMirroring.
-     * 
-     * @return Resource collection API of WorkloadNetworkPortMirroringProfiles.
-     */
-    public WorkloadNetworkPortMirroringProfiles workloadNetworkPortMirroringProfiles() {
-        if (this.workloadNetworkPortMirroringProfiles == null) {
-            this.workloadNetworkPortMirroringProfiles = new WorkloadNetworkPortMirroringProfilesImpl(
-                clientObject.getWorkloadNetworkPortMirroringProfiles(), this);
-        }
-        return workloadNetworkPortMirroringProfiles;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworkVmGroups. It manages WorkloadNetworkVMGroup.
-     * 
-     * @return Resource collection API of WorkloadNetworkVmGroups.
-     */
-    public WorkloadNetworkVmGroups workloadNetworkVmGroups() {
-        if (this.workloadNetworkVmGroups == null) {
-            this.workloadNetworkVmGroups
-                = new WorkloadNetworkVmGroupsImpl(clientObject.getWorkloadNetworkVmGroups(), this);
-        }
-        return workloadNetworkVmGroups;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworkVirtualMachines.
-     * 
-     * @return Resource collection API of WorkloadNetworkVirtualMachines.
-     */
-    public WorkloadNetworkVirtualMachines workloadNetworkVirtualMachines() {
-        if (this.workloadNetworkVirtualMachines == null) {
-            this.workloadNetworkVirtualMachines
-                = new WorkloadNetworkVirtualMachinesImpl(clientObject.getWorkloadNetworkVirtualMachines(), this);
-        }
-        return workloadNetworkVirtualMachines;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworkDnsServices. It manages WorkloadNetworkDnsService.
-     * 
-     * @return Resource collection API of WorkloadNetworkDnsServices.
-     */
-    public WorkloadNetworkDnsServices workloadNetworkDnsServices() {
-        if (this.workloadNetworkDnsServices == null) {
-            this.workloadNetworkDnsServices
-                = new WorkloadNetworkDnsServicesImpl(clientObject.getWorkloadNetworkDnsServices(), this);
-        }
-        return workloadNetworkDnsServices;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworkDnsZones. It manages WorkloadNetworkDnsZone.
-     * 
-     * @return Resource collection API of WorkloadNetworkDnsZones.
-     */
-    public WorkloadNetworkDnsZones workloadNetworkDnsZones() {
-        if (this.workloadNetworkDnsZones == null) {
-            this.workloadNetworkDnsZones
-                = new WorkloadNetworkDnsZonesImpl(clientObject.getWorkloadNetworkDnsZones(), this);
-        }
-        return workloadNetworkDnsZones;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworkPublicIps. It manages WorkloadNetworkPublicIp.
-     * 
-     * @return Resource collection API of WorkloadNetworkPublicIps.
-     */
-    public WorkloadNetworkPublicIps workloadNetworkPublicIps() {
-        if (this.workloadNetworkPublicIps == null) {
-            this.workloadNetworkPublicIps
-                = new WorkloadNetworkPublicIpsImpl(clientObject.getWorkloadNetworkPublicIps(), this);
-        }
-        return workloadNetworkPublicIps;
-    }
-
-    /**
      * Gets the resource collection API of CloudLinks. It manages CloudLink.
      * 
      * @return Resource collection API of CloudLinks.
@@ -651,19 +481,7 @@ public final class AvsManager {
     }
 
     /**
-     * Gets the resource collection API of ScriptExecutions. It manages ScriptExecution.
-     * 
-     * @return Resource collection API of ScriptExecutions.
-     */
-    public ScriptExecutions scriptExecutions() {
-        if (this.scriptExecutions == null) {
-            this.scriptExecutions = new ScriptExecutionsImpl(clientObject.getScriptExecutions(), this);
-        }
-        return scriptExecutions;
-    }
-
-    /**
-     * Gets the resource collection API of IscsiPaths.
+     * Gets the resource collection API of IscsiPaths. It manages IscsiPath.
      * 
      * @return Resource collection API of IscsiPaths.
      */
@@ -672,6 +490,20 @@ public final class AvsManager {
             this.iscsiPaths = new IscsiPathsImpl(clientObject.getIscsiPaths(), this);
         }
         return iscsiPaths;
+    }
+
+    /**
+     * Gets the resource collection API of WorkloadNetworks. It manages WorkloadNetworkSegment, WorkloadNetworkDhcp,
+     * WorkloadNetworkPortMirroring, WorkloadNetworkVMGroup, WorkloadNetworkDnsService, WorkloadNetworkDnsZone,
+     * WorkloadNetworkPublicIp.
+     * 
+     * @return Resource collection API of WorkloadNetworks.
+     */
+    public WorkloadNetworks workloadNetworks() {
+        if (this.workloadNetworks == null) {
+            this.workloadNetworks = new WorkloadNetworksImpl(clientObject.getWorkloadNetworks(), this);
+        }
+        return workloadNetworks;
     }
 
     /**

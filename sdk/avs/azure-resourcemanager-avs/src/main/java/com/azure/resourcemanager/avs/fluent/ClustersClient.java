@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.ClusterInner;
 import com.azure.resourcemanager.avs.fluent.models.ClusterZoneListInner;
-import com.azure.resourcemanager.avs.models.ClustersUpdateResponse;
 import com.azure.resourcemanager.avs.models.ClusterUpdate;
 
 /**
@@ -150,15 +149,31 @@ public interface ClustersClient {
      * @param privateCloudName Name of the private cloud.
      * @param clusterName Name of the cluster.
      * @param clusterUpdate The cluster properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String privateCloudName,
+        String clusterName, ClusterUpdate clusterUpdate);
+
+    /**
+     * Update a Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param clusterUpdate The cluster properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource.
+     * @return the {@link SyncPoller} for polling of a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ClustersUpdateResponse updateWithResponse(String resourceGroupName, String privateCloudName, String clusterName,
-        ClusterUpdate clusterUpdate, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String privateCloudName,
+        String clusterName, ClusterUpdate clusterUpdate, Context context);
 
     /**
      * Update a Cluster.
@@ -175,6 +190,23 @@ public interface ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     ClusterInner update(String resourceGroupName, String privateCloudName, String clusterName,
         ClusterUpdate clusterUpdate);
+
+    /**
+     * Update a Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param clusterUpdate The cluster properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner update(String resourceGroupName, String privateCloudName, String clusterName,
+        ClusterUpdate clusterUpdate, Context context);
 
     /**
      * Delete a Cluster.

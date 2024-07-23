@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.models.AdminCredentialsInner;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudInner;
-import com.azure.resourcemanager.avs.models.PrivateCloudsUpdateResponse;
 import com.azure.resourcemanager.avs.models.PrivateCloudUpdate;
 
 /**
@@ -162,15 +161,30 @@ public interface PrivateCloudsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
      * @param privateCloudUpdate The private cloud properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a private cloud resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(String resourceGroupName,
+        String privateCloudName, PrivateCloudUpdate privateCloudUpdate);
+
+    /**
+     * Update a PrivateCloud.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param privateCloudUpdate The private cloud properties to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link SyncPoller} for polling of a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateCloudsUpdateResponse updateWithResponse(String resourceGroupName, String privateCloudName,
-        PrivateCloudUpdate privateCloudUpdate, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(String resourceGroupName,
+        String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context);
 
     /**
      * Update a PrivateCloud.
@@ -185,6 +199,22 @@ public interface PrivateCloudsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateCloudInner update(String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate);
+
+    /**
+     * Update a PrivateCloud.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param privateCloudUpdate The private cloud properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateCloudInner update(String resourceGroupName, String privateCloudName, PrivateCloudUpdate privateCloudUpdate,
+        Context context);
 
     /**
      * Delete a PrivateCloud.

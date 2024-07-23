@@ -8,40 +8,24 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsServiceInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDnsZoneInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkGatewayInner;
 import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPortMirroringInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkPublicIpInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkSegmentInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVirtualMachineInner;
+import com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkVMGroupInner;
 
 /**
  * An instance of this class provides access to all the operations defined in WorkloadNetworksClient.
  */
 public interface WorkloadNetworksClient {
-    /**
-     * Get a WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetwork along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkloadNetworkInner> getWithResponse(String resourceGroupName, String privateCloudName, Context context);
-
-    /**
-     * Get a WorkloadNetwork.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a WorkloadNetwork.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadNetworkInner get(String resourceGroupName, String privateCloudName);
-
     /**
      * List WorkloadNetwork resources by PrivateCloud.
      * 
@@ -68,4 +52,1979 @@ public interface WorkloadNetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName, Context context);
+
+    /**
+     * Get a WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetwork along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkInner> getWithResponse(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetwork.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkInner get(String resourceGroupName, String privateCloudName, String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkSegment resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkSegment list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkSegmentInner> listSegments(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkSegment resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkSegment list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkSegmentInner> listSegments(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkSegment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkSegmentInner> getSegmentWithResponse(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String segmentId, Context context);
+
+    /**
+     * Get a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkSegment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkSegmentInner getSegment(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String segmentId);
+
+    /**
+     * Create a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param workloadNetworkSegment Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Segment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegment(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String segmentId,
+        WorkloadNetworkSegmentInner workloadNetworkSegment);
+
+    /**
+     * Create a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param workloadNetworkSegment Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Segment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegment(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String segmentId,
+        WorkloadNetworkSegmentInner workloadNetworkSegment, Context context);
+
+    /**
+     * Create a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param workloadNetworkSegment Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Segment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkSegmentInner createSegment(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment);
+
+    /**
+     * Create a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param workloadNetworkSegment Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Segment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkSegmentInner createSegment(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment,
+        Context context);
+
+    /**
+     * Update a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Segment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegment(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String segmentId,
+        WorkloadNetworkSegmentInner properties);
+
+    /**
+     * Update a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Segment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegment(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String segmentId,
+        WorkloadNetworkSegmentInner properties, Context context);
+
+    /**
+     * Update a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param properties The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Segment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkSegmentInner updateSegment(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String segmentId, WorkloadNetworkSegmentInner properties);
+
+    /**
+     * Update a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param properties The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Segment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkSegmentInner updateSegment(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String segmentId, WorkloadNetworkSegmentInner properties, Context context);
+
+    /**
+     * Delete a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteSegment(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String segmentId);
+
+    /**
+     * Delete a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteSegment(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String segmentId, Context context);
+
+    /**
+     * Delete a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteSegment(String resourceGroupName, String privateCloudName, String workloadNetworkName, String segmentId);
+
+    /**
+     * Delete a WorkloadNetworkSegment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param segmentId The ID of the NSX Segment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteSegment(String resourceGroupName, String privateCloudName, String workloadNetworkName, String segmentId,
+        Context context);
+
+    /**
+     * List WorkloadNetworkDhcp resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkDhcp list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkDhcpInner> listDhcp(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkDhcp resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkDhcp list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkDhcpInner> listDhcp(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkDhcp along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkDhcpInner> getDhcpWithResponse(String resourceGroupName, String dhcpId,
+        String privateCloudName, Context context);
+
+    /**
+     * Get a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkDhcp.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDhcpInner getDhcp(String resourceGroupName, String dhcpId, String privateCloudName);
+
+    /**
+     * Create a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param workloadNetworkDhcp Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DHCP.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcp(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName, String dhcpId,
+        WorkloadNetworkDhcpInner workloadNetworkDhcp);
+
+    /**
+     * Create a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param workloadNetworkDhcp Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DHCP.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcp(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName, String dhcpId,
+        WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
+
+    /**
+     * Create a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param workloadNetworkDhcp Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DHCP.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDhcpInner createDhcp(String resourceGroupName, String privateCloudName, String workloadNetworkName,
+        String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp);
+
+    /**
+     * Create a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param workloadNetworkDhcp Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DHCP.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDhcpInner createDhcp(String resourceGroupName, String privateCloudName, String workloadNetworkName,
+        String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
+
+    /**
+     * Update a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param workloadNetworkDhcp The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DHCP.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName, String dhcpId,
+        WorkloadNetworkDhcpInner workloadNetworkDhcp);
+
+    /**
+     * Update a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param workloadNetworkDhcp The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DHCP.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName, String dhcpId,
+        WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
+
+    /**
+     * Update a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param workloadNetworkDhcp The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DHCP.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDhcpInner updateDhcp(String resourceGroupName, String privateCloudName, String workloadNetworkName,
+        String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp);
+
+    /**
+     * Update a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param workloadNetworkDhcp The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DHCP.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDhcpInner updateDhcp(String resourceGroupName, String privateCloudName, String workloadNetworkName,
+        String dhcpId, WorkloadNetworkDhcpInner workloadNetworkDhcp, Context context);
+
+    /**
+     * Delete a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dhcpId);
+
+    /**
+     * Delete a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dhcpId, Context context);
+
+    /**
+     * Delete a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteDhcp(String resourceGroupName, String privateCloudName, String workloadNetworkName, String dhcpId);
+
+    /**
+     * Delete a WorkloadNetworkDhcp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dhcpId The ID of the DHCP configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteDhcp(String resourceGroupName, String privateCloudName, String workloadNetworkName, String dhcpId,
+        Context context);
+
+    /**
+     * List WorkloadNetworkGateway resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkGateway list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkGatewayInner> listGateways(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkGateway resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkGateway list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkGatewayInner> listGateways(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetworkGateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param gatewayId The ID of the NSX Gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkGateway along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkGatewayInner> getGatewayWithResponse(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String gatewayId, Context context);
+
+    /**
+     * Get a WorkloadNetworkGateway.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param gatewayId The ID of the NSX Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkGateway.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkGatewayInner getGateway(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String gatewayId);
+
+    /**
+     * List WorkloadNetworkPortMirroring resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkPortMirroring list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkPortMirroringInner> listPortMirroring(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkPortMirroring resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkPortMirroring list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkPortMirroringInner> listPortMirroring(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkPortMirroring along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkPortMirroringInner> getPortMirroringWithResponse(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName, String portMirroringId, Context context);
+
+    /**
+     * Get a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkPortMirroring.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkPortMirroringInner getPortMirroring(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String portMirroringId);
+
+    /**
+     * Create a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param workloadNetworkPortMirroring Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
+        beginCreatePortMirroring(String resourceGroupName, String privateCloudName, String workloadNetworkName,
+            String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring);
+
+    /**
+     * Create a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param workloadNetworkPortMirroring Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
+        beginCreatePortMirroring(String resourceGroupName, String privateCloudName, String workloadNetworkName,
+            String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context);
+
+    /**
+     * Create a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param workloadNetworkPortMirroring Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Port Mirroring.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkPortMirroringInner createPortMirroring(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String portMirroringId,
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring);
+
+    /**
+     * Create a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param workloadNetworkPortMirroring Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Port Mirroring.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkPortMirroringInner createPortMirroring(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String portMirroringId,
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context);
+
+    /**
+     * Update a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param workloadNetworkPortMirroring The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
+        beginUpdatePortMirroring(String resourceGroupName, String privateCloudName, String workloadNetworkName,
+            String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring);
+
+    /**
+     * Update a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param workloadNetworkPortMirroring The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Port Mirroring.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
+        beginUpdatePortMirroring(String resourceGroupName, String privateCloudName, String workloadNetworkName,
+            String portMirroringId, WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context);
+
+    /**
+     * Update a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param workloadNetworkPortMirroring The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Port Mirroring.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkPortMirroringInner updatePortMirroring(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String portMirroringId,
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring);
+
+    /**
+     * Update a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param workloadNetworkPortMirroring The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Port Mirroring.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkPortMirroringInner updatePortMirroring(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String portMirroringId,
+        WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring, Context context);
+
+    /**
+     * Delete a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(String resourceGroupName, String portMirroringId,
+        String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(String resourceGroupName, String portMirroringId,
+        String privateCloudName, Context context);
+
+    /**
+     * Delete a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePortMirroring(String resourceGroupName, String portMirroringId, String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkPortMirroring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param portMirroringId ID of the NSX port mirroring profile.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePortMirroring(String resourceGroupName, String portMirroringId, String privateCloudName,
+        Context context);
+
+    /**
+     * List WorkloadNetworkVMGroup resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkVMGroup list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkVMGroupInner> listVMGroups(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkVMGroup resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkVMGroup list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkVMGroupInner> listVMGroups(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkVMGroup along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkVMGroupInner> getVMGroupWithResponse(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String vmGroupId, Context context);
+
+    /**
+     * Get a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkVMGroup.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkVMGroupInner getVMGroup(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String vmGroupId);
+
+    /**
+     * Create a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX VM Group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroup(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String vmGroupId,
+        WorkloadNetworkVMGroupInner resource);
+
+    /**
+     * Create a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX VM Group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroup(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String vmGroupId,
+        WorkloadNetworkVMGroupInner resource, Context context);
+
+    /**
+     * Create a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX VM Group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkVMGroupInner createVMGroup(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String vmGroupId, WorkloadNetworkVMGroupInner resource);
+
+    /**
+     * Create a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX VM Group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkVMGroupInner createVMGroup(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String vmGroupId, WorkloadNetworkVMGroupInner resource, Context context);
+
+    /**
+     * Update a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @param workloadNetworkVMGroup The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX VM Group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String vmGroupId,
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup);
+
+    /**
+     * Update a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @param workloadNetworkVMGroup The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX VM Group.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String vmGroupId,
+        WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context);
+
+    /**
+     * Update a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @param workloadNetworkVMGroup The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX VM Group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkVMGroupInner updateVMGroup(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup);
+
+    /**
+     * Update a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param vmGroupId ID of the VM group.
+     * @param workloadNetworkVMGroup The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX VM Group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkVMGroupInner updateVMGroup(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String vmGroupId, WorkloadNetworkVMGroupInner workloadNetworkVMGroup,
+        Context context);
+
+    /**
+     * Delete a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmGroupId ID of the VM group.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(String resourceGroupName, String vmGroupId,
+        String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmGroupId ID of the VM group.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(String resourceGroupName, String vmGroupId,
+        String privateCloudName, Context context);
+
+    /**
+     * Delete a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmGroupId ID of the VM group.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteVMGroup(String resourceGroupName, String vmGroupId, String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkVMGroup.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmGroupId ID of the VM group.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteVMGroup(String resourceGroupName, String vmGroupId, String privateCloudName, Context context);
+
+    /**
+     * List WorkloadNetworkVirtualMachine resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkVirtualMachine list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkVirtualMachineInner> listVirtualMachines(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkVirtualMachine resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkVirtualMachine list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkVirtualMachineInner> listVirtualMachines(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetworkVirtualMachine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param virtualMachineId ID of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkVirtualMachine along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkVirtualMachineInner> getVirtualMachineWithResponse(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName, String virtualMachineId, Context context);
+
+    /**
+     * Get a WorkloadNetworkVirtualMachine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param virtualMachineId ID of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkVirtualMachine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkVirtualMachineInner getVirtualMachine(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String virtualMachineId);
+
+    /**
+     * List WorkloadNetworkDnsService resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkDnsService list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkDnsServiceInner> listDnsServices(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkDnsService resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkDnsService list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkDnsServiceInner> listDnsServices(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkDnsService along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkDnsServiceInner> getDnsServiceWithResponse(String resourceGroupName,
+        String privateCloudName, String workloadNetworkName, String dnsServiceId, Context context);
+
+    /**
+     * Get a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkDnsService.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsServiceInner getDnsService(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsServiceId);
+
+    /**
+     * Create a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @param workloadNetworkDnsService Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DNS Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginCreateDnsService(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String dnsServiceId,
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService);
+
+    /**
+     * Create a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @param workloadNetworkDnsService Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DNS Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginCreateDnsService(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String dnsServiceId,
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context);
+
+    /**
+     * Create a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @param workloadNetworkDnsService Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DNS Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsServiceInner createDnsService(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService);
+
+    /**
+     * Create a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @param workloadNetworkDnsService Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DNS Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsServiceInner createDnsService(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService,
+        Context context);
+
+    /**
+     * Update a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @param workloadNetworkDnsService The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DNS Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String dnsServiceId,
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService);
+
+    /**
+     * Update a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @param workloadNetworkDnsService The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DNS Service.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String dnsServiceId,
+        WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context);
+
+    /**
+     * Update a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @param workloadNetworkDnsService The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DNS Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsServiceInner updateDnsService(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService);
+
+    /**
+     * Update a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsServiceId ID of the DNS service.
+     * @param workloadNetworkDnsService The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DNS Service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsServiceInner updateDnsService(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsServiceId, WorkloadNetworkDnsServiceInner workloadNetworkDnsService,
+        Context context);
+
+    /**
+     * Delete a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsServiceId ID of the DNS service.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(String resourceGroupName, String dnsServiceId,
+        String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsServiceId ID of the DNS service.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(String resourceGroupName, String dnsServiceId,
+        String privateCloudName, Context context);
+
+    /**
+     * Delete a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsServiceId ID of the DNS service.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteDnsService(String resourceGroupName, String dnsServiceId, String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkDnsService.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsServiceId ID of the DNS service.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteDnsService(String resourceGroupName, String dnsServiceId, String privateCloudName, Context context);
+
+    /**
+     * List WorkloadNetworkDnsZone resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkDnsZone list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkDnsZoneInner> listDnsZones(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkDnsZone resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkDnsZone list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkDnsZoneInner> listDnsZones(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkDnsZone along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkDnsZoneInner> getDnsZoneWithResponse(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsZoneId, Context context);
+
+    /**
+     * Get a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkDnsZone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsZoneInner getDnsZone(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsZoneId);
+
+    /**
+     * Create a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param workloadNetworkDnsZone Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZone(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String dnsZoneId,
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone);
+
+    /**
+     * Create a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param workloadNetworkDnsZone Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZone(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String dnsZoneId,
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context);
+
+    /**
+     * Create a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param workloadNetworkDnsZone Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DNS Zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsZoneInner createDnsZone(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone);
+
+    /**
+     * Create a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param workloadNetworkDnsZone Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DNS Zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsZoneInner createDnsZone(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone,
+        Context context);
+
+    /**
+     * Update a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param workloadNetworkDnsZone The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String dnsZoneId,
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone);
+
+    /**
+     * Update a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param workloadNetworkDnsZone The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX DNS Zone.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String dnsZoneId,
+        WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context);
+
+    /**
+     * Update a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param workloadNetworkDnsZone The resource properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DNS Zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsZoneInner updateDnsZone(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone);
+
+    /**
+     * Update a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param workloadNetworkDnsZone The resource properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX DNS Zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkDnsZoneInner updateDnsZone(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String dnsZoneId, WorkloadNetworkDnsZoneInner workloadNetworkDnsZone,
+        Context context);
+
+    /**
+     * Delete a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(String resourceGroupName, String dnsZoneId,
+        String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(String resourceGroupName, String dnsZoneId,
+        String privateCloudName, Context context);
+
+    /**
+     * Delete a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteDnsZone(String resourceGroupName, String dnsZoneId, String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkDnsZone.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsZoneId ID of the DNS zone.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteDnsZone(String resourceGroupName, String dnsZoneId, String privateCloudName, Context context);
+
+    /**
+     * List WorkloadNetworkPublicIP resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkPublicIP list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkPublicIpInner> listPublicIPs(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName);
+
+    /**
+     * List WorkloadNetworkPublicIP resources by WorkloadNetwork.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a WorkloadNetworkPublicIP list operation as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<WorkloadNetworkPublicIpInner> listPublicIPs(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, Context context);
+
+    /**
+     * Get a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param publicIPId ID of the DNS zone.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkPublicIP along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkloadNetworkPublicIpInner> getPublicIPWithResponse(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String publicIPId, Context context);
+
+    /**
+     * Get a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param publicIPId ID of the DNS zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkPublicIP.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkPublicIpInner getPublicIP(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String publicIPId);
+
+    /**
+     * Create a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param publicIPId ID of the DNS zone.
+     * @param workloadNetworkPublicIP Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Public IP Block.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIP(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String publicIPId,
+        WorkloadNetworkPublicIpInner workloadNetworkPublicIP);
+
+    /**
+     * Create a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param publicIPId ID of the DNS zone.
+     * @param workloadNetworkPublicIP Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of nSX Public IP Block.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIP(
+        String resourceGroupName, String privateCloudName, String workloadNetworkName, String publicIPId,
+        WorkloadNetworkPublicIpInner workloadNetworkPublicIP, Context context);
+
+    /**
+     * Create a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param publicIPId ID of the DNS zone.
+     * @param workloadNetworkPublicIP Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Public IP Block.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkPublicIpInner createPublicIP(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIP);
+
+    /**
+     * Create a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param workloadNetworkName Name of the global reach connection.
+     * @param publicIPId ID of the DNS zone.
+     * @param workloadNetworkPublicIP Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return nSX Public IP Block.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadNetworkPublicIpInner createPublicIP(String resourceGroupName, String privateCloudName,
+        String workloadNetworkName, String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIP,
+        Context context);
+
+    /**
+     * Delete a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param publicIPId ID of the DNS zone.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePublicIP(String resourceGroupName, String publicIPId,
+        String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param publicIPId ID of the DNS zone.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeletePublicIP(String resourceGroupName, String publicIPId,
+        String privateCloudName, Context context);
+
+    /**
+     * Delete a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param publicIPId ID of the DNS zone.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePublicIP(String resourceGroupName, String publicIPId, String privateCloudName);
+
+    /**
+     * Delete a WorkloadNetworkPublicIP.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param publicIPId ID of the DNS zone.
+     * @param privateCloudName Name of the private cloud.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deletePublicIP(String resourceGroupName, String publicIPId, String privateCloudName, Context context);
 }

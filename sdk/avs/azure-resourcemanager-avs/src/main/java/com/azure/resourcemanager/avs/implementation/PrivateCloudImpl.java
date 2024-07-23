@@ -232,16 +232,14 @@ public final class PrivateCloudImpl implements PrivateCloud, PrivateCloud.Defini
     public PrivateCloud apply() {
         this.innerObject = serviceManager.serviceClient()
             .getPrivateClouds()
-            .updateWithResponse(resourceGroupName, privateCloudName, updatePrivateCloudUpdate, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, privateCloudName, updatePrivateCloudUpdate, Context.NONE);
         return this;
     }
 
     public PrivateCloud apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getPrivateClouds()
-            .updateWithResponse(resourceGroupName, privateCloudName, updatePrivateCloudUpdate, context)
-            .getValue();
+            .update(resourceGroupName, privateCloudName, updatePrivateCloudUpdate, context);
         return this;
     }
 

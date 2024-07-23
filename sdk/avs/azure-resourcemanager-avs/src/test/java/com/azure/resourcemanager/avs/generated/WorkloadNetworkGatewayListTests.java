@@ -12,9 +12,9 @@ public final class WorkloadNetworkGatewayListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkGatewayList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"meue\",\"path\":\"vyhzceuojgjrwj\"},\"id\":\"iotwmcdytdxwit\",\"name\":\"nrjawgqwg\",\"type\":\"hniskxfbkpyc\"}],\"nextLink\":\"lwn\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"wzsyyceuzs\",\"path\":\"bjudpfrxtrthzv\"},\"id\":\"tdwkqbrq\",\"name\":\"bpaxhexiilivpdt\",\"type\":\"irqtdqoa\"},{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"fgsqu\",\"path\":\"xrxxlep\"},\"id\":\"amxjezwlw\",\"name\":\"wxuqlcvydypatdoo\",\"type\":\"ojknio\"}],\"nextLink\":\"oo\"}")
             .toObject(WorkloadNetworkGatewayList.class);
-        Assertions.assertEquals("meue", model.value().get(0).displayName());
-        Assertions.assertEquals("lwn", model.nextLink());
+        Assertions.assertEquals("wzsyyceuzs", model.value().get(0).displayName());
+        Assertions.assertEquals("oo", model.nextLink());
     }
 }

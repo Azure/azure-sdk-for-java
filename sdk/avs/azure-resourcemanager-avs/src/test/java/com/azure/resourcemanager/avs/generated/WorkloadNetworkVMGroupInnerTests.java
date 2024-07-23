@@ -13,21 +13,21 @@ public final class WorkloadNetworkVMGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVMGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"fqqnvwpmqtaruo\",\"members\":[\"kcjhwqytjrybnwj\",\"wgdrjervnaenqp\",\"hin\",\"oygmift\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Updating\",\"revision\":1265885080326792756},\"id\":\"nayqi\",\"name\":\"ynduha\",\"type\":\"hqlkthumaqo\"}")
+            "{\"properties\":{\"displayName\":\"nuuzkopbm\",\"members\":[\"fdwoyuhh\",\"iuiefozbhdmsm\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Deleting\",\"revision\":1203862565285552699},\"id\":\"maequiahxicslfa\",\"name\":\"qzpiyyl\",\"type\":\"alnswhccsphk\"}")
             .toObject(WorkloadNetworkVMGroupInner.class);
-        Assertions.assertEquals("fqqnvwpmqtaruo", model.displayName());
-        Assertions.assertEquals("kcjhwqytjrybnwj", model.members().get(0));
-        Assertions.assertEquals(1265885080326792756L, model.revision());
+        Assertions.assertEquals("nuuzkopbm", model.displayName());
+        Assertions.assertEquals("fdwoyuhh", model.members().get(0));
+        Assertions.assertEquals(1203862565285552699L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkVMGroupInner model = new WorkloadNetworkVMGroupInner().withDisplayName("fqqnvwpmqtaruo")
-            .withMembers(Arrays.asList("kcjhwqytjrybnwj", "wgdrjervnaenqp", "hin", "oygmift"))
-            .withRevision(1265885080326792756L);
+        WorkloadNetworkVMGroupInner model = new WorkloadNetworkVMGroupInner().withDisplayName("nuuzkopbm")
+            .withMembers(Arrays.asList("fdwoyuhh", "iuiefozbhdmsm"))
+            .withRevision(1203862565285552699L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVMGroupInner.class);
-        Assertions.assertEquals("fqqnvwpmqtaruo", model.displayName());
-        Assertions.assertEquals("kcjhwqytjrybnwj", model.members().get(0));
-        Assertions.assertEquals(1265885080326792756L, model.revision());
+        Assertions.assertEquals("nuuzkopbm", model.displayName());
+        Assertions.assertEquals("fdwoyuhh", model.members().get(0));
+        Assertions.assertEquals(1203862565285552699L, model.revision());
     }
 }

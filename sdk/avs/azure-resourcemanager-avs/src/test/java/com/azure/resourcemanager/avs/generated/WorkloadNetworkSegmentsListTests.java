@@ -12,13 +12,13 @@ public final class WorkloadNetworkSegmentsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkSegmentsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"ybyxc\",\"connectedGateway\":\"clha\",\"subnet\":{\"dhcpRanges\":[\"abphlw\",\"qlfktsths\",\"cocmnyyaztt\"],\"gatewayAddress\":\"wwrq\"},\"portVif\":[{\"portName\":\"ckzywbiexzfeyue\"},{\"portName\":\"ibx\"},{\"portName\":\"wbhqwal\"},{\"portName\":\"zyoxaepdkzjan\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":3067424612233139925},\"id\":\"v\",\"name\":\"bniwdj\",\"type\":\"wz\"},{\"properties\":{\"displayName\":\"bpg\",\"connectedGateway\":\"ytxhp\",\"subnet\":{\"dhcpRanges\":[\"pfza\",\"glcuhxwtctyqi\",\"lbbovplw\"],\"gatewayAddress\":\"hvgyuguosvmk\"},\"portVif\":[{\"portName\":\"qukkfp\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":6280051526633281163},\"id\":\"zkd\",\"name\":\"slpvlop\",\"type\":\"i\"}],\"nextLink\":\"ghxpkdw\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"btgiwbwoenwas\",\"connectedGateway\":\"tdtkcn\",\"subnet\":{\"dhcpRanges\":[\"p\",\"kulpiujwaasi\",\"qiiobyuqer\",\"qlpqwcciuq\"],\"gatewayAddress\":\"dbutauvfbtkuwhh\"},\"portVif\":[{\"portName\":\"ojoxafnndlp\"},{\"portName\":\"hkoymkcdyhbp\"},{\"portName\":\"pwdreqnovvqf\"},{\"portName\":\"ljxywsu\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Failed\",\"revision\":1595532838454650942},\"id\":\"tgadgvraeaen\",\"name\":\"qnzarrwl\",\"type\":\"uu\"},{\"properties\":{\"displayName\":\"qkacewii\",\"connectedGateway\":\"pubjibw\",\"subnet\":{\"dhcpRanges\":[\"ohqkvpuvksgpls\",\"kn\",\"n\",\"synljphuopxodl\"],\"gatewayAddress\":\"ynt\"},\"portVif\":[{\"portName\":\"hleosjsw\"},{\"portName\":\"mslyzrpzbchckqqz\"},{\"portName\":\"ox\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":8143854718765989330},\"id\":\"ked\",\"name\":\"atrwyhqmibzyh\",\"type\":\"itsmypyyn\"}],\"nextLink\":\"dpumnzgmw\"}")
             .toObject(WorkloadNetworkSegmentsList.class);
-        Assertions.assertEquals("ybyxc", model.value().get(0).displayName());
-        Assertions.assertEquals("clha", model.value().get(0).connectedGateway());
-        Assertions.assertEquals("abphlw", model.value().get(0).subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("wwrq", model.value().get(0).subnet().gatewayAddress());
-        Assertions.assertEquals(3067424612233139925L, model.value().get(0).revision());
-        Assertions.assertEquals("ghxpkdw", model.nextLink());
+        Assertions.assertEquals("btgiwbwoenwas", model.value().get(0).displayName());
+        Assertions.assertEquals("tdtkcn", model.value().get(0).connectedGateway());
+        Assertions.assertEquals("p", model.value().get(0).subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("dbutauvfbtkuwhh", model.value().get(0).subnet().gatewayAddress());
+        Assertions.assertEquals(1595532838454650942L, model.value().get(0).revision());
+        Assertions.assertEquals("dpumnzgmw", model.nextLink());
     }
 }

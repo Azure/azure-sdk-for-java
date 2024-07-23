@@ -32,7 +32,7 @@ public final class PrivateCloudIdentity implements JsonSerializable<PrivateCloud
     /*
      * The type of managed identity assigned to this resource.
      */
-    private ResourceIdentityType type;
+    private SystemAssignedServiceIdentityType type;
 
     /**
      * Creates an instance of PrivateCloudIdentity class.
@@ -65,7 +65,7 @@ public final class PrivateCloudIdentity implements JsonSerializable<PrivateCloud
      * 
      * @return the type value.
      */
-    public ResourceIdentityType type() {
+    public SystemAssignedServiceIdentityType type() {
         return this.type;
     }
 
@@ -75,7 +75,7 @@ public final class PrivateCloudIdentity implements JsonSerializable<PrivateCloud
      * @param type the type value to set.
      * @return the PrivateCloudIdentity object itself.
      */
-    public PrivateCloudIdentity withType(ResourceIdentityType type) {
+    public PrivateCloudIdentity withType(SystemAssignedServiceIdentityType type) {
         this.type = type;
         return this;
     }
@@ -121,7 +121,8 @@ public final class PrivateCloudIdentity implements JsonSerializable<PrivateCloud
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    deserializedPrivateCloudIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                    deserializedPrivateCloudIdentity.type
+                        = SystemAssignedServiceIdentityType.fromString(reader.getString());
                 } else if ("principalId".equals(fieldName)) {
                     deserializedPrivateCloudIdentity.principalId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {

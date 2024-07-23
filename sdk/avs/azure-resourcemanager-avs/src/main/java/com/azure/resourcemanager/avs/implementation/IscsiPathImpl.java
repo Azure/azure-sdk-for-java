@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.avs.implementation;
 
 import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.IscsiPathInner;
 import com.azure.resourcemanager.avs.models.IscsiPath;
 import com.azure.resourcemanager.avs.models.IscsiPathProvisioningState;
 
-public final class IscsiPathImpl implements IscsiPath {
+public final class IscsiPathImpl implements IscsiPath, IscsiPath.Definition, IscsiPath.Update {
     private IscsiPathInner innerObject;
 
     private final com.azure.resourcemanager.avs.AvsManager serviceManager;
-
-    IscsiPathImpl(IscsiPathInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -43,11 +39,94 @@ public final class IscsiPathImpl implements IscsiPath {
         return this.innerModel().networkBlock();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IscsiPathInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.avs.AvsManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String privateCloudName;
+
+    private String iscsiPathName;
+
+    public IscsiPathImpl withExistingPrivateCloud(String resourceGroupName, String privateCloudName) {
+        this.resourceGroupName = resourceGroupName;
+        this.privateCloudName = privateCloudName;
+        return this;
+    }
+
+    public IscsiPath create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiPaths()
+            .createOrUpdate(resourceGroupName, privateCloudName, iscsiPathName, this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public IscsiPath create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiPaths()
+            .createOrUpdate(resourceGroupName, privateCloudName, iscsiPathName, this.innerModel(), context);
+        return this;
+    }
+
+    IscsiPathImpl(String name, com.azure.resourcemanager.avs.AvsManager serviceManager) {
+        this.innerObject = new IscsiPathInner();
+        this.serviceManager = serviceManager;
+        this.iscsiPathName = name;
+    }
+
+    public IscsiPathImpl update() {
+        return this;
+    }
+
+    public IscsiPath apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiPaths()
+            .createOrUpdate(resourceGroupName, privateCloudName, iscsiPathName, this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public IscsiPath apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiPaths()
+            .createOrUpdate(resourceGroupName, privateCloudName, iscsiPathName, this.innerModel(), context);
+        return this;
+    }
+
+    IscsiPathImpl(IscsiPathInner innerObject, com.azure.resourcemanager.avs.AvsManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
+        this.iscsiPathName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "iscsiPaths");
+    }
+
+    public IscsiPath refresh() {
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiPaths()
+            .getWithResponse(resourceGroupName, privateCloudName, iscsiPathName, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public IscsiPath refresh(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getIscsiPaths()
+            .getWithResponse(resourceGroupName, privateCloudName, iscsiPathName, context)
+            .getValue();
+        return this;
+    }
+
+    public IscsiPathImpl withNetworkBlock(String networkBlock) {
+        this.innerModel().withNetworkBlock(networkBlock);
+        return this;
     }
 }

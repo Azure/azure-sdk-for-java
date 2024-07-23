@@ -13,18 +13,18 @@ public final class PlacementPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PlacementPolicyProperties model = BinaryData.fromString(
-            "{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"kopbminrf\",\"provisioningState\":\"Canceled\"}")
+            "{\"type\":\"PlacementPolicyProperties\",\"state\":\"Disabled\",\"displayName\":\"hakauhashsf\",\"provisioningState\":\"Building\"}")
             .toObject(PlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("kopbminrf", model.displayName());
+        Assertions.assertEquals("hakauhashsf", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PlacementPolicyProperties model
-            = new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED).withDisplayName("kopbminrf");
+            = new PlacementPolicyProperties().withState(PlacementPolicyState.DISABLED).withDisplayName("hakauhashsf");
         model = BinaryData.fromObject(model).toObject(PlacementPolicyProperties.class);
         Assertions.assertEquals(PlacementPolicyState.DISABLED, model.state());
-        Assertions.assertEquals("kopbminrf", model.displayName());
+        Assertions.assertEquals("hakauhashsf", model.displayName());
     }
 }

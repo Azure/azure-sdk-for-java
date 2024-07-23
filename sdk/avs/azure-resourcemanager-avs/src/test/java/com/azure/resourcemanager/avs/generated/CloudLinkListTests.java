@@ -12,9 +12,9 @@ public final class CloudLinkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudLinkList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Failed\",\"linkedCloud\":\"tcs\"},\"id\":\"cktqumiekkezzi\",\"name\":\"hlyfjhdgqgg\",\"type\":\"bdunygaeqid\"},{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Disconnected\",\"linkedCloud\":\"llrxcyjmoad\"},\"id\":\"varmywdmj\",\"name\":\"jqbjhhy\",\"type\":\"xrwlyc\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Disconnected\",\"linkedCloud\":\"kgymareqnajxqug\"},\"id\":\"ky\",\"name\":\"ubeddg\",\"type\":\"sofwqmzqalkrmnji\"}],\"nextLink\":\"xacqqudfnbyx\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Active\",\"linkedCloud\":\"mpvecxgodebfqk\"},\"id\":\"bmpukgriwflz\",\"name\":\"fbxzpuzycisp\",\"type\":\"qzahmgkbrp\"}],\"nextLink\":\"dhibnuq\"}")
             .toObject(CloudLinkList.class);
-        Assertions.assertEquals("tcs", model.value().get(0).linkedCloud());
-        Assertions.assertEquals("xacqqudfnbyx", model.nextLink());
+        Assertions.assertEquals("mpvecxgodebfqk", model.value().get(0).linkedCloud());
+        Assertions.assertEquals("dhibnuq", model.nextLink());
     }
 }

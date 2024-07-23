@@ -100,18 +100,16 @@ public final class PlacementPolicyImpl implements PlacementPolicy, PlacementPoli
     public PlacementPolicy apply() {
         this.innerObject = serviceManager.serviceClient()
             .getPlacementPolicies()
-            .updateWithResponse(resourceGroupName, privateCloudName, clusterName, placementPolicyName,
-                updatePlacementPolicyUpdate, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, privateCloudName, clusterName, placementPolicyName, updatePlacementPolicyUpdate,
+                Context.NONE);
         return this;
     }
 
     public PlacementPolicy apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getPlacementPolicies()
-            .updateWithResponse(resourceGroupName, privateCloudName, clusterName, placementPolicyName,
-                updatePlacementPolicyUpdate, context)
-            .getValue();
+            .update(resourceGroupName, privateCloudName, clusterName, placementPolicyName, updatePlacementPolicyUpdate,
+                context);
         return this;
     }
 

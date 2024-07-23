@@ -12,15 +12,15 @@ public final class IscsiPathPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IscsiPathProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Building\",\"networkBlock\":\"aehvbbxuri\"}")
+            = BinaryData.fromString("{\"provisioningState\":\"Building\",\"networkBlock\":\"kzzlvmbmpaxmodf\"}")
                 .toObject(IscsiPathProperties.class);
-        Assertions.assertEquals("aehvbbxuri", model.networkBlock());
+        Assertions.assertEquals("kzzlvmbmpaxmodf", model.networkBlock());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IscsiPathProperties model = new IscsiPathProperties().withNetworkBlock("aehvbbxuri");
+        IscsiPathProperties model = new IscsiPathProperties().withNetworkBlock("kzzlvmbmpaxmodf");
         model = BinaryData.fromObject(model).toObject(IscsiPathProperties.class);
-        Assertions.assertEquals("aehvbbxuri", model.networkBlock());
+        Assertions.assertEquals("kzzlvmbmpaxmodf", model.networkBlock());
     }
 }

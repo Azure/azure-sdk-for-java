@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineRestrictMovementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineRestrictMovement model = BinaryData.fromString("{\"restrictMovement\":\"Enabled\"}")
+        VirtualMachineRestrictMovement model = BinaryData.fromString("{\"restrictMovement\":\"Disabled\"}")
             .toObject(VirtualMachineRestrictMovement.class);
-        Assertions.assertEquals(VirtualMachineRestrictMovementState.ENABLED, model.restrictMovement());
+        Assertions.assertEquals(VirtualMachineRestrictMovementState.DISABLED, model.restrictMovement());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineRestrictMovement model
-            = new VirtualMachineRestrictMovement().withRestrictMovement(VirtualMachineRestrictMovementState.ENABLED);
+            = new VirtualMachineRestrictMovement().withRestrictMovement(VirtualMachineRestrictMovementState.DISABLED);
         model = BinaryData.fromObject(model).toObject(VirtualMachineRestrictMovement.class);
-        Assertions.assertEquals(VirtualMachineRestrictMovementState.ENABLED, model.restrictMovement());
+        Assertions.assertEquals(VirtualMachineRestrictMovementState.DISABLED, model.restrictMovement());
     }
 }

@@ -120,16 +120,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     public Cluster apply() {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .updateWithResponse(resourceGroupName, privateCloudName, clusterName, updateClusterUpdate, Context.NONE)
-            .getValue();
+            .update(resourceGroupName, privateCloudName, clusterName, updateClusterUpdate, Context.NONE);
         return this;
     }
 
     public Cluster apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getClusters()
-            .updateWithResponse(resourceGroupName, privateCloudName, clusterName, updateClusterUpdate, context)
-            .getValue();
+            .update(resourceGroupName, privateCloudName, clusterName, updateClusterUpdate, context);
         return this;
     }
 

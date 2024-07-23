@@ -6,7 +6,7 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
-import com.azure.resourcemanager.avs.models.ResourceIdentityType;
+import com.azure.resourcemanager.avs.models.SystemAssignedServiceIdentityType;
 import org.junit.jupiter.api.Assertions;
 
 public final class PrivateCloudIdentityTests {
@@ -15,13 +15,13 @@ public final class PrivateCloudIdentityTests {
         PrivateCloudIdentity model
             = BinaryData.fromString("{\"principalId\":\"gakeqsr\",\"tenantId\":\"bzqqedqytbciq\",\"type\":\"None\"}")
                 .toObject(PrivateCloudIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateCloudIdentity model = new PrivateCloudIdentity().withType(ResourceIdentityType.NONE);
+        PrivateCloudIdentity model = new PrivateCloudIdentity().withType(SystemAssignedServiceIdentityType.NONE);
         model = BinaryData.fromObject(model).toObject(PrivateCloudIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, model.type());
     }
 }

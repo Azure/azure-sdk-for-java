@@ -12,10 +12,10 @@ public final class WorkloadNetworkPublicIPsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPublicIPsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"gpiohgwxrtfudxe\",\"numberOfPublicIPs\":6514858021429691884,\"publicIPBlock\":\"agvrvmnpkuk\",\"provisioningState\":\"Building\"},\"id\":\"dblx\",\"name\":\"wi\",\"type\":\"fnjhfjxwmszkkfo\"}],\"nextLink\":\"eyfkzikfja\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"pwjxezn\",\"numberOfPublicIPs\":3866044551927129985,\"publicIPBlock\":\"njwmwkpnbsazejj\",\"provisioningState\":\"Succeeded\"},\"id\":\"gfhsxttaugzxn\",\"name\":\"aa\",\"type\":\"pxdtnkdmkq\"},{\"properties\":{\"displayName\":\"wuenvr\",\"numberOfPublicIPs\":1643740308818465085,\"publicIPBlock\":\"aibrebqaaysjkixq\",\"provisioningState\":\"Updating\"},\"id\":\"tezlwff\",\"name\":\"iakp\",\"type\":\"pqqmted\"}],\"nextLink\":\"mmji\"}")
             .toObject(WorkloadNetworkPublicIPsList.class);
-        Assertions.assertEquals("gpiohgwxrtfudxe", model.value().get(0).displayName());
-        Assertions.assertEquals(6514858021429691884L, model.value().get(0).numberOfPublicIPs());
-        Assertions.assertEquals("eyfkzikfja", model.nextLink());
+        Assertions.assertEquals("pwjxezn", model.value().get(0).displayName());
+        Assertions.assertEquals(3866044551927129985L, model.value().get(0).numberOfPublicIPs());
+        Assertions.assertEquals("mmji", model.nextLink());
     }
 }

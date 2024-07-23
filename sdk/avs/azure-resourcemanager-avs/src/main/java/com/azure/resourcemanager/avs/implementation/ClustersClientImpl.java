@@ -37,7 +37,6 @@ import com.azure.resourcemanager.avs.fluent.ClustersClient;
 import com.azure.resourcemanager.avs.fluent.models.ClusterInner;
 import com.azure.resourcemanager.avs.fluent.models.ClusterZoneListInner;
 import com.azure.resourcemanager.avs.implementation.models.ClusterList;
-import com.azure.resourcemanager.avs.models.ClustersUpdateResponse;
 import com.azure.resourcemanager.avs.models.ClusterUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -108,7 +107,7 @@ public final class ClustersClientImpl implements ClustersClient {
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ClustersUpdateResponse> update(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("clusterName") String clusterName,
@@ -678,10 +677,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource on successful completion of {@link Mono}.
+     * @return a cluster resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClustersUpdateResponse> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
         String clusterName, ClusterUpdate clusterUpdate) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -726,10 +725,10 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource on successful completion of {@link Mono}.
+     * @return a cluster resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClustersUpdateResponse> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
         String clusterName, ClusterUpdate clusterUpdate, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -771,13 +770,15 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of a cluster resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterInner> updateAsync(String resourceGroupName, String privateCloudName, String clusterName,
-        ClusterUpdate clusterUpdate) {
-        return updateWithResponseAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(String resourceGroupName,
+        String privateCloudName, String clusterName, ClusterUpdate clusterUpdate) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, this.client.getContext());
     }
 
     /**
@@ -791,13 +792,93 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a cluster resource.
+     * @return the {@link PollerFlux} for polling of a cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginUpdateAsync(String resourceGroupName,
+        String privateCloudName, String clusterName, ClusterUpdate clusterUpdate, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate, context);
+        return this.client.<ClusterInner, ClusterInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterInner.class, ClusterInner.class, context);
+    }
+
+    /**
+     * Update a Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param clusterUpdate The cluster properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName,
+        String privateCloudName, String clusterName, ClusterUpdate clusterUpdate) {
+        return this.beginUpdateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate).getSyncPoller();
+    }
+
+    /**
+     * Update a Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param clusterUpdate The cluster properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName,
+        String privateCloudName, String clusterName, ClusterUpdate clusterUpdate, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update a Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param clusterUpdate The cluster properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cluster resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClustersUpdateResponse updateWithResponse(String resourceGroupName, String privateCloudName,
-        String clusterName, ClusterUpdate clusterUpdate, Context context) {
-        return updateWithResponseAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate, context)
-            .block();
+    private Mono<ClusterInner> updateAsync(String resourceGroupName, String privateCloudName, String clusterName,
+        ClusterUpdate clusterUpdate) {
+        return beginUpdateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update a Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param clusterUpdate The cluster properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cluster resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ClusterInner> updateAsync(String resourceGroupName, String privateCloudName, String clusterName,
+        ClusterUpdate clusterUpdate, Context context) {
+        return beginUpdateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -815,8 +896,26 @@ public final class ClustersClientImpl implements ClustersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClusterInner update(String resourceGroupName, String privateCloudName, String clusterName,
         ClusterUpdate clusterUpdate) {
-        return updateWithResponse(resourceGroupName, privateCloudName, clusterName, clusterUpdate, Context.NONE)
-            .getValue();
+        return updateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate).block();
+    }
+
+    /**
+     * Update a Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster.
+     * @param clusterUpdate The cluster properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a cluster resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ClusterInner update(String resourceGroupName, String privateCloudName, String clusterName,
+        ClusterUpdate clusterUpdate, Context context) {
+        return updateAsync(resourceGroupName, privateCloudName, clusterName, clusterUpdate, context).block();
     }
 
     /**

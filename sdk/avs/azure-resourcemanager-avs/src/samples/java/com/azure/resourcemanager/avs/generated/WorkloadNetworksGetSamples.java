@@ -17,6 +17,6 @@ public final class WorkloadNetworksGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().getWithResponse("group1", "cloud1", null, com.azure.core.util.Context.NONE);
     }
 }

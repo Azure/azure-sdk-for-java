@@ -37,19 +37,9 @@ import com.azure.resourcemanager.avs.fluent.OperationsClient;
 import com.azure.resourcemanager.avs.fluent.PlacementPoliciesClient;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
 import com.azure.resourcemanager.avs.fluent.ScriptCmdletsClient;
-import com.azure.resourcemanager.avs.fluent.ScriptExecutionsClient;
 import com.azure.resourcemanager.avs.fluent.ScriptPackagesClient;
 import com.azure.resourcemanager.avs.fluent.VirtualMachinesClient;
-import com.azure.resourcemanager.avs.fluent.WorkloadNetworkDhcpConfigurationsClient;
-import com.azure.resourcemanager.avs.fluent.WorkloadNetworkDnsServicesClient;
-import com.azure.resourcemanager.avs.fluent.WorkloadNetworkDnsZonesClient;
-import com.azure.resourcemanager.avs.fluent.WorkloadNetworkGatewaysClient;
-import com.azure.resourcemanager.avs.fluent.WorkloadNetworkPortMirroringProfilesClient;
-import com.azure.resourcemanager.avs.fluent.WorkloadNetworkPublicIpsClient;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworksClient;
-import com.azure.resourcemanager.avs.fluent.WorkloadNetworkSegmentsClient;
-import com.azure.resourcemanager.avs.fluent.WorkloadNetworkVirtualMachinesClient;
-import com.azure.resourcemanager.avs.fluent.WorkloadNetworkVmGroupsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -261,146 +251,6 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The WorkloadNetworksClient object to access its operations.
-     */
-    private final WorkloadNetworksClient workloadNetworks;
-
-    /**
-     * Gets the WorkloadNetworksClient object to access its operations.
-     * 
-     * @return the WorkloadNetworksClient object.
-     */
-    public WorkloadNetworksClient getWorkloadNetworks() {
-        return this.workloadNetworks;
-    }
-
-    /**
-     * The WorkloadNetworkSegmentsClient object to access its operations.
-     */
-    private final WorkloadNetworkSegmentsClient workloadNetworkSegments;
-
-    /**
-     * Gets the WorkloadNetworkSegmentsClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkSegmentsClient object.
-     */
-    public WorkloadNetworkSegmentsClient getWorkloadNetworkSegments() {
-        return this.workloadNetworkSegments;
-    }
-
-    /**
-     * The WorkloadNetworkDhcpConfigurationsClient object to access its operations.
-     */
-    private final WorkloadNetworkDhcpConfigurationsClient workloadNetworkDhcpConfigurations;
-
-    /**
-     * Gets the WorkloadNetworkDhcpConfigurationsClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkDhcpConfigurationsClient object.
-     */
-    public WorkloadNetworkDhcpConfigurationsClient getWorkloadNetworkDhcpConfigurations() {
-        return this.workloadNetworkDhcpConfigurations;
-    }
-
-    /**
-     * The WorkloadNetworkGatewaysClient object to access its operations.
-     */
-    private final WorkloadNetworkGatewaysClient workloadNetworkGateways;
-
-    /**
-     * Gets the WorkloadNetworkGatewaysClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkGatewaysClient object.
-     */
-    public WorkloadNetworkGatewaysClient getWorkloadNetworkGateways() {
-        return this.workloadNetworkGateways;
-    }
-
-    /**
-     * The WorkloadNetworkPortMirroringProfilesClient object to access its operations.
-     */
-    private final WorkloadNetworkPortMirroringProfilesClient workloadNetworkPortMirroringProfiles;
-
-    /**
-     * Gets the WorkloadNetworkPortMirroringProfilesClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkPortMirroringProfilesClient object.
-     */
-    public WorkloadNetworkPortMirroringProfilesClient getWorkloadNetworkPortMirroringProfiles() {
-        return this.workloadNetworkPortMirroringProfiles;
-    }
-
-    /**
-     * The WorkloadNetworkVmGroupsClient object to access its operations.
-     */
-    private final WorkloadNetworkVmGroupsClient workloadNetworkVmGroups;
-
-    /**
-     * Gets the WorkloadNetworkVmGroupsClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkVmGroupsClient object.
-     */
-    public WorkloadNetworkVmGroupsClient getWorkloadNetworkVmGroups() {
-        return this.workloadNetworkVmGroups;
-    }
-
-    /**
-     * The WorkloadNetworkVirtualMachinesClient object to access its operations.
-     */
-    private final WorkloadNetworkVirtualMachinesClient workloadNetworkVirtualMachines;
-
-    /**
-     * Gets the WorkloadNetworkVirtualMachinesClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkVirtualMachinesClient object.
-     */
-    public WorkloadNetworkVirtualMachinesClient getWorkloadNetworkVirtualMachines() {
-        return this.workloadNetworkVirtualMachines;
-    }
-
-    /**
-     * The WorkloadNetworkDnsServicesClient object to access its operations.
-     */
-    private final WorkloadNetworkDnsServicesClient workloadNetworkDnsServices;
-
-    /**
-     * Gets the WorkloadNetworkDnsServicesClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkDnsServicesClient object.
-     */
-    public WorkloadNetworkDnsServicesClient getWorkloadNetworkDnsServices() {
-        return this.workloadNetworkDnsServices;
-    }
-
-    /**
-     * The WorkloadNetworkDnsZonesClient object to access its operations.
-     */
-    private final WorkloadNetworkDnsZonesClient workloadNetworkDnsZones;
-
-    /**
-     * Gets the WorkloadNetworkDnsZonesClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkDnsZonesClient object.
-     */
-    public WorkloadNetworkDnsZonesClient getWorkloadNetworkDnsZones() {
-        return this.workloadNetworkDnsZones;
-    }
-
-    /**
-     * The WorkloadNetworkPublicIpsClient object to access its operations.
-     */
-    private final WorkloadNetworkPublicIpsClient workloadNetworkPublicIps;
-
-    /**
-     * Gets the WorkloadNetworkPublicIpsClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkPublicIpsClient object.
-     */
-    public WorkloadNetworkPublicIpsClient getWorkloadNetworkPublicIps() {
-        return this.workloadNetworkPublicIps;
-    }
-
-    /**
      * The CloudLinksClient object to access its operations.
      */
     private final CloudLinksClient cloudLinks;
@@ -485,20 +335,6 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The ScriptExecutionsClient object to access its operations.
-     */
-    private final ScriptExecutionsClient scriptExecutions;
-
-    /**
-     * Gets the ScriptExecutionsClient object to access its operations.
-     * 
-     * @return the ScriptExecutionsClient object.
-     */
-    public ScriptExecutionsClient getScriptExecutions() {
-        return this.scriptExecutions;
-    }
-
-    /**
      * The IscsiPathsClient object to access its operations.
      */
     private final IscsiPathsClient iscsiPaths;
@@ -510,6 +346,20 @@ public final class AvsClientImpl implements AvsClient {
      */
     public IscsiPathsClient getIscsiPaths() {
         return this.iscsiPaths;
+    }
+
+    /**
+     * The WorkloadNetworksClient object to access its operations.
+     */
+    private final WorkloadNetworksClient workloadNetworks;
+
+    /**
+     * Gets the WorkloadNetworksClient object to access its operations.
+     * 
+     * @return the WorkloadNetworksClient object.
+     */
+    public WorkloadNetworksClient getWorkloadNetworks() {
+        return this.workloadNetworks;
     }
 
     /**
@@ -538,24 +388,14 @@ public final class AvsClientImpl implements AvsClient {
         this.hcxEnterpriseSites = new HcxEnterpriseSitesClientImpl(this);
         this.authorizations = new AuthorizationsClientImpl(this);
         this.globalReachConnections = new GlobalReachConnectionsClientImpl(this);
-        this.workloadNetworks = new WorkloadNetworksClientImpl(this);
-        this.workloadNetworkSegments = new WorkloadNetworkSegmentsClientImpl(this);
-        this.workloadNetworkDhcpConfigurations = new WorkloadNetworkDhcpConfigurationsClientImpl(this);
-        this.workloadNetworkGateways = new WorkloadNetworkGatewaysClientImpl(this);
-        this.workloadNetworkPortMirroringProfiles = new WorkloadNetworkPortMirroringProfilesClientImpl(this);
-        this.workloadNetworkVmGroups = new WorkloadNetworkVmGroupsClientImpl(this);
-        this.workloadNetworkVirtualMachines = new WorkloadNetworkVirtualMachinesClientImpl(this);
-        this.workloadNetworkDnsServices = new WorkloadNetworkDnsServicesClientImpl(this);
-        this.workloadNetworkDnsZones = new WorkloadNetworkDnsZonesClientImpl(this);
-        this.workloadNetworkPublicIps = new WorkloadNetworkPublicIpsClientImpl(this);
         this.cloudLinks = new CloudLinksClientImpl(this);
         this.addons = new AddonsClientImpl(this);
         this.virtualMachines = new VirtualMachinesClientImpl(this);
         this.placementPolicies = new PlacementPoliciesClientImpl(this);
         this.scriptPackages = new ScriptPackagesClientImpl(this);
         this.scriptCmdlets = new ScriptCmdletsClientImpl(this);
-        this.scriptExecutions = new ScriptExecutionsClientImpl(this);
         this.iscsiPaths = new IscsiPathsClientImpl(this);
+        this.workloadNetworks = new WorkloadNetworksClientImpl(this);
     }
 
     /**

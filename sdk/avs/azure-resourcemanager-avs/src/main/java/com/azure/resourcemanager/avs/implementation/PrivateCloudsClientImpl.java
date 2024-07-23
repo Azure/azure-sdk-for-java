@@ -37,7 +37,6 @@ import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
 import com.azure.resourcemanager.avs.fluent.models.AdminCredentialsInner;
 import com.azure.resourcemanager.avs.fluent.models.PrivateCloudInner;
 import com.azure.resourcemanager.avs.implementation.models.PrivateCloudList;
-import com.azure.resourcemanager.avs.models.PrivateCloudsUpdateResponse;
 import com.azure.resourcemanager.avs.models.PrivateCloudUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -116,7 +115,7 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PrivateCloudsUpdateResponse> update(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -779,10 +778,10 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource on successful completion of {@link Mono}.
+     * @return a private cloud resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateCloudsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -822,10 +821,10 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource on successful completion of {@link Mono}.
+     * @return a private cloud resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateCloudsUpdateResponse> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -864,13 +863,15 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of a private cloud resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateCloudInner> updateAsync(String resourceGroupName, String privateCloudName,
-        PrivateCloudUpdate privateCloudUpdate) {
-        return updateWithResponseAsync(resourceGroupName, privateCloudName, privateCloudUpdate)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdateAsync(String resourceGroupName,
+        String privateCloudName, PrivateCloudUpdate privateCloudUpdate) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, privateCloudName, privateCloudUpdate);
+        return this.client.<PrivateCloudInner, PrivateCloudInner>getLroResult(mono, this.client.getHttpPipeline(),
+            PrivateCloudInner.class, PrivateCloudInner.class, this.client.getContext());
     }
 
     /**
@@ -883,12 +884,88 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private cloud resource.
+     * @return the {@link PollerFlux} for polling of a private cloud resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdateAsync(String resourceGroupName,
+        String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, privateCloudName, privateCloudUpdate, context);
+        return this.client.<PrivateCloudInner, PrivateCloudInner>getLroResult(mono, this.client.getHttpPipeline(),
+            PrivateCloudInner.class, PrivateCloudInner.class, context);
+    }
+
+    /**
+     * Update a PrivateCloud.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param privateCloudUpdate The private cloud properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a private cloud resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(String resourceGroupName,
+        String privateCloudName, PrivateCloudUpdate privateCloudUpdate) {
+        return this.beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate).getSyncPoller();
+    }
+
+    /**
+     * Update a PrivateCloud.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param privateCloudUpdate The private cloud properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a private cloud resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PrivateCloudInner>, PrivateCloudInner> beginUpdate(String resourceGroupName,
+        String privateCloudName, PrivateCloudUpdate privateCloudUpdate, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate, context).getSyncPoller();
+    }
+
+    /**
+     * Update a PrivateCloud.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param privateCloudUpdate The private cloud properties to be updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateCloudsUpdateResponse updateWithResponse(String resourceGroupName, String privateCloudName,
+    private Mono<PrivateCloudInner> updateAsync(String resourceGroupName, String privateCloudName,
+        PrivateCloudUpdate privateCloudUpdate) {
+        return beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update a PrivateCloud.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param privateCloudUpdate The private cloud properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PrivateCloudInner> updateAsync(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate, Context context) {
-        return updateWithResponseAsync(resourceGroupName, privateCloudName, privateCloudUpdate, context).block();
+        return beginUpdateAsync(resourceGroupName, privateCloudName, privateCloudUpdate, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -905,7 +982,25 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateCloudInner update(String resourceGroupName, String privateCloudName,
         PrivateCloudUpdate privateCloudUpdate) {
-        return updateWithResponse(resourceGroupName, privateCloudName, privateCloudUpdate, Context.NONE).getValue();
+        return updateAsync(resourceGroupName, privateCloudName, privateCloudUpdate).block();
+    }
+
+    /**
+     * Update a PrivateCloud.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param privateCloudUpdate The private cloud properties to be updated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private cloud resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateCloudInner update(String resourceGroupName, String privateCloudName,
+        PrivateCloudUpdate privateCloudUpdate, Context context) {
+        return updateAsync(resourceGroupName, privateCloudName, privateCloudUpdate, context).block();
     }
 
     /**

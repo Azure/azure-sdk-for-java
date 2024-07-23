@@ -103,76 +103,6 @@ public interface AvsClient {
     GlobalReachConnectionsClient getGlobalReachConnections();
 
     /**
-     * Gets the WorkloadNetworksClient object to access its operations.
-     * 
-     * @return the WorkloadNetworksClient object.
-     */
-    WorkloadNetworksClient getWorkloadNetworks();
-
-    /**
-     * Gets the WorkloadNetworkSegmentsClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkSegmentsClient object.
-     */
-    WorkloadNetworkSegmentsClient getWorkloadNetworkSegments();
-
-    /**
-     * Gets the WorkloadNetworkDhcpConfigurationsClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkDhcpConfigurationsClient object.
-     */
-    WorkloadNetworkDhcpConfigurationsClient getWorkloadNetworkDhcpConfigurations();
-
-    /**
-     * Gets the WorkloadNetworkGatewaysClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkGatewaysClient object.
-     */
-    WorkloadNetworkGatewaysClient getWorkloadNetworkGateways();
-
-    /**
-     * Gets the WorkloadNetworkPortMirroringProfilesClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkPortMirroringProfilesClient object.
-     */
-    WorkloadNetworkPortMirroringProfilesClient getWorkloadNetworkPortMirroringProfiles();
-
-    /**
-     * Gets the WorkloadNetworkVmGroupsClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkVmGroupsClient object.
-     */
-    WorkloadNetworkVmGroupsClient getWorkloadNetworkVmGroups();
-
-    /**
-     * Gets the WorkloadNetworkVirtualMachinesClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkVirtualMachinesClient object.
-     */
-    WorkloadNetworkVirtualMachinesClient getWorkloadNetworkVirtualMachines();
-
-    /**
-     * Gets the WorkloadNetworkDnsServicesClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkDnsServicesClient object.
-     */
-    WorkloadNetworkDnsServicesClient getWorkloadNetworkDnsServices();
-
-    /**
-     * Gets the WorkloadNetworkDnsZonesClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkDnsZonesClient object.
-     */
-    WorkloadNetworkDnsZonesClient getWorkloadNetworkDnsZones();
-
-    /**
-     * Gets the WorkloadNetworkPublicIpsClient object to access its operations.
-     * 
-     * @return the WorkloadNetworkPublicIpsClient object.
-     */
-    WorkloadNetworkPublicIpsClient getWorkloadNetworkPublicIps();
-
-    /**
      * Gets the CloudLinksClient object to access its operations.
      * 
      * @return the CloudLinksClient object.
@@ -215,16 +145,16 @@ public interface AvsClient {
     ScriptCmdletsClient getScriptCmdlets();
 
     /**
-     * Gets the ScriptExecutionsClient object to access its operations.
-     * 
-     * @return the ScriptExecutionsClient object.
-     */
-    ScriptExecutionsClient getScriptExecutions();
-
-    /**
      * Gets the IscsiPathsClient object to access its operations.
      * 
      * @return the IscsiPathsClient object.
      */
     IscsiPathsClient getIscsiPaths();
+
+    /**
+     * Gets the WorkloadNetworksClient object to access its operations.
+     * 
+     * @return the WorkloadNetworksClient object.
+     */
+    WorkloadNetworksClient getWorkloadNetworks();
 }

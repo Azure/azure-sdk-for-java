@@ -126,13 +126,15 @@ public interface WorkloadNetworkSegment {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, privateCloudName.
+             * Specifies resourceGroupName, privateCloudName, workloadNetworkName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param privateCloudName Name of the private cloud.
+             * @param workloadNetworkName Name of the global reach connection.
              * @return the next definition stage.
              */
-            WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
+            WithCreate withExistingWorkloadNetwork(String resourceGroupName, String privateCloudName,
+                String workloadNetworkName);
         }
 
         /**
