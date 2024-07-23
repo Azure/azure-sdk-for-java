@@ -91,6 +91,11 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void blobNameNull() {
+        assertThrows(NullPointerException.class, () -> cc.getBlobClient(null));
+    }
+
+    @Test
     public void createAllNull() {
         // Overwrite the existing cc, which has already been created
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());

@@ -463,7 +463,11 @@ public interface MachineRunCommand {
     /**
      * The template for MachineRunCommand update.
      */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSource, UpdateStages.WithParameters,
+        UpdateStages.WithProtectedParameters, UpdateStages.WithAsyncExecution, UpdateStages.WithRunAsUser,
+        UpdateStages.WithRunAsPassword, UpdateStages.WithTimeoutInSeconds, UpdateStages.WithOutputBlobUri,
+        UpdateStages.WithErrorBlobUri, UpdateStages.WithOutputBlobManagedIdentity,
+        UpdateStages.WithErrorBlobManagedIdentity {
         /**
          * Executes the update request.
          * 
@@ -489,12 +493,183 @@ public interface MachineRunCommand {
          */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags.
+             * Specifies the tags property: Resource tags..
              * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify source.
+         */
+        interface WithSource {
+            /**
+             * Specifies the source property: The source of the run command script..
+             * 
+             * @param source The source of the run command script.
+             * @return the next definition stage.
+             */
+            Update withSource(MachineRunCommandScriptSource source);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify parameters.
+         */
+        interface WithParameters {
+            /**
+             * Specifies the parameters property: The parameters used by the script..
+             * 
+             * @param parameters The parameters used by the script.
+             * @return the next definition stage.
+             */
+            Update withParameters(List<RunCommandInputParameter> parameters);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify protectedParameters.
+         */
+        interface WithProtectedParameters {
+            /**
+             * Specifies the protectedParameters property: The parameters used by the script..
+             * 
+             * @param protectedParameters The parameters used by the script.
+             * @return the next definition stage.
+             */
+            Update withProtectedParameters(List<RunCommandInputParameter> protectedParameters);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify asyncExecution.
+         */
+        interface WithAsyncExecution {
+            /**
+             * Specifies the asyncExecution property: Optional. If set to true, provisioning will complete as soon as
+             * script starts and will not wait for script to complete..
+             * 
+             * @param asyncExecution Optional. If set to true, provisioning will complete as soon as script starts and
+             * will not wait for script to complete.
+             * @return the next definition stage.
+             */
+            Update withAsyncExecution(Boolean asyncExecution);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify runAsUser.
+         */
+        interface WithRunAsUser {
+            /**
+             * Specifies the runAsUser property: Specifies the user account on the machine when executing the run
+             * command..
+             * 
+             * @param runAsUser Specifies the user account on the machine when executing the run command.
+             * @return the next definition stage.
+             */
+            Update withRunAsUser(String runAsUser);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify runAsPassword.
+         */
+        interface WithRunAsPassword {
+            /**
+             * Specifies the runAsPassword property: Specifies the user account password on the machine when executing
+             * the run command..
+             * 
+             * @param runAsPassword Specifies the user account password on the machine when executing the run command.
+             * @return the next definition stage.
+             */
+            Update withRunAsPassword(String runAsPassword);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify timeoutInSeconds.
+         */
+        interface WithTimeoutInSeconds {
+            /**
+             * Specifies the timeoutInSeconds property: The timeout in seconds to execute the run command..
+             * 
+             * @param timeoutInSeconds The timeout in seconds to execute the run command.
+             * @return the next definition stage.
+             */
+            Update withTimeoutInSeconds(Integer timeoutInSeconds);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify outputBlobUri.
+         */
+        interface WithOutputBlobUri {
+            /**
+             * Specifies the outputBlobUri property: Specifies the Azure storage blob where script output stream will be
+             * uploaded. Use a SAS URI with read, append, create, write access OR use managed identity to provide the VM
+             * access to the blob. Refer outputBlobManagedIdentity parameter. .
+             * 
+             * @param outputBlobUri Specifies the Azure storage blob where script output stream will be uploaded. Use a
+             * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the
+             * blob. Refer outputBlobManagedIdentity parameter.
+             * @return the next definition stage.
+             */
+            Update withOutputBlobUri(String outputBlobUri);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify errorBlobUri.
+         */
+        interface WithErrorBlobUri {
+            /**
+             * Specifies the errorBlobUri property: Specifies the Azure storage blob where script error stream will be
+             * uploaded. Use a SAS URI with read, append, create, write access OR use managed identity to provide the VM
+             * access to the blob. Refer errorBlobManagedIdentity parameter..
+             * 
+             * @param errorBlobUri Specifies the Azure storage blob where script error stream will be uploaded. Use a
+             * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the
+             * blob. Refer errorBlobManagedIdentity parameter.
+             * @return the next definition stage.
+             */
+            Update withErrorBlobUri(String errorBlobUri);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify outputBlobManagedIdentity.
+         */
+        interface WithOutputBlobManagedIdentity {
+            /**
+             * Specifies the outputBlobManagedIdentity property: User-assigned managed identity that has access to
+             * outputBlobUri storage blob. Use an empty object in case of system-assigned identity. Make sure managed
+             * identity has been given access to blob's container with 'Storage Blob Data Contributor' role assignment.
+             * In case of user-assigned identity, make sure you add it under VM's identity. For more info on managed
+             * identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged .
+             * 
+             * @param outputBlobManagedIdentity User-assigned managed identity that has access to outputBlobUri storage
+             * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
+             * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
+             * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command,
+             * refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+             * @return the next definition stage.
+             */
+            Update withOutputBlobManagedIdentity(RunCommandManagedIdentity outputBlobManagedIdentity);
+        }
+
+        /**
+         * The stage of the MachineRunCommand update allowing to specify errorBlobManagedIdentity.
+         */
+        interface WithErrorBlobManagedIdentity {
+            /**
+             * Specifies the errorBlobManagedIdentity property: User-assigned managed identity that has access to
+             * errorBlobUri storage blob. Use an empty object in case of system-assigned identity. Make sure managed
+             * identity has been given access to blob's container with 'Storage Blob Data Contributor' role assignment.
+             * In case of user-assigned identity, make sure you add it under VM's identity. For more info on managed
+             * identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged .
+             * 
+             * @param errorBlobManagedIdentity User-assigned managed identity that has access to errorBlobUri storage
+             * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
+             * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
+             * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command,
+             * refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+             * @return the next definition stage.
+             */
+            Update withErrorBlobManagedIdentity(RunCommandManagedIdentity errorBlobManagedIdentity);
         }
     }
 
