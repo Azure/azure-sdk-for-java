@@ -42,25 +42,25 @@ public final class ScriptCmdletsClientImpl implements ScriptCmdletsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of ScriptCmdletsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ScriptCmdletsClientImpl(AvsClientImpl client) {
+    ScriptCmdletsClientImpl(AVSClientImpl client) {
         this.service
             = RestProxy.create(ScriptCmdletsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientScriptCmdlets to be used by the proxy service to perform
+     * The interface defining all the services for AVSClientScriptCmdlets to be used by the proxy service to perform
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientScriptCmdle")
+    @ServiceInterface(name = "AVSClientScriptCmdle")
     public interface ScriptCmdletsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/{scriptPackageName}/scriptCmdlets")

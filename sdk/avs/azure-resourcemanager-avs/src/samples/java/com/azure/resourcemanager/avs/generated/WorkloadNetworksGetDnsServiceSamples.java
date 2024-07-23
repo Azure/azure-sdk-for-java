@@ -19,6 +19,6 @@ public final class WorkloadNetworksGetDnsServiceSamples {
      */
     public static void workloadNetworksGetDnsService(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getDnsServiceWithResponse("group1", "cloud1", null, "dnsService1", com.azure.core.util.Context.NONE);
+            .getDnsServiceWithResponse("group1", "cloud1", "dnsService1", com.azure.core.util.Context.NONE);
     }
 }

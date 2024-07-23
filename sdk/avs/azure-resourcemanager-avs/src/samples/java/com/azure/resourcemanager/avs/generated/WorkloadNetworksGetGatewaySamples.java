@@ -19,6 +19,6 @@ public final class WorkloadNetworksGetGatewaySamples {
      */
     public static void workloadNetworksGetGateway(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getGatewayWithResponse("group1", "cloud1", null, "gateway1", com.azure.core.util.Context.NONE);
+            .getGatewayWithResponse("group1", "cloud1", "gateway1", com.azure.core.util.Context.NONE);
     }
 }

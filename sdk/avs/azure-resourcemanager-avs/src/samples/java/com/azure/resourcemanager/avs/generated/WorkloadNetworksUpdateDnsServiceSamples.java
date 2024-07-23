@@ -23,7 +23,7 @@ public final class WorkloadNetworksUpdateDnsServiceSamples {
      */
     public static void workloadNetworksUpdateDnsService(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkDnsService resource = manager.workloadNetworks()
-            .getDnsServiceWithResponse("group1", "cloud1", null, "dnsService1", com.azure.core.util.Context.NONE)
+            .getDnsServiceWithResponse("group1", "cloud1", "dnsService1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withDisplayName("dnsService1")

@@ -11,7 +11,7 @@ public final class WorkloadNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"sdsttwvog\",\"name\":\"bbejdcngqqm\",\"type\":\"akufgmjz\"}")
+            "{\"properties\":{\"provisioningState\":\"Canceled\"},\"id\":\"nehmpvecx\",\"name\":\"odebfqkkrbmpu\",\"type\":\"gr\"}")
             .toObject(WorkloadNetworkInner.class);
     }
 }

@@ -12,8 +12,8 @@ public final class AddonListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddonList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Succeeded\"},\"id\":\"ankxmyskpbhenb\",\"name\":\"kcxywnyt\",\"type\":\"rsyn\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"by\",\"name\":\"czfc\",\"type\":\"haaxdbabphl\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Cancelled\"},\"id\":\"ktsthsucocmny\",\"name\":\"azt\",\"type\":\"bt\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Canceled\"},\"id\":\"uedck\",\"name\":\"ywbiexzfeyueax\",\"type\":\"bxu\"}],\"nextLink\":\"bhqwalmuzyoxa\"}")
+            "{\"value\":[{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Cancelled\"},\"id\":\"kqb\",\"name\":\"qu\",\"type\":\"paxh\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Deleting\"},\"id\":\"ivpdtiir\",\"name\":\"tdqoaxoruzfgsq\",\"type\":\"yfxrx\"},{\"properties\":{\"addonType\":\"AddonProperties\",\"provisioningState\":\"Deleting\"},\"id\":\"ramxjezwlwnw\",\"name\":\"uqlcvydy\",\"type\":\"atdooaojkniod\"}],\"nextLink\":\"oebwnujhemms\"}")
             .toObject(AddonList.class);
-        Assertions.assertEquals("bhqwalmuzyoxa", model.nextLink());
+        Assertions.assertEquals("oebwnujhemms", model.nextLink());
     }
 }

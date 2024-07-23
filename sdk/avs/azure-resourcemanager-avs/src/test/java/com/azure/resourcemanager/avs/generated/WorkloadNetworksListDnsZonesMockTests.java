@@ -22,7 +22,7 @@ public final class WorkloadNetworksListDnsZonesMockTests {
     @Test
     public void testListDnsZones() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"dqns\",\"domain\":[\"pbgtgkylkdghrj\",\"uutlwxezwzhok\",\"bwnhhtql\"],\"dnsServerIps\":[\"gppipifh\",\"f\",\"oajvgcxtxjcs\",\"eafidltugsresm\"],\"sourceIp\":\"sjhoiftxfkfwegpr\",\"dnsServices\":2543866141895923842,\"provisioningState\":\"Failed\",\"revision\":1203918131224408172},\"id\":\"qtgdqohmcwsl\",\"name\":\"riz\",\"type\":\"tpwb\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"gcmjkavl\",\"domain\":[\"bmftpmdt\"],\"dnsServerIps\":[\"ltfvnz\",\"yj\",\"otp\",\"opv\"],\"sourceIp\":\"dbzqgqqihed\",\"dnsServices\":7204032751679115216,\"provisioningState\":\"Failed\",\"revision\":1811434069334068168},\"id\":\"bcysih\",\"name\":\"gqcwdhohsdtmc\",\"type\":\"zsu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class WorkloadNetworksListDnsZonesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadNetworkDnsZone> response = manager.workloadNetworks()
-            .listDnsZones("tmvpdvjdhtt", "a", "fedxihchrphkm", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkDnsZone> response
+            = manager.workloadNetworks().listDnsZones("oudorhcgyyp", "otwypundmb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dqns", response.iterator().next().displayName());
-        Assertions.assertEquals("pbgtgkylkdghrj", response.iterator().next().domain().get(0));
-        Assertions.assertEquals("gppipifh", response.iterator().next().dnsServerIps().get(0));
-        Assertions.assertEquals("sjhoiftxfkfwegpr", response.iterator().next().sourceIp());
-        Assertions.assertEquals(2543866141895923842L, response.iterator().next().dnsServices());
-        Assertions.assertEquals(1203918131224408172L, response.iterator().next().revision());
+        Assertions.assertEquals("gcmjkavl", response.iterator().next().displayName());
+        Assertions.assertEquals("bmftpmdt", response.iterator().next().domain().get(0));
+        Assertions.assertEquals("ltfvnz", response.iterator().next().dnsServerIps().get(0));
+        Assertions.assertEquals("dbzqgqqihed", response.iterator().next().sourceIp());
+        Assertions.assertEquals(7204032751679115216L, response.iterator().next().dnsServices());
+        Assertions.assertEquals(1811434069334068168L, response.iterator().next().revision());
     }
 }

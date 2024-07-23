@@ -18,6 +18,6 @@ public final class WorkloadNetworksListDhcpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listDhcp("group1", "cloud1", null, com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().listDhcp("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

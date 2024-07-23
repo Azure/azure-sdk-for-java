@@ -12,11 +12,11 @@ public final class WorkloadNetworkVMGroupsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVMGroupsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"vz\",\"members\":[\"ycnunvjsrtk\",\"awnopqgikyzirtxd\",\"uxzejntpsew\",\"ioilqukrydxtq\"],\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":5252415972799158831},\"id\":\"ufhyaomtbgh\",\"name\":\"avgrvkffovjz\",\"type\":\"pjbi\"},{\"properties\":{\"displayName\":\"mfxumvfcluyovw\",\"members\":[\"kfezzxscyhwz\",\"g\",\"rujbzbomvzzbtdc\",\"vp\"],\"status\":\"FAILURE\",\"provisioningState\":\"Deleting\",\"revision\":4156012930167419412},\"id\":\"wdsh\",\"name\":\"ssnrbgye\",\"type\":\"rymsgaojfmw\"},{\"properties\":{\"displayName\":\"tmr\",\"members\":[\"rctym\",\"xoftpipiwyczu\",\"xacpqjli\",\"hyus\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Canceled\",\"revision\":5972606310193139455},\"id\":\"fwdgzxulucvp\",\"name\":\"mrsreuzvxurisjnh\",\"type\":\"ytxifqjzgxmrh\"},{\"properties\":{\"displayName\":\"wp\",\"members\":[\"utr\",\"jupauut\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":2623463508515246746},\"id\":\"qg\",\"name\":\"zpnfqntcypsxj\",\"type\":\"foimwkslircizjxv\"}],\"nextLink\":\"fceacvlhvygd\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"fbunrmfqjhhk\",\"members\":[\"vjymjhxxjyngud\",\"vkr\",\"swbxqz\",\"szjfauvjfdxxivet\"],\"status\":\"FAILURE\",\"provisioningState\":\"Canceled\",\"revision\":3137986994872936614},\"id\":\"qmcbxvwvxyslqbhs\",\"name\":\"xoblytkbl\",\"type\":\"pe\"},{\"properties\":{\"displayName\":\"fbkrvrnsvs\",\"members\":[\"ohxcrsbfova\",\"rruvwbhsq\"],\"status\":\"FAILURE\",\"provisioningState\":\"Building\",\"revision\":2319304863641210663},\"id\":\"rxbpyb\",\"name\":\"rfbjf\",\"type\":\"twss\"}],\"nextLink\":\"ftpvjzbexil\"}")
             .toObject(WorkloadNetworkVMGroupsList.class);
-        Assertions.assertEquals("vz", model.value().get(0).displayName());
-        Assertions.assertEquals("ycnunvjsrtk", model.value().get(0).members().get(0));
-        Assertions.assertEquals(5252415972799158831L, model.value().get(0).revision());
-        Assertions.assertEquals("fceacvlhvygd", model.nextLink());
+        Assertions.assertEquals("fbunrmfqjhhk", model.value().get(0).displayName());
+        Assertions.assertEquals("vjymjhxxjyngud", model.value().get(0).members().get(0));
+        Assertions.assertEquals(3137986994872936614L, model.value().get(0).revision());
+        Assertions.assertEquals("ftpvjzbexil", model.nextLink());
     }
 }

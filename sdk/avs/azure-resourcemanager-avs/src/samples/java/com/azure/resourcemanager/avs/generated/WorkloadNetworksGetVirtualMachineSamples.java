@@ -19,6 +19,6 @@ public final class WorkloadNetworksGetVirtualMachineSamples {
      */
     public static void workloadNetworksGetVirtualMachine(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getVirtualMachineWithResponse("group1", "cloud1", null, "vm1", com.azure.core.util.Context.NONE);
+            .getVirtualMachineWithResponse("group1", "cloud1", "vm1", com.azure.core.util.Context.NONE);
     }
 }

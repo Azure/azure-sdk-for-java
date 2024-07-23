@@ -18,6 +18,6 @@ public final class WorkloadNetworksListDnsServicesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListDnsServices(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listDnsServices("group1", "cloud1", null, com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().listDnsServices("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

@@ -50,25 +50,25 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of VirtualMachinesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    VirtualMachinesClientImpl(AvsClientImpl client) {
+    VirtualMachinesClientImpl(AVSClientImpl client) {
         this.service
             = RestProxy.create(VirtualMachinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientVirtualMachines to be used by the proxy service to perform
+     * The interface defining all the services for AVSClientVirtualMachines to be used by the proxy service to perform
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientVirtualMach")
+    @ServiceInterface(name = "AVSClientVirtualMach")
     public interface VirtualMachinesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/virtualMachines")

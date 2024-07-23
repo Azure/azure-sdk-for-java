@@ -65,31 +65,25 @@ public final class WorkloadNetworkPublicIpImpl implements WorkloadNetworkPublicI
 
     private String privateCloudName;
 
-    private String workloadNetworkName;
-
     private String publicIPId;
 
-    public WorkloadNetworkPublicIpImpl withExistingWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        String workloadNetworkName) {
+    public WorkloadNetworkPublicIpImpl withExistingPrivateCloud(String resourceGroupName, String privateCloudName) {
         this.resourceGroupName = resourceGroupName;
         this.privateCloudName = privateCloudName;
-        this.workloadNetworkName = workloadNetworkName;
         return this;
     }
 
     public WorkloadNetworkPublicIp create() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createPublicIP(resourceGroupName, privateCloudName, workloadNetworkName, publicIPId, this.innerModel(),
-                Context.NONE);
+            .createPublicIP(resourceGroupName, privateCloudName, publicIPId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkPublicIp create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createPublicIP(resourceGroupName, privateCloudName, workloadNetworkName, publicIPId, this.innerModel(),
-                context);
+            .createPublicIP(resourceGroupName, privateCloudName, publicIPId, this.innerModel(), context);
         return this;
     }
 
@@ -102,7 +96,7 @@ public final class WorkloadNetworkPublicIpImpl implements WorkloadNetworkPublicI
     public WorkloadNetworkPublicIp refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .getPublicIPWithResponse(resourceGroupName, privateCloudName, workloadNetworkName, publicIPId, Context.NONE)
+            .getPublicIPWithResponse(resourceGroupName, privateCloudName, publicIPId, Context.NONE)
             .getValue();
         return this;
     }
@@ -110,7 +104,7 @@ public final class WorkloadNetworkPublicIpImpl implements WorkloadNetworkPublicI
     public WorkloadNetworkPublicIp refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .getPublicIPWithResponse(resourceGroupName, privateCloudName, workloadNetworkName, publicIPId, context)
+            .getPublicIPWithResponse(resourceGroupName, privateCloudName, publicIPId, context)
             .getValue();
         return this;
     }

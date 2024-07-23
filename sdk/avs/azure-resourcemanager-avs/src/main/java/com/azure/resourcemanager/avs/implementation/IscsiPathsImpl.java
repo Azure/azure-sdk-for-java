@@ -39,10 +39,9 @@ public final class IscsiPathsImpl implements IscsiPaths {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new IscsiPathImpl(inner1, this.manager()));
     }
 
-    public Response<IscsiPath> getWithResponse(String resourceGroupName, String privateCloudName, String iscsiPathName,
-        Context context) {
+    public Response<IscsiPath> getWithResponse(String resourceGroupName, String privateCloudName, Context context) {
         Response<IscsiPathInner> inner
-            = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, iscsiPathName, context);
+            = this.serviceClient().getWithResponse(resourceGroupName, privateCloudName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IscsiPathImpl(inner.getValue(), this.manager()));
@@ -51,8 +50,8 @@ public final class IscsiPathsImpl implements IscsiPaths {
         }
     }
 
-    public IscsiPath get(String resourceGroupName, String privateCloudName, String iscsiPathName) {
-        IscsiPathInner inner = this.serviceClient().get(resourceGroupName, privateCloudName, iscsiPathName);
+    public IscsiPath get(String resourceGroupName, String privateCloudName) {
+        IscsiPathInner inner = this.serviceClient().get(resourceGroupName, privateCloudName);
         if (inner != null) {
             return new IscsiPathImpl(inner, this.manager());
         } else {
@@ -60,88 +59,32 @@ public final class IscsiPathsImpl implements IscsiPaths {
         }
     }
 
-    public void delete(String resourceGroupName, String privateCloudName, String iscsiPathName) {
-        this.serviceClient().delete(resourceGroupName, privateCloudName, iscsiPathName);
+    public IscsiPath createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource) {
+        IscsiPathInner inner = this.serviceClient().createOrUpdate(resourceGroupName, privateCloudName, resource);
+        if (inner != null) {
+            return new IscsiPathImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String privateCloudName, String iscsiPathName, Context context) {
-        this.serviceClient().delete(resourceGroupName, privateCloudName, iscsiPathName, context);
+    public IscsiPath createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource,
+        Context context) {
+        IscsiPathInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, privateCloudName, resource, context);
+        if (inner != null) {
+            return new IscsiPathImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public IscsiPath getById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String iscsiPathName = ResourceManagerUtils.getValueFromIdByName(id, "iscsiPaths");
-        if (iscsiPathName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'iscsiPaths'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, privateCloudName, iscsiPathName, Context.NONE).getValue();
+    public void deleteByResourceGroup(String resourceGroupName, String privateCloudName) {
+        this.serviceClient().delete(resourceGroupName, privateCloudName);
     }
 
-    public Response<IscsiPath> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String iscsiPathName = ResourceManagerUtils.getValueFromIdByName(id, "iscsiPaths");
-        if (iscsiPathName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'iscsiPaths'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, privateCloudName, iscsiPathName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String iscsiPathName = ResourceManagerUtils.getValueFromIdByName(id, "iscsiPaths");
-        if (iscsiPathName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'iscsiPaths'.", id)));
-        }
-        this.delete(resourceGroupName, privateCloudName, iscsiPathName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
-        if (privateCloudName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
-        }
-        String iscsiPathName = ResourceManagerUtils.getValueFromIdByName(id, "iscsiPaths");
-        if (iscsiPathName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'iscsiPaths'.", id)));
-        }
-        this.delete(resourceGroupName, privateCloudName, iscsiPathName, context);
+    public void delete(String resourceGroupName, String privateCloudName, Context context) {
+        this.serviceClient().delete(resourceGroupName, privateCloudName, context);
     }
 
     private IscsiPathsClient serviceClient() {
@@ -150,9 +93,5 @@ public final class IscsiPathsImpl implements IscsiPaths {
 
     private com.azure.resourcemanager.avs.AvsManager manager() {
         return this.serviceManager;
-    }
-
-    public IscsiPathImpl define(String name) {
-        return new IscsiPathImpl(name, this.manager());
     }
 }

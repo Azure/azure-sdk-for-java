@@ -25,7 +25,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.avs.fluent.AddonsClient;
 import com.azure.resourcemanager.avs.fluent.AuthorizationsClient;
-import com.azure.resourcemanager.avs.fluent.AvsClient;
+import com.azure.resourcemanager.avs.fluent.AVSClient;
 import com.azure.resourcemanager.avs.fluent.CloudLinksClient;
 import com.azure.resourcemanager.avs.fluent.ClustersClient;
 import com.azure.resourcemanager.avs.fluent.DatastoresClient;
@@ -51,10 +51,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the AvsClientImpl type.
+ * Initializes a new instance of the AVSClientImpl type.
  */
-@ServiceClient(builder = AvsClientBuilder.class)
-public final class AvsClientImpl implements AvsClient {
+@ServiceClient(builder = AVSClientBuilder.class)
+public final class AVSClientImpl implements AVSClient {
     /**
      * Server parameter.
      */
@@ -252,6 +252,20 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
+     * The WorkloadNetworksClient object to access its operations.
+     */
+    private final WorkloadNetworksClient workloadNetworks;
+
+    /**
+     * Gets the WorkloadNetworksClient object to access its operations.
+     * 
+     * @return the WorkloadNetworksClient object.
+     */
+    public WorkloadNetworksClient getWorkloadNetworks() {
+        return this.workloadNetworks;
+    }
+
+    /**
      * The CloudLinksClient object to access its operations.
      */
     private final CloudLinksClient cloudLinks;
@@ -364,21 +378,7 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
-     * The WorkloadNetworksClient object to access its operations.
-     */
-    private final WorkloadNetworksClient workloadNetworks;
-
-    /**
-     * Gets the WorkloadNetworksClient object to access its operations.
-     * 
-     * @return the WorkloadNetworksClient object.
-     */
-    public WorkloadNetworksClient getWorkloadNetworks() {
-        return this.workloadNetworks;
-    }
-
-    /**
-     * Initializes an instance of AvsClient client.
+     * Initializes an instance of AVSClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -387,7 +387,7 @@ public final class AvsClientImpl implements AvsClient {
      * @param endpoint Server parameter.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    AvsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
+    AVSClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
         AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -403,6 +403,7 @@ public final class AvsClientImpl implements AvsClient {
         this.hcxEnterpriseSites = new HcxEnterpriseSitesClientImpl(this);
         this.authorizations = new AuthorizationsClientImpl(this);
         this.globalReachConnections = new GlobalReachConnectionsClientImpl(this);
+        this.workloadNetworks = new WorkloadNetworksClientImpl(this);
         this.cloudLinks = new CloudLinksClientImpl(this);
         this.addons = new AddonsClientImpl(this);
         this.virtualMachines = new VirtualMachinesClientImpl(this);
@@ -411,7 +412,6 @@ public final class AvsClientImpl implements AvsClient {
         this.scriptCmdlets = new ScriptCmdletsClientImpl(this);
         this.scriptExecutions = new ScriptExecutionsClientImpl(this);
         this.iscsiPaths = new IscsiPathsClientImpl(this);
-        this.workloadNetworks = new WorkloadNetworksClientImpl(this);
     }
 
     /**
@@ -540,5 +540,5 @@ public final class AvsClientImpl implements AvsClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AvsClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AVSClientImpl.class);
 }

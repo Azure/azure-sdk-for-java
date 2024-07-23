@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreateDnsZoneSamples {
     public static void workloadNetworksCreateDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .defineDnsZone("dnsZone1")
-            .withExistingWorkloadNetwork("group1", "cloud1", null)
+            .withExistingPrivateCloud("group1", "cloud1")
             .withDisplayName("dnsZone1")
             .withDomain(Arrays.asList())
             .withDnsServerIps(Arrays.asList("1.1.1.1"))

@@ -76,31 +76,25 @@ public final class WorkloadNetworkVMGroupImpl
 
     private String privateCloudName;
 
-    private String workloadNetworkName;
-
     private String vmGroupId;
 
-    public WorkloadNetworkVMGroupImpl withExistingWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        String workloadNetworkName) {
+    public WorkloadNetworkVMGroupImpl withExistingPrivateCloud(String resourceGroupName, String privateCloudName) {
         this.resourceGroupName = resourceGroupName;
         this.privateCloudName = privateCloudName;
-        this.workloadNetworkName = workloadNetworkName;
         return this;
     }
 
     public WorkloadNetworkVMGroup create() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createVMGroup(resourceGroupName, privateCloudName, workloadNetworkName, vmGroupId, this.innerModel(),
-                Context.NONE);
+            .createVMGroup(resourceGroupName, privateCloudName, vmGroupId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkVMGroup create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createVMGroup(resourceGroupName, privateCloudName, workloadNetworkName, vmGroupId, this.innerModel(),
-                context);
+            .createVMGroup(resourceGroupName, privateCloudName, vmGroupId, this.innerModel(), context);
         return this;
     }
 
@@ -117,16 +111,14 @@ public final class WorkloadNetworkVMGroupImpl
     public WorkloadNetworkVMGroup apply() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateVMGroup(resourceGroupName, privateCloudName, workloadNetworkName, vmGroupId, this.innerModel(),
-                Context.NONE);
+            .updateVMGroup(resourceGroupName, privateCloudName, vmGroupId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkVMGroup apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateVMGroup(resourceGroupName, privateCloudName, workloadNetworkName, vmGroupId, this.innerModel(),
-                context);
+            .updateVMGroup(resourceGroupName, privateCloudName, vmGroupId, this.innerModel(), context);
         return this;
     }
 
@@ -136,14 +128,13 @@ public final class WorkloadNetworkVMGroupImpl
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.workloadNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadNetworks");
         this.vmGroupId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vmGroups");
     }
 
     public WorkloadNetworkVMGroup refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .getVMGroupWithResponse(resourceGroupName, privateCloudName, workloadNetworkName, vmGroupId, Context.NONE)
+            .getVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, Context.NONE)
             .getValue();
         return this;
     }
@@ -151,7 +142,7 @@ public final class WorkloadNetworkVMGroupImpl
     public WorkloadNetworkVMGroup refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .getVMGroupWithResponse(resourceGroupName, privateCloudName, workloadNetworkName, vmGroupId, context)
+            .getVMGroupWithResponse(resourceGroupName, privateCloudName, vmGroupId, context)
             .getValue();
         return this;
     }

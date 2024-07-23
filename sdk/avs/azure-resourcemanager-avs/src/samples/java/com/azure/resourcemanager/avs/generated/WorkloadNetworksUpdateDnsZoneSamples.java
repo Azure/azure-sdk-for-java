@@ -22,7 +22,7 @@ public final class WorkloadNetworksUpdateDnsZoneSamples {
      */
     public static void workloadNetworksUpdateDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkDnsZone resource = manager.workloadNetworks()
-            .getDnsZoneWithResponse("group1", "cloud1", null, "dnsZone1", com.azure.core.util.Context.NONE)
+            .getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withDisplayName("dnsZone1")

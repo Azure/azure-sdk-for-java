@@ -22,7 +22,7 @@ public final class WorkloadNetworksListVMGroupsMockTests {
     @Test
     public void testListVMGroups() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"lgafcqusrdve\",\"members\":[\"sdtutnwlduyc\",\"uzhyrmewipmvekdx\",\"kuqgsjjxundxgket\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":7918905716501947847},\"id\":\"mhv\",\"name\":\"muvgp\",\"type\":\"uneqsxvmhf\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"lnzonzlrpiqywn\",\"members\":[\"tszcofizehtdhgb\",\"k\"],\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":5299106895755673529},\"id\":\"rvzmlovuana\",\"name\":\"hcxlpm\",\"type\":\"erbdk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class WorkloadNetworksListVMGroupsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadNetworkVMGroup> response = manager.workloadNetworks()
-            .listVMGroups("uvyinzqodfvpgs", "oxgsgbpfgzdjtx", "zflbqvg", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkVMGroup> response
+            = manager.workloadNetworks().listVMGroups("ujrtrhqvwr", "vk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lgafcqusrdve", response.iterator().next().displayName());
-        Assertions.assertEquals("sdtutnwlduyc", response.iterator().next().members().get(0));
-        Assertions.assertEquals(7918905716501947847L, response.iterator().next().revision());
+        Assertions.assertEquals("lnzonzlrpiqywn", response.iterator().next().displayName());
+        Assertions.assertEquals("tszcofizehtdhgb", response.iterator().next().members().get(0));
+        Assertions.assertEquals(5299106895755673529L, response.iterator().next().revision());
     }
 }

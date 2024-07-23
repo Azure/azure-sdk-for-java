@@ -50,25 +50,25 @@ public final class CloudLinksClientImpl implements CloudLinksClient {
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of CloudLinksClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    CloudLinksClientImpl(AvsClientImpl client) {
+    CloudLinksClientImpl(AVSClientImpl client) {
         this.service
             = RestProxy.create(CloudLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientCloudLinks to be used by the proxy service to perform REST
+     * The interface defining all the services for AVSClientCloudLinks to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientCloudLinks")
+    @ServiceInterface(name = "AVSClientCloudLinks")
     public interface CloudLinksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks")

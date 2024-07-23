@@ -23,7 +23,7 @@ public final class WorkloadNetworksCreateSegmentSamples {
     public static void workloadNetworksCreateSegments(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .defineSegment("segment1")
-            .withExistingWorkloadNetwork("group1", "cloud1", null)
+            .withExistingPrivateCloud("group1", "cloud1")
             .withDisplayName("segment1")
             .withConnectedGateway("/infra/tier-1s/gateway")
             .withSubnet(new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList("40.20.0.0-40.20.0.1"))

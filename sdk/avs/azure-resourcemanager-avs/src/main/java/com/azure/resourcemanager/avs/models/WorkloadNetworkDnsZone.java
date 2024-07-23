@@ -126,15 +126,13 @@ public interface WorkloadNetworkDnsZone {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, privateCloudName, workloadNetworkName.
+             * Specifies resourceGroupName, privateCloudName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param privateCloudName Name of the private cloud.
-             * @param workloadNetworkName Name of the global reach connection.
              * @return the next definition stage.
              */
-            WithCreate withExistingWorkloadNetwork(String resourceGroupName, String privateCloudName,
-                String workloadNetworkName);
+            WithCreate withExistingPrivateCloud(String resourceGroupName, String privateCloudName);
         }
 
         /**

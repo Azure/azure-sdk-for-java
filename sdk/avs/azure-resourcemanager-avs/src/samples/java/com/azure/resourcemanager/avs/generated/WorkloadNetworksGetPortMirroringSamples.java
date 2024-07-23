@@ -19,6 +19,6 @@ public final class WorkloadNetworksGetPortMirroringSamples {
      */
     public static void workloadNetworksGetPortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getPortMirroringWithResponse("group1", "cloud1", null, "portMirroring1", com.azure.core.util.Context.NONE);
+            .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", com.azure.core.util.Context.NONE);
     }
 }

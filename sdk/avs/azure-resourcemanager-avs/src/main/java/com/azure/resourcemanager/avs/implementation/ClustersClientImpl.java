@@ -54,24 +54,24 @@ public final class ClustersClientImpl implements ClustersClient {
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of ClustersClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ClustersClientImpl(AvsClientImpl client) {
+    ClustersClientImpl(AVSClientImpl client) {
         this.service = RestProxy.create(ClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientClusters to be used by the proxy service to perform REST
+     * The interface defining all the services for AVSClientClusters to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientClusters")
+    @ServiceInterface(name = "AVSClientClusters")
     public interface ClustersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters")

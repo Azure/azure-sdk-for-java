@@ -50,24 +50,24 @@ public final class AddonsClientImpl implements AddonsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of AddonsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AddonsClientImpl(AvsClientImpl client) {
+    AddonsClientImpl(AVSClientImpl client) {
         this.service = RestProxy.create(AddonsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientAddons to be used by the proxy service to perform REST
+     * The interface defining all the services for AVSClientAddons to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientAddons")
+    @ServiceInterface(name = "AVSClientAddons")
     public interface AddonsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/addons")

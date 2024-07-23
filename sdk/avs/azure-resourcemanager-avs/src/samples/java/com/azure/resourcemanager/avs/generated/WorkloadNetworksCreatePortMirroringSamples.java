@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreatePortMirroringSamples {
     public static void workloadNetworksCreatePortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .definePortMirroring("portMirroring1")
-            .withExistingWorkloadNetwork("group1", "cloud1", null)
+            .withExistingPrivateCloud("group1", "cloud1")
             .withDisplayName("portMirroring1")
             .withDirection(PortMirroringDirectionEnum.BIDIRECTIONAL)
             .withSource("vmGroup1")

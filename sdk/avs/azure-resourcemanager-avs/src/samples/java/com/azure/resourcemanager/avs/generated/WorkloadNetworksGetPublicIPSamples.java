@@ -19,6 +19,6 @@ public final class WorkloadNetworksGetPublicIPSamples {
      */
     public static void workloadNetworksGetPublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getPublicIPWithResponse("group1", "cloud1", null, "publicIP1", com.azure.core.util.Context.NONE);
+            .getPublicIPWithResponse("group1", "cloud1", "publicIP1", com.azure.core.util.Context.NONE);
     }
 }

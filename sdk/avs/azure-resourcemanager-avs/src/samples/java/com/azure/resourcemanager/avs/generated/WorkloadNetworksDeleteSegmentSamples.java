@@ -18,7 +18,6 @@ public final class WorkloadNetworksDeleteSegmentSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteSegment(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks()
-            .deleteSegment("group1", "cloud1", null, "segment1", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().deleteSegment("group1", "cloud1", "segment1", com.azure.core.util.Context.NONE);
     }
 }

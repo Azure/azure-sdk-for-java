@@ -19,6 +19,6 @@ public final class WorkloadNetworksGetDnsZoneSamples {
      */
     public static void workloadNetworksGetDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getDnsZoneWithResponse("group1", "cloud1", null, "dnsZone1", com.azure.core.util.Context.NONE);
+            .getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", com.azure.core.util.Context.NONE);
     }
 }

@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreateDhcpSamples {
     public static void workloadNetworksCreateDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .defineDhcp("dhcp1")
-            .withExistingWorkloadNetwork("group1", "cloud1", null)
+            .withExistingPrivateCloud("group1", "cloud1")
             .withProperties(new WorkloadNetworkDhcpServer().withDisplayName("dhcpConfigurations1")
                 .withRevision(1L)
                 .withServerAddress("40.1.5.1/24")

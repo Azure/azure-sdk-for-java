@@ -23,7 +23,7 @@ public final class WorkloadNetworksCreateDnsServiceSamples {
     public static void workloadNetworksCreateDnsService(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .defineDnsService("dnsService1")
-            .withExistingWorkloadNetwork("group1", "cloud1", null)
+            .withExistingPrivateCloud("group1", "cloud1")
             .withDisplayName("dnsService1")
             .withDnsServiceIp("5.5.5.5")
             .withDefaultDnsZone("defaultDnsZone1")

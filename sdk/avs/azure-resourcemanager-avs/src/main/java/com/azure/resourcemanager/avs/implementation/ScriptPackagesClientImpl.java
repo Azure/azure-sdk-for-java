@@ -42,25 +42,25 @@ public final class ScriptPackagesClientImpl implements ScriptPackagesClient {
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of ScriptPackagesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ScriptPackagesClientImpl(AvsClientImpl client) {
+    ScriptPackagesClientImpl(AVSClientImpl client) {
         this.service
             = RestProxy.create(ScriptPackagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientScriptPackages to be used by the proxy service to perform
+     * The interface defining all the services for AVSClientScriptPackages to be used by the proxy service to perform
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientScriptPacka")
+    @ServiceInterface(name = "AVSClientScriptPacka")
     public interface ScriptPackagesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages")

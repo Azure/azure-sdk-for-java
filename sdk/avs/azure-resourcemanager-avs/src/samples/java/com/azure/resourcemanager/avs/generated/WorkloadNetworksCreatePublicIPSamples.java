@@ -20,7 +20,7 @@ public final class WorkloadNetworksCreatePublicIPSamples {
     public static void workloadNetworksCreatePublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
             .definePublicIP("publicIP1")
-            .withExistingWorkloadNetwork("group1", "cloud1", null)
+            .withExistingPrivateCloud("group1", "cloud1")
             .withDisplayName("publicIP1")
             .withNumberOfPublicIPs(32L)
             .create();

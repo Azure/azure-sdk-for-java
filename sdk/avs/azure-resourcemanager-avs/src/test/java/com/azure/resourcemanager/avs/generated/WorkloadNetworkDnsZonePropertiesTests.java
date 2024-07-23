@@ -13,31 +13,30 @@ public final class WorkloadNetworkDnsZonePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkDnsZoneProperties model = BinaryData.fromString(
-            "{\"displayName\":\"obaiyhddviaceg\",\"domain\":[\"ntfpmvmemfnc\"],\"dnsServerIps\":[\"vvbalx\"],\"sourceIp\":\"lchpodbzevwrdn\",\"dnsServices\":4609142412513709253,\"provisioningState\":\"Canceled\",\"revision\":9047416798509661707}")
+            "{\"displayName\":\"gxk\",\"domain\":[\"atmelwui\"],\"dnsServerIps\":[\"cjzkzivgvvcna\",\"rhyrnxxmueed\",\"drd\"],\"sourceIp\":\"tkwqqtchealm\",\"dnsServices\":2875480604821792642,\"provisioningState\":\"Canceled\",\"revision\":2951445315314991952}")
             .toObject(WorkloadNetworkDnsZoneProperties.class);
-        Assertions.assertEquals("obaiyhddviaceg", model.displayName());
-        Assertions.assertEquals("ntfpmvmemfnc", model.domain().get(0));
-        Assertions.assertEquals("vvbalx", model.dnsServerIps().get(0));
-        Assertions.assertEquals("lchpodbzevwrdn", model.sourceIp());
-        Assertions.assertEquals(4609142412513709253L, model.dnsServices());
-        Assertions.assertEquals(9047416798509661707L, model.revision());
+        Assertions.assertEquals("gxk", model.displayName());
+        Assertions.assertEquals("atmelwui", model.domain().get(0));
+        Assertions.assertEquals("cjzkzivgvvcna", model.dnsServerIps().get(0));
+        Assertions.assertEquals("tkwqqtchealm", model.sourceIp());
+        Assertions.assertEquals(2875480604821792642L, model.dnsServices());
+        Assertions.assertEquals(2951445315314991952L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkDnsZoneProperties model
-            = new WorkloadNetworkDnsZoneProperties().withDisplayName("obaiyhddviaceg")
-                .withDomain(Arrays.asList("ntfpmvmemfnc"))
-                .withDnsServerIps(Arrays.asList("vvbalx"))
-                .withSourceIp("lchpodbzevwrdn")
-                .withDnsServices(4609142412513709253L)
-                .withRevision(9047416798509661707L);
+        WorkloadNetworkDnsZoneProperties model = new WorkloadNetworkDnsZoneProperties().withDisplayName("gxk")
+            .withDomain(Arrays.asList("atmelwui"))
+            .withDnsServerIps(Arrays.asList("cjzkzivgvvcna", "rhyrnxxmueed", "drd"))
+            .withSourceIp("tkwqqtchealm")
+            .withDnsServices(2875480604821792642L)
+            .withRevision(2951445315314991952L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkDnsZoneProperties.class);
-        Assertions.assertEquals("obaiyhddviaceg", model.displayName());
-        Assertions.assertEquals("ntfpmvmemfnc", model.domain().get(0));
-        Assertions.assertEquals("vvbalx", model.dnsServerIps().get(0));
-        Assertions.assertEquals("lchpodbzevwrdn", model.sourceIp());
-        Assertions.assertEquals(4609142412513709253L, model.dnsServices());
-        Assertions.assertEquals(9047416798509661707L, model.revision());
+        Assertions.assertEquals("gxk", model.displayName());
+        Assertions.assertEquals("atmelwui", model.domain().get(0));
+        Assertions.assertEquals("cjzkzivgvvcna", model.dnsServerIps().get(0));
+        Assertions.assertEquals("tkwqqtchealm", model.sourceIp());
+        Assertions.assertEquals(2875480604821792642L, model.dnsServices());
+        Assertions.assertEquals(2951445315314991952L, model.revision());
     }
 }

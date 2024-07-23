@@ -54,25 +54,25 @@ public final class PrivateCloudsClientImpl implements PrivateCloudsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of PrivateCloudsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateCloudsClientImpl(AvsClientImpl client) {
+    PrivateCloudsClientImpl(AVSClientImpl client) {
         this.service
             = RestProxy.create(PrivateCloudsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientPrivateClouds to be used by the proxy service to perform
+     * The interface defining all the services for AVSClientPrivateClouds to be used by the proxy service to perform
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientPrivateClou")
+    @ServiceInterface(name = "AVSClientPrivateClou")
     public interface PrivateCloudsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds")

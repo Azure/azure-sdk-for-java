@@ -50,25 +50,25 @@ public final class DatastoresClientImpl implements DatastoresClient {
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of DatastoresClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    DatastoresClientImpl(AvsClientImpl client) {
+    DatastoresClientImpl(AVSClientImpl client) {
         this.service
             = RestProxy.create(DatastoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientDatastores to be used by the proxy service to perform REST
+     * The interface defining all the services for AVSClientDatastores to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientDatastores")
+    @ServiceInterface(name = "AVSClientDatastores")
     public interface DatastoresService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores")

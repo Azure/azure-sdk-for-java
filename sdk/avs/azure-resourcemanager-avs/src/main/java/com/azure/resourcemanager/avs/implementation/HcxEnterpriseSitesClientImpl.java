@@ -45,25 +45,25 @@ public final class HcxEnterpriseSitesClientImpl implements HcxEnterpriseSitesCli
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of HcxEnterpriseSitesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    HcxEnterpriseSitesClientImpl(AvsClientImpl client) {
+    HcxEnterpriseSitesClientImpl(AVSClientImpl client) {
         this.service = RestProxy.create(HcxEnterpriseSitesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientHcxEnterpriseSites to be used by the proxy service to
+     * The interface defining all the services for AVSClientHcxEnterpriseSites to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientHcxEnterpri")
+    @ServiceInterface(name = "AVSClientHcxEnterpri")
     public interface HcxEnterpriseSitesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/hcxEnterpriseSites")

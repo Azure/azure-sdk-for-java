@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for AvsClient class.
+ * The interface for AVSClient class.
  */
-public interface AvsClient {
+public interface AVSClient {
     /**
      * Gets Server parameter.
      * 
@@ -103,6 +103,13 @@ public interface AvsClient {
     GlobalReachConnectionsClient getGlobalReachConnections();
 
     /**
+     * Gets the WorkloadNetworksClient object to access its operations.
+     * 
+     * @return the WorkloadNetworksClient object.
+     */
+    WorkloadNetworksClient getWorkloadNetworks();
+
+    /**
      * Gets the CloudLinksClient object to access its operations.
      * 
      * @return the CloudLinksClient object.
@@ -157,11 +164,4 @@ public interface AvsClient {
      * @return the IscsiPathsClient object.
      */
     IscsiPathsClient getIscsiPaths();
-
-    /**
-     * Gets the WorkloadNetworksClient object to access its operations.
-     * 
-     * @return the WorkloadNetworksClient object.
-     */
-    WorkloadNetworksClient getWorkloadNetworks();
 }

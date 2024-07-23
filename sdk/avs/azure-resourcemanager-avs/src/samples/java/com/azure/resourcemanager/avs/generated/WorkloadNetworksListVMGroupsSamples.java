@@ -18,6 +18,6 @@ public final class WorkloadNetworksListVMGroupsSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListVMGroups(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listVMGroups("group1", "cloud1", null, com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().listVMGroups("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

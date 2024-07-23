@@ -19,6 +19,6 @@ public final class WorkloadNetworksGetVMGroupSamples {
      */
     public static void workloadNetworksGetVMGroup(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getVMGroupWithResponse("group1", "cloud1", null, "vmGroup1", com.azure.core.util.Context.NONE);
+            .getVMGroupWithResponse("group1", "cloud1", "vmGroup1", com.azure.core.util.Context.NONE);
     }
 }

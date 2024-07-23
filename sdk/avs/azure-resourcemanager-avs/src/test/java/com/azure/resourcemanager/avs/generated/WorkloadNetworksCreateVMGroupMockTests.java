@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
     @Test
     public void testCreateVMGroup() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"xbkwv\",\"members\":[\"zvd\",\"bzdixzmq\",\"noda\",\"opqhewjptmc\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":7127280864515771015},\"id\":\"ndlatutmzlbi\",\"name\":\"jlvfhrbbpneqv\",\"type\":\"wwyyurmoch\"}";
+            = "{\"properties\":{\"displayName\":\"jgehkf\",\"members\":[\"rtixokff\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":3258323746921369776},\"id\":\"qwhix\",\"name\":\"onsts\",\"type\":\"i\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkVMGroup response = manager.workloadNetworks()
-            .defineVMGroup("sufco")
-            .withExistingWorkloadNetwork("cysihs", "qcwdhoh", "dtmcd")
-            .withDisplayName("bzlmcm")
-            .withMembers(Arrays.asList("cvhd", "evwqqxeyskonq", "inkfkbgbz", "owxeqocljmy"))
-            .withRevision(7238686048723622110L)
+            .defineVMGroup("zvaylptrsqqw")
+            .withExistingPrivateCloud("fwyfwlwxjwet", "psihcla")
+            .withDisplayName("mwqkchcxwaxf")
+            .withMembers(Arrays.asList("jkjexf", "eqvhpsylkk", "hkbffmbm"))
+            .withRevision(3427888664971158449L)
             .create();
 
-        Assertions.assertEquals("xbkwv", response.displayName());
-        Assertions.assertEquals("zvd", response.members().get(0));
-        Assertions.assertEquals(7127280864515771015L, response.revision());
+        Assertions.assertEquals("jgehkf", response.displayName());
+        Assertions.assertEquals("rtixokff", response.members().get(0));
+        Assertions.assertEquals(3258323746921369776L, response.revision());
     }
 }

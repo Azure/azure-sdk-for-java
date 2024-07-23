@@ -18,6 +18,6 @@ public final class WorkloadNetworksListSegmentsSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListSegments(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listSegments("group1", "cloud1", null, com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().listSegments("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

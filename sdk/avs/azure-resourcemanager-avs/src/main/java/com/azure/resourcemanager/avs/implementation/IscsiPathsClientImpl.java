@@ -50,25 +50,25 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AvsClientImpl client;
+    private final AVSClientImpl client;
 
     /**
      * Initializes an instance of IscsiPathsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    IscsiPathsClientImpl(AvsClientImpl client) {
+    IscsiPathsClientImpl(AVSClientImpl client) {
         this.service
             = RestProxy.create(IscsiPathsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AvsClientIscsiPaths to be used by the proxy service to perform REST
+     * The interface defining all the services for AVSClientIscsiPaths to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "AvsClientIscsiPaths")
+    @ServiceInterface(name = "AVSClientIscsiPaths")
     public interface IscsiPathsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths")
@@ -81,35 +81,34 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/{iscsiPathName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IscsiPathInner>> get(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @PathParam("iscsiPathName") String iscsiPathName,
-            @HeaderParam("accept") String accept, Context context);
+            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/{iscsiPathName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/default")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @PathParam("iscsiPathName") String iscsiPathName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") IscsiPathInner resource,
-            Context context);
+            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
+            @BodyParam("application/json") IscsiPathInner resource, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/{iscsiPathName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/iscsiPaths/default")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("privateCloudName") String privateCloudName, @PathParam("iscsiPathName") String iscsiPathName,
-            @HeaderParam("accept") String accept, Context context);
+            @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -270,15 +269,13 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a IscsiPath along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IscsiPathInner>> getWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String iscsiPathName) {
+    private Mono<Response<IscsiPathInner>> getWithResponseAsync(String resourceGroupName, String privateCloudName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -295,13 +292,10 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        if (iscsiPathName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter iscsiPathName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, iscsiPathName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -310,7 +304,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -319,7 +312,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IscsiPathInner>> getWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String iscsiPathName, Context context) {
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -336,13 +329,10 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        if (iscsiPathName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter iscsiPathName is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, privateCloudName, iscsiPathName, accept, context);
+            resourceGroupName, privateCloudName, accept, context);
     }
 
     /**
@@ -350,15 +340,14 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a IscsiPath on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IscsiPathInner> getAsync(String resourceGroupName, String privateCloudName, String iscsiPathName) {
-        return getWithResponseAsync(resourceGroupName, privateCloudName, iscsiPathName)
+    private Mono<IscsiPathInner> getAsync(String resourceGroupName, String privateCloudName) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -367,7 +356,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -376,8 +364,8 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IscsiPathInner> getWithResponse(String resourceGroupName, String privateCloudName,
-        String iscsiPathName, Context context) {
-        return getWithResponseAsync(resourceGroupName, privateCloudName, iscsiPathName, context).block();
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName, context).block();
     }
 
     /**
@@ -385,15 +373,14 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a IscsiPath.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IscsiPathInner get(String resourceGroupName, String privateCloudName, String iscsiPathName) {
-        return getWithResponse(resourceGroupName, privateCloudName, iscsiPathName, Context.NONE).getValue();
+    public IscsiPathInner get(String resourceGroupName, String privateCloudName) {
+        return getWithResponse(resourceGroupName, privateCloudName, Context.NONE).getValue();
     }
 
     /**
@@ -401,7 +388,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -410,7 +396,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String privateCloudName, String iscsiPathName, IscsiPathInner resource) {
+        String privateCloudName, IscsiPathInner resource) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -426,9 +412,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
         if (privateCloudName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (iscsiPathName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter iscsiPathName is required and cannot be null."));
         }
         if (resource == null) {
             return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
@@ -438,8 +421,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, iscsiPathName, accept, resource,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -448,7 +430,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,7 +439,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String privateCloudName, String iscsiPathName, IscsiPathInner resource, Context context) {
+        String privateCloudName, IscsiPathInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -474,9 +455,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
         if (privateCloudName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
-        }
-        if (iscsiPathName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter iscsiPathName is required and cannot be null."));
         }
         if (resource == null) {
             return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
@@ -486,8 +464,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, iscsiPathName, accept, resource,
-            context);
+            this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, resource, context);
     }
 
     /**
@@ -495,7 +472,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -504,9 +480,9 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IscsiPathInner>, IscsiPathInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String privateCloudName, String iscsiPathName, IscsiPathInner resource) {
+        String privateCloudName, IscsiPathInner resource) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, privateCloudName, iscsiPathName, resource);
+            = createOrUpdateWithResponseAsync(resourceGroupName, privateCloudName, resource);
         return this.client.<IscsiPathInner, IscsiPathInner>getLroResult(mono, this.client.getHttpPipeline(),
             IscsiPathInner.class, IscsiPathInner.class, this.client.getContext());
     }
@@ -516,7 +492,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -526,10 +501,10 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IscsiPathInner>, IscsiPathInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String privateCloudName, String iscsiPathName, IscsiPathInner resource, Context context) {
+        String privateCloudName, IscsiPathInner resource, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, privateCloudName, iscsiPathName, resource, context);
+            = createOrUpdateWithResponseAsync(resourceGroupName, privateCloudName, resource, context);
         return this.client.<IscsiPathInner, IscsiPathInner>getLroResult(mono, this.client.getHttpPipeline(),
             IscsiPathInner.class, IscsiPathInner.class, context);
     }
@@ -539,7 +514,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -548,9 +522,8 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IscsiPathInner>, IscsiPathInner> beginCreateOrUpdate(String resourceGroupName,
-        String privateCloudName, String iscsiPathName, IscsiPathInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, iscsiPathName, resource)
-            .getSyncPoller();
+        String privateCloudName, IscsiPathInner resource) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, resource).getSyncPoller();
     }
 
     /**
@@ -558,7 +531,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,9 +540,8 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IscsiPathInner>, IscsiPathInner> beginCreateOrUpdate(String resourceGroupName,
-        String privateCloudName, String iscsiPathName, IscsiPathInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, iscsiPathName, resource, context)
-            .getSyncPoller();
+        String privateCloudName, IscsiPathInner resource, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, resource, context).getSyncPoller();
     }
 
     /**
@@ -578,7 +549,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -587,47 +557,9 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IscsiPathInner> createOrUpdateAsync(String resourceGroupName, String privateCloudName,
-        String iscsiPathName, IscsiPathInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, iscsiPathName, resource).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI path resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IscsiPathInner> createOrUpdateAsync(String resourceGroupName, String privateCloudName,
-        String iscsiPathName, IscsiPathInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, iscsiPathName, resource, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
-     * @param resource Resource create parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an iSCSI path resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, String iscsiPathName,
         IscsiPathInner resource) {
-        return createOrUpdateAsync(resourceGroupName, privateCloudName, iscsiPathName, resource).block();
+        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, resource).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -635,7 +567,41 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
+     * @param resource Resource create parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an iSCSI path resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<IscsiPathInner> createOrUpdateAsync(String resourceGroupName, String privateCloudName,
+        IscsiPathInner resource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, resource, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a IscsiPath.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an iSCSI path resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource) {
+        return createOrUpdateAsync(resourceGroupName, privateCloudName, resource).block();
+    }
+
+    /**
+     * Create a IscsiPath.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -644,9 +610,9 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * @return an iSCSI path resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, String iscsiPathName,
-        IscsiPathInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, privateCloudName, iscsiPathName, resource, context).block();
+    public IscsiPathInner createOrUpdate(String resourceGroupName, String privateCloudName, IscsiPathInner resource,
+        Context context) {
+        return createOrUpdateAsync(resourceGroupName, privateCloudName, resource, context).block();
     }
 
     /**
@@ -654,15 +620,14 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String iscsiPathName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String privateCloudName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -679,13 +644,10 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        if (iscsiPathName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter iscsiPathName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, iscsiPathName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -694,7 +656,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -703,7 +664,7 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateCloudName,
-        String iscsiPathName, Context context) {
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -720,13 +681,10 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter privateCloudName is required and cannot be null."));
         }
-        if (iscsiPathName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter iscsiPathName is required and cannot be null."));
-        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, privateCloudName, iscsiPathName, accept, context);
+            resourceGroupName, privateCloudName, accept, context);
     }
 
     /**
@@ -734,17 +692,14 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateCloudName,
-        String iscsiPathName) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, privateCloudName, iscsiPathName);
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateCloudName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateCloudName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -754,7 +709,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -763,10 +717,9 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateCloudName,
-        String iscsiPathName, Context context) {
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, privateCloudName, iscsiPathName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateCloudName, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -776,16 +729,14 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
-        String iscsiPathName) {
-        return this.beginDeleteAsync(resourceGroupName, privateCloudName, iscsiPathName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName) {
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -793,7 +744,6 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -802,43 +752,23 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateCloudName,
-        String iscsiPathName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, privateCloudName, iscsiPathName, context).getSyncPoller();
-    }
-
-    /**
-     * Delete a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName, String iscsiPathName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, iscsiPathName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a IscsiPath.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName, String iscsiPathName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, iscsiPathName, context).last()
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, context).getSyncPoller();
+    }
+
+    /**
+     * Delete a IscsiPath.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName) {
+        return beginDeleteAsync(resourceGroupName, privateCloudName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -847,14 +777,16 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String privateCloudName, String iscsiPathName) {
-        deleteAsync(resourceGroupName, privateCloudName, iscsiPathName).block();
+    private Mono<Void> deleteAsync(String resourceGroupName, String privateCloudName, Context context) {
+        return beginDeleteAsync(resourceGroupName, privateCloudName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -862,15 +794,28 @@ public final class IscsiPathsClientImpl implements IscsiPathsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
-     * @param iscsiPathName Name of the iSCSI path resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String privateCloudName) {
+        deleteAsync(resourceGroupName, privateCloudName).block();
+    }
+
+    /**
+     * Delete a IscsiPath.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String privateCloudName, String iscsiPathName, Context context) {
-        deleteAsync(resourceGroupName, privateCloudName, iscsiPathName, context).block();
+    public void delete(String resourceGroupName, String privateCloudName, Context context) {
+        deleteAsync(resourceGroupName, privateCloudName, context).block();
     }
 
     /**

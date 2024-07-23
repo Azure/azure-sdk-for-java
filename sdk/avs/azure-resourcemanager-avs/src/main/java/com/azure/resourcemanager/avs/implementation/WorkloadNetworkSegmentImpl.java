@@ -86,31 +86,25 @@ public final class WorkloadNetworkSegmentImpl
 
     private String privateCloudName;
 
-    private String workloadNetworkName;
-
     private String segmentId;
 
-    public WorkloadNetworkSegmentImpl withExistingWorkloadNetwork(String resourceGroupName, String privateCloudName,
-        String workloadNetworkName) {
+    public WorkloadNetworkSegmentImpl withExistingPrivateCloud(String resourceGroupName, String privateCloudName) {
         this.resourceGroupName = resourceGroupName;
         this.privateCloudName = privateCloudName;
-        this.workloadNetworkName = workloadNetworkName;
         return this;
     }
 
     public WorkloadNetworkSegment create() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createSegment(resourceGroupName, privateCloudName, workloadNetworkName, segmentId, this.innerModel(),
-                Context.NONE);
+            .createSegment(resourceGroupName, privateCloudName, segmentId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkSegment create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createSegment(resourceGroupName, privateCloudName, workloadNetworkName, segmentId, this.innerModel(),
-                context);
+            .createSegment(resourceGroupName, privateCloudName, segmentId, this.innerModel(), context);
         return this;
     }
 
@@ -127,16 +121,14 @@ public final class WorkloadNetworkSegmentImpl
     public WorkloadNetworkSegment apply() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateSegment(resourceGroupName, privateCloudName, workloadNetworkName, segmentId, this.innerModel(),
-                Context.NONE);
+            .updateSegment(resourceGroupName, privateCloudName, segmentId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkSegment apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateSegment(resourceGroupName, privateCloudName, workloadNetworkName, segmentId, this.innerModel(),
-                context);
+            .updateSegment(resourceGroupName, privateCloudName, segmentId, this.innerModel(), context);
         return this;
     }
 
@@ -146,14 +138,13 @@ public final class WorkloadNetworkSegmentImpl
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.privateCloudName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateClouds");
-        this.workloadNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadNetworks");
         this.segmentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "segments");
     }
 
     public WorkloadNetworkSegment refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .getSegmentWithResponse(resourceGroupName, privateCloudName, workloadNetworkName, segmentId, Context.NONE)
+            .getSegmentWithResponse(resourceGroupName, privateCloudName, segmentId, Context.NONE)
             .getValue();
         return this;
     }
@@ -161,7 +152,7 @@ public final class WorkloadNetworkSegmentImpl
     public WorkloadNetworkSegment refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .getSegmentWithResponse(resourceGroupName, privateCloudName, workloadNetworkName, segmentId, context)
+            .getSegmentWithResponse(resourceGroupName, privateCloudName, segmentId, context)
             .getValue();
         return this;
     }

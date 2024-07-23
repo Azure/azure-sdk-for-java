@@ -22,7 +22,7 @@ public final class WorkloadNetworksUpdatePortMirroringSamples {
      */
     public static void workloadNetworksUpdatePortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkPortMirroring resource = manager.workloadNetworks()
-            .getPortMirroringWithResponse("group1", "cloud1", null, "portMirroring1", com.azure.core.util.Context.NONE)
+            .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withDirection(PortMirroringDirectionEnum.BIDIRECTIONAL)
