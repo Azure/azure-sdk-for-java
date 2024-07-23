@@ -217,14 +217,13 @@ public class BlobTestBase extends TestProxyTestBase {
         return FluxUtil.collectBytesInByteBufferStream(content).map(ByteBuffer::wrap);
     }
 
-    protected static String getAuthToken() {
+    protected String getAuthToken() {
         if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
             // we just need some string to satisfy SDK for playback mode. Recording framework handles this fine.
             return "recordingBearerToken";
         }
-        return new DefaultAzureCredentialBuilder().build().getToken(new TokenRequestContext()
-                .setScopes(Collections.singletonList("https://storage.azure.com/.default")))
-            .map(AccessToken::getToken).block();
+        return StorageCommonTestUtils.getTokenCredential(interceptorManager).getTokenSync(new TokenRequestContext()
+                .setScopes(Collections.singletonList("https://storage.azure.com/.default"))).getToken();
     }
 
     protected String generateContainerName() {
