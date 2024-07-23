@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -189,6 +190,19 @@ public class Configs {
     public static final String DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = "COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR";
     public static final boolean DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = true;
 
+    // Out-of-the-box it is possible to create documents with invalid character '/' in the id field
+    // Client and service will just allow creating these documents - but no read, replace, patch or delete operation
+    // can be done for these documents because the resulting request uri
+    // "dbs/DBNAME/cols/CONTAINERNAME/docs/IDVALUE" would become invalid
+    // Adding a validation to prevent the '/' in the id value would be breaking (for service and client)
+    // but for some workloads there is a vested interest in failing early if someone tries to create documents
+    // with invalid id value = the environment variable changes below
+    // allow opting into a validation client-side. If this becomes used more frequently we might need to create
+    // a public API for it as well.
+    public static final String PREVENT_INVALID_ID_CHARS = "COSMOS.PREVENT_INVALID_ID_CHARS";
+    public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
+    public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
+
 
     // Metrics
     // Samples:
@@ -202,6 +216,31 @@ public class Configs {
     //                + "\"applyDiagnosticThresholdsForTransportLevelMeters\":true}");
     public static final String METRICS_CONFIG = "COSMOS.METRICS_CONFIG";
     public static final String DEFAULT_METRICS_CONFIG = CosmosMicrometerMetricsConfig.DEFAULT.toJson();
+
+    // For partition-level circuit breaker, below config will set the tolerated consecutive exception counts
+    // for reads and writes for a given partition before being marked as Unavailable
+    private static final String DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = PartitionLevelCircuitBreakerConfig.DEFAULT.toJson();
+    private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG";
+    private static final String STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT = "COSMOS.STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT";
+    private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT = 2;
+    private static final String STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = "COSMOS.STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS = 1;
+
+    // For partition-level circuit breaker, a background thread will run periodically every y seconds at a minimum
+    // in an attempt to recover Unavailable partitions
+    private static final String STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS = "COSMOS.STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS";
+    private static final int DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS = 60;
+
+    // For partition-level circuit breaker, a partition can be allowed to be Unavailable for minimum of x seconds
+    // as specified by the below setting after which a background thread will attempt to recover the partition
+    private static final String ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS = "COSMOS.ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS";
+    private static final int DEFAULT_ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS = 30;
+
+    // For partition-level circuit breaker, in order to recover a partition in a region, the SDK when configured
+    // in the direct connectivity mode, establishes connections to replicas to attempt to recover a region
+    // Below sets a time limit on how long these connection establishments be attempted for
+    private static final int DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = 10;
+    private static final String CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = "COSMOS.CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -366,6 +405,20 @@ public class Configs {
         return DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT;
     }
 
+    public static boolean isIdValueValidationEnabled() {
+        String valueFromSystemProperty = System.getProperty(PREVENT_INVALID_ID_CHARS);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return !Boolean.valueOf(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(PREVENT_INVALID_ID_CHARS_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return!Boolean.valueOf(valueFromEnvVariable);
+        }
+
+        return DEFAULT_PREVENT_INVALID_ID_CHARS;
+    }
+
     public static int getMaxHttpRequestTimeout() {
         String valueFromSystemProperty = System.getProperty(HTTP_MAX_REQUEST_TIMEOUT);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
@@ -508,8 +561,14 @@ public class Configs {
     }
 
     public static boolean getAzureCosmosNonStreamingOrderByDisabled() {
-        logger.info("AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY property is: {}", System.getProperty(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY));
-        logger.info("AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY env variable is: {}", System.getenv().get(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY));
+        if(logger.isTraceEnabled()) {
+            logger.trace(
+                "AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY property is: {}",
+                System.getProperty(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY));
+            logger.trace(
+                "AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY env variable is: {}",
+                System.getenv().get(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY));
+        }
         return Boolean.parseBoolean(System.getProperty(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY,
             firstNonNull(
                 emptyToNull(System.getenv().get(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY)),
@@ -593,5 +652,112 @@ public class Configs {
                     DEFAULT_METRICS_CONFIG));
 
         return CosmosMicrometerMetricsConfig.fromJsonString(metricsConfig);
+    }
+
+    public static PartitionLevelCircuitBreakerConfig getPartitionLevelCircuitBreakerConfig() {
+        String partitionLevelCircuitBreakerConfigAsString =
+            System.getProperty(
+                PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG)),
+                    DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG));
+
+        PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig
+            = PartitionLevelCircuitBreakerConfig.fromJsonString(partitionLevelCircuitBreakerConfigAsString);
+
+        if (partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForReads() < 10) {
+            return PartitionLevelCircuitBreakerConfig.DEFAULT;
+        }
+
+        if (partitionLevelCircuitBreakerConfig.getConsecutiveExceptionCountToleratedForWrites() < 5) {
+            return PartitionLevelCircuitBreakerConfig.DEFAULT;
+        }
+
+        return partitionLevelCircuitBreakerConfig;
+    }
+
+    public static int getStaleCollectionCacheRefreshRetryCount() {
+
+        String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
+
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
+        }
+
+        String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
+
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT);
+        }
+
+        return DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_COUNT;
+    }
+
+    public static int getStaleCollectionCacheRefreshRetryIntervalInSeconds() {
+
+        String valueFromSystemProperty = System.getProperty(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+        }
+
+        String valueFromEnvVariable = System.getenv(STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+        }
+
+        return DEFAULT_STALE_COLLECTION_CACHE_REFRESH_RETRY_INTERVAL_IN_SECONDS;
+    }
+
+    public static int getStalePartitionUnavailabilityRefreshIntervalInSeconds() {
+
+        String valueFromSystemProperty = System.getProperty(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+        }
+
+        String valueFromEnvVariable = System.getenv(STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS);
+        }
+
+        return DEFAULT_STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS;
+    }
+
+    public static int getAllowedPartitionUnavailabilityDurationInSeconds() {
+
+        String valueFromSystemProperty = System.getProperty(ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS);
+        }
+
+        String valueFromEnvVariable = System.getenv(ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS);
+        }
+
+        return DEFAULT_ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS;
+    }
+
+    public static int getConnectionEstablishmentTimeoutForPartitionRecoveryInSeconds() {
+
+        String valueFromSystemProperty = System.getProperty(CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromSystemProperty)) {
+            return Math.max(Integer.parseInt(valueFromSystemProperty), DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+        }
+
+        String valueFromEnvVariable = System.getenv(CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+
+        if (StringUtils.isNotEmpty(valueFromEnvVariable)) {
+            return Math.max(Integer.parseInt(valueFromEnvVariable), DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS);
+        }
+
+        return DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS;
     }
 }

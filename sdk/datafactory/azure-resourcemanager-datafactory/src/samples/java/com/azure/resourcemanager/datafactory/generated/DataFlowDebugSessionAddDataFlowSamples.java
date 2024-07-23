@@ -29,7 +29,8 @@ import java.util.Map;
  */
 public final class DataFlowDebugSessionAddDataFlowSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_AddDataFlow.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DataFlowDebugSession_AddDataFlow.json
      */
     /**
      * Sample code: DataFlowDebugSession_AddDataFlow.

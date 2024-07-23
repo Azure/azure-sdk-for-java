@@ -20,42 +20,54 @@ public final class LinkedServiceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedServiceListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"gpw\",\"connectVia\":{\"referenceName\":\"uh\",\"parameters\":{\"uusdttouwa\":\"databsjyofdx\"}},\"description\":\"ekqvkeln\",\"parameters\":{\"sxyawjoyaqcs\":{\"type\":\"SecureString\",\"defaultValue\":\"datawyjsflhhcaalnjix\"},\"zyexzn\":{\"type\":\"Float\",\"defaultValue\":\"datapkii\"},\"xknalaulppg\":{\"type\":\"Array\",\"defaultValue\":\"dataxhnrztfolhb\"}},\"annotations\":[\"datapnapnyiropuh\",\"dataigvpgylg\",\"datagit\",\"datamedjvcslynqwwncw\"],\"\":{\"rmgucnap\":\"dataxgk\"}},\"name\":\"eoellwptfdygp\",\"type\":\"b\",\"etag\":\"ceopzfqrhhuaopp\",\"id\":\"qeqxo\"}],\"nextLink\":\"dahzxctobg\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"o\",\"parameters\":{\"ggdtpnapnyiro\":\"datanxknalaulp\",\"ylgqgitxmedjvcsl\":\"datauhpigvp\",\"wwncwzzhxgk\":\"datan\",\"t\":\"datarmgucnap\"}},\"description\":\"ellwptfdy\",\"parameters\":{\"opppcqeq\":{\"type\":\"Object\",\"defaultValue\":\"datauaceopzfqrhhu\"},\"ahzxctobgbk\":{\"type\":\"String\",\"defaultValue\":\"dataz\"},\"grcfb\":{\"type\":\"String\",\"defaultValue\":\"dataizpost\"}},\"annotations\":[\"datamfqjhhkxbp\",\"datajy\",\"datajhxxjyn\",\"datau\"],\"\":{\"szjfauvjfdxxivet\":\"datakrtswbxqz\"}},\"name\":\"cqaqtdoqmcbx\",\"type\":\"vxysl\",\"etag\":\"hsfxoblytkb\",\"id\":\"pe\"},{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"wfbkrvrns\",\"parameters\":{\"ohxcrsbfova\":\"dataq\",\"sub\":\"datarruvwbhsq\",\"rxbpyb\":\"datagjb\",\"twss\":\"datarfbjf\"}},\"description\":\"ftpvjzbexil\",\"parameters\":{\"vwpm\":{\"type\":\"SecureString\",\"defaultValue\":\"dataq\"},\"jhwqytjrybnw\":{\"type\":\"String\",\"defaultValue\":\"dataruoujmk\"}},\"annotations\":[\"datagdrjervnaenqpe\",\"dataindoygmifthnzd\",\"datadslgnayqigynduh\",\"datavhqlkthumaqo\"],\"\":{\"gccymvaolpssl\":\"dataycduier\",\"d\":\"datalfmmdnbbglzpswi\"}},\"name\":\"wyhzdx\",\"type\":\"adbzmnvdfznud\",\"etag\":\"dvxzbncblylpst\",\"id\":\"hh\"}],\"nextLink\":\"rzdzucerscdnt\"}")
             .toObject(LinkedServiceListResponse.class);
-        Assertions.assertEquals("qeqxo", model.value().get(0).id());
-        Assertions.assertEquals("uh", model.value().get(0).properties().connectVia().referenceName());
-        Assertions.assertEquals("ekqvkeln", model.value().get(0).properties().description());
-        Assertions.assertEquals(ParameterType.SECURE_STRING,
-            model.value().get(0).properties().parameters().get("sxyawjoyaqcs").type());
-        Assertions.assertEquals("dahzxctobg", model.nextLink());
+        Assertions.assertEquals("pe", model.value().get(0).id());
+        Assertions.assertEquals("o", model.value().get(0).properties().connectVia().referenceName());
+        Assertions.assertEquals("ellwptfdy", model.value().get(0).properties().description());
+        Assertions.assertEquals(ParameterType.OBJECT,
+            model.value().get(0).properties().parameters().get("opppcqeq").type());
+        Assertions.assertEquals("rzdzucerscdnt", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceListResponse model
-            = new LinkedServiceListResponse().withValue(Arrays.asList(new LinkedServiceResourceInner().withId("qeqxo")
+        LinkedServiceListResponse model = new LinkedServiceListResponse().withValue(Arrays.asList(
+            new LinkedServiceResourceInner().withId("pe")
                 .withProperties(new LinkedService()
-                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("uh")
-                        .withParameters(mapOf("uusdttouwa", "databsjyofdx")))
-                    .withDescription("ekqvkeln")
-                    .withParameters(mapOf("sxyawjoyaqcs",
-                        new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                            .withDefaultValue("datawyjsflhhcaalnjix"),
-                        "zyexzn",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datapkii"),
-                        "xknalaulppg",
-                        new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataxhnrztfolhb")))
-                    .withAnnotations(
-                        Arrays.asList("datapnapnyiropuh", "dataigvpgylg", "datagit", "datamedjvcslynqwwncw"))
-                    .withAdditionalProperties(mapOf("type", "gpw")))))
-                .withNextLink("dahzxctobg");
+                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("o")
+                        .withParameters(mapOf("ggdtpnapnyiro", "datanxknalaulp", "ylgqgitxmedjvcsl", "datauhpigvp",
+                            "wwncwzzhxgk", "datan", "t", "datarmgucnap")))
+                    .withDescription("ellwptfdy")
+                    .withParameters(mapOf("opppcqeq",
+                        new ParameterSpecification().withType(ParameterType.OBJECT)
+                            .withDefaultValue("datauaceopzfqrhhu"),
+                        "ahzxctobgbk",
+                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataz"), "grcfb",
+                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataizpost")))
+                    .withAnnotations(Arrays.asList("datamfqjhhkxbp", "datajy", "datajhxxjyn", "datau"))
+                    .withAdditionalProperties(mapOf("type", "LinkedService"))),
+            new LinkedServiceResourceInner().withId("hh")
+                .withProperties(new LinkedService()
+                    .withConnectVia(new IntegrationRuntimeReference().withReferenceName("wfbkrvrns")
+                        .withParameters(mapOf("ohxcrsbfova", "dataq", "sub", "datarruvwbhsq", "rxbpyb", "datagjb",
+                            "twss", "datarfbjf")))
+                    .withDescription("ftpvjzbexil")
+                    .withParameters(mapOf("vwpm",
+                        new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataq"),
+                        "jhwqytjrybnw",
+                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataruoujmk")))
+                    .withAnnotations(Arrays.asList("datagdrjervnaenqpe", "dataindoygmifthnzd", "datadslgnayqigynduh",
+                        "datavhqlkthumaqo"))
+                    .withAdditionalProperties(mapOf("type", "LinkedService")))))
+            .withNextLink("rzdzucerscdnt");
         model = BinaryData.fromObject(model).toObject(LinkedServiceListResponse.class);
-        Assertions.assertEquals("qeqxo", model.value().get(0).id());
-        Assertions.assertEquals("uh", model.value().get(0).properties().connectVia().referenceName());
-        Assertions.assertEquals("ekqvkeln", model.value().get(0).properties().description());
-        Assertions.assertEquals(ParameterType.SECURE_STRING,
-            model.value().get(0).properties().parameters().get("sxyawjoyaqcs").type());
-        Assertions.assertEquals("dahzxctobg", model.nextLink());
+        Assertions.assertEquals("pe", model.value().get(0).id());
+        Assertions.assertEquals("o", model.value().get(0).properties().connectVia().referenceName());
+        Assertions.assertEquals("ellwptfdy", model.value().get(0).properties().description());
+        Assertions.assertEquals(ParameterType.OBJECT,
+            model.value().get(0).properties().parameters().get("opppcqeq").type());
+        Assertions.assertEquals("rzdzucerscdnt", model.nextLink());
     }
 
     // Use "Map.of" if available

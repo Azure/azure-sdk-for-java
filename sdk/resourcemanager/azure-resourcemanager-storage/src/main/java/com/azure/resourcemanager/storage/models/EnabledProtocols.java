@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ public final class EnabledProtocols extends ExpandableStringEnum<EnabledProtocol
 
     /**
      * Creates a new instance of EnabledProtocols value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +33,7 @@ public final class EnabledProtocols extends ExpandableStringEnum<EnabledProtocol
 
     /**
      * Creates or finds a EnabledProtocols from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnabledProtocols.
      */
@@ -45,7 +44,7 @@ public final class EnabledProtocols extends ExpandableStringEnum<EnabledProtocol
 
     /**
      * Gets known EnabledProtocols values.
-     *
+     * 
      * @return known EnabledProtocols values.
      */
     public static Collection<EnabledProtocols> values() {

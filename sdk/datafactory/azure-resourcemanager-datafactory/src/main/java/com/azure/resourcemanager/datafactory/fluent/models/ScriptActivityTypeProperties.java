@@ -16,7 +16,8 @@ import java.util.List;
 @Fluent
 public final class ScriptActivityTypeProperties {
     /*
-     * ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "scriptBlockExecutionTimeout")
     private Object scriptBlockExecutionTimeout;

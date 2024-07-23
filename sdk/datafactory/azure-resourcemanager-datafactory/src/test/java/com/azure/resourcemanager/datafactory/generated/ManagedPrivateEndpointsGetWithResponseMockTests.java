@@ -21,7 +21,7 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"dy\",\"description\":\"lbwpbieeqaozoo\",\"status\":\"ouifsrjpijz\"},\"fqdns\":[\"fqb\"],\"groupId\":\"ngbqpjswucsjp\",\"isReserved\":false,\"privateLinkResourceId\":\"yoiwmvmnahgknon\",\"provisioningState\":\"msocmxfkwfpoemzb\",\"\":{\"gwp\":\"datapysopmahdsq\",\"izxqbaznrqgloe\":\"datampklawc\",\"voawisxik\":\"dataqrolkfihfairpstg\"}},\"name\":\"vrffftr\",\"type\":\"ljscmofhisdloar\",\"etag\":\"zggwuthoqn\",\"id\":\"rveyrqtdl\"}";
+            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"forxakpmzkdisr\",\"description\":\"krcjvoivnfdovw\",\"status\":\"eguvip\"},\"fqdns\":[\"inwrhfrbwoylpme\",\"cbblg\"],\"groupId\":\"e\",\"isReserved\":true,\"privateLinkResourceId\":\"rxuyorh\",\"provisioningState\":\"ihzwdoflwlm\",\"\":{\"vkuuyehmnvfhyiax\":\"datavmfosfpgqux\"}},\"name\":\"pwhczqjoovyps\",\"type\":\"ghwokbwzpxlx\",\"etag\":\"hhkabeo\",\"id\":\"qoetckm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,13 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedPrivateEndpointResource response = manager.managedPrivateEndpoints()
-            .getWithResponse("kkn", "ba", "eiclxuijmzg", "nvavpyge", "zsnixtwpkngiy", com.azure.core.util.Context.NONE)
+            .getWithResponse("qdtcibb", "ijkwzjlk", "moexughztr", "timtf", "uylqpzskngfcbl",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rveyrqtdl", response.id());
-        Assertions.assertEquals("fqb", response.properties().fqdns().get(0));
-        Assertions.assertEquals("ngbqpjswucsjp", response.properties().groupId());
-        Assertions.assertEquals("yoiwmvmnahgknon", response.properties().privateLinkResourceId());
+        Assertions.assertEquals("qoetckm", response.id());
+        Assertions.assertEquals("inwrhfrbwoylpme", response.properties().fqdns().get(0));
+        Assertions.assertEquals("e", response.properties().groupId());
+        Assertions.assertEquals("rxuyorh", response.properties().privateLinkResourceId());
     }
 }

@@ -7,18 +7,20 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.resourcemanager.avs.fluent.models.ClusterZoneListInner;
 import java.util.List;
 
-/** An immutable client-side representation of ClusterZoneList. */
+/**
+ * An immutable client-side representation of ClusterZoneList.
+ */
 public interface ClusterZoneList {
     /**
      * Gets the zones property: Zone and associated hosts info.
-     *
+     * 
      * @return the zones value.
      */
     List<ClusterZone> zones();
 
     /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ClusterZoneListInner object.
-     *
+     * 
      * @return the inner object.
      */
     ClusterZoneListInner innerModel();

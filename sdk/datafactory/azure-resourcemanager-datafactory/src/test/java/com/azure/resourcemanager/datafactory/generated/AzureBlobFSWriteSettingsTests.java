@@ -13,18 +13,19 @@ public final class AzureBlobFSWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"lvxwlqlugnbudjy\",\"blockSizeInMB\":\"datakarggvyuewgy\",\"maxConcurrentConnections\":\"dataiotgtlans\",\"disableMetricsCollection\":\"datavlxsycqqdoxooxua\",\"copyBehavior\":\"dataqoobwxctkveqvp\",\"metadata\":[{\"name\":\"datahqcjrerypjbyqxey\",\"value\":\"datanupsipclxvaovss\"}],\"\":{\"iyo\":\"datavqqvicqdbmzwlej\"}}")
+            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"dataibnoebffkgfi\",\"maxConcurrentConnections\":\"datalr\",\"disableMetricsCollection\":\"datawaapzrkhpty\",\"copyBehavior\":\"dataiqeoajnaotavwmr\",\"metadata\":[{\"name\":\"datagdfecju\",\"value\":\"datayrwvo\"},{\"name\":\"datamcwxbac\",\"value\":\"datapslfqgfwonbtgp\"},{\"name\":\"datazuzxoeouf\",\"value\":\"datajwgfhd\"}],\"\":{\"jg\":\"datascwlcfcpz\",\"osewfbllegezvwu\":\"databbfgmeqhtngrxfq\"}}")
             .toObject(AzureBlobFSWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("dataiotgtlans")
-            .withDisableMetricsCollection("datavlxsycqqdoxooxua")
-            .withCopyBehavior("dataqoobwxctkveqvp")
-            .withMetadata(
-                Arrays.asList(new MetadataItem().withName("datahqcjrerypjbyqxey").withValue("datanupsipclxvaovss")))
-            .withBlockSizeInMB("datakarggvyuewgy");
+        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("datalr")
+            .withDisableMetricsCollection("datawaapzrkhpty")
+            .withCopyBehavior("dataiqeoajnaotavwmr")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datagdfecju").withValue("datayrwvo"),
+                new MetadataItem().withName("datamcwxbac").withValue("datapslfqgfwonbtgp"),
+                new MetadataItem().withName("datazuzxoeouf").withValue("datajwgfhd")))
+            .withBlockSizeInMB("dataibnoebffkgfi");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSWriteSettings.class);
     }
 }

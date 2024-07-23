@@ -11,7 +11,8 @@ import com.azure.resourcemanager.storage.models.StorageAccountExpand;
  */
 public final class StorageAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.
@@ -29,7 +30,9 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountGetProperties.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountGetProperties.
+     * json
      */
     /**
      * Sample code: StorageAccountGetProperties.
@@ -45,7 +48,8 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountGetPropertiesCMKVersionExpirationTime.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountGetPropertiesCMKVersionExpirationTime.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesCMKVersionExpirationTime.
@@ -62,7 +66,8 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.
@@ -80,7 +85,8 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountGetAsyncSkuConversionStatus.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountGetAsyncSkuConversionStatus.json
      */
     /**
      * Sample code: StorageAccountGetAsyncSkuConversionStatus.
@@ -96,7 +102,8 @@ public final class StorageAccountsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountGetPropertiesCMKEnabled.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * StorageAccountGetPropertiesCMKEnabled.json
      */
     /**
      * Sample code: StorageAccountGetPropertiesCMKEnabled.

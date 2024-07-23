@@ -5,30 +5,38 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** This object is returned from a successful Search Address Reverse CrossStreet call. */
+/**
+ * This object is returned from a successful Search Address Reverse CrossStreet call.
+ */
 @Immutable
-public final class ReverseSearchCrossStreetAddressResult {
+public final class ReverseSearchCrossStreetAddressResult
+    implements JsonSerializable<ReverseSearchCrossStreetAddressResult> {
     /*
      * Summary object for a Search Address Reverse Cross Street response
      */
-    @JsonProperty(value = "summary", access = JsonProperty.Access.WRITE_ONLY)
     private SearchSummary summary;
 
     /*
      * Addresses array
      */
-    @JsonProperty(value = "addresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReverseSearchCrossStreetAddressResultItem> addresses;
 
-    /** Creates an instance of ReverseSearchCrossStreetAddressResult class. */
-    public ReverseSearchCrossStreetAddressResult() {}
+    /**
+     * Creates an instance of ReverseSearchCrossStreetAddressResult class.
+     */
+    public ReverseSearchCrossStreetAddressResult() {
+    }
 
     /**
      * Get the summary property: Summary object for a Search Address Reverse Cross Street response.
-     *
+     * 
      * @return the summary value.
      */
     public SearchSummary getSummary() {
@@ -37,10 +45,50 @@ public final class ReverseSearchCrossStreetAddressResult {
 
     /**
      * Get the addresses property: Addresses array.
-     *
+     * 
      * @return the addresses value.
      */
     public List<ReverseSearchCrossStreetAddressResultItem> getAddresses() {
         return this.addresses;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReverseSearchCrossStreetAddressResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReverseSearchCrossStreetAddressResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReverseSearchCrossStreetAddressResult.
+     */
+    public static ReverseSearchCrossStreetAddressResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReverseSearchCrossStreetAddressResult deserializedReverseSearchCrossStreetAddressResult
+                = new ReverseSearchCrossStreetAddressResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summary".equals(fieldName)) {
+                    deserializedReverseSearchCrossStreetAddressResult.summary = SearchSummary.fromJson(reader);
+                } else if ("addresses".equals(fieldName)) {
+                    List<ReverseSearchCrossStreetAddressResultItem> addresses
+                        = reader.readArray(reader1 -> ReverseSearchCrossStreetAddressResultItem.fromJson(reader1));
+                    deserializedReverseSearchCrossStreetAddressResult.addresses = addresses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReverseSearchCrossStreetAddressResult;
+        });
     }
 }

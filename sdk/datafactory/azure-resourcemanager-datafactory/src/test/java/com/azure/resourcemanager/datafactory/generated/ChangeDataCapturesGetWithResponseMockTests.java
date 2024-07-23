@@ -23,7 +23,7 @@ public final class ChangeDataCapturesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"folder\":{\"name\":\"kgrdmlf\"},\"description\":\"jveysui\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"pmyrkpi\"},\"linkedServiceType\":\"wcninypuoze\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{},{}]}},{\"sourceEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"k\"},\"linkedServiceType\":\"iytnivtorqkvr\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{},{},{},{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{},{},{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"byakicpdwi\"},\"linkedServiceType\":\"nugil\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{}]},\"dataMapperMappings\":[{},{},{}],\"relationships\":[\"dataqvgfqrpocieehf\"]},{\"targetEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"djeqyrca\"},\"linkedServiceType\":\"q\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{}]},\"dataMapperMappings\":[{},{}],\"relationships\":[\"datanr\",\"databf\",\"datauej\",\"dataqwsxsovhgtaelgfo\"]}],\"policy\":{\"mode\":\"huyawsyxsjprc\",\"recurrence\":{\"frequency\":\"Second\",\"interval\":1515513738}},\"allowVNetOverride\":false,\"status\":\"mooa\"},\"name\":\"glnkrkoub\",\"type\":\"aeafkf\",\"etag\":\"unlgddbeoidm\",\"\":{\"rawpnlagqgwdk\":\"datadpkzsqzwicecdkw\",\"fyhymwghdh\":\"datasqzahhydyerrf\"},\"id\":\"lb\"}";
+            = "{\"properties\":{\"folder\":{\"name\":\"r\"},\"description\":\"nvozjudg\",\"sourceConnectionsInfo\":[{\"sourceEntities\":[{},{}],\"connection\":{\"linkedService\":{\"referenceName\":\"tmmxvuzofu\"},\"linkedServiceType\":\"abrsfuvajuzhid\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{}]}},{\"sourceEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"dxhfu\"},\"linkedServiceType\":\"x\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{}]}}],\"targetConnectionsInfo\":[{\"targetEntities\":[{}],\"connection\":{\"linkedService\":{\"referenceName\":\"zihrx\"},\"linkedServiceType\":\"ub\",\"type\":\"linkedservicetype\",\"isInlineDataset\":false,\"commonDslConnectorProperties\":[{},{},{},{}]},\"dataMapperMappings\":[{},{}],\"relationships\":[\"datavzpvi\",\"dataqflmalmxvmrd\",\"datafanjk\"]}],\"policy\":{\"mode\":\"rlcjmslpgmebxw\",\"recurrence\":{\"frequency\":\"Second\",\"interval\":236180404}},\"allowVNetOverride\":true,\"status\":\"gakrpmjo\"},\"name\":\"d\",\"type\":\"ij\",\"etag\":\"ibc\",\"\":{\"ctvohywyvstvpksl\":\"datadtf\",\"fnhcklll\":\"datayhabgocqryliv\",\"fvanefwsodnlwon\":\"datagrkvlqqkpxvemj\"},\"id\":\"gqemjdtcx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,29 +33,29 @@ public final class ChangeDataCapturesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ChangeDataCaptureResource response = manager.changeDataCaptures()
-            .getWithResponse("dhslrtndbch", "gupwxy", "tnsck", "vshiiecsvdtibgts", com.azure.core.util.Context.NONE)
+            .getWithResponse("s", "pr", "kjiiivbvkvo", "nos", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lb", response.id());
-        Assertions.assertEquals("kgrdmlf", response.folder().name());
-        Assertions.assertEquals("jveysui", response.description());
-        Assertions.assertEquals("pmyrkpi",
+        Assertions.assertEquals("gqemjdtcx", response.id());
+        Assertions.assertEquals("r", response.folder().name());
+        Assertions.assertEquals("nvozjudg", response.description());
+        Assertions.assertEquals("tmmxvuzofu",
             response.sourceConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("wcninypuoze",
+        Assertions.assertEquals("abrsfuvajuzhid",
             response.sourceConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.sourceConnectionsInfo().get(0).connection().type());
         Assertions.assertEquals(true, response.sourceConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("byakicpdwi",
+        Assertions.assertEquals("zihrx",
             response.targetConnectionsInfo().get(0).connection().linkedService().referenceName());
-        Assertions.assertEquals("nugil", response.targetConnectionsInfo().get(0).connection().linkedServiceType());
+        Assertions.assertEquals("ub", response.targetConnectionsInfo().get(0).connection().linkedServiceType());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE,
             response.targetConnectionsInfo().get(0).connection().type());
         Assertions.assertEquals(false, response.targetConnectionsInfo().get(0).connection().isInlineDataset());
-        Assertions.assertEquals("huyawsyxsjprc", response.policy().mode());
+        Assertions.assertEquals("rlcjmslpgmebxw", response.policy().mode());
         Assertions.assertEquals(FrequencyType.SECOND, response.policy().recurrence().frequency());
-        Assertions.assertEquals(1515513738, response.policy().recurrence().interval());
-        Assertions.assertEquals(false, response.allowVNetOverride());
-        Assertions.assertEquals("mooa", response.status());
+        Assertions.assertEquals(236180404, response.policy().recurrence().interval());
+        Assertions.assertEquals(true, response.allowVNetOverride());
+        Assertions.assertEquals("gakrpmjo", response.status());
     }
 }

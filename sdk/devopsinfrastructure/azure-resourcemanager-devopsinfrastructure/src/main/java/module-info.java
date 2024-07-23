@@ -8,7 +8,7 @@ module com.azure.resourcemanager.devopsinfrastructure {
     exports com.azure.resourcemanager.devopsinfrastructure.fluent;
     exports com.azure.resourcemanager.devopsinfrastructure.fluent.models;
     exports com.azure.resourcemanager.devopsinfrastructure.models;
-    opens com.azure.resourcemanager.devopsinfrastructure.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.devopsinfrastructure.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.devopsinfrastructure.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.devopsinfrastructure.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.devopsinfrastructure.models to com.azure.core;
+    opens com.azure.resourcemanager.devopsinfrastructure.implementation.models to com.azure.core;
 }

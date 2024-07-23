@@ -9,7 +9,9 @@ package com.azure.resourcemanager.selfhelp.generated;
  */
 public final class TroubleshootersRestartSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Restart.json
+     * x-ms-original-file:
+     * specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Restart.
+     * json
      */
     /**
      * Sample code: Troubleshooters_Restart.

@@ -104,11 +104,16 @@ steps:
         pwsh: true
         ScriptType: InlineScript
         Inline: |
+          $account = (Get-AzContext).Account
+          $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
+          $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
+
           mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
           exit $LASTEXITCODE
       env:
         JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   - ${{ else }}:
@@ -187,6 +192,10 @@ steps:
         pwsh: true
         ScriptType: InlineScript
         Inline: |
+          $account = (Get-AzContext).Account
+          $env:AZURESUBSCRIPTION_CLIENT_ID = $account.Id
+          $env:AZURESUBSCRIPTION_TENANT_ID = $account.Tenants
+
           mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) -T ${{ parameters.TestParallelization }}
           exit $LASTEXITCODE
       env:
@@ -194,6 +203,7 @@ steps:
         # task above
         JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   - ${{ else }}:

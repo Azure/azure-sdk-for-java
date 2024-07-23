@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AzureFirewallFqdnTagsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AzureFirewallFqdnTagsListBySubscription.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * AzureFirewallFqdnTagsListBySubscription.json
      */
     /**
      * Sample code: List all Azure Firewall FQDN Tags for a given subscription.

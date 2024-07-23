@@ -20,7 +20,7 @@ public final class IntegrationRuntimesGetStatusWithResponseMockTests {
     @Test
     public void testGetStatusWithResponse() throws Exception {
         String responseStr
-            = "{\"name\":\"qwta\",\"properties\":{\"type\":\"Managed\",\"dataFactoryName\":\"awxslstekbbqq\",\"state\":\"AccessDenied\",\"\":{\"mbbracg\":\"dataycvoexbxrxrvxwl\",\"wyegdutf\":\"datanelozz\",\"kesdfujfpnwfzabl\":\"datatmdlfkjjucpt\"}}}";
+            = "{\"name\":\"nlq\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"eevzelmmwmdhm\",\"state\":\"Limited\",\"\":{\"jfmztpwujmu\":\"databbvmckpnmn\",\"zrfonqjnpkofj\":\"datatvyeyeb\",\"eyuirrrxrftfamo\":\"dataus\"}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class IntegrationRuntimesGetStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeStatusResponse response = manager.integrationRuntimes()
-            .getStatusWithResponse("mgparbirgw", "gewd", "irnfnlyvdryx", com.azure.core.util.Context.NONE)
+            .getStatusWithResponse("pjkczkc", "lzicltwan", "bzycxvifkzspwvl", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

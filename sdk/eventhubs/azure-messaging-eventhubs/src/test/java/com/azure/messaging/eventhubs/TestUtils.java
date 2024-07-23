@@ -4,9 +4,10 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpMessageConstant;
-import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -17,11 +18,19 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.codec.ReadableBuffer;
 import org.apache.qpid.proton.message.Message;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.time.Duration;
 import java.time.Instant;
-import java.util.Collections;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -36,8 +45,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains helper methods for working with AMQP messages
  */
 public final class TestUtils {
-    private static final MessageSerializer MESSAGE_SERIALIZER = new EventHubMessageSerializer();
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
+    private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
+    private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
@@ -70,51 +80,22 @@ public final class TestUtils {
     /**
      * Creates a mock message with the contents provided.
      */
-    static Message getMessage(byte[] contents) {
-        return getMessage(contents, null);
-    }
-
-    /**
-     * Creates a mock message with the contents provided.
-     */
     static Message getMessage(byte[] contents, String messageTrackingValue) {
-        return getMessage(contents, messageTrackingValue, Collections.emptyMap());
-    }
-
-    /**
-     * Creates a message with the given contents, default system properties, and adds a {@code messageTrackingValue} in
-     * the application properties. Useful for helping filter messages.
-     */
-    static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
-        final Message message = getMessage(contents, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
-
-        message.getMessageAnnotations().getValue()
-            .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
-
-        Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
-
-        if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
-            applicationProperties.put(MESSAGE_ID, messageTrackingValue);
-        }
-
-        if (additionalProperties != null) {
-            applicationProperties.putAll(additionalProperties);
-        }
-
-        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
-
-        return message;
+        return getMessage(contents, messageTrackingValue, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
     }
 
     /**
      * Creates a message with the required system properties set.
      */
-    static Message getMessage(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, Long offsetNumber,
+                              Date enqueuedTime) {
+
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), offsetNumber);
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
         systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), sequenceNumber);
         systemProperties.put(getSymbol(PARTITION_KEY_ANNOTATION_NAME), PARTITION_KEY);
+        systemProperties.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
 
         final Message message = Proton.message();
         message.setMessageAnnotations(new MessageAnnotations(systemProperties));
@@ -128,15 +109,12 @@ public final class TestUtils {
 
         message.setBody(body);
 
-        return message;
-    }
+        final Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
+        applicationProperties.put(MESSAGE_ID, messageTrackingValue);
 
-    /**
-     * Creates an EventData with the received properties set.
-     */
-    public static EventData getEventData(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
-        final Message message = getMessage(contents, sequenceNumber, offsetNumber, enqueuedTime);
-        return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
+        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
+
+        return message;
     }
 
     public static List<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
@@ -172,6 +150,63 @@ public final class TestUtils {
 
         return event.getProperties() != null && event.getProperties().containsKey(MESSAGE_ID)
             && expectedValue.equals(event.getProperties().get(MESSAGE_ID));
+    }
+
+    public static ConnectionStringProperties getConnectionStringProperties() {
+        return new ConnectionStringProperties(getConnectionString(false));
+    }
+
+    public static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
+        return new ConnectionStringProperties(getConnectionString(withSas));
+    }
+
+    static String getConnectionString() {
+        return getConnectionString(false);
+    }
+
+    static String getConnectionString(boolean withSas) {
+        String connectionString = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_CONNECTION_STRING");
+        if (withSas) {
+            String shareAccessSignatureFormat = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
+            String connectionStringWithSasAndEntityFormat = "Endpoint=%s;SharedAccessSignature=%s;EntityPath=%s";
+            String connectionStringWithSasFormat = "Endpoint=%s;SharedAccessSignature=%s";
+
+            ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+            URI endpoint = properties.getEndpoint();
+            String entityPath = properties.getEntityPath();
+            String resourceUrl = entityPath == null || entityPath.trim().length() == 0
+                ? endpoint.toString() : endpoint.toString() +  entityPath;
+
+            String utf8Encoding = UTF_8.name();
+            OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofHours(2L));
+            String expiresOnEpochSeconds = Long.toString(expiresOn.toEpochSecond());
+
+            try {
+                String audienceUri = URLEncoder.encode(resourceUrl, utf8Encoding);
+                String secretToSign = audienceUri + "\n" + expiresOnEpochSeconds;
+                byte[] sasKeyBytes = properties.getSharedAccessKey().getBytes(utf8Encoding);
+
+                Mac hmacsha256 = Mac.getInstance("HMACSHA256");
+                hmacsha256.init(new SecretKeySpec(sasKeyBytes, "HMACSHA256"));
+
+                byte[] signatureBytes = hmacsha256.doFinal(secretToSign.getBytes(utf8Encoding));
+                String signature = Base64.getEncoder().encodeToString(signatureBytes);
+
+                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat,
+                    audienceUri,
+                    URLEncoder.encode(signature, utf8Encoding),
+                    URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
+                    URLEncoder.encode(properties.getSharedAccessKeyName(), utf8Encoding));
+
+                if (entityPath == null) {
+                    return String.format(connectionStringWithSasFormat, endpoint, signatureValue);
+                }
+                return String.format(connectionStringWithSasAndEntityFormat, endpoint, signatureValue, entityPath);
+            } catch (Exception e) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "Error while getting connection string", e);
+            }
+        }
+        return connectionString;
     }
 
     private TestUtils() {

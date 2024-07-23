@@ -15,8 +15,8 @@ import java.util.List;
 @Fluent
 public final class LoadBalancerConfigurationProperties {
     /*
-     * Specifies the frontend IP to be used for the load balancer. Only IPv4 frontend IP address is supported. Each
-     * load balancer configuration must have exactly one frontend IP configuration.
+     * Specifies the frontend IP to be used for the load balancer. Only IPv4 frontend IP address is supported. Each load
+     * balancer configuration must have exactly one frontend IP configuration.
      */
     @JsonProperty(value = "frontendIpConfigurations", required = true)
     private List<LoadBalancerFrontendIpConfiguration> frontendIpConfigurations;
@@ -59,8 +59,9 @@ public final class LoadBalancerConfigurationProperties {
      */
     public void validate() {
         if (frontendIpConfigurations() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property frontendIpConfigurations in model LoadBalancerConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property frontendIpConfigurations in model LoadBalancerConfigurationProperties"));
         } else {
             frontendIpConfigurations().forEach(e -> e.validate());
         }

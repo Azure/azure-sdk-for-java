@@ -8,6 +8,7 @@ import com.azure.communication.sms.implementation.models.SendMessageRequest;
 import com.azure.communication.sms.implementation.models.SmsSendResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -23,21 +24,27 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Sms. */
+/**
+ * An instance of this class provides access to all the operations defined in Sms.
+ */
 public final class SmsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SmsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureCommunicationSMSServiceImpl client;
 
     /**
      * Initializes an instance of SmsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SmsImpl(AzureCommunicationSMSServiceImpl client) {
-        this.service = RestProxy.create(SmsService.class, client.getHttpPipeline());
+        this.service = RestProxy.create(SmsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -49,97 +56,98 @@ public final class SmsImpl {
     @ServiceInterface(name = "AzureCommunicationSM")
     public interface SmsService {
         @Post("/sms")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SmsSendResponse>> send(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SendMessageRequest sendMessageRequest,
-                Context context);
+        Mono<Response<SmsSendResponse>> send(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SendMessageRequest sendMessageRequest, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param sendMessageRequest Represents the properties of a send message request.
+     * 
+     * @param sendMessageRequest Represents the body of the send message request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful or multi status send Sms request.
+     * @return response for a successful or multi status send Sms request along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SmsSendResponse>> sendWithResponseAsync(SendMessageRequest sendMessageRequest) {
-        return FluxUtil.withContext(
-                context ->
-                        service.send(
-                                this.client.getEndpoint(), this.client.getApiVersion(), sendMessageRequest, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.send(this.client.getEndpoint(), this.client.getApiVersion(),
+            sendMessageRequest, accept, context));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param sendMessageRequest Represents the properties of a send message request.
+     * 
+     * @param sendMessageRequest Represents the body of the send message request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful or multi status send Sms request.
+     * @return response for a successful or multi status send Sms request along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SmsSendResponse>> sendWithResponseAsync(
-            SendMessageRequest sendMessageRequest, Context context) {
-        return service.send(this.client.getEndpoint(), this.client.getApiVersion(), sendMessageRequest, context);
+    public Mono<Response<SmsSendResponse>> sendWithResponseAsync(SendMessageRequest sendMessageRequest,
+        Context context) {
+        final String accept = "application/json";
+        return service.send(this.client.getEndpoint(), this.client.getApiVersion(), sendMessageRequest, accept,
+            context);
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param sendMessageRequest Represents the properties of a send message request.
+     * 
+     * @param sendMessageRequest Represents the body of the send message request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful or multi status send Sms request.
+     * @return response for a successful or multi status send Sms request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResponse> sendAsync(SendMessageRequest sendMessageRequest) {
-        return sendWithResponseAsync(sendMessageRequest)
-                .flatMap(
-                        (Response<SmsSendResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return sendWithResponseAsync(sendMessageRequest).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param sendMessageRequest Represents the properties of a send message request.
+     * 
+     * @param sendMessageRequest Represents the body of the send message request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful or multi status send Sms request.
+     * @return response for a successful or multi status send Sms request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResponse> sendAsync(SendMessageRequest sendMessageRequest, Context context) {
-        return sendWithResponseAsync(sendMessageRequest, context)
-                .flatMap(
-                        (Response<SmsSendResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return sendWithResponseAsync(sendMessageRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param sendMessageRequest Represents the properties of a send message request.
+     * 
+     * @param sendMessageRequest Represents the body of the send message request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for a successful or multi status send Sms request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SmsSendResponse> sendWithResponse(SendMessageRequest sendMessageRequest, Context context) {
+        return sendWithResponseAsync(sendMessageRequest, context).block();
+    }
+
+    /**
+     * Sends a SMS message from a phone number that belongs to the authenticated account.
+     * 
+     * @param sendMessageRequest Represents the body of the send message request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -147,21 +155,6 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SmsSendResponse send(SendMessageRequest sendMessageRequest) {
-        return sendAsync(sendMessageRequest).block();
-    }
-
-    /**
-     * Sends a SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param sendMessageRequest Represents the properties of a send message request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful or multi status send Sms request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SmsSendResponse send(SendMessageRequest sendMessageRequest, Context context) {
-        return sendAsync(sendMessageRequest, context).block();
+        return sendWithResponse(sendMessageRequest, Context.NONE).getValue();
     }
 }

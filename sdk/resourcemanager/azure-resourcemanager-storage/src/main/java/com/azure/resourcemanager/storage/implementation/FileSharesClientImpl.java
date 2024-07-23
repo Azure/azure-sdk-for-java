@@ -1053,7 +1053,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      * between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      * character must be immediately preceded and followed by a letter or number.
-     * @param deletedShare The deleted share to be restored.
+     * @param deletedShare The deletedShare parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1102,7 +1102,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      * between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      * character must be immediately preceded and followed by a letter or number.
-     * @param deletedShare The deleted share to be restored.
+     * @param deletedShare The deletedShare parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1151,7 +1151,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      * between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      * character must be immediately preceded and followed by a letter or number.
-     * @param deletedShare The deleted share to be restored.
+     * @param deletedShare The deletedShare parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1174,7 +1174,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      * between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      * character must be immediately preceded and followed by a letter or number.
-     * @param deletedShare The deleted share to be restored.
+     * @param deletedShare The deletedShare parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1197,7 +1197,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
      * @param shareName The name of the file share within the specified storage account. File share names must be
      * between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-)
      * character must be immediately preceded and followed by a letter or number.
-     * @param deletedShare The deleted share to be restored.
+     * @param deletedShare The deletedShare parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1382,9 +1382,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1409,9 +1407,7 @@ public final class FileSharesClientImpl implements FileSharesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

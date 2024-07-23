@@ -83,10 +83,10 @@ Log messages can be seen in the output window by:
    logging framework at deployment time][slf4j-implementations]".
 
 <!-- Links -->
-[design-guidelines]: https://azuresdkspecs.z5.web.core.windows.net/DesignGuidelines.html
+[design-guidelines]: https://aka.ms/azsdk/guide
 [event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [github-general]: https://github.com/Azure/azure-sdk
-[java-spec]: https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html
+[java-spec]: https://aka.ms/azsdk/guide/java
 [log-level]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java#L40
 [maven]: https://maven.apache.org/
 [slf4j]: https://www.slf4j.org/

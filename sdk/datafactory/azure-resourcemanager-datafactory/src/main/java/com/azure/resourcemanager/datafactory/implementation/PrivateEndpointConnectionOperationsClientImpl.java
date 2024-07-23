@@ -101,7 +101,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param ifMatch ETag of the private endpoint connection entity. Should only be specified for update, for which it
      * should match existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +153,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param ifMatch ETag of the private endpoint connection entity. Should only be specified for update, for which it
      * should match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -205,7 +205,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,7 +226,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param ifMatch ETag of the private endpoint connection entity. Should only be specified for update, for which it
      * should match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -249,7 +249,7 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

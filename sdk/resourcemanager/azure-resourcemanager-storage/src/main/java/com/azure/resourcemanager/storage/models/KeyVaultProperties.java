@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 
 /**
@@ -45,7 +44,8 @@ public final class KeyVaultProperties {
     private OffsetDateTime lastKeyRotationTimestamp;
 
     /*
-     * This is a read only property that represents the expiration time of the current version of the customer managed key used for encryption.
+     * This is a read only property that represents the expiration time of the current version of the customer managed
+     * key used for encryption.
      */
     @JsonProperty(value = "currentVersionedKeyExpirationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime currentVersionedKeyExpirationTimestamp;
@@ -58,7 +58,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyName property: The name of KeyVault key.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -67,7 +67,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyName property: The name of KeyVault key.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -78,7 +78,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVersion property: The version of KeyVault key.
-     *
+     * 
      * @return the keyVersion value.
      */
     public String keyVersion() {
@@ -87,7 +87,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVersion property: The version of KeyVault key.
-     *
+     * 
      * @param keyVersion the keyVersion value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -98,7 +98,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -107,7 +107,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @param keyVaultUri the keyVaultUri value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -119,7 +119,7 @@ public final class KeyVaultProperties {
     /**
      * Get the currentVersionedKeyIdentifier property: The object identifier of the current versioned Key Vault Key in
      * use.
-     *
+     * 
      * @return the currentVersionedKeyIdentifier value.
      */
     public String currentVersionedKeyIdentifier() {
@@ -128,7 +128,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the lastKeyRotationTimestamp property: Timestamp of last rotation of the Key Vault Key.
-     *
+     * 
      * @return the lastKeyRotationTimestamp value.
      */
     public OffsetDateTime lastKeyRotationTimestamp() {
@@ -138,7 +138,7 @@ public final class KeyVaultProperties {
     /**
      * Get the currentVersionedKeyExpirationTimestamp property: This is a read only property that represents the
      * expiration time of the current version of the customer managed key used for encryption.
-     *
+     * 
      * @return the currentVersionedKeyExpirationTimestamp value.
      */
     public OffsetDateTime currentVersionedKeyExpirationTimestamp() {
@@ -147,7 +147,7 @@ public final class KeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

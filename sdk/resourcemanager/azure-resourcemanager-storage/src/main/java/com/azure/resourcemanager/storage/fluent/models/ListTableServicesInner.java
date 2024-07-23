@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -28,7 +27,7 @@ public final class ListTableServicesInner {
 
     /**
      * Get the value property: List of table services returned.
-     *
+     * 
      * @return the value value.
      */
     public List<TableServicePropertiesInner> value() {
@@ -37,7 +36,7 @@ public final class ListTableServicesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

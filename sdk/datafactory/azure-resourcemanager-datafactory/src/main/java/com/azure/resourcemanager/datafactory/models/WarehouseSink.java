@@ -31,7 +31,8 @@ public final class WarehouseSink extends CopySink {
     private Object preCopyScript;
 
     /*
-     * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType boolean).
+     * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "allowCopyCommand")
     private Object allowCopyCommand;
@@ -43,13 +44,15 @@ public final class WarehouseSink extends CopySink {
     private DWCopyCommandSettings copyCommandSettings;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression with resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "tableOption")
     private Object tableOption;
 
     /*
-     * Write behavior when copying data into azure Microsoft Fabric Data Warehouse. Type: DWWriteBehaviorEnum (or Expression with resultType DWWriteBehaviorEnum)
+     * Write behavior when copying data into azure Microsoft Fabric Data Warehouse. Type: DWWriteBehaviorEnum (or
+     * Expression with resultType DWWriteBehaviorEnum)
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;

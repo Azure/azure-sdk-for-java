@@ -18,40 +18,36 @@ public final class GlobalParameterListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalParameterListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"urjtumghi\":{\"type\":\"Float\",\"value\":\"dataafbwqroohtuovmao\"},\"mslclblyjxlt\":{\"type\":\"Float\",\"value\":\"datave\"}},\"name\":\"juscvsfx\",\"type\":\"ctmgxuupbezqccy\",\"etag\":\"tce\",\"id\":\"d\"},{\"properties\":{\"zgwldoychillcec\":{\"type\":\"Object\",\"value\":\"datayihztgeqmg\"},\"llizs\":{\"type\":\"Array\",\"value\":\"datahuwaoaguhic\"}},\"name\":\"csjvhrwef\",\"type\":\"wqejpmvsse\",\"etag\":\"epwamcxtcz\",\"id\":\"peuknijd\"},{\"properties\":{\"ydjfb\":{\"type\":\"Object\",\"value\":\"dataes\"}},\"name\":\"yv\",\"type\":\"ulrtywikdmh\",\"etag\":\"kuflgbh\",\"id\":\"uacdixmxuf\"}],\"nextLink\":\"ryjqgdkf\"}")
+            "{\"value\":[{\"properties\":{\"nuilee\":{\"type\":\"Array\",\"value\":\"datamyqwcab\"},\"rxwtoaukhfkvc\":{\"type\":\"Object\",\"value\":\"dataswlpaugmrmfj\"},\"jwuive\":{\"type\":\"Int\",\"value\":\"dataizmoaeds\"},\"xeiqbpsmg\":{\"type\":\"String\",\"value\":\"datacgyee\"}},\"name\":\"guamlj\",\"type\":\"rgmsplzga\",\"etag\":\"cshhv\",\"id\":\"wgnxkympqanxrj\"},{\"properties\":{\"taoypnyghshxc\":{\"type\":\"Bool\",\"value\":\"datatw\"}},\"name\":\"hkgmnsg\",\"type\":\"xycphdrwjjkh\",\"etag\":\"omacluzvxnqmhr\",\"id\":\"pd\"}],\"nextLink\":\"mkoisqcssf\"}")
             .toObject(GlobalParameterListResponse.class);
-        Assertions.assertEquals("d", model.value().get(0).id());
-        Assertions.assertEquals(GlobalParameterType.FLOAT, model.value().get(0).properties().get("urjtumghi").type());
-        Assertions.assertEquals("ryjqgdkf", model.nextLink());
+        Assertions.assertEquals("wgnxkympqanxrj", model.value().get(0).id());
+        Assertions.assertEquals(GlobalParameterType.ARRAY, model.value().get(0).properties().get("nuilee").type());
+        Assertions.assertEquals("mkoisqcssf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GlobalParameterListResponse model = new GlobalParameterListResponse()
             .withValue(Arrays.asList(
-                new GlobalParameterResourceInner().withId("d")
-                    .withProperties(mapOf(
-                        "urjtumghi",
-                        new GlobalParameterSpecification()
-                            .withType(GlobalParameterType.FLOAT)
-                            .withValue("dataafbwqroohtuovmao"),
-                        "mslclblyjxlt",
-                        new GlobalParameterSpecification().withType(GlobalParameterType.FLOAT).withValue("datave"))),
-                new GlobalParameterResourceInner().withId("peuknijd")
-                    .withProperties(mapOf("zgwldoychillcec",
+                new GlobalParameterResourceInner().withId("wgnxkympqanxrj")
+                    .withProperties(mapOf("nuilee",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datamyqwcab"),
+                        "rxwtoaukhfkvc",
                         new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT)
-                            .withValue("datayihztgeqmg"),
-                        "llizs",
-                        new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY)
-                            .withValue("datahuwaoaguhic"))),
-                new GlobalParameterResourceInner().withId("uacdixmxuf")
-                    .withProperties(mapOf("ydjfb",
-                        new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT).withValue("dataes")))))
-            .withNextLink("ryjqgdkf");
+                            .withValue("dataswlpaugmrmfj"),
+                        "jwuive",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.INT).withValue("dataizmoaeds"),
+                        "xeiqbpsmg",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.STRING)
+                            .withValue("datacgyee"))),
+                new GlobalParameterResourceInner().withId("pd")
+                    .withProperties(mapOf("taoypnyghshxc",
+                        new GlobalParameterSpecification().withType(GlobalParameterType.BOOL).withValue("datatw")))))
+            .withNextLink("mkoisqcssf");
         model = BinaryData.fromObject(model).toObject(GlobalParameterListResponse.class);
-        Assertions.assertEquals("d", model.value().get(0).id());
-        Assertions.assertEquals(GlobalParameterType.FLOAT, model.value().get(0).properties().get("urjtumghi").type());
-        Assertions.assertEquals("ryjqgdkf", model.nextLink());
+        Assertions.assertEquals("wgnxkympqanxrj", model.value().get(0).id());
+        Assertions.assertEquals(GlobalParameterType.ARRAY, model.value().get(0).properties().get("nuilee").type());
+        Assertions.assertEquals("mkoisqcssf", model.nextLink());
     }
 
     // Use "Map.of" if available

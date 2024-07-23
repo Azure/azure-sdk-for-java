@@ -62,7 +62,7 @@ final class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializab
     @Override
     public JsonSerializable<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
-            return jsonSerializableType.cast(readJson.invokeWithArguments(AzureJsonUtils.createReader(p)));
+            return jsonSerializableType.cast(readJson.invokeStatic(AzureJsonUtils.createReader(p)));
         } catch (Exception e) {
             IOException ioException = (e instanceof IOException) ? (IOException) e : new IOException(e);
             throw LOGGER.logThrowableAsError(ioException);

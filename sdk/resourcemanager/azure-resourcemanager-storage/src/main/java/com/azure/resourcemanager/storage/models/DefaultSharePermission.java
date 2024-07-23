@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -38,7 +37,7 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
 
     /**
      * Creates a new instance of DefaultSharePermission value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -47,7 +46,7 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
 
     /**
      * Creates or finds a DefaultSharePermission from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DefaultSharePermission.
      */
@@ -58,7 +57,7 @@ public final class DefaultSharePermission extends ExpandableStringEnum<DefaultSh
 
     /**
      * Gets known DefaultSharePermission values.
-     *
+     * 
      * @return known DefaultSharePermission values.
      */
     public static Collection<DefaultSharePermission> values() {

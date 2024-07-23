@@ -11,7 +11,7 @@ public final class ExposureControlResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExposureControlResponseInner model
-            = BinaryData.fromString("{\"featureName\":\"dwtiukbldngkp\",\"value\":\"ipazyxoegukgjnpi\"}")
+            = BinaryData.fromString("{\"featureName\":\"svexcsonpclhoco\",\"value\":\"lkevle\"}")
                 .toObject(ExposureControlResponseInner.class);
     }
 

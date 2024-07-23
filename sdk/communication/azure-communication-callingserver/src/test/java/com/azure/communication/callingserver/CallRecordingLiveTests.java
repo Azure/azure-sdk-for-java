@@ -10,6 +10,7 @@ import com.azure.communication.callingserver.models.ServerCallLocator;
 import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -26,6 +27,7 @@ public class CallRecordingLiveTests extends CallAutomationLiveTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recordingOperations(HttpClient httpClient) {
         CallAutomationClient client = getCallingServerClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("recordingOperations", next))

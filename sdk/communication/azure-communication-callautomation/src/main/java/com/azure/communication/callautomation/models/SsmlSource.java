@@ -4,7 +4,11 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The SsmlSource model. */
 @Fluent
@@ -12,13 +16,11 @@ public final class SsmlSource extends PlaySource {
     /*
      * Ssml string for the cognitive service to be played
      */
-    @JsonProperty(value = "ssmlText", required = true)
     private String ssmlText;
 
     /*
      * Endpoint where the Custom Voice was deployed.
      */
-    @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
 
     /**
@@ -59,5 +61,46 @@ public final class SsmlSource extends PlaySource {
     public SsmlSource setCustomVoiceEndpointId(String customVoiceEndpointId) {
         this.customVoiceEndpointId = customVoiceEndpointId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ssmlText", this.ssmlText);
+        jsonWriter.writeStringField("customVoiceEndpointId", this.customVoiceEndpointId);
+        jsonWriter.writeStringField("playSourceCacheId", this.getPlaySourceCacheId());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsmlSource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsmlSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsmlSource.
+     */
+    public static SsmlSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            final SsmlSource source = new SsmlSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("ssmlText".equals(fieldName)) {
+                    source.ssmlText = reader.getString();
+                } else if ("customVoiceEndpointId".equals(fieldName)) {
+                    source.customVoiceEndpointId = reader.getString();
+                } else if ("playSourceCacheId".equals(fieldName)) {
+                    // Set the property of the base class 'PlaySource'.
+                    source.setPlaySourceCacheId(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return source;
+        });
     }
 }

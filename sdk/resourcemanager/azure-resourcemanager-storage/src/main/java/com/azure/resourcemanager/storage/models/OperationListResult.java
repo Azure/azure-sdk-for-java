@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -30,7 +29,7 @@ public final class OperationListResult {
 
     /**
      * Get the value property: List of Storage operations supported by the Storage resource provider.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -39,7 +38,7 @@ public final class OperationListResult {
 
     /**
      * Set the value property: List of Storage operations supported by the Storage resource provider.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationListResult object itself.
      */
@@ -50,7 +49,7 @@ public final class OperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

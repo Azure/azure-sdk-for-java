@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -36,7 +35,7 @@ public final class SignedResource extends ExpandableStringEnum<SignedResource> {
 
     /**
      * Creates a new instance of SignedResource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +44,7 @@ public final class SignedResource extends ExpandableStringEnum<SignedResource> {
 
     /**
      * Creates or finds a SignedResource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SignedResource.
      */
@@ -56,7 +55,7 @@ public final class SignedResource extends ExpandableStringEnum<SignedResource> {
 
     /**
      * Gets known SignedResource values.
-     *
+     * 
      * @return known SignedResource values.
      */
     public static Collection<SignedResource> values() {

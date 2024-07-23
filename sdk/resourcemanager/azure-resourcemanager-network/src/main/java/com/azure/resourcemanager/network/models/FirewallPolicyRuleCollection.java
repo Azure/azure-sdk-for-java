@@ -30,7 +30,8 @@ public class FirewallPolicyRuleCollection {
      */
     @JsonTypeId
     @JsonProperty(value = "ruleCollectionType", required = true)
-    private FirewallPolicyRuleCollectionType ruleCollectionType;
+    private FirewallPolicyRuleCollectionType ruleCollectionType
+        = FirewallPolicyRuleCollectionType.fromString("FirewallPolicyRuleCollection");
 
     /*
      * The name of the rule collection.
@@ -48,7 +49,6 @@ public class FirewallPolicyRuleCollection {
      * Creates an instance of FirewallPolicyRuleCollection class.
      */
     public FirewallPolicyRuleCollection() {
-        this.ruleCollectionType = FirewallPolicyRuleCollectionType.fromString("FirewallPolicyRuleCollection");
     }
 
     /**

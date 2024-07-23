@@ -5,44 +5,46 @@
 package com.azure.resourcemanager.selfhelp.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.selfhelp.models.ReplacementMapsSelfHelp;
 import com.azure.resourcemanager.selfhelp.models.SectionSelfHelp;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Solution result.
  */
 @Immutable
-public final class SolutionsResourcePropertiesSelfHelp {
+public final class SolutionsResourcePropertiesSelfHelp
+    implements JsonSerializable<SolutionsResourcePropertiesSelfHelp> {
     /*
-     * SolutionId is a unique id to identify a solution. You can retrieve the solution id using the Discovery api - https://learn.microsoft.com/en-us/rest/api/help/discovery-solution/list?view=rest-help-2023-09-01-preview&tabs=HTTP
+     * SolutionId is a unique id to identify a solution. You can retrieve the solution id using the Discovery api -
+     * https://learn.microsoft.com/en-us/rest/api/help/discovery-solution/list?view=rest-help-2023-09-01-preview&tabs=
+     * HTTP
      */
-    @JsonProperty(value = "solutionId", access = JsonProperty.Access.WRITE_ONLY)
     private String solutionId;
 
     /*
      * The title.
      */
-    @JsonProperty(value = "title", access = JsonProperty.Access.WRITE_ONLY)
     private String title;
 
     /*
      * The HTML content that needs to be rendered and shown to customer.
      */
-    @JsonProperty(value = "content", access = JsonProperty.Access.WRITE_ONLY)
     private String content;
 
     /*
      * Solution replacement maps.
      */
-    @JsonProperty(value = "replacementMaps", access = JsonProperty.Access.WRITE_ONLY)
     private ReplacementMapsSelfHelp replacementMaps;
 
     /*
      * List of section object.
      */
-    @JsonProperty(value = "sections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SectionSelfHelp> sections;
 
     /**
@@ -110,5 +112,51 @@ public final class SolutionsResourcePropertiesSelfHelp {
         if (sections() != null) {
             sections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SolutionsResourcePropertiesSelfHelp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SolutionsResourcePropertiesSelfHelp if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SolutionsResourcePropertiesSelfHelp.
+     */
+    public static SolutionsResourcePropertiesSelfHelp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SolutionsResourcePropertiesSelfHelp deserializedSolutionsResourcePropertiesSelfHelp
+                = new SolutionsResourcePropertiesSelfHelp();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("solutionId".equals(fieldName)) {
+                    deserializedSolutionsResourcePropertiesSelfHelp.solutionId = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedSolutionsResourcePropertiesSelfHelp.title = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedSolutionsResourcePropertiesSelfHelp.content = reader.getString();
+                } else if ("replacementMaps".equals(fieldName)) {
+                    deserializedSolutionsResourcePropertiesSelfHelp.replacementMaps
+                        = ReplacementMapsSelfHelp.fromJson(reader);
+                } else if ("sections".equals(fieldName)) {
+                    List<SectionSelfHelp> sections = reader.readArray(reader1 -> SectionSelfHelp.fromJson(reader1));
+                    deserializedSolutionsResourcePropertiesSelfHelp.sections = sections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSolutionsResourcePropertiesSelfHelp;
+        });
     }
 }

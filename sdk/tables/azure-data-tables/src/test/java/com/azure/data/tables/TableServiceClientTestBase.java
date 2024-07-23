@@ -3,13 +3,11 @@
 
 package com.azure.data.tables;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestProxyTestBase;
-
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
@@ -22,18 +20,35 @@ public abstract class TableServiceClientTestBase extends TestProxyTestBase {
 
     protected abstract HttpClient buildAssertingClient(HttpClient httpClient);
 
+    /*
     protected TableServiceClientBuilder getClientBuilder(String connectionString) {
         final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
             .connectionString(connectionString);
 
         return configureTestClientBuilder(tableServiceClientBuilder);
     }
+    */
 
-    protected TableServiceClientBuilder getClientBuilder(String endpoint, TokenCredential tokenCredential,
-                                                         boolean enableTenantDiscovery) {
+    protected TableServiceClientBuilder getClientBuilder(boolean enableTenantDiscovery) {
+        return TestUtils.isCosmosTest() ? getClientBuilderWithConnectionString(enableTenantDiscovery)
+            : getClientBuilderWithEntra(enableTenantDiscovery);
+    }
+
+    protected TableServiceClientBuilder getClientBuilderWithEntra(boolean enableTenantDiscovery) {
         final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
-            .credential(tokenCredential)
-            .endpoint(endpoint);
+            .credential(TestUtils.getTestTokenCredential(interceptorManager))
+            .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
+
+        if (enableTenantDiscovery) {
+            tableServiceClientBuilder.enableTenantDiscovery();
+        }
+
+        return configureTestClientBuilder(tableServiceClientBuilder);
+    }
+
+    protected TableServiceClientBuilder getClientBuilderWithConnectionString(boolean enableTenantDiscovery) {
+        final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
+            .connectionString(TestUtils.getConnectionString(interceptorManager.isPlaybackMode()));
 
         if (enableTenantDiscovery) {
             tableServiceClientBuilder.enableTenantDiscovery();

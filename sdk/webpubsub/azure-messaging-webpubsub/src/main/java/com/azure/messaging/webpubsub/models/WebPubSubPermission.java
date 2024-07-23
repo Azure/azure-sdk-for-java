@@ -5,7 +5,7 @@
 package com.azure.messaging.webpubsub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for WebPubSubPermission. */
@@ -31,7 +31,6 @@ public final class WebPubSubPermission extends ExpandableStringEnum<WebPubSubPer
      * @param name a name to look for.
      * @return the corresponding WebPubSubPermission.
      */
-    @JsonCreator
     public static WebPubSubPermission fromString(String name) {
         return fromString(name, WebPubSubPermission.class);
     }

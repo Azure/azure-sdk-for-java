@@ -401,7 +401,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateMessage(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData updateMessageRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/messages/{messageId}")
@@ -412,7 +412,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateMessageSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData updateMessageRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs")
@@ -483,7 +483,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateRun(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData updateRunRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs/{runId}")
@@ -494,7 +494,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData updateRunRequest,
             RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/submit_tool_outputs")
@@ -505,8 +505,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> submitToolOutputsToRun(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/submit_tool_outputs")
         @ExpectedResponses({ 200 })
@@ -516,8 +517,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> submitToolOutputsToRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/cancel")
         @ExpectedResponses({ 200 })
@@ -627,8 +629,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadFile(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData request, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
+            Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/files")
@@ -638,8 +641,9 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> uploadFileSync(@HostParam("endpoint") String endpoint,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData request, RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -826,7 +830,8 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createVectorStoreFile(@HostParam("endpoint") String endpoint,
             @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData createVectorStoreFileRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/vector_stores/{vectorStoreId}/files")
         @ExpectedResponses({ 200 })
@@ -836,7 +841,8 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createVectorStoreFileSync(@HostParam("endpoint") String endpoint,
             @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData createVectorStoreFileRequest, RequestOptions requestOptions,
+            Context context);
 
         @Get("/vector_stores/{vectorStoreId}/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -886,7 +892,8 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createVectorStoreFileBatch(@HostParam("endpoint") String endpoint,
             @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions,
+            Context context);
 
         @Post("/vector_stores/{vectorStoreId}/file_batches")
         @ExpectedResponses({ 200 })
@@ -896,7 +903,8 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createVectorStoreFileBatchSync(@HostParam("endpoint") String endpoint,
             @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions,
+            Context context);
 
         @Get("/vector_stores/{vectorStoreId}/file_batches/{batchId}")
         @ExpectedResponses({ 200 })
@@ -2529,7 +2537,7 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
-     * @param request The request parameter.
+     * @param updateMessageRequest The updateMessageRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2540,10 +2548,10 @@ public final class AssistantsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateMessageWithResponseAsync(String threadId, String messageId,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData updateMessageRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(), threadId, messageId, accept,
-            request, requestOptions, context));
+            updateMessageRequest, requestOptions, context));
     }
 
     /**
@@ -2596,7 +2604,7 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
-     * @param request The request parameter.
+     * @param updateMessageRequest The updateMessageRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2605,11 +2613,11 @@ public final class AssistantsClientImpl {
      * @return a single, existing message within an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId,
+        BinaryData updateMessageRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateMessageSync(this.getEndpoint(), threadId, messageId, accept, request, requestOptions,
-            Context.NONE);
+        return service.updateMessageSync(this.getEndpoint(), threadId, messageId, accept, updateMessageRequest,
+            requestOptions, Context.NONE);
     }
 
     /**
@@ -2729,7 +2737,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param threadId The ID of the thread to run.
-     * @param createRunOptions The details for the run to create.
+     * @param createRunOptions The details used when creating a new run of an assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2863,7 +2871,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param threadId The ID of the thread to run.
-     * @param createRunOptions The details for the run to create.
+     * @param createRunOptions The details used when creating a new run of an assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3269,7 +3277,7 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
-     * @param request The request parameter.
+     * @param updateRunRequest The updateRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3279,11 +3287,11 @@ public final class AssistantsClientImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateRunWithResponseAsync(String threadId, String runId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateRunWithResponseAsync(String threadId, String runId,
+        BinaryData updateRunRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), threadId, runId, accept, request,
-            requestOptions, context));
+        return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), threadId, runId, accept,
+            updateRunRequest, requestOptions, context));
     }
 
     /**
@@ -3351,7 +3359,7 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
-     * @param request The request parameter.
+     * @param updateRunRequest The updateRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3360,10 +3368,10 @@ public final class AssistantsClientImpl {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData request,
+    public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData updateRunRequest,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateRunSync(this.getEndpoint(), threadId, runId, accept, request, requestOptions,
+        return service.updateRunSync(this.getEndpoint(), threadId, runId, accept, updateRunRequest, requestOptions,
             Context.NONE);
     }
 
@@ -3437,7 +3445,7 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
-     * @param request The request parameter.
+     * @param submitToolOutputsToRunRequest The submitToolOutputsToRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3448,10 +3456,10 @@ public final class AssistantsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> submitToolOutputsToRunWithResponseAsync(String threadId, String runId,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.submitToolOutputsToRun(this.getEndpoint(), threadId, runId,
-            accept, request, requestOptions, context));
+            accept, submitToolOutputsToRunRequest, requestOptions, context));
     }
 
     /**
@@ -3524,7 +3532,7 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
-     * @param request The request parameter.
+     * @param submitToolOutputsToRunRequest The submitToolOutputsToRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3533,11 +3541,11 @@ public final class AssistantsClientImpl {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> submitToolOutputsToRunWithResponse(String threadId, String runId,
+        BinaryData submitToolOutputsToRunRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.submitToolOutputsToRunSync(this.getEndpoint(), threadId, runId, accept, request, requestOptions,
-            Context.NONE);
+        return service.submitToolOutputsToRunSync(this.getEndpoint(), threadId, runId, accept,
+            submitToolOutputsToRunRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -4328,7 +4336,7 @@ public final class AssistantsClientImpl {
      * }
      * }</pre>
      * 
-     * @param request The request parameter.
+     * @param uploadFileRequest The uploadFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4338,11 +4346,12 @@ public final class AssistantsClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData request, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData uploadFileRequest,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.uploadFile(this.getEndpoint(), contentType, accept, request, requestOptions, context));
+        return FluxUtil.withContext(context -> service.uploadFile(this.getEndpoint(), contentType, accept,
+            uploadFileRequest, requestOptions, context));
     }
 
     /**
@@ -4362,7 +4371,7 @@ public final class AssistantsClientImpl {
      * }
      * }</pre>
      * 
-     * @param request The request parameter.
+     * @param uploadFileRequest The uploadFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4371,10 +4380,11 @@ public final class AssistantsClientImpl {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadFileWithResponse(BinaryData request, RequestOptions requestOptions) {
+    public Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.uploadFileSync(this.getEndpoint(), contentType, accept, request, requestOptions, Context.NONE);
+        return service.uploadFileSync(this.getEndpoint(), contentType, accept, uploadFileRequest, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -5241,7 +5251,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File.
-     * @param request The request parameter.
+     * @param createVectorStoreFileRequest The createVectorStoreFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5251,11 +5261,11 @@ public final class AssistantsClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createVectorStoreFileWithResponseAsync(String vectorStoreId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createVectorStoreFileWithResponseAsync(String vectorStoreId,
+        BinaryData createVectorStoreFileRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createVectorStoreFile(this.getEndpoint(), vectorStoreId, accept,
-            request, requestOptions, context));
+            createVectorStoreFileRequest, requestOptions, context));
     }
 
     /**
@@ -5286,7 +5296,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File.
-     * @param request The request parameter.
+     * @param createVectorStoreFileRequest The createVectorStoreFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5295,11 +5305,11 @@ public final class AssistantsClientImpl {
      * @return description of a file attached to a vector store along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createVectorStoreFileWithResponse(String vectorStoreId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createVectorStoreFileWithResponse(String vectorStoreId,
+        BinaryData createVectorStoreFileRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createVectorStoreFileSync(this.getEndpoint(), vectorStoreId, accept, request, requestOptions,
-            Context.NONE);
+        return service.createVectorStoreFileSync(this.getEndpoint(), vectorStoreId, accept,
+            createVectorStoreFileRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -5470,7 +5480,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File Batch.
-     * @param request The request parameter.
+     * @param createVectorStoreFileBatchRequest The createVectorStoreFileBatchRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5481,10 +5491,10 @@ public final class AssistantsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createVectorStoreFileBatchWithResponseAsync(String vectorStoreId,
-        BinaryData request, RequestOptions requestOptions) {
+        BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createVectorStoreFileBatch(this.getEndpoint(), vectorStoreId,
-            accept, request, requestOptions, context));
+            accept, createVectorStoreFileBatchRequest, requestOptions, context));
     }
 
     /**
@@ -5519,7 +5529,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File Batch.
-     * @param request The request parameter.
+     * @param createVectorStoreFileBatchRequest The createVectorStoreFileBatchRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5528,11 +5538,11 @@ public final class AssistantsClientImpl {
      * @return a batch of files attached to a vector store along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createVectorStoreFileBatchWithResponse(String vectorStoreId, BinaryData request,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> createVectorStoreFileBatchWithResponse(String vectorStoreId,
+        BinaryData createVectorStoreFileBatchRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createVectorStoreFileBatchSync(this.getEndpoint(), vectorStoreId, accept, request,
-            requestOptions, Context.NONE);
+        return service.createVectorStoreFileBatchSync(this.getEndpoint(), vectorStoreId, accept,
+            createVectorStoreFileBatchRequest, requestOptions, Context.NONE);
     }
 
     /**

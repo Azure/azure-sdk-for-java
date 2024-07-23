@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * The response of a AutonomousDatabaseNationalCharacterSet list operation.
  */
-@Fluent
+@Immutable
 public final class AutonomousDatabaseNationalCharacterSetListResult
     implements JsonSerializable<AutonomousDatabaseNationalCharacterSetListResult> {
     /*
@@ -33,7 +33,7 @@ public final class AutonomousDatabaseNationalCharacterSetListResult
     /**
      * Creates an instance of AutonomousDatabaseNationalCharacterSetListResult class.
      */
-    public AutonomousDatabaseNationalCharacterSetListResult() {
+    private AutonomousDatabaseNationalCharacterSetListResult() {
     }
 
     /**
@@ -46,35 +46,12 @@ public final class AutonomousDatabaseNationalCharacterSetListResult
     }
 
     /**
-     * Set the value property: The AutonomousDatabaseNationalCharacterSet items on this page.
-     * 
-     * @param value the value value to set.
-     * @return the AutonomousDatabaseNationalCharacterSetListResult object itself.
-     */
-    public AutonomousDatabaseNationalCharacterSetListResult
-        withValue(List<AutonomousDatabaseNationalCharacterSetInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
      * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * Set the nextLink property: The link to the next page of items.
-     * 
-     * @param nextLink the nextLink value to set.
-     * @return the AutonomousDatabaseNationalCharacterSetListResult object itself.
-     */
-    public AutonomousDatabaseNationalCharacterSetListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
     }
 
     /**

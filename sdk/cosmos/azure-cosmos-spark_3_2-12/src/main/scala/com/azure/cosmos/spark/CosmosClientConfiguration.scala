@@ -27,7 +27,8 @@ private[spark] case class CosmosClientConfiguration (
                                                       tenantId: Option[String],
                                                       resourceGroupName: Option[String],
                                                       azureEnvironmentEndpoints: java.util.Map[String, String],
-                                                      sparkEnvironmentInfo: String)
+                                                      sparkEnvironmentInfo: String,
+                                                      clientBuilderInterceptors: Option[String])
 
 private[spark] object CosmosClientConfiguration {
   def apply(
@@ -83,7 +84,8 @@ private[spark] object CosmosClientConfiguration {
       cosmosAccountConfig.tenantId,
       cosmosAccountConfig.resourceGroupName,
       cosmosAccountConfig.azureEnvironmentEndpoints,
-      sparkEnvironmentInfo)
+      sparkEnvironmentInfo,
+      cosmosAccountConfig.clientBuilderInterceptors)
   }
 
   private[spark] def getSparkEnvironmentInfo(sessionOption: Option[SparkSession]): String = {

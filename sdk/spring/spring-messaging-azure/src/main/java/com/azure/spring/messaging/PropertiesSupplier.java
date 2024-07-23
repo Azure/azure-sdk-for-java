@@ -5,6 +5,9 @@ package com.azure.spring.messaging;
 
 /**
  * An interface to provide properties by providing key.
+ *
+ * @param <K> the key type.
+ * @param <V> the properties type.
  */
 @FunctionalInterface
 public interface PropertiesSupplier<K, V> {

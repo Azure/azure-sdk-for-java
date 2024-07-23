@@ -5,27 +5,75 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.maps.search.models.BatchResultSummary;
+import java.io.IOException;
 import java.util.List;
 
-/** This object is returned from a successful Search Address Reverse Batch service call. */
+/**
+ * This object is returned from a successful Search Address Reverse Batch service call.
+ */
 @Immutable
 public final class ReverseSearchAddressBatchResult extends BatchResult {
     /*
      * Array containing the batch results.
      */
-    @JsonProperty(value = "batchItems", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReverseSearchAddressBatchItemPrivate> batchItems;
 
-    /** Creates an instance of ReverseSearchAddressBatchResult class. */
-    public ReverseSearchAddressBatchResult() {}
+    /**
+     * Creates an instance of ReverseSearchAddressBatchResult class.
+     */
+    public ReverseSearchAddressBatchResult() {
+    }
 
     /**
      * Get the batchItems property: Array containing the batch results.
-     *
+     * 
      * @return the batchItems value.
      */
     public List<ReverseSearchAddressBatchItemPrivate> getBatchItems() {
         return this.batchItems;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReverseSearchAddressBatchResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReverseSearchAddressBatchResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReverseSearchAddressBatchResult.
+     */
+    public static ReverseSearchAddressBatchResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReverseSearchAddressBatchResult deserializedReverseSearchAddressBatchResult
+                = new ReverseSearchAddressBatchResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summary".equals(fieldName)) {
+                    deserializedReverseSearchAddressBatchResult.setBatchSummary(BatchResultSummary.fromJson(reader));
+                } else if ("batchItems".equals(fieldName)) {
+                    List<ReverseSearchAddressBatchItemPrivate> batchItems
+                        = reader.readArray(reader1 -> ReverseSearchAddressBatchItemPrivate.fromJson(reader1));
+                    deserializedReverseSearchAddressBatchResult.batchItems = batchItems;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReverseSearchAddressBatchResult;
+        });
     }
 }

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of a cluster that may be updated. */
+/**
+ * The properties of a cluster that may be updated.
+ */
 @Fluent
-public final class ClusterUpdateProperties {
+public final class ClusterUpdateProperties implements JsonSerializable<ClusterUpdateProperties> {
     /*
      * The cluster size
      */
-    @JsonProperty(value = "clusterSize")
     private Integer clusterSize;
 
     /*
      * The hosts
      */
-    @JsonProperty(value = "hosts")
     private List<String> hosts;
 
-    /** Creates an instance of ClusterUpdateProperties class. */
+    /**
+     * Creates an instance of ClusterUpdateProperties class.
+     */
     public ClusterUpdateProperties() {
     }
 
     /**
      * Get the clusterSize property: The cluster size.
-     *
+     * 
      * @return the clusterSize value.
      */
     public Integer clusterSize() {
@@ -38,7 +44,7 @@ public final class ClusterUpdateProperties {
 
     /**
      * Set the clusterSize property: The cluster size.
-     *
+     * 
      * @param clusterSize the clusterSize value to set.
      * @return the ClusterUpdateProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class ClusterUpdateProperties {
 
     /**
      * Get the hosts property: The hosts.
-     *
+     * 
      * @return the hosts value.
      */
     public List<String> hosts() {
@@ -58,7 +64,7 @@ public final class ClusterUpdateProperties {
 
     /**
      * Set the hosts property: The hosts.
-     *
+     * 
      * @param hosts the hosts value to set.
      * @return the ClusterUpdateProperties object itself.
      */
@@ -69,9 +75,49 @@ public final class ClusterUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("clusterSize", this.clusterSize);
+        jsonWriter.writeArrayField("hosts", this.hosts, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterUpdateProperties.
+     */
+    public static ClusterUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterUpdateProperties deserializedClusterUpdateProperties = new ClusterUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterSize".equals(fieldName)) {
+                    deserializedClusterUpdateProperties.clusterSize = reader.getNullable(JsonReader::getInt);
+                } else if ("hosts".equals(fieldName)) {
+                    List<String> hosts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedClusterUpdateProperties.hosts = hosts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterUpdateProperties;
+        });
     }
 }

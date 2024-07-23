@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.2 (Unreleased)
+## 2.9.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.9.0-beta.2 (2024-07-09)
+
+### Features Added
+- Added the new system property `azure.keyvault.disable-challenge-resource-verification`, which can be set to `true` to disable challenge resource verification when authenticating against the Azure Key Vault service. For more information, please refer to [this link](https://devblogs.microsoft.com/azure-sdk/guidance-for-applications-using-the-key-vault-libraries/).
+
+### Breaking Changes
+- Removed support for providing a custom login URI to get access tokens from via the system property `azure.login.uri`.
+
+### Bugs Fixed
+- Fix bug: AccessTokenUtil does not urlencode its parameters when getting an access token. ([#40616](https://github.com/Azure/azure-sdk-for-java/issues/40616))
+- Changed the authentication mechanism to allow for discovering the login URI for a given Azure Key Vault instance by requesting an authentication challenge from the service, as opposed to using a hard-coded list of URIs to choose from depending on a vault's URI. This should add support for customers using Azure Stack instances, for example.
 
 ## 2.9.0-beta.1 (2024-05-15)
 

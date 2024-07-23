@@ -5,31 +5,44 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DrivingSide. */
+/**
+ * Indicates left-hand vs. right-hand side driving at the point of the maneuver.
+ */
 public final class DrivingSide extends ExpandableStringEnum<DrivingSide> {
-    /** Static value LEFT for DrivingSide. */
+    /**
+     * Left side.
+     */
     public static final DrivingSide LEFT = fromString("LEFT");
 
-    /** Static value RIGHT for DrivingSide. */
+    /**
+     * Right side.
+     */
     public static final DrivingSide RIGHT = fromString("RIGHT");
 
     /**
+     * Creates a new instance of DrivingSide value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DrivingSide() {
+    }
+
+    /**
      * Creates or finds a DrivingSide from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DrivingSide.
      */
-    @JsonCreator
     public static DrivingSide fromString(String name) {
         return fromString(name, DrivingSide.class);
     }
 
     /**
      * Gets known DrivingSide values.
-     *
+     * 
      * @return known DrivingSide values.
      */
     public static Collection<DrivingSide> values() {

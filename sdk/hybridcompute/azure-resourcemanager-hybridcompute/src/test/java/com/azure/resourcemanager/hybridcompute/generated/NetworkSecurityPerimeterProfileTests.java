@@ -11,7 +11,7 @@ public final class NetworkSecurityPerimeterProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkSecurityPerimeterProfile model = BinaryData.fromString(
-            "{\"name\":\"t\",\"accessRulesVersion\":939469998,\"accessRules\":[{\"name\":\"qactxtgzukxitmmq\",\"properties\":{\"direction\":\"Outbound\",\"addressPrefixes\":[\"hrnxrxc\"]}}],\"diagnosticSettingsVersion\":2074998294,\"enabledLogCategories\":[\"av\",\"k\",\"dzf\"]}")
+            "{\"name\":\"mdjvlpj\",\"accessRulesVersion\":1119660278,\"accessRules\":[{\"name\":\"msgeivsiykzk\",\"properties\":{\"direction\":\"Inbound\",\"addressPrefixes\":[\"onbzoggculapzwy\",\"pgogtqxepny\",\"b\",\"uajlyj\"]}}],\"diagnosticSettingsVersion\":21548435,\"enabledLogCategories\":[\"qzhv\",\"cib\"]}")
             .toObject(NetworkSecurityPerimeterProfile.class);
     }
 

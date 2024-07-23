@@ -1,14 +1,18 @@
 # Release History
 
-## 2.40.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.41.0-beta.1 (Unreleased)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Changed type from `List<VirtualMachineExtensionInner>` to `List<String>` of `excludeExtensions` property in `SecurityPostureReference` class.
+
+## 2.40.0 (2024-06-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.39.0 (2024-05-24)
 

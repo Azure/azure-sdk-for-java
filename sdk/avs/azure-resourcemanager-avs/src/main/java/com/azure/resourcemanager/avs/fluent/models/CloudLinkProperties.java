@@ -5,31 +5,52 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.avs.models.CloudLinkProvisioningState;
 import com.azure.resourcemanager.avs.models.CloudLinkStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of a cloud link. */
+/**
+ * The properties of a cloud link.
+ */
 @Fluent
-public final class CloudLinkProperties {
+public final class CloudLinkProperties implements JsonSerializable<CloudLinkProperties> {
+    /*
+     * The provisioning state of the resource.
+     */
+    private CloudLinkProvisioningState provisioningState;
+
     /*
      * The state of the cloud link.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CloudLinkStatus status;
 
     /*
      * Identifier of the other private cloud participating in the link.
      */
-    @JsonProperty(value = "linkedCloud")
     private String linkedCloud;
 
-    /** Creates an instance of CloudLinkProperties class. */
+    /**
+     * Creates an instance of CloudLinkProperties class.
+     */
     public CloudLinkProperties() {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public CloudLinkProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Get the status property: The state of the cloud link.
-     *
+     * 
      * @return the status value.
      */
     public CloudLinkStatus status() {
@@ -38,7 +59,7 @@ public final class CloudLinkProperties {
 
     /**
      * Get the linkedCloud property: Identifier of the other private cloud participating in the link.
-     *
+     * 
      * @return the linkedCloud value.
      */
     public String linkedCloud() {
@@ -47,7 +68,7 @@ public final class CloudLinkProperties {
 
     /**
      * Set the linkedCloud property: Identifier of the other private cloud participating in the link.
-     *
+     * 
      * @param linkedCloud the linkedCloud value to set.
      * @return the CloudLinkProperties object itself.
      */
@@ -58,9 +79,50 @@ public final class CloudLinkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("linkedCloud", this.linkedCloud);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudLinkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudLinkProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudLinkProperties.
+     */
+    public static CloudLinkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudLinkProperties deserializedCloudLinkProperties = new CloudLinkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedCloudLinkProperties.provisioningState
+                        = CloudLinkProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedCloudLinkProperties.status = CloudLinkStatus.fromString(reader.getString());
+                } else if ("linkedCloud".equals(fieldName)) {
+                    deserializedCloudLinkProperties.linkedCloud = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudLinkProperties;
+        });
     }
 }

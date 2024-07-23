@@ -33,18 +33,18 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -71,17 +71,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.24</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
+      <version>1.0.0-beta.25</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-runtime-telemetry-java8</artifactId>
-      <version>2.4.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+      <version>2.6.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-logback-appender-1.0</artifactId>
-      <version>2.4.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
+      <version>2.6.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -95,8 +95,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.4.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[2.4.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.6.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[2.6.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
                 <include>ch.qos.logback:logback-classic:[1.3.14]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->
                 <include>io.vertx:vertx-codegen:[4.5.8]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
               </includes>

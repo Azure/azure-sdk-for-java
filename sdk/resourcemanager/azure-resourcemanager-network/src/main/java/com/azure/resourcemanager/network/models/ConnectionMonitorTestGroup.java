@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -53,7 +52,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Get the name property: The name of the connection monitor test group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +61,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Set the name property: The name of the connection monitor test group.
-     *
+     * 
      * @param name the name value to set.
      * @return the ConnectionMonitorTestGroup object itself.
      */
@@ -73,7 +72,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Get the disable property: Value indicating whether test group is disabled.
-     *
+     * 
      * @return the disable value.
      */
     public Boolean disable() {
@@ -82,7 +81,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Set the disable property: Value indicating whether test group is disabled.
-     *
+     * 
      * @param disable the disable value to set.
      * @return the ConnectionMonitorTestGroup object itself.
      */
@@ -93,7 +92,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Get the testConfigurations property: List of test configuration names.
-     *
+     * 
      * @return the testConfigurations value.
      */
     public List<String> testConfigurations() {
@@ -102,7 +101,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Set the testConfigurations property: List of test configuration names.
-     *
+     * 
      * @param testConfigurations the testConfigurations value to set.
      * @return the ConnectionMonitorTestGroup object itself.
      */
@@ -113,7 +112,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Get the sources property: List of source endpoint names.
-     *
+     * 
      * @return the sources value.
      */
     public List<String> sources() {
@@ -122,7 +121,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Set the sources property: List of source endpoint names.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the ConnectionMonitorTestGroup object itself.
      */
@@ -133,7 +132,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Get the destinations property: List of destination endpoint names.
-     *
+     * 
      * @return the destinations value.
      */
     public List<String> destinations() {
@@ -142,7 +141,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Set the destinations property: List of destination endpoint names.
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the ConnectionMonitorTestGroup object itself.
      */
@@ -153,7 +152,7 @@ public final class ConnectionMonitorTestGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

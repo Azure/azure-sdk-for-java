@@ -15,19 +15,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HdfsLinkedServiceTypeProperties {
     /*
-     * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with resultType string).
+     * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or Expression with resultType string).
+     * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

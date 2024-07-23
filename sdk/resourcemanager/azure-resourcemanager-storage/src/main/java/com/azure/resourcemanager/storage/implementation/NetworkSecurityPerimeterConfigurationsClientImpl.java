@@ -32,10 +32,9 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storage.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.storage.fluent.models.NetworkSecurityPerimeterConfigurationInner;
 import com.azure.resourcemanager.storage.models.NetworkSecurityPerimeterConfigurationList;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -55,7 +54,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Initializes an instance of NetworkSecurityPerimeterConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkSecurityPerimeterConfigurationsClientImpl(StorageManagementClientImpl client) {
@@ -103,7 +102,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets list of effective NetworkSecurityPerimeterConfiguration for storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -143,7 +142,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets list of effective NetworkSecurityPerimeterConfiguration for storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -184,7 +183,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets list of effective NetworkSecurityPerimeterConfiguration for storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -203,7 +202,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets list of effective NetworkSecurityPerimeterConfiguration for storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -223,7 +222,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets list of effective NetworkSecurityPerimeterConfiguration for storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -242,7 +241,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets list of effective NetworkSecurityPerimeterConfiguration for storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -262,7 +261,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets effective NetworkSecurityPerimeterConfiguration for association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -306,7 +305,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets effective NetworkSecurityPerimeterConfiguration for association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -349,7 +348,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets effective NetworkSecurityPerimeterConfiguration for association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -369,7 +368,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets effective NetworkSecurityPerimeterConfiguration for association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -390,7 +389,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Gets effective NetworkSecurityPerimeterConfiguration for association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -410,7 +409,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -453,7 +452,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -495,7 +494,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -517,7 +516,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -541,7 +540,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -561,7 +560,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -583,7 +582,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -603,7 +602,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -625,7 +624,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -643,7 +642,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
 
     /**
      * Refreshes any information about the association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names

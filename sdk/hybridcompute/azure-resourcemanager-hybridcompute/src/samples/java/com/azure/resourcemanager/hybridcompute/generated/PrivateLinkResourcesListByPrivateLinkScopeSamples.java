@@ -9,7 +9,9 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class PrivateLinkResourcesListByPrivateLinkScopeSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/privateLinkScope/PrivateLinkScopePrivateLinkResource_ListGet.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * privateLinkScope/PrivateLinkScopePrivateLinkResource_ListGet.json
      */
     /**
      * Sample code: Gets private endpoint connection.

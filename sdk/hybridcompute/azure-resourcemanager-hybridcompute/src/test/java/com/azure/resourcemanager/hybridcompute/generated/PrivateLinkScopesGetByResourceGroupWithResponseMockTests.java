@@ -22,7 +22,7 @@ public final class PrivateLinkScopesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"aqa\",\"privateLinkScopeId\":\"ipietgbe\",\"privateEndpointConnections\":[{\"id\":\"lbmoichd\",\"name\":\"nfpubntnbatz\",\"type\":\"qs\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"aelcat\",\"description\":\"cjuhplrvkm\"},\"provisioningState\":\"wmj\",\"groupIds\":[\"fggc\",\"kyylizr\",\"bjpsfxsfuztlvtm\",\"agb\"]}},{\"id\":\"dqlvhukoveof\",\"name\":\"rvjfnmjmvlw\",\"type\":\"giblkujrllf\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"djpuuyjucej\",\"description\":\"kzoeovvtzejetj\"},\"provisioningState\":\"nt\",\"groupIds\":[\"juzkdbqz\",\"lxrzvhqjwtr\"]}},{\"id\":\"gv\",\"name\":\"pcrrk\",\"type\":\"awjmjsmw\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"dxfzzzwyjaf\",\"description\":\"tlhguynuchl\"},\"provisioningState\":\"ltxdwhmozu\",\"groupIds\":[\"vlnsnnjz\",\"pafolp\",\"mwamxqzragpgdph\"]}}]},\"location\":\"dulajvlejchcs\",\"tags\":{\"cnzqtpjhmqr\":\"knmzlanrupdwvnp\",\"hlaiwd\":\"v\",\"hzdtxetlgydlh\":\"xsmlz\"},\"id\":\"vlnnpx\",\"name\":\"b\",\"type\":\"fiqgeaar\"}";
+            = "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"sxz\",\"privateLinkScopeId\":\"ksrl\",\"privateEndpointConnections\":[{\"id\":\"sqplpvmjcd\",\"name\":\"wb\",\"type\":\"yvteowxvgpiudeu\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"zec\",\"description\":\"axwk\"},\"provisioningState\":\"ykhv\",\"groupIds\":[\"epmrut\",\"nabaobnslujd\"]}},{\"id\":\"tymkmvguihywart\",\"name\":\"phkixkykxdssjpe\",\"type\":\"ucfx\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"flrmymyi\",\"description\":\"cqlh\"},\"provisioningState\":\"s\",\"groupIds\":[\"miii\",\"v\"]}},{\"id\":\"cgxuugqkctotiowl\",\"name\":\"e\",\"type\":\"ptjgwdt\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"anblwphqlkccu\",\"description\":\"gygqwah\"},\"provisioningState\":\"ulwgniiprglvawuw\",\"groupIds\":[\"fypiv\",\"sbbjpmcu\"]}},{\"id\":\"mifoxxkub\",\"name\":\"havpmhbrbqgvg\",\"type\":\"pbbttefjoknss\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"edikdfrdbiq\",\"description\":\"rjgeih\"},\"provisioningState\":\"lg\",\"groupIds\":[\"iwzcxmjpbyeph\",\"gt\",\"ljvrcmyfqipgxhnp\",\"myqwcab\"]}}]},\"location\":\"ui\",\"tags\":{\"fjlrxwtoauk\":\"yaswlpaugmr\"},\"id\":\"fkvcisi\",\"name\":\"moaedsxj\",\"type\":\"uivedwcgyeewxeiq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class PrivateLinkScopesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         HybridComputePrivateLinkScope response = manager.privateLinkScopes()
-            .getByResourceGroupWithResponse("qotoihiqakydiwfb", "kwpzdqtvh", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ywaeeczgf", "ukklelss", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dulajvlejchcs", response.location());
-        Assertions.assertEquals("knmzlanrupdwvnp", response.tags().get("cnzqtpjhmqr"));
+        Assertions.assertEquals("ui", response.location());
+        Assertions.assertEquals("yaswlpaugmr", response.tags().get("fjlrxwtoauk"));
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.properties().publicNetworkAccess());
     }
 }

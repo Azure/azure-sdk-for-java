@@ -20,7 +20,7 @@ public final class AutonomousDatabaseCharacterSetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"characterSet\":\"gamquhiosrsjui\"},\"id\":\"cdisyir\",\"name\":\"xzhczexrxz\",\"type\":\"ujrtrhqvwr\"}";
+            = "{\"properties\":{\"characterSet\":\"lewjwiuubwef\"},\"id\":\"fapaqtfer\",\"name\":\"q\",\"type\":\"ex\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class AutonomousDatabaseCharacterSetsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutonomousDatabaseCharacterSet response = manager.autonomousDatabaseCharacterSets()
-            .getWithResponse("hvseufuqyrx", "dlcgqlsismjqfr", com.azure.core.util.Context.NONE)
+            .getWithResponse("pcpil", "hahzvechndbnwi", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

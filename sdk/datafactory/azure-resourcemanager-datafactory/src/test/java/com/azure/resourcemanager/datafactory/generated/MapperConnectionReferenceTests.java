@@ -13,18 +13,18 @@ public final class MapperConnectionReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MapperConnectionReference model
-            = BinaryData.fromString("{\"connectionName\":\"zodubtlm\",\"type\":\"linkedservicetype\"}")
+            = BinaryData.fromString("{\"connectionName\":\"xwetwkdrcyrucpc\",\"type\":\"linkedservicetype\"}")
                 .toObject(MapperConnectionReference.class);
-        Assertions.assertEquals("zodubtlm", model.connectionName());
+        Assertions.assertEquals("xwetwkdrcyrucpc", model.connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MapperConnectionReference model
-            = new MapperConnectionReference().withConnectionName("zodubtlm").withType(ConnectionType.LINKEDSERVICETYPE);
+        MapperConnectionReference model = new MapperConnectionReference().withConnectionName("xwetwkdrcyrucpc")
+            .withType(ConnectionType.LINKEDSERVICETYPE);
         model = BinaryData.fromObject(model).toObject(MapperConnectionReference.class);
-        Assertions.assertEquals("zodubtlm", model.connectionName());
+        Assertions.assertEquals("xwetwkdrcyrucpc", model.connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.type());
     }
 }

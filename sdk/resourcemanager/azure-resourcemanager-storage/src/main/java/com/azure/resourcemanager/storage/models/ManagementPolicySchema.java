@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -17,7 +16,8 @@ import java.util.List;
 @Fluent
 public final class ManagementPolicySchema {
     /*
-     * The Storage Account ManagementPolicies Rules. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * The Storage Account ManagementPolicies Rules. See more details in:
+     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
      */
     @JsonProperty(value = "rules", required = true)
     private List<ManagementPolicyRule> rules;
@@ -31,7 +31,7 @@ public final class ManagementPolicySchema {
     /**
      * Get the rules property: The Storage Account ManagementPolicies Rules. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @return the rules value.
      */
     public List<ManagementPolicyRule> rules() {
@@ -41,7 +41,7 @@ public final class ManagementPolicySchema {
     /**
      * Set the rules property: The Storage Account ManagementPolicies Rules. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ManagementPolicySchema object itself.
      */
@@ -52,7 +52,7 @@ public final class ManagementPolicySchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

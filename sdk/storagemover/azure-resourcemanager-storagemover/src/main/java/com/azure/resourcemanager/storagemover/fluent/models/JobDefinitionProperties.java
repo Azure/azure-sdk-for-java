@@ -11,7 +11,9 @@ import com.azure.resourcemanager.storagemover.models.JobRunStatus;
 import com.azure.resourcemanager.storagemover.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Job definition properties. */
+/**
+ * Job definition properties.
+ */
 @Fluent
 public final class JobDefinitionProperties {
     /*
@@ -98,13 +100,15 @@ public final class JobDefinitionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of JobDefinitionProperties class. */
+    /**
+     * Creates an instance of JobDefinitionProperties class.
+     */
     public JobDefinitionProperties() {
     }
 
     /**
      * Get the description property: A description for the Job Definition.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -113,7 +117,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Set the description property: A description for the Job Definition.
-     *
+     * 
      * @param description the description value to set.
      * @return the JobDefinitionProperties object itself.
      */
@@ -124,7 +128,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the copyMode property: Strategy to use for copy.
-     *
+     * 
      * @return the copyMode value.
      */
     public CopyMode copyMode() {
@@ -133,7 +137,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Set the copyMode property: Strategy to use for copy.
-     *
+     * 
      * @param copyMode the copyMode value to set.
      * @return the JobDefinitionProperties object itself.
      */
@@ -144,7 +148,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the sourceName property: The name of the source Endpoint.
-     *
+     * 
      * @return the sourceName value.
      */
     public String sourceName() {
@@ -153,7 +157,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Set the sourceName property: The name of the source Endpoint.
-     *
+     * 
      * @param sourceName the sourceName value to set.
      * @return the JobDefinitionProperties object itself.
      */
@@ -164,7 +168,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the sourceResourceId property: Fully qualified resource ID of the source Endpoint.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -173,7 +177,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the sourceSubpath property: The subpath to use when reading from the source Endpoint.
-     *
+     * 
      * @return the sourceSubpath value.
      */
     public String sourceSubpath() {
@@ -182,7 +186,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Set the sourceSubpath property: The subpath to use when reading from the source Endpoint.
-     *
+     * 
      * @param sourceSubpath the sourceSubpath value to set.
      * @return the JobDefinitionProperties object itself.
      */
@@ -193,7 +197,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the targetName property: The name of the target Endpoint.
-     *
+     * 
      * @return the targetName value.
      */
     public String targetName() {
@@ -202,7 +206,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Set the targetName property: The name of the target Endpoint.
-     *
+     * 
      * @param targetName the targetName value to set.
      * @return the JobDefinitionProperties object itself.
      */
@@ -213,7 +217,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the targetResourceId property: Fully qualified resource ID of the target Endpoint.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -222,7 +226,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the targetSubpath property: The subpath to use when writing to the target Endpoint.
-     *
+     * 
      * @return the targetSubpath value.
      */
     public String targetSubpath() {
@@ -231,7 +235,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Set the targetSubpath property: The subpath to use when writing to the target Endpoint.
-     *
+     * 
      * @param targetSubpath the targetSubpath value to set.
      * @return the JobDefinitionProperties object itself.
      */
@@ -242,7 +246,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the latestJobRunName property: The name of the Job Run in a non-terminal state, if exists.
-     *
+     * 
      * @return the latestJobRunName value.
      */
     public String latestJobRunName() {
@@ -252,7 +256,7 @@ public final class JobDefinitionProperties {
     /**
      * Get the latestJobRunResourceId property: The fully qualified resource ID of the Job Run in a non-terminal state,
      * if exists.
-     *
+     * 
      * @return the latestJobRunResourceId value.
      */
     public String latestJobRunResourceId() {
@@ -261,7 +265,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the latestJobRunStatus property: The current status of the Job Run in a non-terminal state, if exists.
-     *
+     * 
      * @return the latestJobRunStatus value.
      */
     public JobRunStatus latestJobRunStatus() {
@@ -270,7 +274,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the agentName property: Name of the Agent to assign for new Job Runs of this Job Definition.
-     *
+     * 
      * @return the agentName value.
      */
     public String agentName() {
@@ -279,7 +283,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Set the agentName property: Name of the Agent to assign for new Job Runs of this Job Definition.
-     *
+     * 
      * @param agentName the agentName value to set.
      * @return the JobDefinitionProperties object itself.
      */
@@ -291,7 +295,7 @@ public final class JobDefinitionProperties {
     /**
      * Get the agentResourceId property: Fully qualified resource id of the Agent to assign for new Job Runs of this Job
      * Definition.
-     *
+     * 
      * @return the agentResourceId value.
      */
     public String agentResourceId() {
@@ -300,7 +304,7 @@ public final class JobDefinitionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of this resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -309,27 +313,24 @@ public final class JobDefinitionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (copyMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property copyMode in model JobDefinitionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property copyMode in model JobDefinitionProperties"));
         }
         if (sourceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceName in model JobDefinitionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceName in model JobDefinitionProperties"));
         }
         if (targetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetName in model JobDefinitionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetName in model JobDefinitionProperties"));
         }
     }
 

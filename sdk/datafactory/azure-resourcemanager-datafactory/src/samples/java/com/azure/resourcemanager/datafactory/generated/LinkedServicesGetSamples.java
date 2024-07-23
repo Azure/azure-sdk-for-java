@@ -9,7 +9,9 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class LinkedServicesGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Get.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Get.
+     * json
      */
     /**
      * Sample code: LinkedServices_Get.

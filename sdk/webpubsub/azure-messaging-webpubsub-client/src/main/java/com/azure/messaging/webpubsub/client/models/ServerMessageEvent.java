@@ -29,7 +29,6 @@ public final class ServerMessageEvent {
         this.sequenceId = sequenceId;
     }
 
-
     /**
      * Gets the data.
      *

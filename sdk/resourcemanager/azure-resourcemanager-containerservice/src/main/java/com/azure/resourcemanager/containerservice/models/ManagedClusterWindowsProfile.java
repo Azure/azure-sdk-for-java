@@ -26,9 +26,9 @@ public final class ManagedClusterWindowsProfile {
     /*
      * Specifies the password of the administrator account. <br><br> **Minimum-length:** 8 characters <br><br>
      * **Max-length:** 123 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be
-     * fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character
-     * (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123",
-     * "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
+     * fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex
+     * match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
+     * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
      */
     @JsonProperty(value = "adminPassword")
     private String adminPassword;
@@ -41,8 +41,6 @@ public final class ManagedClusterWindowsProfile {
     private LicenseType licenseType;
 
     /*
-     * Whether to enable CSI proxy.
-     * 
      * For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
      */
     @JsonProperty(value = "enableCSIProxy")
@@ -95,8 +93,8 @@ public final class ManagedClusterWindowsProfile {
      * **Minimum-length:** 8 characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters &lt;br&gt;&lt;br&gt;
      * **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled &lt;br&gt; Has lower characters
      * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_])
-     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
-     * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
+     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd", "P&#064;ssw0rd", "P&#064;ssword123",
+     * "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22", "iloveyou!".
      * 
      * @return the adminPassword value.
      */
@@ -109,8 +107,8 @@ public final class ManagedClusterWindowsProfile {
      * **Minimum-length:** 8 characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters &lt;br&gt;&lt;br&gt;
      * **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled &lt;br&gt; Has lower characters
      * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_])
-     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
-     * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
+     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc&#064;123", "P&#064;$$w0rd", "P&#064;ssw0rd", "P&#064;ssword123",
+     * "Pa$$word", "pass&#064;word1", "Password!", "Password1", "Password22", "iloveyou!".
      * 
      * @param adminPassword the adminPassword value to set.
      * @return the ManagedClusterWindowsProfile object itself.
@@ -143,9 +141,8 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Get the enableCsiProxy property: Whether to enable CSI proxy.
-     * 
-     * For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * Get the enableCsiProxy property: For more details on CSI proxy, see the [CSI proxy GitHub
+     * repo](https://github.com/kubernetes-csi/csi-proxy).
      * 
      * @return the enableCsiProxy value.
      */
@@ -154,9 +151,8 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the enableCsiProxy property: Whether to enable CSI proxy.
-     * 
-     * For more details on CSI proxy, see the [CSI proxy GitHub repo](https://github.com/kubernetes-csi/csi-proxy).
+     * Set the enableCsiProxy property: For more details on CSI proxy, see the [CSI proxy GitHub
+     * repo](https://github.com/kubernetes-csi/csi-proxy).
      * 
      * @param enableCsiProxy the enableCsiProxy value to set.
      * @return the ManagedClusterWindowsProfile object itself.
@@ -193,8 +189,9 @@ public final class ManagedClusterWindowsProfile {
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
         }
         if (gmsaProfile() != null) {
             gmsaProfile().validate();

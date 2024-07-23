@@ -22,19 +22,23 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     private Object project;
 
     /*
-     * A comma-separated list of public BigQuery projects to access. Type: string (or Expression with resultType string).
+     * A comma-separated list of public BigQuery projects to access. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "additionalProjects")
     private Object additionalProjects;
 
     /*
-     * Whether to request access to Google Drive. Allowing Google Drive access enables support for federated tables that combine BigQuery data with data from Google Drive. The default value is false. Type: string (or Expression with resultType string).
+     * Whether to request access to Google Drive. Allowing Google Drive access enables support for federated tables that
+     * combine BigQuery data with data from Google Drive. The default value is false. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "requestGoogleDriveScope")
     private Object requestGoogleDriveScope;
 
     /*
-     * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on self-hosted IR.
+     * The OAuth 2.0 authentication mechanism used for authentication. ServiceAuthentication can only be used on
+     * self-hosted IR.
      */
     @JsonProperty(value = "authenticationType", required = true)
     private GoogleBigQueryAuthenticationType authenticationType;
@@ -46,7 +50,8 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     private SecretBase refreshToken;
 
     /*
-     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with resultType string).
+     * The client id of the google application used to acquire the refresh token. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
@@ -58,31 +63,37 @@ public final class GoogleBigQueryLinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
+     * The service account email ID that is used for ServiceAuthentication and can only be used on self-hosted IR. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "email")
     private Object email;
 
     /*
-     * The full path to the .p12 key file that is used to authenticate the service account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType string).
+     * The full path to the .p12 key file that is used to authenticate the service account email address and can only be
+     * used on self-hosted IR. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "keyFilePath")
     private Object keyFilePath;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file installed with the IR. Type: string (or Expression with resultType string).
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default value is false.Type: boolean (or Expression with resultType boolean).
+     * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
+     * value is false.Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useSystemTrustStore")
     private Object useSystemTrustStore;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

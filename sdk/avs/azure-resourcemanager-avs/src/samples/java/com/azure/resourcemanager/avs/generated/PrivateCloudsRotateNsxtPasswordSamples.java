@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-/** Samples for PrivateClouds RotateNsxtPassword. */
+/**
+ * Samples for PrivateClouds RotateNsxtPassword.
+ */
 public final class PrivateCloudsRotateNsxtPasswordSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/PrivateClouds_RotateNsxtPassword.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/PrivateClouds_RotateNsxtPassword.
+     * json
      */
     /**
      * Sample code: PrivateClouds_RotateNsxtPassword.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsRotateNsxtPassword(com.azure.resourcemanager.avs.AvsManager manager) {

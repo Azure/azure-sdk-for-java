@@ -15,22 +15,19 @@ public final class LogLocationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogLocationSettings model = BinaryData.fromString(
-            "{\"linkedServiceName\":{\"referenceName\":\"uftpv\",\"parameters\":{\"vmlltasu\":\"datazitc\",\"zeszv\":\"dataqsf\",\"vgmbir\":\"datagawbm\",\"rbqxisavktuxwzvl\":\"datav\"}},\"path\":\"databridagwuvcdymoqv\"}")
+            "{\"linkedServiceName\":{\"referenceName\":\"ocnwnjmiitlamf\",\"parameters\":{\"hjxwwqzsyetbff\":\"datak\"}},\"path\":\"dataqzvwznwcqoapdtj\"}")
             .toObject(LogLocationSettings.class);
-        Assertions.assertEquals("uftpv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("ocnwnjmiitlamf", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogLocationSettings model
-            = new LogLocationSettings()
-                .withLinkedServiceName(
-                    new LinkedServiceReference().withReferenceName("uftpv")
-                        .withParameters(mapOf("vmlltasu", "datazitc", "zeszv", "dataqsf", "vgmbir", "datagawbm",
-                            "rbqxisavktuxwzvl", "datav")))
-                .withPath("databridagwuvcdymoqv");
+        LogLocationSettings model = new LogLocationSettings()
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ocnwnjmiitlamf")
+                .withParameters(mapOf("hjxwwqzsyetbff", "datak")))
+            .withPath("dataqzvwznwcqoapdtj");
         model = BinaryData.fromObject(model).toObject(LogLocationSettings.class);
-        Assertions.assertEquals("uftpv", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("ocnwnjmiitlamf", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

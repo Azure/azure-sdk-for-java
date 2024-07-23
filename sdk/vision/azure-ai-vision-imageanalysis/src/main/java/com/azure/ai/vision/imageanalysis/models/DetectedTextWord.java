@@ -5,8 +5,11 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,30 +17,27 @@ import java.util.List;
  * such as Chinese, Japanese, and Korean, each character is represented as its own word.
  */
 @Immutable
-public final class DetectedTextWord {
+public final class DetectedTextWord implements JsonSerializable<DetectedTextWord> {
 
     /*
      * Text content of the word.
      */
     @Generated
-    @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * A bounding polygon around the word. At the moment only quadrilaterals are supported (represented by 4 image
      * points).
      */
     @Generated
-    @JsonProperty(value = "boundingPolygon")
-    private List<ImagePoint> boundingPolygon;
+    private final List<ImagePoint> boundingPolygon;
 
     /*
      * The level of confidence that the word was detected. Confidence scores span the range of 0.0 to 1.0 (inclusive),
      * with higher values indicating a higher confidence of detection.
      */
     @Generated
-    @JsonProperty(value = "confidence")
-    private double confidence;
+    private final double confidence;
 
     /**
      * Creates an instance of DetectedTextWord class.
@@ -47,10 +47,7 @@ public final class DetectedTextWord {
      * @param confidence the confidence value to set.
      */
     @Generated
-    @JsonCreator
-    private DetectedTextWord(@JsonProperty(value = "text") String text,
-        @JsonProperty(value = "boundingPolygon") List<ImagePoint> boundingPolygon,
-        @JsonProperty(value = "confidence") double confidence) {
+    private DetectedTextWord(String text, List<ImagePoint> boundingPolygon, double confidence) {
         this.text = text;
         this.boundingPolygon = boundingPolygon;
         this.confidence = confidence;
@@ -78,13 +75,59 @@ public final class DetectedTextWord {
     }
 
     /**
-     * Get the confidence property: The level of confidence that the word was detected. Confidence scores span the
-     * range of 0.0 to 1.0 (inclusive), with higher values indicating a higher confidence of detection.
+     * Get the confidence property: The level of confidence that the word was detected. Confidence scores span the range
+     * of 0.0 to 1.0 (inclusive), with higher values indicating a higher confidence of detection.
      *
      * @return the confidence value.
      */
     @Generated
     public double getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeArrayField("boundingPolygon", this.boundingPolygon,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeDoubleField("confidence", this.confidence);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectedTextWord from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectedTextWord if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DetectedTextWord.
+     */
+    @Generated
+    public static DetectedTextWord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String text = null;
+            List<ImagePoint> boundingPolygon = null;
+            double confidence = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("boundingPolygon".equals(fieldName)) {
+                    boundingPolygon = reader.readArray(reader1 -> ImagePoint.fromJson(reader1));
+                } else if ("confidence".equals(fieldName)) {
+                    confidence = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DetectedTextWord(text, boundingPolygon, confidence);
+        });
     }
 }

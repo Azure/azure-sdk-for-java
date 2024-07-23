@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Returns the Storage Account Object Replication Policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ObjectReplicationPolicyProperties innerProperties() {
@@ -40,7 +39,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
 
     /**
      * Get the policyId property: A unique id for object replication policy.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -49,7 +48,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
 
     /**
      * Get the enabledTime property: Indicates when the policy is enabled on the source account.
-     *
+     * 
      * @return the enabledTime value.
      */
     public OffsetDateTime enabledTime() {
@@ -59,7 +58,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
     /**
      * Get the sourceAccount property: Required. Source account name. It should be full resource id if
      * allowCrossTenantReplication set to false.
-     *
+     * 
      * @return the sourceAccount value.
      */
     public String sourceAccount() {
@@ -69,7 +68,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
     /**
      * Set the sourceAccount property: Required. Source account name. It should be full resource id if
      * allowCrossTenantReplication set to false.
-     *
+     * 
      * @param sourceAccount the sourceAccount value to set.
      * @return the ObjectReplicationPolicyInner object itself.
      */
@@ -84,7 +83,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
     /**
      * Get the destinationAccount property: Required. Destination account name. It should be full resource id if
      * allowCrossTenantReplication set to false.
-     *
+     * 
      * @return the destinationAccount value.
      */
     public String destinationAccount() {
@@ -94,7 +93,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
     /**
      * Set the destinationAccount property: Required. Destination account name. It should be full resource id if
      * allowCrossTenantReplication set to false.
-     *
+     * 
      * @param destinationAccount the destinationAccount value to set.
      * @return the ObjectReplicationPolicyInner object itself.
      */
@@ -108,7 +107,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
 
     /**
      * Get the rules property: The storage account object replication rules.
-     *
+     * 
      * @return the rules value.
      */
     public List<ObjectReplicationPolicyRule> rules() {
@@ -117,7 +116,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
 
     /**
      * Set the rules property: The storage account object replication rules.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the ObjectReplicationPolicyInner object itself.
      */
@@ -131,7 +130,7 @@ public final class ObjectReplicationPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

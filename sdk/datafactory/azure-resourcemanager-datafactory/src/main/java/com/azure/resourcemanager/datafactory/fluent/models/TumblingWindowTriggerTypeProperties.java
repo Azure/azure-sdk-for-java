@@ -31,19 +31,23 @@ public final class TumblingWindowTriggerTypeProperties {
     private int interval;
 
     /*
-     * The start time for the time period for the trigger during which events are fired for windows that are ready. Only UTC time is currently supported.
+     * The start time for the time period for the trigger during which events are fired for windows that are ready. Only
+     * UTC time is currently supported.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * The end time for the time period for the trigger during which events are fired for windows that are ready. Only UTC time is currently supported.
+     * The end time for the time period for the trigger during which events are fired for windows that are ready. Only
+     * UTC time is currently supported.
      */
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
-     * Specifies how long the trigger waits past due time before triggering new run. It doesn't alter window start and end time. The default is 0. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies how long the trigger waits past due time before triggering new run. It doesn't alter window start and
+     * end time. The default is 0. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "delay")
     private Object delay;

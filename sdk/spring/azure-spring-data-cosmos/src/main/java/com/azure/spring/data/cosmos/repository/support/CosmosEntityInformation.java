@@ -45,6 +45,9 @@ import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpr
 
 /**
  * Class to describe cosmosDb entity
+ *
+ * @param <T> domain type.
+ * @param <ID> id type.
  */
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
@@ -73,6 +76,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final List<String> transientFields;
     private final String containerName;
     private final String partitionKeyPath;
+    private final String[] hierarchicalPartitionKeyPaths;
     private final Integer requestUnit;
     private final Integer timeToLive;
     private final IndexingPolicy indexingPolicy;
@@ -99,6 +103,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
         this.containerName = CosmosEntityInformationHelper.getContainerName(domainType);
         this.partitionKeyPath = CosmosEntityInformationHelper.getPartitionKeyPathAnnotationValue(domainType);
+        this.hierarchicalPartitionKeyPaths = CosmosEntityInformationHelper.getHierarchicalPartitionKeyPathsAnnotationValue(domainType);
 
         this.partitionKeyField = CosmosEntityInformationHelper.getPartitionKeyField(domainType);
         this.transientFields = CosmosEntityInformationHelper.getTransientFields(domainType);
@@ -153,6 +158,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * Get transient field list
      * @return fields with @Transient annotation
      */
     public List<String> getTransientFields() {
@@ -256,11 +262,20 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @return partition key path
      */
     public String getPartitionKeyPath() {
-        if (partitionKeyField == null) {
-            return partitionKeyPath == null ? "/null" : partitionKeyPath;
-        } else {
+        if (partitionKeyField != null) {
             final PartitionKey partitionKey = partitionKeyField.getAnnotation(PartitionKey.class);
             return partitionKey.value().equals("") ? "/" + partitionKeyField.getName() : "/" + partitionKey.value();
+        } else if (partitionKeyPath != null) {
+            return partitionKeyPath;
+        } else if (hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
+            String hierarchicalPartitionKeyPath = "";
+            for (final String path : hierarchicalPartitionKeyPaths) {
+                hierarchicalPartitionKeyPath = hierarchicalPartitionKeyPath == "" ? path
+                    : hierarchicalPartitionKeyPath + ", " + path;
+            }
+            return hierarchicalPartitionKeyPath;
+        } else {
+            return "/null";
         }
     }
 
@@ -283,7 +298,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      * @throws RuntimeException thrown if field is not found
      */
     public Object getPartitionKeyFieldValue(T entity) {
-        if (partitionKeyField == null && partitionKeyPath != null) {
+        if (partitionKeyField != null) {
+            return ReflectionUtils.getField(partitionKeyField, entity);
+        } else if (partitionKeyPath != null) {
             List<String> parts = Arrays.stream(partitionKeyPath.split("/")).collect(Collectors.toList());
             final Object[] currentObject = {entity};
             parts.forEach(part -> {
@@ -299,19 +316,42 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
                 }
             });
             return currentObject[0];
+        } else if (hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
+            ArrayList<Object> pkValues = new ArrayList<>();
+            for (final String path : hierarchicalPartitionKeyPaths) {
+                Field f = null;
+                try {
+                    f = entity.getClass().getDeclaredField(path.substring(1));
+                } catch (NoSuchFieldException e) {
+                    throw new RuntimeException(e);
+                }
+                ReflectionUtils.makeAccessible(f);
+                pkValues.add(ReflectionUtils.getField(f, entity));
+            }
+            return pkValues;
         } else {
-            return partitionKeyField == null ? null : ReflectionUtils.getField(partitionKeyField, entity);
+            return null;
         }
     }
 
     /**
+     * Return the partition key field name.
      * @return the partition key field name
      */
     public String getPartitionKeyFieldName() {
-        if (partitionKeyField == null && partitionKeyPath != null) {
+        if (partitionKeyField != null) {
+            return partitionKeyField.getName();
+        } else if (partitionKeyPath != null) {
             return partitionKeyPath.substring(1).replace("/", ".");
+        } else if (hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
+            String hierarchicalPartitionKeyFiledName = "";
+            for (final String path : hierarchicalPartitionKeyPaths) {
+                hierarchicalPartitionKeyFiledName = hierarchicalPartitionKeyFiledName == "" ? path.substring(1)
+                    : hierarchicalPartitionKeyFiledName + ", " + path.substring(1);
+            }
+            return hierarchicalPartitionKeyFiledName;
         } else {
-            return partitionKeyField == null ? null : partitionKeyField.getName();
+            return null;
         }
     }
 
@@ -345,6 +385,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * Return whether indexing policy is specified.
      * @return whether indexing policy is specified
      */
     public boolean isIndexingPolicySpecified() {
@@ -485,6 +526,21 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
             if (annotation != null && !annotation.partitionKeyPath().isEmpty()) {
                 return annotation.partitionKeyPath();
+            }
+            return null;
+        }
+
+        /**
+         * Gets the hierarchical partition key paths of the entity
+         *
+         * @param domainType the domain type
+         * @return String[] of hierarchical partition key paths
+         */
+        private static String[] getHierarchicalPartitionKeyPathsAnnotationValue(Class<?> domainType) {
+            final Container annotation = domainType.getAnnotation(Container.class);
+
+            if (annotation != null && annotation.hierarchicalPartitionKeyPaths().length > 0) {
+                return annotation.hierarchicalPartitionKeyPaths();
             }
             return null;
         }

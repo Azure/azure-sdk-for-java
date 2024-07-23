@@ -18,7 +18,8 @@ import java.util.Arrays;
  */
 public final class FileServicesSetServicePropertiesSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileServicesPut.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileServicesPut.json
      */
     /**
      * Sample code: PutFileServices.
@@ -55,7 +56,8 @@ public final class FileServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileServicesPut_EnableSecureSmbFeatures.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * FileServicesPut_EnableSecureSmbFeatures.json
      */
     /**
      * Sample code: PutFileServices_EnableSecureSmbFeatures.
@@ -77,7 +79,8 @@ public final class FileServicesSetServicePropertiesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/FileServicesPut_EnableSMBMultichannel.json
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * FileServicesPut_EnableSMBMultichannel.json
      */
     /**
      * Sample code: PutFileServices_EnableSMBMultichannel.

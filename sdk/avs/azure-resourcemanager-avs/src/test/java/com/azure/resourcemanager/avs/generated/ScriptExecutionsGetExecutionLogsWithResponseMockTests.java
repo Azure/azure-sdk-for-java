@@ -6,83 +6,45 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.ScriptExecution;
 import com.azure.resourcemanager.avs.models.ScriptOutputStreamType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ScriptExecutionsGetExecutionLogsWithResponseMockTests {
     @Test
     public void testGetExecutionLogsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"scriptCmdletId\":\"cbm\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"xmvwfg\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"ayxonsupeujl\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"hcvsqltnzoi\"}],\"failureReason\":\"sxgnx\",\"timeout\":\"yqo\",\"retention\":\"p\",\"submittedAt\":\"2021-05-25T17:04:08Z\",\"startedAt\":\"2021-08-14T04:57:20Z\",\"finishedAt\":\"2021-04-29T21:53:48Z\",\"provisioningState\":\"Cancelled\",\"output\":[\"qxeiiqbimhtmwwi\",\"h\",\"hfqpofv\"],\"namedOutputs\":{\"vqihebwtswbzuwf\":\"datablembnkbwvqvxkd\",\"felisdjub\":\"dataduragegizvc\",\"kxkbsazgakgacyr\":\"datagbqi\"},\"information\":[\"dmspof\",\"pv\",\"hryl\",\"iofrzgbzjedmstk\"],\"warnings\":[\"v\"],\"errors\":[\"uiiznktwfansnvpd\"]},\"id\":\"mik\",\"name\":\"stbz\",\"type\":\"kiwbuqnyoph\"}";
 
-        String responseStr =
-            "{\"properties\":{\"scriptCmdletId\":\"benribcawetzq\",\"parameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"jwfljhznamtua\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"mzwcjjncqt\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"z\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"izvg\"}],\"hiddenParameters\":[{\"type\":\"ScriptExecutionParameter\",\"name\":\"tzuuvb\"},{\"type\":\"ScriptExecutionParameter\",\"name\":\"ngrebwg\"}],\"failureReason\":\"httzlswvajqfutlx\",\"timeout\":\"oqza\",\"retention\":\"nwqrjzfrgqh\",\"submittedAt\":\"2021-05-07T20:50:08Z\",\"startedAt\":\"2021-05-24T01:31:46Z\",\"finishedAt\":\"2021-03-17T16:52:41Z\",\"provisioningState\":\"Canceled\",\"output\":[\"r\",\"hmbpyryxamebly\",\"yvk\",\"kmrocxne\"],\"namedOutputs\":{\"pyapucygvoav\":\"datamtodl\"},\"information\":[\"ssxlghieegjlg\",\"vpaseksgbu\"],\"warnings\":[\"tu\",\"gdhg\",\"qipir\",\"iwrqofulopmjnl\"],\"errors\":[\"hcbjpibk\"]},\"id\":\"phuuuerctato\",\"name\":\"intqpbrlcyr\",\"type\":\"uczkgofxyfsruc\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ScriptExecution response = manager.scriptExecutions()
+            .getExecutionLogsWithResponse("yasflvgsgzwy", "akoi", "knsmjblmljhlnymz",
+                Arrays.asList(ScriptOutputStreamType.ERROR, ScriptOutputStreamType.WARNING,
+                    ScriptOutputStreamType.OUTPUT, ScriptOutputStreamType.ERROR),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ScriptExecution response =
-            manager
-                .scriptExecutions()
-                .getExecutionLogsWithResponse(
-                    "qvapcohhoucq",
-                    "q",
-                    "jxcx",
-                    Arrays
-                        .asList(
-                            ScriptOutputStreamType.OUTPUT,
-                            ScriptOutputStreamType.ERROR,
-                            ScriptOutputStreamType.INFORMATION,
-                            ScriptOutputStreamType.WARNING),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("benribcawetzq", response.scriptCmdletId());
-        Assertions.assertEquals("jwfljhznamtua", response.parameters().get(0).name());
-        Assertions.assertEquals("tzuuvb", response.hiddenParameters().get(0).name());
-        Assertions.assertEquals("httzlswvajqfutlx", response.failureReason());
-        Assertions.assertEquals("oqza", response.timeout());
-        Assertions.assertEquals("nwqrjzfrgqh", response.retention());
-        Assertions.assertEquals("r", response.output().get(0));
+        Assertions.assertEquals("cbm", response.scriptCmdletId());
+        Assertions.assertEquals("xmvwfg", response.parameters().get(0).name());
+        Assertions.assertEquals("hcvsqltnzoi", response.hiddenParameters().get(0).name());
+        Assertions.assertEquals("sxgnx", response.failureReason());
+        Assertions.assertEquals("yqo", response.timeout());
+        Assertions.assertEquals("p", response.retention());
+        Assertions.assertEquals("qxeiiqbimhtmwwi", response.output().get(0));
     }
 }

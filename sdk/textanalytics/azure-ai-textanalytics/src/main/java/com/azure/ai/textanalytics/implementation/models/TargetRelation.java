@@ -10,9 +10,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
-/** The TargetRelation model. */
+/**
+ * The TargetRelation model.
+ */
 @Fluent
 public final class TargetRelation implements JsonSerializable<TargetRelation> {
     /*
@@ -25,12 +26,15 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
      */
     private String ref;
 
-    /** Creates an instance of TargetRelation class. */
-    public TargetRelation() {}
+    /**
+     * Creates an instance of TargetRelation class.
+     */
+    public TargetRelation() {
+    }
 
     /**
      * Get the relationType property: The type related to the target.
-     *
+     * 
      * @return the relationType value.
      */
     public TargetRelationType getRelationType() {
@@ -39,7 +43,7 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
 
     /**
      * Set the relationType property: The type related to the target.
-     *
+     * 
      * @param relationType the relationType value to set.
      * @return the TargetRelation object itself.
      */
@@ -50,7 +54,7 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
 
     /**
      * Get the ref property: The JSON pointer indicating the linked object.
-     *
+     * 
      * @return the ref value.
      */
     public String getRef() {
@@ -59,7 +63,7 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
 
     /**
      * Set the ref property: The JSON pointer indicating the linked object.
-     *
+     * 
      * @param ref the ref value to set.
      * @return the TargetRelation object itself.
      */
@@ -68,41 +72,43 @@ public final class TargetRelation implements JsonSerializable<TargetRelation> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("relationType", Objects.toString(this.relationType, null));
+        jsonWriter.writeStringField("relationType", this.relationType == null ? null : this.relationType.toString());
         jsonWriter.writeStringField("ref", this.ref);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of TargetRelation from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of TargetRelation if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TargetRelation.
      */
     public static TargetRelation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TargetRelation deserializedTargetRelation = new TargetRelation();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            TargetRelation deserializedTargetRelation = new TargetRelation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("relationType".equals(fieldName)) {
-                            deserializedTargetRelation.relationType = TargetRelationType.fromString(reader.getString());
-                        } else if ("ref".equals(fieldName)) {
-                            deserializedTargetRelation.ref = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("relationType".equals(fieldName)) {
+                    deserializedTargetRelation.relationType = TargetRelationType.fromString(reader.getString());
+                } else if ("ref".equals(fieldName)) {
+                    deserializedTargetRelation.ref = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedTargetRelation;
-                });
+            return deserializedTargetRelation;
+        });
     }
 }

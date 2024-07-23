@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -35,7 +34,7 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
 
     /**
      * Creates a new instance of IdentityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,7 +43,7 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
 
     /**
      * Creates or finds a IdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IdentityType.
      */
@@ -55,7 +54,7 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
 
     /**
      * Gets known IdentityType values.
-     *
+     * 
      * @return known IdentityType values.
      */
     public static Collection<IdentityType> values() {

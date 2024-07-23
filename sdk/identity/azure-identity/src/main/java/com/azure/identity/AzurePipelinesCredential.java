@@ -8,18 +8,18 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.ClientAssertionCredentialHelper;
-import com.azure.identity.implementation.IdentityClientBase;
+import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.models.OidcTokenResponse;
+import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import reactor.core.publisher.Mono;
@@ -51,7 +51,9 @@ import java.net.URL;
 @Immutable
 public class AzurePipelinesCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredential.class);
-    private final ClientAssertionCredentialHelper clientAssertionCredentialHelper;
+    private final IdentityClient identityClient;
+    private final IdentitySyncClient identitySyncClient;
+
 
     /**
      * Creates an instance of {@link AzurePipelinesCredential}.
@@ -63,41 +65,65 @@ public class AzurePipelinesCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     AzurePipelinesCredential(String clientId, String tenantId, String requestUrl, String systemAccessToken, IdentityClientOptions identityClientOptions) {
-        clientAssertionCredentialHelper = new ClientAssertionCredentialHelper(clientId, tenantId, identityClientOptions, () -> {
-            HttpClient client = identityClientOptions.getHttpClient();
-            if (client == null) {
-                HttpClient.createDefault();
-            }
-            HttpPipeline pipeline = IdentityClientBase.setupPipeline(client, identityClientOptions);
-            try {
-                URL url = new URL(requestUrl);
-                HttpRequest request = new HttpRequest(HttpMethod.POST, url);
-                request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + systemAccessToken);
-                request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-                try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
-                    String responseBody = response.getBodyAsBinaryData().toString();
-                    if (response.getStatusCode() != 200) {
-                        throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token "
-                            + responseBody
-                            + System.lineSeparator()
-                            + "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.", response));
+
+        IdentityClientBuilder builder = new IdentityClientBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions)
+            .clientAssertionSupplierWithHttpPipeline((httpPipeline) -> {
+                try {
+                    URL url = new URL(requestUrl);
+                    HttpRequest request = new HttpRequest(HttpMethod.POST, url);
+                    request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + systemAccessToken);
+                    request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+                    try (HttpResponse response = httpPipeline.sendSync(request, Context.NONE)) {
+                        String responseBody = response.getBodyAsBinaryData().toString();
+                        if (response.getStatusCode() != 200) {
+                            throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token "
+                                + responseBody
+                                + System.lineSeparator()
+                                + "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.", response));
+                        }
+                        try (JsonReader reader = JsonProviders.createReader(responseBody)) {
+                            return OidcTokenResponse.fromJson(reader).getOidcToken();
+                        }
                     }
-                    try (JsonReader reader = JsonProviders.createReader(responseBody)) {
-                        return OidcTokenResponse.fromJson(reader).getOidcToken();
-                    }
+                } catch (IOException e) {
+                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token", null, e));
                 }
-            } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token", null, e));
-            }
-        });
+            });
+
+        this.identitySyncClient = builder.buildSyncClient();
+        this.identityClient = builder.build();
     }
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        return clientAssertionCredentialHelper.getToken(request);
+        return identityClient.authenticateWithConfidentialClientCache(request)
+            .onErrorResume(t -> Mono.empty())
+            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
+                error));
     }
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
-        return clientAssertionCredentialHelper.getTokenSync(request);
+        try {
+            AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
+            if (token != null) {
+                LoggingUtil.logTokenSuccess(LOGGER, request);
+                return token;
+            }
+        } catch (Exception ignored) { }
+
+        try {
+            AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);
+            LoggingUtil.logTokenSuccess(LOGGER, request);
+            return token;
+        } catch (Exception e) {
+            LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
+            // wrap the exception in a RuntimeException to avoid checked exception problems.
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 }

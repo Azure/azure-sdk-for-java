@@ -58,6 +58,7 @@ import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
 import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Flux;
@@ -164,6 +165,76 @@ public final class PathsImpl {
             @HeaderParam("x-ms-encryption-context") String encryptionContext, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Put("/{filesystem}/{path}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsCreateHeaders, Void> createSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @QueryParam("resource") PathResourceType resource,
+            @QueryParam("continuation") String continuation, @QueryParam("mode") PathRenameMode mode,
+            @HeaderParam("x-ms-cache-control") String cacheControl,
+            @HeaderParam("x-ms-content-encoding") String contentEncoding,
+            @HeaderParam("x-ms-content-language") String contentLanguage,
+            @HeaderParam("x-ms-content-disposition") String contentDisposition,
+            @HeaderParam("x-ms-content-type") String contentType,
+            @HeaderParam("x-ms-rename-source") String renameSource, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-source-lease-id") String sourceLeaseId,
+            @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-permissions") String permissions,
+            @HeaderParam("x-ms-umask") String umask, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-source-if-match") String sourceIfMatch,
+            @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
+            @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince,
+            @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-acl") String acl, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("x-ms-lease-duration") Long leaseDuration,
+            @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions,
+            @HeaderParam("x-ms-expiry-time") String expiresOn,
+            @HeaderParam("x-ms-encryption-context") String encryptionContext, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Put("/{filesystem}/{path}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<Void> createNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @QueryParam("resource") PathResourceType resource,
+            @QueryParam("continuation") String continuation, @QueryParam("mode") PathRenameMode mode,
+            @HeaderParam("x-ms-cache-control") String cacheControl,
+            @HeaderParam("x-ms-content-encoding") String contentEncoding,
+            @HeaderParam("x-ms-content-language") String contentLanguage,
+            @HeaderParam("x-ms-content-disposition") String contentDisposition,
+            @HeaderParam("x-ms-content-type") String contentType,
+            @HeaderParam("x-ms-rename-source") String renameSource, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-source-lease-id") String sourceLeaseId,
+            @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-permissions") String permissions,
+            @HeaderParam("x-ms-umask") String umask, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-source-if-match") String sourceIfMatch,
+            @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
+            @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince,
+            @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-acl") String acl, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("x-ms-lease-duration") Long leaseDuration,
+            @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions,
+            @HeaderParam("x-ms-expiry-time") String expiresOn,
+            @HeaderParam("x-ms-encryption-context") String encryptionContext, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
@@ -246,6 +317,58 @@ public final class PathsImpl {
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<SetAccessControlRecursiveResponse>> updateNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @QueryParam("action") PathUpdateAction action,
+            @QueryParam("maxRecords") Integer maxRecords, @QueryParam("continuation") String continuation,
+            @QueryParam("mode") PathSetAccessControlRecursiveMode mode, @QueryParam("forceFlag") Boolean forceFlag,
+            @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData,
+            @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-content-md5") String contentMd5, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-cache-control") String cacheControl,
+            @HeaderParam("x-ms-content-type") String contentType,
+            @HeaderParam("x-ms-content-disposition") String contentDisposition,
+            @HeaderParam("x-ms-content-encoding") String contentEncoding,
+            @HeaderParam("x-ms-content-language") String contentLanguage,
+            @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-owner") String owner,
+            @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String permissions,
+            @HeaderParam("x-ms-acl") String acl, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsUpdateHeaders, SetAccessControlRecursiveResponse> updateSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @QueryParam("action") PathUpdateAction action,
+            @QueryParam("maxRecords") Integer maxRecords, @QueryParam("continuation") String continuation,
+            @QueryParam("mode") PathSetAccessControlRecursiveMode mode, @QueryParam("forceFlag") Boolean forceFlag,
+            @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData,
+            @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-content-md5") String contentMd5, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-cache-control") String cacheControl,
+            @HeaderParam("x-ms-content-type") String contentType,
+            @HeaderParam("x-ms-content-disposition") String contentDisposition,
+            @HeaderParam("x-ms-content-encoding") String contentEncoding,
+            @HeaderParam("x-ms-content-language") String contentLanguage,
+            @HeaderParam("x-ms-properties") String properties, @HeaderParam("x-ms-owner") String owner,
+            @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String permissions,
+            @HeaderParam("x-ms-acl") String acl, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @BodyParam("application/octet-stream") BinaryData body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<SetAccessControlRecursiveResponse> updateNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @QueryParam("action") PathUpdateAction action,
@@ -300,6 +423,38 @@ public final class PathsImpl {
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Post("/{filesystem}/{path}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsLeaseHeaders, Void> leaseSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-lease-action") PathLeaseAction xMsLeaseAction,
+            @HeaderParam("x-ms-lease-duration") Integer xMsLeaseDuration,
+            @HeaderParam("x-ms-lease-break-period") Integer xMsLeaseBreakPeriod,
+            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/{filesystem}/{path}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<Void> leaseNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-lease-action") PathLeaseAction xMsLeaseAction,
+            @HeaderParam("x-ms-lease-duration") Integer xMsLeaseDuration,
+            @HeaderParam("x-ms-lease-break-period") Integer xMsLeaseBreakPeriod,
+            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Get("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
@@ -321,6 +476,40 @@ public final class PathsImpl {
         @ExpectedResponses({ 200, 206 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<StreamResponse> readNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("Range") String range,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-range-get-content-md5") Boolean xMsRangeGetContentMd5,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{filesystem}/{path}")
+        @ExpectedResponses({ 200, 206 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsReadHeaders, InputStream> readSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("Range") String range,
+            @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-range-get-content-md5") Boolean xMsRangeGetContentMd5,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/{filesystem}/{path}")
+        @ExpectedResponses({ 200, 206 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<InputStream> readNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("Range") String range,
@@ -360,6 +549,32 @@ public final class PathsImpl {
             @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("Accept") String accept,
             Context context);
 
+        @Head("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsGetPropertiesHeaders, Void> getPropertiesSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @QueryParam("action") PathGetPropertiesAction action,
+            @QueryParam("upn") Boolean upn, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Head("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<Void> getPropertiesNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @QueryParam("action") PathGetPropertiesAction action,
+            @QueryParam("upn") Boolean upn, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Delete("/{filesystem}/{path}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
@@ -377,6 +592,32 @@ public final class PathsImpl {
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<Void>> deleteNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @QueryParam("recursive") Boolean recursive,
+            @QueryParam("continuation") String continuation, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @QueryParam("paginated") Boolean paginated, @HeaderParam("Accept") String accept, Context context);
+
+        @Delete("/{filesystem}/{path}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsDeleteHeaders, Void> deleteSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @QueryParam("recursive") Boolean recursive,
+            @QueryParam("continuation") String continuation, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @QueryParam("paginated") Boolean paginated, @HeaderParam("Accept") String accept, Context context);
+
+        @Delete("/{filesystem}/{path}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<Void> deleteNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @QueryParam("recursive") Boolean recursive,
@@ -419,6 +660,36 @@ public final class PathsImpl {
         @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsSetAccessControlHeaders, Void> setAccessControlSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-owner") String owner,
+            @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String permissions,
+            @HeaderParam("x-ms-acl") String acl, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<Void> setAccessControlNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-owner") String owner,
+            @HeaderParam("x-ms-group") String group, @HeaderParam("x-ms-permissions") String permissions,
+            @HeaderParam("x-ms-acl") String acl, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>>
             setAccessControlRecursive(@HostParam("url") String url, @PathParam("filesystem") String fileSystem,
                 @PathParam("path") String path, @QueryParam("action") String action,
@@ -432,6 +703,29 @@ public final class PathsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<SetAccessControlRecursiveResponse>> setAccessControlRecursiveNoCustomHeaders(
+            @HostParam("url") String url, @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
+            @QueryParam("continuation") String continuation, @QueryParam("mode") PathSetAccessControlRecursiveMode mode,
+            @QueryParam("forceFlag") Boolean forceFlag, @QueryParam("maxRecords") Integer maxRecords,
+            @HeaderParam("x-ms-acl") String acl, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>
+            setAccessControlRecursiveSync(@HostParam("url") String url, @PathParam("filesystem") String fileSystem,
+                @PathParam("path") String path, @QueryParam("action") String action,
+                @QueryParam("timeout") Integer timeout, @QueryParam("continuation") String continuation,
+                @QueryParam("mode") PathSetAccessControlRecursiveMode mode, @QueryParam("forceFlag") Boolean forceFlag,
+                @QueryParam("maxRecords") Integer maxRecords, @HeaderParam("x-ms-acl") String acl,
+                @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<SetAccessControlRecursiveResponse> setAccessControlRecursiveNoCustomHeadersSync(
             @HostParam("url") String url, @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
             @QueryParam("continuation") String continuation, @QueryParam("mode") PathSetAccessControlRecursiveMode mode,
@@ -492,6 +786,58 @@ public final class PathsImpl {
             @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsFlushDataHeaders, Void> flushDataSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
+            @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData,
+            @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-content-md5") String contentMd5, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") LeaseAction leaseAction,
+            @HeaderParam("x-ms-lease-duration") Long leaseDuration,
+            @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("x-ms-cache-control") String cacheControl,
+            @HeaderParam("x-ms-content-type") String contentType,
+            @HeaderParam("x-ms-content-disposition") String contentDisposition,
+            @HeaderParam("x-ms-content-encoding") String contentEncoding,
+            @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<Void> flushDataNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @QueryParam("action") String action, @QueryParam("timeout") Integer timeout,
+            @QueryParam("position") Long position, @QueryParam("retainUncommittedData") Boolean retainUncommittedData,
+            @QueryParam("close") Boolean close, @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("x-ms-content-md5") String contentMd5, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-lease-action") LeaseAction leaseAction,
+            @HeaderParam("x-ms-lease-duration") Long leaseDuration,
+            @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("x-ms-cache-control") String cacheControl,
+            @HeaderParam("x-ms-content-type") String contentType,
+            @HeaderParam("x-ms-content-disposition") String contentDisposition,
+            @HeaderParam("x-ms-content-encoding") String contentEncoding,
+            @HeaderParam("x-ms-content-language") String contentLanguage, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{filesystem}/{path}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<PathsAppendDataHeaders, Void>> appendData(@HostParam("url") String url,
@@ -552,6 +898,44 @@ public final class PathsImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<Void>> appendDataNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @QueryParam("action") String action, @QueryParam("position") Long position,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("Content-MD5") String transactionalContentHash,
+            @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") LeaseAction leaseAction,
+            @HeaderParam("x-ms-lease-duration") Long leaseDuration,
+            @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @QueryParam("flush") Boolean flush, @BodyParam("application/octet-stream") BinaryData body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsAppendDataHeaders, Void> appendDataSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
+            @QueryParam("action") String action, @QueryParam("position") Long position,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") Long contentLength,
+            @HeaderParam("Content-MD5") String transactionalContentHash,
+            @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64,
+            @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-lease-action") LeaseAction leaseAction,
+            @HeaderParam("x-ms-lease-duration") Long leaseDuration,
+            @HeaderParam("x-ms-proposed-lease-id") String proposedLeaseId,
+            @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-encryption-key") String encryptionKey,
+            @HeaderParam("x-ms-encryption-key-sha256") String encryptionKeySha256,
+            @HeaderParam("x-ms-encryption-algorithm") EncryptionAlgorithmType encryptionAlgorithm,
+            @QueryParam("flush") Boolean flush, @BodyParam("application/octet-stream") BinaryData body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Patch("/{filesystem}/{path}")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<Void> appendDataNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path,
             @QueryParam("action") String action, @QueryParam("position") Long position,
             @QueryParam("timeout") Integer timeout, @HeaderParam("Content-Length") Long contentLength,
@@ -590,6 +974,26 @@ public final class PathsImpl {
         @Put("/{filesystem}/{path}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsSetExpiryHeaders, Void> setExpirySync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions,
+            @HeaderParam("x-ms-expiry-time") String expiresOn, @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<Void> setExpiryNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions,
+            @HeaderParam("x-ms-expiry-time") String expiresOn, @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<PathsUndeleteHeaders, Void>> undelete(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource,
@@ -600,6 +1004,24 @@ public final class PathsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<Response<Void>> undeleteNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        ResponseBase<PathsUndeleteHeaders, Void> undeleteSync(@HostParam("url") String url,
+            @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/{filesystem}/{path}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Response<Void> undeleteNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("filesystem") String fileSystem, @PathParam("path") String path, @QueryParam("comp") String comp,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
@@ -1477,6 +1899,440 @@ public final class PathsImpl {
     }
 
     /**
+     * Create File | Create Directory | Rename File | Rename Directory
+     * 
+     * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
+     * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
+     * information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
+     * in this response header. When a continuation token is returned in the response, it must be specified in a
+     * subsequent invocation of the delete operation to continue deleting the directory.
+     * @param mode Optional. Valid only when namespace is enabled. This parameter determines the behavior of the rename
+     * operation. The value must be "legacy" or "posix", and the default value will be "posix".
+     * @param renameSource An optional file or directory to be renamed. The value must have the following format:
+     * "/{filesystem}/{path}". If "x-ms-properties" is specified, the properties will overwrite the existing properties;
+     * otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that
+     * the string may only contain ASCII characters in the ISO-8859-1 character set.
+     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and
+     * the lease ID must match.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
+     * Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the filesystem exists,
+     * any properties not included in the list will be removed. All properties are removed if the header is omitted. To
+     * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
+     * conditional request with the E-Tag and include values for all properties.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     * access permissions for the file owner, the file owning group, and others. Each class may be granted read, write,
+     * or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation
+     * (e.g. 0766) are supported.
+     * @param umask Optional and only valid if Hierarchical Namespace is enabled for the account. When creating a file
+     * or directory and the parent folder does not have a default ACL, the umask restricts the permissions of the file
+     * or directory to be created. The resulting permission is given by p bitwise and not u, where p is the permission
+     * and u is the umask. For example, if p is 0777 and u is 0057, then the resulting permission is 0720. The default
+     * permission is 0777 for a directory and 0666 for a file. The default umask is 0027. The umask must be specified in
+     * 4-digit octal notation (e.g. 0766).
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param expiryOptions Required. Indicates mode of the expiry time.
+     * @param expiresOn The time to set the blob to expiry.
+     * @param encryptionContext Specifies the encryption context to set on the file.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param sourceModifiedAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsCreateHeaders, Void> createWithResponse(String requestId, Integer timeout,
+        PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId,
+        String properties, String permissions, String umask, String owner, String group, String acl,
+        String proposedLeaseId, Long leaseDuration, PathExpiryOptions expiryOptions, String expiresOn,
+        String encryptionContext, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions,
+        SourceModifiedAccessConditions sourceModifiedAccessConditions, CpkInfo cpkInfo, Context context) {
+        final String accept = "application/json";
+        String cacheControlInternal = null;
+        if (pathHttpHeaders != null) {
+            cacheControlInternal = pathHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        String contentEncodingInternal = null;
+        if (pathHttpHeaders != null) {
+            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (pathHttpHeaders != null) {
+            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        String contentDispositionInternal = null;
+        if (pathHttpHeaders != null) {
+            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String contentTypeInternal = null;
+        if (pathHttpHeaders != null) {
+            contentTypeInternal = pathHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        String sourceIfMatchInternal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfMatchInternal = sourceModifiedAccessConditions.getSourceIfMatch();
+        }
+        String sourceIfMatch = sourceIfMatchInternal;
+        String sourceIfNoneMatchInternal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfNoneMatchInternal = sourceModifiedAccessConditions.getSourceIfNoneMatch();
+        }
+        String sourceIfNoneMatch = sourceIfNoneMatchInternal;
+        OffsetDateTime sourceIfModifiedSinceInternal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfModifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfModifiedSince();
+        }
+        OffsetDateTime sourceIfModifiedSince = sourceIfModifiedSinceInternal;
+        OffsetDateTime sourceIfUnmodifiedSinceInternal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfUnmodifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
+        }
+        OffsetDateTime sourceIfUnmodifiedSince = sourceIfUnmodifiedSinceInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 sourceIfModifiedSinceConverted
+            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+        return service.createSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), requestId,
+            timeout, this.client.getVersion(), resource, continuation, mode, cacheControl, contentEncoding,
+            contentLanguage, contentDisposition, contentType, renameSource, leaseId, sourceLeaseId, properties,
+            permissions, umask, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+            sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
+            encryptionKey, encryptionKeySha256, encryptionAlgorithm, owner, group, acl, proposedLeaseId, leaseDuration,
+            expiryOptions, expiresOn, encryptionContext, accept, context);
+    }
+
+    /**
+     * Create File | Create Directory | Rename File | Rename Directory
+     * 
+     * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
+     * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
+     * information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
+     * in this response header. When a continuation token is returned in the response, it must be specified in a
+     * subsequent invocation of the delete operation to continue deleting the directory.
+     * @param mode Optional. Valid only when namespace is enabled. This parameter determines the behavior of the rename
+     * operation. The value must be "legacy" or "posix", and the default value will be "posix".
+     * @param renameSource An optional file or directory to be renamed. The value must have the following format:
+     * "/{filesystem}/{path}". If "x-ms-properties" is specified, the properties will overwrite the existing properties;
+     * otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that
+     * the string may only contain ASCII characters in the ISO-8859-1 character set.
+     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and
+     * the lease ID must match.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
+     * Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the filesystem exists,
+     * any properties not included in the list will be removed. All properties are removed if the header is omitted. To
+     * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
+     * conditional request with the E-Tag and include values for all properties.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     * access permissions for the file owner, the file owning group, and others. Each class may be granted read, write,
+     * or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation
+     * (e.g. 0766) are supported.
+     * @param umask Optional and only valid if Hierarchical Namespace is enabled for the account. When creating a file
+     * or directory and the parent folder does not have a default ACL, the umask restricts the permissions of the file
+     * or directory to be created. The resulting permission is given by p bitwise and not u, where p is the permission
+     * and u is the umask. For example, if p is 0777 and u is 0057, then the resulting permission is 0720. The default
+     * permission is 0777 for a directory and 0666 for a file. The default umask is 0027. The umask must be specified in
+     * 4-digit octal notation (e.g. 0766).
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param expiryOptions Required. Indicates mode of the expiry time.
+     * @param expiresOn The time to set the blob to expiry.
+     * @param encryptionContext Specifies the encryption context to set on the file.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param sourceModifiedAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void create(String requestId, Integer timeout, PathResourceType resource, String continuation,
+        PathRenameMode mode, String renameSource, String sourceLeaseId, String properties, String permissions,
+        String umask, String owner, String group, String acl, String proposedLeaseId, Long leaseDuration,
+        PathExpiryOptions expiryOptions, String expiresOn, String encryptionContext, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
+        SourceModifiedAccessConditions sourceModifiedAccessConditions, CpkInfo cpkInfo) {
+        createWithResponse(requestId, timeout, resource, continuation, mode, renameSource, sourceLeaseId, properties,
+            permissions, umask, owner, group, acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn,
+            encryptionContext, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
+            sourceModifiedAccessConditions, cpkInfo, Context.NONE);
+    }
+
+    /**
+     * Create File | Create Directory | Rename File | Rename Directory
+     * 
+     * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
+     * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
+     * information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
+     * in this response header. When a continuation token is returned in the response, it must be specified in a
+     * subsequent invocation of the delete operation to continue deleting the directory.
+     * @param mode Optional. Valid only when namespace is enabled. This parameter determines the behavior of the rename
+     * operation. The value must be "legacy" or "posix", and the default value will be "posix".
+     * @param renameSource An optional file or directory to be renamed. The value must have the following format:
+     * "/{filesystem}/{path}". If "x-ms-properties" is specified, the properties will overwrite the existing properties;
+     * otherwise, the existing properties will be preserved. This value must be a URL percent-encoded string. Note that
+     * the string may only contain ASCII characters in the ISO-8859-1 character set.
+     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and
+     * the lease ID must match.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
+     * Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the filesystem exists,
+     * any properties not included in the list will be removed. All properties are removed if the header is omitted. To
+     * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
+     * conditional request with the E-Tag and include values for all properties.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     * access permissions for the file owner, the file owning group, and others. Each class may be granted read, write,
+     * or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation
+     * (e.g. 0766) are supported.
+     * @param umask Optional and only valid if Hierarchical Namespace is enabled for the account. When creating a file
+     * or directory and the parent folder does not have a default ACL, the umask restricts the permissions of the file
+     * or directory to be created. The resulting permission is given by p bitwise and not u, where p is the permission
+     * and u is the umask. For example, if p is 0777 and u is 0057, then the resulting permission is 0720. The default
+     * permission is 0777 for a directory and 0666 for a file. The default umask is 0027. The umask must be specified in
+     * 4-digit octal notation (e.g. 0766).
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param expiryOptions Required. Indicates mode of the expiry time.
+     * @param expiresOn The time to set the blob to expiry.
+     * @param encryptionContext Specifies the encryption context to set on the file.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param sourceModifiedAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createNoCustomHeadersWithResponse(String requestId, Integer timeout,
+        PathResourceType resource, String continuation, PathRenameMode mode, String renameSource, String sourceLeaseId,
+        String properties, String permissions, String umask, String owner, String group, String acl,
+        String proposedLeaseId, Long leaseDuration, PathExpiryOptions expiryOptions, String expiresOn,
+        String encryptionContext, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions,
+        SourceModifiedAccessConditions sourceModifiedAccessConditions, CpkInfo cpkInfo, Context context) {
+        final String accept = "application/json";
+        String cacheControlInternal = null;
+        if (pathHttpHeaders != null) {
+            cacheControlInternal = pathHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        String contentEncodingInternal = null;
+        if (pathHttpHeaders != null) {
+            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (pathHttpHeaders != null) {
+            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        String contentDispositionInternal = null;
+        if (pathHttpHeaders != null) {
+            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String contentTypeInternal = null;
+        if (pathHttpHeaders != null) {
+            contentTypeInternal = pathHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        String sourceIfMatchInternal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfMatchInternal = sourceModifiedAccessConditions.getSourceIfMatch();
+        }
+        String sourceIfMatch = sourceIfMatchInternal;
+        String sourceIfNoneMatchInternal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfNoneMatchInternal = sourceModifiedAccessConditions.getSourceIfNoneMatch();
+        }
+        String sourceIfNoneMatch = sourceIfNoneMatchInternal;
+        OffsetDateTime sourceIfModifiedSinceInternal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfModifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfModifiedSince();
+        }
+        OffsetDateTime sourceIfModifiedSince = sourceIfModifiedSinceInternal;
+        OffsetDateTime sourceIfUnmodifiedSinceInternal = null;
+        if (sourceModifiedAccessConditions != null) {
+            sourceIfUnmodifiedSinceInternal = sourceModifiedAccessConditions.getSourceIfUnmodifiedSince();
+        }
+        OffsetDateTime sourceIfUnmodifiedSince = sourceIfUnmodifiedSinceInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        DateTimeRfc1123 sourceIfModifiedSinceConverted
+            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+        return service.createNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), requestId, timeout, this.client.getVersion(), resource, continuation, mode,
+            cacheControl, contentEncoding, contentLanguage, contentDisposition, contentType, renameSource, leaseId,
+            sourceLeaseId, properties, permissions, umask, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
+            ifUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, sourceIfModifiedSinceConverted,
+            sourceIfUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256, encryptionAlgorithm, owner, group,
+            acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn, encryptionContext, accept, context);
+    }
+
+    /**
      * Append Data | Flush Data | Set Properties | Set Access Control
      * 
      * Uploads data to be appended to a file, flushes (writes) previously uploaded data to a file, sets properties for a
@@ -3072,6 +3928,404 @@ public final class PathsImpl {
             retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
             contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl, ifMatch,
             ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context);
+    }
+
+    /**
+     * Append Data | Flush Data | Set Properties | Set Access Control
+     * 
+     * Uploads data to be appended to a file, flushes (writes) previously uploaded data to a file, sets properties for a
+     * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
+     * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
+     * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
+     * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
+     * the owner, group, permissions, or access control list for a file or directory, or "setAccessControlRecursive" to
+     * set the access control list for a directory recursively. Note that Hierarchical Namespace must be enabled for the
+     * account in order to use access control. Also note that the Access Control List (ACL) includes permissions for the
+     * owner, owning group, and others, so the x-ms-permissions and x-ms-acl request headers are mutually exclusive.
+     * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
+     * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
+     * control rights that were present earlier on files and directories.
+     * @param body Initial data.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
+     * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
+     * process up to 2,000 items.
+     * @param continuation Optional. The number of paths processed with each invocation is limited. If the number of
+     * paths to be processed exceeds this limit, a continuation token is returned in the response header
+     * x-ms-continuation. When a continuation token is returned in the response, it must be percent-encoded and
+     * specified in a subsequent invocation of setAccessControlRecursive operation.
+     * @param forceFlag Optional. Valid for "SetAccessControlRecursive" operation. If set to false, the operation will
+     * terminate quickly on encountering user errors (4XX). If true, the operation will ignore user errors and proceed
+     * with the operation on other sub-entities of the directory. Continuation token will only be returned when
+     * forceFlag is true in case of user errors. If not set the default value is false for this.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param retainUncommittedData Valid only for flush operations. If "true", uncommitted data is retained after the
+     * flush operation completes; otherwise, the uncommitted data is deleted after the flush operation. The default is
+     * false. Data at offsets less than the specified position are written to the file when flush succeeds, but this
+     * optional parameter allows data after the flush position to be retained for a future flush operation.
+     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure
+     * Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is
+     * the final change to distinguish the difference between an intermediate flush to a file stream and the final close
+     * of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are
+     * enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a
+     * file change notification with a property indicating that this is the final update (the file stream has been
+     * closed). If "false" a change notification is raised indicating the file has changed. The default is false. This
+     * query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
+     * Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the filesystem exists,
+     * any properties not included in the list will be removed. All properties are removed if the header is omitted. To
+     * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
+     * conditional request with the E-Tag and include values for all properties.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     * access permissions for the file owner, the file owning group, and others. Each class may be granted read, write,
+     * or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation
+     * (e.g. 0766) are supported.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsUpdateHeaders, SetAccessControlRecursiveResponse> updateWithResponse(
+        PathUpdateAction action, PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId,
+        Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag, Long position,
+        Boolean retainUncommittedData, Boolean close, Long contentLength, String properties, String owner, String group,
+        String permissions, String acl, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        byte[] contentMd5Internal = null;
+        if (pathHttpHeaders != null) {
+            contentMd5Internal = pathHttpHeaders.getContentMd5();
+        }
+        byte[] contentMd5 = contentMd5Internal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String cacheControlInternal = null;
+        if (pathHttpHeaders != null) {
+            cacheControlInternal = pathHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        String contentTypeInternal = null;
+        if (pathHttpHeaders != null) {
+            contentTypeInternal = pathHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String contentDispositionInternal = null;
+        if (pathHttpHeaders != null) {
+            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String contentEncodingInternal = null;
+        if (pathHttpHeaders != null) {
+            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (pathHttpHeaders != null) {
+            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.updateSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), requestId,
+            timeout, this.client.getVersion(), action, maxRecords, continuation, mode, forceFlag, position,
+            retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, cacheControl, contentType,
+            contentDisposition, contentEncoding, contentLanguage, properties, owner, group, permissions, acl, ifMatch,
+            ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept, context);
+    }
+
+    /**
+     * Append Data | Flush Data | Set Properties | Set Access Control
+     * 
+     * Uploads data to be appended to a file, flushes (writes) previously uploaded data to a file, sets properties for a
+     * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
+     * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
+     * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
+     * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
+     * the owner, group, permissions, or access control list for a file or directory, or "setAccessControlRecursive" to
+     * set the access control list for a directory recursively. Note that Hierarchical Namespace must be enabled for the
+     * account in order to use access control. Also note that the Access Control List (ACL) includes permissions for the
+     * owner, owning group, and others, so the x-ms-permissions and x-ms-acl request headers are mutually exclusive.
+     * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
+     * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
+     * control rights that were present earlier on files and directories.
+     * @param body Initial data.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
+     * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
+     * process up to 2,000 items.
+     * @param continuation Optional. The number of paths processed with each invocation is limited. If the number of
+     * paths to be processed exceeds this limit, a continuation token is returned in the response header
+     * x-ms-continuation. When a continuation token is returned in the response, it must be percent-encoded and
+     * specified in a subsequent invocation of setAccessControlRecursive operation.
+     * @param forceFlag Optional. Valid for "SetAccessControlRecursive" operation. If set to false, the operation will
+     * terminate quickly on encountering user errors (4XX). If true, the operation will ignore user errors and proceed
+     * with the operation on other sub-entities of the directory. Continuation token will only be returned when
+     * forceFlag is true in case of user errors. If not set the default value is false for this.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param retainUncommittedData Valid only for flush operations. If "true", uncommitted data is retained after the
+     * flush operation completes; otherwise, the uncommitted data is deleted after the flush operation. The default is
+     * false. Data at offsets less than the specified position are written to the file when flush succeeds, but this
+     * optional parameter allows data after the flush position to be retained for a future flush operation.
+     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure
+     * Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is
+     * the final change to distinguish the difference between an intermediate flush to a file stream and the final close
+     * of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are
+     * enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a
+     * file change notification with a property indicating that this is the final update (the file stream has been
+     * closed). If "false" a change notification is raised indicating the file has changed. The default is false. This
+     * query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
+     * Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the filesystem exists,
+     * any properties not included in the list will be removed. All properties are removed if the header is omitted. To
+     * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
+     * conditional request with the E-Tag and include values for all properties.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     * access permissions for the file owner, the file owning group, and others. Each class may be granted read, write,
+     * or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation
+     * (e.g. 0766) are supported.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SetAccessControlRecursiveResponse update(PathUpdateAction action, PathSetAccessControlRecursiveMode mode,
+        BinaryData body, String requestId, Integer timeout, Integer maxRecords, String continuation, Boolean forceFlag,
+        Long position, Boolean retainUncommittedData, Boolean close, Long contentLength, String properties,
+        String owner, String group, String permissions, String acl, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        return updateWithResponse(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag, position,
+            retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl, pathHttpHeaders,
+            leaseAccessConditions, modifiedAccessConditions, Context.NONE).getValue();
+    }
+
+    /**
+     * Append Data | Flush Data | Set Properties | Set Access Control
+     * 
+     * Uploads data to be appended to a file, flushes (writes) previously uploaded data to a file, sets properties for a
+     * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
+     * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
+     * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
+     * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
+     * the owner, group, permissions, or access control list for a file or directory, or "setAccessControlRecursive" to
+     * set the access control list for a directory recursively. Note that Hierarchical Namespace must be enabled for the
+     * account in order to use access control. Also note that the Access Control List (ACL) includes permissions for the
+     * owner, owning group, and others, so the x-ms-permissions and x-ms-acl request headers are mutually exclusive.
+     * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
+     * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
+     * control rights that were present earlier on files and directories.
+     * @param body Initial data.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
+     * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
+     * process up to 2,000 items.
+     * @param continuation Optional. The number of paths processed with each invocation is limited. If the number of
+     * paths to be processed exceeds this limit, a continuation token is returned in the response header
+     * x-ms-continuation. When a continuation token is returned in the response, it must be percent-encoded and
+     * specified in a subsequent invocation of setAccessControlRecursive operation.
+     * @param forceFlag Optional. Valid for "SetAccessControlRecursive" operation. If set to false, the operation will
+     * terminate quickly on encountering user errors (4XX). If true, the operation will ignore user errors and proceed
+     * with the operation on other sub-entities of the directory. Continuation token will only be returned when
+     * forceFlag is true in case of user errors. If not set the default value is false for this.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param retainUncommittedData Valid only for flush operations. If "true", uncommitted data is retained after the
+     * flush operation completes; otherwise, the uncommitted data is deleted after the flush operation. The default is
+     * false. Data at offsets less than the specified position are written to the file when flush succeeds, but this
+     * optional parameter allows data after the flush position to be retained for a future flush operation.
+     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure
+     * Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is
+     * the final change to distinguish the difference between an intermediate flush to a file stream and the final close
+     * of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are
+     * enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a
+     * file change notification with a property indicating that this is the final update (the file stream has been
+     * closed). If "false" a change notification is raised indicating the file has changed. The default is false. This
+     * query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
+     * Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the filesystem exists,
+     * any properties not included in the list will be removed. All properties are removed if the header is omitted. To
+     * merge new and existing properties, first get all existing properties and the current E-Tag, then make a
+     * conditional request with the E-Tag and include values for all properties.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     * access permissions for the file owner, the file owning group, and others. Each class may be granted read, write,
+     * or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation
+     * (e.g. 0766) are supported.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SetAccessControlRecursiveResponse> updateNoCustomHeadersWithResponse(PathUpdateAction action,
+        PathSetAccessControlRecursiveMode mode, BinaryData body, String requestId, Integer timeout, Integer maxRecords,
+        String continuation, Boolean forceFlag, Long position, Boolean retainUncommittedData, Boolean close,
+        Long contentLength, String properties, String owner, String group, String permissions, String acl,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        byte[] contentMd5Internal = null;
+        if (pathHttpHeaders != null) {
+            contentMd5Internal = pathHttpHeaders.getContentMd5();
+        }
+        byte[] contentMd5 = contentMd5Internal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String cacheControlInternal = null;
+        if (pathHttpHeaders != null) {
+            cacheControlInternal = pathHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        String contentTypeInternal = null;
+        if (pathHttpHeaders != null) {
+            contentTypeInternal = pathHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String contentDispositionInternal = null;
+        if (pathHttpHeaders != null) {
+            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String contentEncodingInternal = null;
+        if (pathHttpHeaders != null) {
+            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (pathHttpHeaders != null) {
+            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.updateNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), requestId, timeout, this.client.getVersion(), action, maxRecords, continuation, mode,
+            forceFlag, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId,
+            cacheControl, contentType, contentDisposition, contentEncoding, contentLanguage, properties, owner, group,
+            permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, body, accept,
+            context);
     }
 
     /**
@@ -3445,6 +4699,193 @@ public final class PathsImpl {
             requestId, timeout, this.client.getVersion(), xMsLeaseAction, this.client.getXMsLeaseDuration(),
             xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
             ifUnmodifiedSinceConverted, accept, context);
+    }
+
+    /**
+     * Lease Path
+     * 
+     * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
+     * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
+     * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
+     * to break an existing lease. When a lease is broken, the lease break period is allowed to elapse, during which
+     * time no lease operation except break and release can be performed on the file. When a lease is successfully
+     * broken, the response indicates the interval in seconds until a new lease can be acquired. Use "change" and
+     * specify the current lease ID in "x-ms-lease-id" and the new lease ID in "x-ms-proposed-lease-id" to change the
+     * lease ID of an active lease. Use "renew" and specify the "x-ms-lease-id" to renew an existing lease. Use
+     * "release" and specify the "x-ms-lease-id" to release a lease.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
+     * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsLeaseHeaders, Void> leaseWithResponse(PathLeaseAction xMsLeaseAction, String requestId,
+        Integer timeout, Integer xMsLeaseBreakPeriod, String proposedLeaseId,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
+        Context context) {
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.leaseSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), requestId,
+            timeout, this.client.getVersion(), xMsLeaseAction, this.client.getXMsLeaseDuration(), xMsLeaseBreakPeriod,
+            leaseId, proposedLeaseId, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
+            accept, context);
+    }
+
+    /**
+     * Lease Path
+     * 
+     * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
+     * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
+     * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
+     * to break an existing lease. When a lease is broken, the lease break period is allowed to elapse, during which
+     * time no lease operation except break and release can be performed on the file. When a lease is successfully
+     * broken, the response indicates the interval in seconds until a new lease can be acquired. Use "change" and
+     * specify the current lease ID in "x-ms-lease-id" and the new lease ID in "x-ms-proposed-lease-id" to change the
+     * lease ID of an active lease. Use "renew" and specify the "x-ms-lease-id" to renew an existing lease. Use
+     * "release" and specify the "x-ms-lease-id" to release a lease.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
+     * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void lease(PathLeaseAction xMsLeaseAction, String requestId, Integer timeout, Integer xMsLeaseBreakPeriod,
+        String proposedLeaseId, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions) {
+        leaseWithResponse(xMsLeaseAction, requestId, timeout, xMsLeaseBreakPeriod, proposedLeaseId,
+            leaseAccessConditions, modifiedAccessConditions, Context.NONE);
+    }
+
+    /**
+     * Lease Path
+     * 
+     * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
+     * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
+     * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
+     * to break an existing lease. When a lease is broken, the lease break period is allowed to elapse, during which
+     * time no lease operation except break and release can be performed on the file. When a lease is successfully
+     * broken, the response indicates the interval in seconds until a new lease can be acquired. Use "change" and
+     * specify the current lease ID in "x-ms-lease-id" and the new lease ID in "x-ms-proposed-lease-id" to change the
+     * lease ID of an active lease. Use "renew" and specify the "x-ms-lease-id" to renew an existing lease. Use
+     * "release" and specify the "x-ms-lease-id" to release a lease.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
+     * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> leaseNoCustomHeadersWithResponse(PathLeaseAction xMsLeaseAction, String requestId,
+        Integer timeout, Integer xMsLeaseBreakPeriod, String proposedLeaseId,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
+        Context context) {
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.leaseNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), requestId, timeout, this.client.getVersion(), xMsLeaseAction,
+            this.client.getXMsLeaseDuration(), xMsLeaseBreakPeriod, leaseId, proposedLeaseId, ifMatch, ifNoneMatch,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
     }
 
     /**
@@ -3844,6 +5285,204 @@ public final class PathsImpl {
     }
 
     /**
+     * Read File
+     * 
+     * Read the contents of a file. For read operations, range requests are supported. This operation supports
+     * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
+     * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
+     * header, the service returns the MD5 hash for the range, as long as the range is less than or equal to 4MB in
+     * size. If this header is specified without the Range header, the service returns status code 400 (Bad Request). If
+     * this header is set to true when the range exceeds 4 MB in size, the service returns status code 400 (Bad
+     * Request).
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsReadHeaders, InputStream> readWithResponse(String requestId, Integer timeout, String range,
+        Boolean xMsRangeGetContentMd5, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo, Context context) {
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.readSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), requestId,
+            timeout, this.client.getVersion(), range, leaseId, xMsRangeGetContentMd5, ifMatch, ifNoneMatch,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256,
+            encryptionAlgorithm, accept, context);
+    }
+
+    /**
+     * Read File
+     * 
+     * Read the contents of a file. For read operations, range requests are supported. This operation supports
+     * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
+     * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
+     * header, the service returns the MD5 hash for the range, as long as the range is less than or equal to 4MB in
+     * size. If this header is specified without the Range header, the service returns status code 400 (Bad Request). If
+     * this header is set to true when the range exceeds 4 MB in size, the service returns status code 400 (Bad
+     * Request).
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InputStream read(String requestId, Integer timeout, String range, Boolean xMsRangeGetContentMd5,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions,
+        CpkInfo cpkInfo) {
+        return readWithResponse(requestId, timeout, range, xMsRangeGetContentMd5, leaseAccessConditions,
+            modifiedAccessConditions, cpkInfo, Context.NONE).getValue();
+    }
+
+    /**
+     * Read File
+     * 
+     * Read the contents of a file. For read operations, range requests are supported. This operation supports
+     * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
+     * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
+     * header, the service returns the MD5 hash for the range, as long as the range is less than or equal to 4MB in
+     * size. If this header is specified without the Range header, the service returns status code 400 (Bad Request). If
+     * this header is set to true when the range exceeds 4 MB in size, the service returns status code 400 (Bad
+     * Request).
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InputStream> readNoCustomHeadersWithResponse(String requestId, Integer timeout, String range,
+        Boolean xMsRangeGetContentMd5, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo, Context context) {
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.readNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
+            requestId, timeout, this.client.getVersion(), range, leaseId, xMsRangeGetContentMd5, ifMatch, ifNoneMatch,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, encryptionKey, encryptionKeySha256,
+            encryptionAlgorithm, accept, context);
+    }
+
+    /**
      * Get Properties | Get Status | Get Access Control List
      * 
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
@@ -4187,6 +5826,176 @@ public final class PathsImpl {
         DateTimeRfc1123 ifUnmodifiedSinceConverted
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.getPropertiesNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch,
+            ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
+    }
+
+    /**
+     * Get Properties | Get Status | Get Access Control List
+     * 
+     * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
+     * properties for a path. Get Access Control List returns the access control list for a path. This operation
+     * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
+     * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
+     * Namespace must be enabled for the account), otherwise the properties are returned.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
+     * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
+     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
+     * translated because they do not have unique friendly names.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties returns all system and user defined properties for a path along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsGetPropertiesHeaders, Void> getPropertiesWithResponse(String requestId, Integer timeout,
+        PathGetPropertiesAction action, Boolean upn, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.getPropertiesSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
+            requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch, ifNoneMatch,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
+    }
+
+    /**
+     * Get Properties | Get Status | Get Access Control List
+     * 
+     * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
+     * properties for a path. Get Access Control List returns the access control list for a path. This operation
+     * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
+     * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
+     * Namespace must be enabled for the account), otherwise the properties are returned.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
+     * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
+     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
+     * translated because they do not have unique friendly names.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getProperties(String requestId, Integer timeout, PathGetPropertiesAction action, Boolean upn,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        getPropertiesWithResponse(requestId, timeout, action, upn, leaseAccessConditions, modifiedAccessConditions,
+            Context.NONE);
+    }
+
+    /**
+     * Get Properties | Get Status | Get Access Control List
+     * 
+     * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
+     * properties for a path. Get Access Control List returns the access control list for a path. This operation
+     * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
+     * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
+     * Namespace must be enabled for the account), otherwise the properties are returned.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
+     * identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed from
+     * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
+     * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
+     * translated because they do not have unique friendly names.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties returns all system and user defined properties for a path along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getPropertiesNoCustomHeadersWithResponse(String requestId, Integer timeout,
+        PathGetPropertiesAction action, Boolean upn, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
             this.client.getPath(), requestId, timeout, this.client.getVersion(), action, upn, leaseId, ifMatch,
             ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, accept, context);
     }
@@ -4536,6 +6345,176 @@ public final class PathsImpl {
     }
 
     /**
+     * Delete File | Delete Directory
+     * 
+     * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
+     * [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param recursive Required.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
+     * in this response header. When a continuation token is returned in the response, it must be specified in a
+     * subsequent invocation of the delete operation to continue deleting the directory.
+     * @param paginated If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX
+     * requirement in the server and Delete in an atomic operation once the ACL checks are completed. If false or
+     * missing, normal default behavior will kick in, which may timeout in case of very large directories due to
+     * recursive ACL checks. This new parameter is introduced for backward compatibility.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsDeleteHeaders, Void> deleteWithResponse(String requestId, Integer timeout,
+        Boolean recursive, String continuation, Boolean paginated, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.deleteSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), requestId,
+            timeout, this.client.getVersion(), recursive, continuation, leaseId, ifMatch, ifNoneMatch,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context);
+    }
+
+    /**
+     * Delete File | Delete Directory
+     * 
+     * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
+     * [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param recursive Required.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
+     * in this response header. When a continuation token is returned in the response, it must be specified in a
+     * subsequent invocation of the delete operation to continue deleting the directory.
+     * @param paginated If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX
+     * requirement in the server and Delete in an atomic operation once the ACL checks are completed. If false or
+     * missing, normal default behavior will kick in, which may timeout in case of very large directories due to
+     * recursive ACL checks. This new parameter is introduced for backward compatibility.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String requestId, Integer timeout, Boolean recursive, String continuation, Boolean paginated,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
+        deleteWithResponse(requestId, timeout, recursive, continuation, paginated, leaseAccessConditions,
+            modifiedAccessConditions, Context.NONE);
+    }
+
+    /**
+     * Delete File | Delete Directory
+     * 
+     * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
+     * [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * 
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param recursive Required.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
+     * in this response header. When a continuation token is returned in the response, it must be specified in a
+     * subsequent invocation of the delete operation to continue deleting the directory.
+     * @param paginated If true, paginated behavior will be seen. Pagination is for the recursive ACL checks as a POSIX
+     * requirement in the server and Delete in an atomic operation once the ACL checks are completed. If false or
+     * missing, normal default behavior will kick in, which may timeout in case of very large directories due to
+     * recursive ACL checks. This new parameter is introduced for backward compatibility.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteNoCustomHeadersWithResponse(String requestId, Integer timeout, Boolean recursive,
+        String continuation, Boolean paginated, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.deleteNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), requestId, timeout, this.client.getVersion(), recursive, continuation, leaseId,
+            ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, paginated, accept, context);
+    }
+
+    /**
      * Set the owner, group, permissions, or access control list for a path.
      * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -4862,6 +6841,167 @@ public final class PathsImpl {
     }
 
     /**
+     * Set the owner, group, permissions, or access control list for a path.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     * access permissions for the file owner, the file owning group, and others. Each class may be granted read, write,
+     * or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation
+     * (e.g. 0766) are supported.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsSetAccessControlHeaders, Void> setAccessControlWithResponse(Integer timeout, String owner,
+        String group, String permissions, String acl, String requestId, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String action = "setAccessControl";
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.setAccessControlSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
+            action, timeout, leaseId, owner, group, permissions, acl, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
+            ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     * access permissions for the file owner, the file owning group, and others. Each class may be granted read, write,
+     * or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation
+     * (e.g. 0766) are supported.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setAccessControl(Integer timeout, String owner, String group, String permissions, String acl,
+        String requestId, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions) {
+        setAccessControlWithResponse(timeout, owner, group, permissions, acl, requestId, leaseAccessConditions,
+            modifiedAccessConditions, Context.NONE);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param owner Optional. The owner of the blob or directory.
+     * @param group Optional. The owning group of the blob or directory.
+     * @param permissions Optional and only valid if Hierarchical Namespace is enabled for the account. Sets POSIX
+     * access permissions for the file owner, the file owning group, and others. Each class may be granted read, write,
+     * or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and 4-digit octal notation
+     * (e.g. 0766) are supported.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setAccessControlNoCustomHeadersWithResponse(Integer timeout, String owner, String group,
+        String permissions, String acl, String requestId, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String action = "setAccessControl";
+        final String accept = "application/json";
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.setAccessControlNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), action, timeout, leaseId, owner, group, permissions, acl, ifMatch, ifNoneMatch,
+            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), accept, context);
+    }
+
+    /**
      * Set the access control list for a path and sub-paths.
      * 
      * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
@@ -5094,6 +7234,124 @@ public final class PathsImpl {
         final String action = "setAccessControlRecursive";
         final String accept = "application/json";
         return service.setAccessControlRecursiveNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), action, timeout, continuation, mode, forceFlag, maxRecords, acl, requestId,
+            this.client.getVersion(), accept, context);
+    }
+
+    /**
+     * Set the access control list for a path and sub-paths.
+     * 
+     * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
+     * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
+     * control rights that were present earlier on files and directories.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
+     * in this response header. When a continuation token is returned in the response, it must be specified in a
+     * subsequent invocation of the delete operation to continue deleting the directory.
+     * @param forceFlag Optional. Valid for "SetAccessControlRecursive" operation. If set to false, the operation will
+     * terminate quickly on encountering user errors (4XX). If true, the operation will ignore user errors and proceed
+     * with the operation on other sub-entities of the directory. Continuation token will only be returned when
+     * forceFlag is true in case of user errors. If not set the default value is false for this.
+     * @param maxRecords Optional. It specifies the maximum number of files or directories on which the acl change will
+     * be applied. If omitted or greater than 2,000, the request will process up to 2,000 items.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsSetAccessControlRecursiveHeaders, SetAccessControlRecursiveResponse>
+        setAccessControlRecursiveWithResponse(PathSetAccessControlRecursiveMode mode, Integer timeout,
+            String continuation, Boolean forceFlag, Integer maxRecords, String acl, String requestId, Context context) {
+        final String action = "setAccessControlRecursive";
+        final String accept = "application/json";
+        return service.setAccessControlRecursiveSync(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), action, timeout, continuation, mode, forceFlag, maxRecords, acl, requestId,
+            this.client.getVersion(), accept, context);
+    }
+
+    /**
+     * Set the access control list for a path and sub-paths.
+     * 
+     * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
+     * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
+     * control rights that were present earlier on files and directories.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
+     * in this response header. When a continuation token is returned in the response, it must be specified in a
+     * subsequent invocation of the delete operation to continue deleting the directory.
+     * @param forceFlag Optional. Valid for "SetAccessControlRecursive" operation. If set to false, the operation will
+     * terminate quickly on encountering user errors (4XX). If true, the operation will ignore user errors and proceed
+     * with the operation on other sub-entities of the directory. Continuation token will only be returned when
+     * forceFlag is true in case of user errors. If not set the default value is false for this.
+     * @param maxRecords Optional. It specifies the maximum number of files or directories on which the acl change will
+     * be applied. If omitted or greater than 2,000, the request will process up to 2,000 items.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SetAccessControlRecursiveResponse setAccessControlRecursive(PathSetAccessControlRecursiveMode mode,
+        Integer timeout, String continuation, Boolean forceFlag, Integer maxRecords, String acl, String requestId) {
+        return setAccessControlRecursiveWithResponse(mode, timeout, continuation, forceFlag, maxRecords, acl, requestId,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Set the access control list for a path and sub-paths.
+     * 
+     * @param mode Mode "set" sets POSIX access control rights on files and directories, "modify" modifies one or more
+     * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
+     * control rights that were present earlier on files and directories.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
+     * in this response header. When a continuation token is returned in the response, it must be specified in a
+     * subsequent invocation of the delete operation to continue deleting the directory.
+     * @param forceFlag Optional. Valid for "SetAccessControlRecursive" operation. If set to false, the operation will
+     * terminate quickly on encountering user errors (4XX). If true, the operation will ignore user errors and proceed
+     * with the operation on other sub-entities of the directory. Continuation token will only be returned when
+     * forceFlag is true in case of user errors. If not set the default value is false for this.
+     * @param maxRecords Optional. It specifies the maximum number of files or directories on which the acl change will
+     * be applied. If omitted or greater than 2,000, the request will process up to 2,000 items.
+     * @param acl Sets POSIX access control rights on files and directories. The value is a comma-separated list of
+     * access control entries. Each access control entry (ACE) consists of a scope, a type, a user or group identifier,
+     * and permissions in the format "[scope:][type]:[id]:[permissions]".
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SetAccessControlRecursiveResponse> setAccessControlRecursiveNoCustomHeadersWithResponse(
+        PathSetAccessControlRecursiveMode mode, Integer timeout, String continuation, Boolean forceFlag,
+        Integer maxRecords, String acl, String requestId, Context context) {
+        final String action = "setAccessControlRecursive";
+        final String accept = "application/json";
+        return service.setAccessControlRecursiveNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
             this.client.getPath(), action, timeout, continuation, mode, forceFlag, maxRecords, acl, requestId,
             this.client.getVersion(), accept, context);
     }
@@ -5755,6 +8013,333 @@ public final class PathsImpl {
     }
 
     /**
+     * Set the owner, group, permissions, or access control list for a path.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param retainUncommittedData Valid only for flush operations. If "true", uncommitted data is retained after the
+     * flush operation completes; otherwise, the uncommitted data is deleted after the flush operation. The default is
+     * false. Data at offsets less than the specified position are written to the file when flush succeeds, but this
+     * optional parameter allows data after the flush position to be retained for a future flush operation.
+     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure
+     * Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is
+     * the final change to distinguish the difference between an intermediate flush to a file stream and the final close
+     * of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are
+     * enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a
+     * file change notification with a property indicating that this is the final update (the file stream has been
+     * closed). If "false" a change notification is raised indicating the file has changed. The default is false. This
+     * query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     * operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsFlushDataHeaders, Void> flushDataWithResponse(Integer timeout, Long position,
+        Boolean retainUncommittedData, Boolean close, Long contentLength, LeaseAction leaseAction, Long leaseDuration,
+        String proposedLeaseId, String requestId, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo,
+        Context context) {
+        final String action = "flush";
+        final String accept = "application/json";
+        byte[] contentMd5Internal = null;
+        if (pathHttpHeaders != null) {
+            contentMd5Internal = pathHttpHeaders.getContentMd5();
+        }
+        byte[] contentMd5 = contentMd5Internal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String cacheControlInternal = null;
+        if (pathHttpHeaders != null) {
+            cacheControlInternal = pathHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        String contentTypeInternal = null;
+        if (pathHttpHeaders != null) {
+            contentTypeInternal = pathHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String contentDispositionInternal = null;
+        if (pathHttpHeaders != null) {
+            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String contentEncodingInternal = null;
+        if (pathHttpHeaders != null) {
+            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (pathHttpHeaders != null) {
+            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.flushDataSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), action,
+            timeout, position, retainUncommittedData, close, contentLength, contentMd5Converted, leaseId, leaseAction,
+            leaseDuration, proposedLeaseId, cacheControl, contentType, contentDisposition, contentEncoding,
+            contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, requestId,
+            this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, accept, context);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param retainUncommittedData Valid only for flush operations. If "true", uncommitted data is retained after the
+     * flush operation completes; otherwise, the uncommitted data is deleted after the flush operation. The default is
+     * false. Data at offsets less than the specified position are written to the file when flush succeeds, but this
+     * optional parameter allows data after the flush position to be retained for a future flush operation.
+     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure
+     * Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is
+     * the final change to distinguish the difference between an intermediate flush to a file stream and the final close
+     * of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are
+     * enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a
+     * file change notification with a property indicating that this is the final update (the file stream has been
+     * closed). If "false" a change notification is raised indicating the file has changed. The default is false. This
+     * query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     * operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void flushData(Integer timeout, Long position, Boolean retainUncommittedData, Boolean close,
+        Long contentLength, LeaseAction leaseAction, Long leaseDuration, String proposedLeaseId, String requestId,
+        PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo) {
+        flushDataWithResponse(timeout, position, retainUncommittedData, close, contentLength, leaseAction,
+            leaseDuration, proposedLeaseId, requestId, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
+            cpkInfo, Context.NONE);
+    }
+
+    /**
+     * Set the owner, group, permissions, or access control list for a path.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param retainUncommittedData Valid only for flush operations. If "true", uncommitted data is retained after the
+     * flush operation completes; otherwise, the uncommitted data is deleted after the flush operation. The default is
+     * false. Data at offsets less than the specified position are written to the file when flush succeeds, but this
+     * optional parameter allows data after the flush position to be retained for a future flush operation.
+     * @param close Azure Storage Events allow applications to receive notifications when files change. When Azure
+     * Storage Events are enabled, a file changed event is raised. This event has a property indicating whether this is
+     * the final change to distinguish the difference between an intermediate flush to a file stream and the final close
+     * of a file stream. The close query parameter is valid only when the action is "flush" and change notifications are
+     * enabled. If the value of close is "true" and the flush operation completes successfully, the service raises a
+     * file change notification with a property indicating that this is the final update (the file stream has been
+     * closed). If "false" a change notification is raised indicating the file has changed. The default is false. This
+     * query parameter is set to true by the Hadoop ABFS driver to indicate that the file stream has been closed.".
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     * operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param modifiedAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> flushDataNoCustomHeadersWithResponse(Integer timeout, Long position,
+        Boolean retainUncommittedData, Boolean close, Long contentLength, LeaseAction leaseAction, Long leaseDuration,
+        String proposedLeaseId, String requestId, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions, CpkInfo cpkInfo,
+        Context context) {
+        final String action = "flush";
+        final String accept = "application/json";
+        byte[] contentMd5Internal = null;
+        if (pathHttpHeaders != null) {
+            contentMd5Internal = pathHttpHeaders.getContentMd5();
+        }
+        byte[] contentMd5 = contentMd5Internal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String cacheControlInternal = null;
+        if (pathHttpHeaders != null) {
+            cacheControlInternal = pathHttpHeaders.getCacheControl();
+        }
+        String cacheControl = cacheControlInternal;
+        String contentTypeInternal = null;
+        if (pathHttpHeaders != null) {
+            contentTypeInternal = pathHttpHeaders.getContentType();
+        }
+        String contentType = contentTypeInternal;
+        String contentDispositionInternal = null;
+        if (pathHttpHeaders != null) {
+            contentDispositionInternal = pathHttpHeaders.getContentDisposition();
+        }
+        String contentDisposition = contentDispositionInternal;
+        String contentEncodingInternal = null;
+        if (pathHttpHeaders != null) {
+            contentEncodingInternal = pathHttpHeaders.getContentEncoding();
+        }
+        String contentEncoding = contentEncodingInternal;
+        String contentLanguageInternal = null;
+        if (pathHttpHeaders != null) {
+            contentLanguageInternal = pathHttpHeaders.getContentLanguage();
+        }
+        String contentLanguage = contentLanguageInternal;
+        String ifMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifMatchInternal = modifiedAccessConditions.getIfMatch();
+        }
+        String ifMatch = ifMatchInternal;
+        String ifNoneMatchInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifNoneMatchInternal = modifiedAccessConditions.getIfNoneMatch();
+        }
+        String ifNoneMatch = ifNoneMatchInternal;
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.flushDataNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), action, timeout, position, retainUncommittedData, close, contentLength,
+            contentMd5Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, cacheControl, contentType,
+            contentDisposition, contentEncoding, contentLanguage, ifMatch, ifNoneMatch, ifModifiedSinceConverted,
+            ifUnmodifiedSinceConverted, requestId, this.client.getVersion(), encryptionKey, encryptionKeySha256,
+            encryptionAlgorithm, accept, context);
+    }
+
+    /**
      * Append data to the file.
      * 
      * @param body Initial data.
@@ -6540,6 +9125,203 @@ public final class PathsImpl {
         String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         return service.appendDataNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
+            transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
+            this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
+            context);
+    }
+
+    /**
+     * Append data to the file.
+     * 
+     * @param body Initial data.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     * operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param flush If file should be flushed after the append.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsAppendDataHeaders, Void> appendDataWithResponse(BinaryData body, Long position,
+        Integer timeout, Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction,
+        Long leaseDuration, String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
+        final String action = "append";
+        final String accept = "application/json";
+        byte[] transactionalContentHashInternal = null;
+        if (pathHttpHeaders != null) {
+            transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
+        }
+        byte[] transactionalContentHash = transactionalContentHashInternal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
+        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
+        return service.appendDataSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), action,
+            position, timeout, contentLength, transactionalContentHashConverted, transactionalContentCrc64Converted,
+            leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId, this.client.getVersion(), encryptionKey,
+            encryptionKeySha256, encryptionAlgorithm, flush, body, accept, context);
+    }
+
+    /**
+     * Append data to the file.
+     * 
+     * @param body Initial data.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     * operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param flush If file should be flushed after the append.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void appendData(BinaryData body, Long position, Integer timeout, Long contentLength,
+        byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration, String proposedLeaseId,
+        String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders, LeaseAccessConditions leaseAccessConditions,
+        CpkInfo cpkInfo) {
+        appendDataWithResponse(body, position, timeout, contentLength, transactionalContentCrc64, leaseAction,
+            leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions, cpkInfo,
+            Context.NONE);
+    }
+
+    /**
+     * Append data to the file.
+     * 
+     * @param body Initial data.
+     * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
+     * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
+     * uploaded data to the file. The value must be the position where the data is to be appended. Uploaded data is not
+     * immediately flushed, or written, to the file. To flush, the previously uploaded data must be contiguous, the
+     * position parameter must be specified and equal to the length of the file after all data has been written, and
+     * there must not be a request entity body included with the request.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
+     * of the request content in bytes for "Append Data".
+     * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
+     * @param leaseAction Optional. If "acquire" it will acquire the lease. If "auto-renew" it will renew the lease. If
+     * "release" it will release the lease only on flush. If "acquire-release" it will acquire &amp; complete the
+     * operation &amp; release the lease once operation is done.
+     * @param leaseDuration The lease duration is required to acquire a lease, and specifies the duration of the lease
+     * in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * @param proposedLeaseId Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request)
+     * if the proposed lease ID is not in the correct format. See Guid Constructor (String) for a list of valid GUID
+     * string formats.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param flush If file should be flushed after the append.
+     * @param pathHttpHeaders Parameter group.
+     * @param leaseAccessConditions Parameter group.
+     * @param cpkInfo Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> appendDataNoCustomHeadersWithResponse(BinaryData body, Long position, Integer timeout,
+        Long contentLength, byte[] transactionalContentCrc64, LeaseAction leaseAction, Long leaseDuration,
+        String proposedLeaseId, String requestId, Boolean flush, PathHttpHeaders pathHttpHeaders,
+        LeaseAccessConditions leaseAccessConditions, CpkInfo cpkInfo, Context context) {
+        final String action = "append";
+        final String accept = "application/json";
+        byte[] transactionalContentHashInternal = null;
+        if (pathHttpHeaders != null) {
+            transactionalContentHashInternal = pathHttpHeaders.getTransactionalContentHash();
+        }
+        byte[] transactionalContentHash = transactionalContentHashInternal;
+        String leaseIdInternal = null;
+        if (leaseAccessConditions != null) {
+            leaseIdInternal = leaseAccessConditions.getLeaseId();
+        }
+        String leaseId = leaseIdInternal;
+        String encryptionKeyInternal = null;
+        if (cpkInfo != null) {
+            encryptionKeyInternal = cpkInfo.getEncryptionKey();
+        }
+        String encryptionKey = encryptionKeyInternal;
+        String encryptionKeySha256Internal = null;
+        if (cpkInfo != null) {
+            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+        }
+        String encryptionKeySha256 = encryptionKeySha256Internal;
+        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+        if (cpkInfo != null) {
+            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+        }
+        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+        String transactionalContentHashConverted = Base64Util.encodeToString(transactionalContentHash);
+        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
+        return service.appendDataNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
             this.client.getPath(), action, position, timeout, contentLength, transactionalContentHashConverted,
             transactionalContentCrc64Converted, leaseId, leaseAction, leaseDuration, proposedLeaseId, requestId,
             this.client.getVersion(), encryptionKey, encryptionKeySha256, encryptionAlgorithm, flush, body, accept,
@@ -6693,6 +9475,76 @@ public final class PathsImpl {
     }
 
     /**
+     * Sets the time a blob will expire and be deleted.
+     * 
+     * @param expiryOptions Required. Indicates mode of the expiry time.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param expiresOn The time to set the blob to expiry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsSetExpiryHeaders, Void> setExpiryWithResponse(PathExpiryOptions expiryOptions,
+        Integer timeout, String requestId, String expiresOn, Context context) {
+        final String comp = "expiry";
+        final String accept = "application/json";
+        return service.setExpirySync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp,
+            timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context);
+    }
+
+    /**
+     * Sets the time a blob will expire and be deleted.
+     * 
+     * @param expiryOptions Required. Indicates mode of the expiry time.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param expiresOn The time to set the blob to expiry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void setExpiry(PathExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn) {
+        setExpiryWithResponse(expiryOptions, timeout, requestId, expiresOn, Context.NONE);
+    }
+
+    /**
+     * Sets the time a blob will expire and be deleted.
+     * 
+     * @param expiryOptions Required. Indicates mode of the expiry time.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param expiresOn The time to set the blob to expiry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setExpiryNoCustomHeadersWithResponse(PathExpiryOptions expiryOptions, Integer timeout,
+        String requestId, String expiresOn, Context context) {
+        final String comp = "expiry";
+        final String accept = "application/json";
+        return service.setExpiryNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), comp, timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, accept,
+            context);
+    }
+
+    /**
      * Undelete a path that was previously soft deleted.
      * 
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -6831,5 +9683,74 @@ public final class PathsImpl {
         final String accept = "application/json";
         return service.undeleteNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(),
             comp, timeout, undeleteSource, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * Undelete a path that was previously soft deleted.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
+     * blob to undelete.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PathsUndeleteHeaders, Void> undeleteWithResponse(Integer timeout, String undeleteSource,
+        String requestId, Context context) {
+        final String comp = "undelete";
+        final String accept = "application/json";
+        return service.undeleteSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getPath(), comp,
+            timeout, undeleteSource, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * Undelete a path that was previously soft deleted.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
+     * blob to undelete.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void undelete(Integer timeout, String undeleteSource, String requestId) {
+        undeleteWithResponse(timeout, undeleteSource, requestId, Context.NONE);
+    }
+
+    /**
+     * Undelete a path that was previously soft deleted.
+     * 
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
+     * blob to undelete.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> undeleteNoCustomHeadersWithResponse(Integer timeout, String undeleteSource, String requestId,
+        Context context) {
+        final String comp = "undelete";
+        final String accept = "application/json";
+        return service.undeleteNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
+            this.client.getPath(), comp, timeout, undeleteSource, this.client.getVersion(), requestId, accept, context);
     }
 }

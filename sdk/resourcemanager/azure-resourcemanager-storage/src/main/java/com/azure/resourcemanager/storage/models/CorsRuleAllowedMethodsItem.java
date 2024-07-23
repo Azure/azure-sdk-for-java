@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -65,7 +64,7 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
 
     /**
      * Creates a new instance of CorsRuleAllowedMethodsItem value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -74,7 +73,7 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
 
     /**
      * Creates or finds a CorsRuleAllowedMethodsItem from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CorsRuleAllowedMethodsItem.
      */
@@ -85,7 +84,7 @@ public final class CorsRuleAllowedMethodsItem extends ExpandableStringEnum<CorsR
 
     /**
      * Gets known CorsRuleAllowedMethodsItem values.
-     *
+     * 
      * @return known CorsRuleAllowedMethodsItem values.
      */
     public static Collection<CorsRuleAllowedMethodsItem> values() {

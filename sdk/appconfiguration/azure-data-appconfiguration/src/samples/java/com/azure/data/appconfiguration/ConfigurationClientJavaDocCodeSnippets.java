@@ -54,7 +54,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
             .pipeline(pipeline)
-            .endpoint("https://myconfig.azure.net/")
+            .endpoint("https://dummy.azure.net/")
             .connectionString(connectionString)
             .buildClient();
         // END: com.azure.data.applicationconfig.configurationclient.pipeline.instantiation

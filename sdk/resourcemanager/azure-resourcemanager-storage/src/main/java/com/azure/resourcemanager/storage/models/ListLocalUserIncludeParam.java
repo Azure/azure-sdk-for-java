@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -20,7 +19,7 @@ public final class ListLocalUserIncludeParam extends ExpandableStringEnum<ListLo
 
     /**
      * Creates a new instance of ListLocalUserIncludeParam value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,7 +28,7 @@ public final class ListLocalUserIncludeParam extends ExpandableStringEnum<ListLo
 
     /**
      * Creates or finds a ListLocalUserIncludeParam from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ListLocalUserIncludeParam.
      */
@@ -40,7 +39,7 @@ public final class ListLocalUserIncludeParam extends ExpandableStringEnum<ListLo
 
     /**
      * Gets known ListLocalUserIncludeParam values.
-     *
+     * 
      * @return known ListLocalUserIncludeParam values.
      */
     public static Collection<ListLocalUserIncludeParam> values() {

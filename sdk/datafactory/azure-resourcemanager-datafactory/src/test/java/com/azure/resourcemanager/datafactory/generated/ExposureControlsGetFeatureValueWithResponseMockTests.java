@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class ExposureControlsGetFeatureValueWithResponseMockTests {
     @Test
     public void testGetFeatureValueWithResponse() throws Exception {
-        String responseStr = "{\"featureName\":\"pdtso\",\"value\":\"nhlrp\"}";
+        String responseStr = "{\"featureName\":\"xlxvopcuw\",\"value\":\"sytt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class ExposureControlsGetFeatureValueWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExposureControlResponse response = manager.exposureControls()
-            .getFeatureValueWithResponse("pwvieymkguvrd",
-                new ExposureControlRequest().withFeatureName("proytd").withFeatureType("elqcvm"),
+            .getFeatureValueWithResponse("jwtfohcylvjzuf",
+                new ExposureControlRequest().withFeatureName("aedzy").withFeatureType("rufwdbimjudp"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

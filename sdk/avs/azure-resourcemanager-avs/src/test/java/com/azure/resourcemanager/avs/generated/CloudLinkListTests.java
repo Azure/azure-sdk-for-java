@@ -5,21 +5,29 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.avs.fluent.models.CloudLinkInner;
 import com.azure.resourcemanager.avs.models.CloudLinkList;
+import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class CloudLinkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudLinkList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"status\":\"Deleting\",\"linkedCloud\":\"ccsnjvcdwxlpq\"},\"id\":\"kftnkhtjsyin\",\"name\":\"wfqatmtd\",\"type\":\"tmdvypgikdgs\"},{\"properties\":{\"status\":\"Active\",\"linkedCloud\":\"irryuzhlh\"},\"id\":\"joqrvqqaatj\",\"name\":\"nrvgoupmfiibfgg\",\"type\":\"ioolvrwxkvtkkgll\"},{\"properties\":{\"status\":\"Deleting\",\"linkedCloud\":\"vjayvblmhvkzu\"},\"id\":\"bxvvyhg\",\"name\":\"opbyrqufegxu\",\"type\":\"wz\"},{\"properties\":{\"status\":\"Disconnected\",\"linkedCloud\":\"mctlpdngitv\"},\"id\":\"bmhrixkwmyijejv\",\"name\":\"grhbpn\",\"type\":\"ixexcc\"}],\"nextLink\":\"reaxhcexdr\"}")
-                .toObject(CloudLinkList.class);
+        CloudLinkList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Failed\",\"linkedCloud\":\"nxkrx\"},\"id\":\"mi\",\"name\":\"tthzrvqd\",\"type\":\"abhjybi\"},{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Failed\",\"linkedCloud\":\"owskanyktz\"},\"id\":\"u\",\"name\":\"y\",\"type\":\"gqywgndrv\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"status\":\"Failed\",\"linkedCloud\":\"hrc\"},\"id\":\"nc\",\"name\":\"cpecfvmmcoofs\",\"type\":\"lzevgbmqjqab\"}],\"nextLink\":\"pmivkwlzu\"}")
+            .toObject(CloudLinkList.class);
+        Assertions.assertEquals("nxkrx", model.value().get(0).linkedCloud());
+        Assertions.assertEquals("pmivkwlzu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudLinkList model = new CloudLinkList();
+        CloudLinkList model = new CloudLinkList()
+            .withValue(Arrays.asList(new CloudLinkInner().withLinkedCloud("nxkrx"),
+                new CloudLinkInner().withLinkedCloud("owskanyktz"), new CloudLinkInner().withLinkedCloud("hrc")))
+            .withNextLink("pmivkwlzu");
         model = BinaryData.fromObject(model).toObject(CloudLinkList.class);
+        Assertions.assertEquals("nxkrx", model.value().get(0).linkedCloud());
+        Assertions.assertEquals("pmivkwlzu", model.nextLink());
     }
 }

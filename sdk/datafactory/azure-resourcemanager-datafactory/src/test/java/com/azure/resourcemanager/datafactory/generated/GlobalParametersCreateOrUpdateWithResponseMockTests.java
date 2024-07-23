@@ -25,7 +25,7 @@ public final class GlobalParametersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"cuieuid\":{\"type\":\"String\",\"value\":\"datauhtsnkeelunhjm\"},\"vekcv\":{\"type\":\"Array\",\"value\":\"dataeoh\"},\"ppmejdocwglrknoz\":{\"type\":\"Int\",\"value\":\"dataapwhicuafml\"},\"qcvruafsyjgvty\":{\"type\":\"Array\",\"value\":\"dataiaqtqzimllznw\"}},\"name\":\"pzdwdicauzexzl\",\"type\":\"nfrcjyulmvtej\",\"etag\":\"plavbjujbmw\",\"id\":\"d\"}";
+            = "{\"properties\":{\"rzmkte\":{\"type\":\"Object\",\"value\":\"datatgv\"}},\"name\":\"euxxtslhjcwlfz\",\"type\":\"pwexcktgpcccg\",\"etag\":\"knjjskzuh\",\"id\":\"yavfeyybyduy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,17 +35,16 @@ public final class GlobalParametersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GlobalParameterResource response = manager.globalParameters()
-            .define("ehaky")
-            .withExistingFactory("xjkkdltfdbe", "bllqi")
-            .withProperties(mapOf("kz",
-                new GlobalParameterSpecification().withType(GlobalParameterType.STRING).withValue("dataazjuu"),
-                "wljjcsuruiwopurh",
-                new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datalko"), "o",
-                new GlobalParameterSpecification().withType(GlobalParameterType.STRING).withValue("dataxtnjfmhafqt")))
+            .define("z")
+            .withExistingFactory("zhprlx", "bm")
+            .withProperties(mapOf("wv",
+                new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT).withValue("datajehsv"), "lcstu",
+                new GlobalParameterSpecification().withType(GlobalParameterType.BOOL)
+                    .withValue("datancifdxtibvqrhzpf")))
             .create();
 
-        Assertions.assertEquals("d", response.id());
-        Assertions.assertEquals(GlobalParameterType.STRING, response.properties().get("cuieuid").type());
+        Assertions.assertEquals("yavfeyybyduy", response.id());
+        Assertions.assertEquals(GlobalParameterType.OBJECT, response.properties().get("rzmkte").type());
     }
 
     // Use "Map.of" if available

@@ -21,9 +21,12 @@ public final class SshPublicKeysCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createANewSSHPublicKeyResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getSshPublicKeys().createWithResponse("myResourceGroup",
-            "mySshPublicKeyName",
-            new SshPublicKeyResourceInner().withLocation("westus").withPublicKey("fakeTokenPlaceholder"),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getSshPublicKeys()
+            .createWithResponse("myResourceGroup", "mySshPublicKeyName",
+                new SshPublicKeyResourceInner().withLocation("westus").withPublicKey("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

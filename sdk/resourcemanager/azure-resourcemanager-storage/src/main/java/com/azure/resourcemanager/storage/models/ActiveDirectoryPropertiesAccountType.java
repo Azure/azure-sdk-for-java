@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -26,7 +25,7 @@ public final class ActiveDirectoryPropertiesAccountType
 
     /**
      * Creates a new instance of ActiveDirectoryPropertiesAccountType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,7 +34,7 @@ public final class ActiveDirectoryPropertiesAccountType
 
     /**
      * Creates or finds a ActiveDirectoryPropertiesAccountType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActiveDirectoryPropertiesAccountType.
      */
@@ -46,7 +45,7 @@ public final class ActiveDirectoryPropertiesAccountType
 
     /**
      * Gets known ActiveDirectoryPropertiesAccountType values.
-     *
+     * 
      * @return known ActiveDirectoryPropertiesAccountType values.
      */
     public static Collection<ActiveDirectoryPropertiesAccountType> values() {

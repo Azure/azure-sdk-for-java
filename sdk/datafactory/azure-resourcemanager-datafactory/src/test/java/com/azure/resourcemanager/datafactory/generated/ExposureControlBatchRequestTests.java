@@ -13,20 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ExposureControlBatchRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExposureControlBatchRequest model = BinaryData.fromString(
-            "{\"exposureControlRequests\":[{\"featureName\":\"ygevqzntypmrbpiz\",\"featureType\":\"r\"},{\"featureName\":\"sdpydnfyhxdeoejz\",\"featureType\":\"w\"}]}")
+        ExposureControlBatchRequest model = BinaryData
+            .fromString("{\"exposureControlRequests\":[{\"featureName\":\"fbuhfmvfaxkffe\",\"featureType\":\"th\"}]}")
             .toObject(ExposureControlBatchRequest.class);
-        Assertions.assertEquals("ygevqzntypmrbpiz", model.exposureControlRequests().get(0).featureName());
-        Assertions.assertEquals("r", model.exposureControlRequests().get(0).featureType());
+        Assertions.assertEquals("fbuhfmvfaxkffe", model.exposureControlRequests().get(0).featureName());
+        Assertions.assertEquals("th", model.exposureControlRequests().get(0).featureType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExposureControlBatchRequest model = new ExposureControlBatchRequest().withExposureControlRequests(
-            Arrays.asList(new ExposureControlRequest().withFeatureName("ygevqzntypmrbpiz").withFeatureType("r"),
-                new ExposureControlRequest().withFeatureName("sdpydnfyhxdeoejz").withFeatureType("w")));
+            Arrays.asList(new ExposureControlRequest().withFeatureName("fbuhfmvfaxkffe").withFeatureType("th")));
         model = BinaryData.fromObject(model).toObject(ExposureControlBatchRequest.class);
-        Assertions.assertEquals("ygevqzntypmrbpiz", model.exposureControlRequests().get(0).featureName());
-        Assertions.assertEquals("r", model.exposureControlRequests().get(0).featureType());
+        Assertions.assertEquals("fbuhfmvfaxkffe", model.exposureControlRequests().get(0).featureName());
+        Assertions.assertEquals("th", model.exposureControlRequests().get(0).featureType());
     }
 }

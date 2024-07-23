@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ public final class Schedule extends ExpandableStringEnum<Schedule> {
 
     /**
      * Creates a new instance of Schedule value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +33,7 @@ public final class Schedule extends ExpandableStringEnum<Schedule> {
 
     /**
      * Creates or finds a Schedule from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Schedule.
      */
@@ -45,7 +44,7 @@ public final class Schedule extends ExpandableStringEnum<Schedule> {
 
     /**
      * Gets known Schedule values.
-     *
+     * 
      * @return known Schedule values.
      */
     public static Collection<Schedule> values() {

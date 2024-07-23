@@ -19,7 +19,8 @@ public final class UserAccessPolicy {
     private String permissions;
 
     /*
-     * The resource path to get access relative to factory. Currently only empty string is supported which corresponds to the factory resource.
+     * The resource path to get access relative to factory. Currently only empty string is supported which corresponds
+     * to the factory resource.
      */
     @JsonProperty(value = "accessResourcePath")
     private String accessResourcePath;
@@ -37,7 +38,8 @@ public final class UserAccessPolicy {
     private String startTime;
 
     /*
-     * Expiration time for the token. Maximum duration for the token is eight hours and by default the token will expire in eight hours.
+     * Expiration time for the token. Maximum duration for the token is eight hours and by default the token will expire
+     * in eight hours.
      */
     @JsonProperty(value = "expireTime")
     private String expireTime;

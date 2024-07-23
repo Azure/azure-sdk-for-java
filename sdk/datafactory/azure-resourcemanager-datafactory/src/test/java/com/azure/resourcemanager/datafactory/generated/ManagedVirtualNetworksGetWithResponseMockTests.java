@@ -21,7 +21,7 @@ public final class ManagedVirtualNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vNetId\":\"sdlpiazl\",\"alias\":\"wumzdtsm\",\"\":{\"zawrsfogzg\":\"datacjxrsf\",\"rwlvjavztk\":\"databnfloykshgxxwo\",\"yvsjmflxq\":\"datajm\",\"uxtyakybzqgbtzno\":\"datajlfdtnmomvsls\"}},\"name\":\"snfrpesvddgu\",\"type\":\"hmaarordga\",\"etag\":\"ubrhscnvknzct\",\"id\":\"hyghcbnnbr\"}";
+            = "{\"properties\":{\"vNetId\":\"aeaugebqhbb\",\"alias\":\"dyvvpcoiaaa\",\"\":{\"p\":\"dataecwwdqgooabhfrg\"}},\"name\":\"fh\",\"type\":\"rfevwcxzxvgf\",\"etag\":\"ckqwqujpugjsjal\",\"id\":\"bypvpds\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class ManagedVirtualNetworksGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedVirtualNetworkResource response = manager.managedVirtualNetworks()
-            .getWithResponse("xowp", "lyehcanp", "defvx", "oitpybtrqilbnv", com.azure.core.util.Context.NONE)
+            .getWithResponse("jfllqmuzeolcgqj", "vpalkmwvgdfu", "dswjtuqw", "jpauic", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hyghcbnnbr", response.id());
+        Assertions.assertEquals("bypvpds", response.id());
     }
 }

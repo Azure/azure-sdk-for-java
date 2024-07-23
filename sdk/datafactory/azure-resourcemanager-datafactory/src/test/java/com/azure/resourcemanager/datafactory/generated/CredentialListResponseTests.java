@@ -17,32 +17,43 @@ public final class CredentialListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CredentialListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"pvmjcdoewbid\",\"description\":\"t\",\"annotations\":[\"dataxvgpiude\",\"datagfsxzec\",\"dataaxwk\",\"datafykhvuhxepmru\"],\"\":{\"mvguihywart\":\"dataabaobnslujdjltym\",\"j\":\"datapphkixkykxds\",\"kkflrmymyincqlhr\":\"dataemmucfxh\"}},\"name\":\"wslmiiiovgqcg\",\"type\":\"ugqkctotiowlxteq\",\"etag\":\"tjgwdtguk\",\"id\":\"nblwphqlkcc\"},{\"properties\":{\"type\":\"gygqwah\",\"description\":\"ulwgniiprglvawuw\",\"annotations\":[\"datafypiv\",\"datasbbjpmcu\"],\"\":{\"mhbrbqgvg\":\"dataifoxxkubvphav\",\"efjokn\":\"datavpbbt\",\"biqmrjgei\":\"datasqyzqedikdfr\"}},\"name\":\"qlggwfi\",\"type\":\"cxmjpbyephmg\",\"etag\":\"ljvrcmyfqipgxhnp\",\"id\":\"yqwcabvnuil\"}],\"nextLink\":\"yaswlpaugmr\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"Credential\",\"description\":\"oqhnlb\",\"annotations\":[\"dataldxea\",\"datalgsc\",\"dataorim\",\"datarsrrmoucsofldp\"],\"\":{\"uqibsxtkcu\":\"datayfcaabeolhbhlvbm\"}},\"name\":\"b\",\"type\":\"arfsi\",\"etag\":\"lkjxnqpvwgf\",\"id\":\"mhqykizmdksa\"},{\"properties\":{\"type\":\"Credential\",\"description\":\"fcluqvo\",\"annotations\":[\"datacjimryvwgcwwpbmz\",\"dataw\",\"datasydsxwefohe\",\"databvopwndyqle\"],\"\":{\"pvbrdfjmzsyz\":\"dataklmtkhlowkx\",\"pjrtws\":\"datahotlhikcyychunsj\",\"uic\":\"datahv\"}},\"name\":\"vtrrmhwrbfdpyflu\",\"type\":\"vjglrocuyzlwhhme\",\"etag\":\"ooclutnp\",\"id\":\"emc\"},{\"properties\":{\"type\":\"Credential\",\"description\":\"kmmykyujxsglh\",\"annotations\":[\"datarye\",\"dataylmbkzudni\",\"datarfih\",\"datatjewlpxuzzj\"],\"\":{\"iwfbrkwpzdqtvhcs\":\"dataefqyhqotoihiqaky\",\"ietgbebjfu\":\"dataodaqaxsi\"}},\"name\":\"moichdlpnfpubntn\",\"type\":\"tzviqsowsaaelcat\",\"etag\":\"ju\",\"id\":\"lrvkmjc\"},{\"properties\":{\"type\":\"Credential\",\"description\":\"jvlgfggcvkyyliz\",\"annotations\":[\"datajpsfxsfu\",\"datatl\",\"datatmvag\",\"dataw\"],\"\":{\"rvjfnmjmvlw\":\"datalvhukoveofi\"}},\"name\":\"giblkujrllf\",\"type\":\"uidjpuuyjucej\",\"etag\":\"zoeovvtzejet\",\"id\":\"ln\"}],\"nextLink\":\"k\"}")
             .toObject(CredentialListResponse.class);
-        Assertions.assertEquals("nblwphqlkcc", model.value().get(0).id());
-        Assertions.assertEquals("t", model.value().get(0).properties().description());
-        Assertions.assertEquals("yaswlpaugmr", model.nextLink());
+        Assertions.assertEquals("mhqykizmdksa", model.value().get(0).id());
+        Assertions.assertEquals("oqhnlb", model.value().get(0).properties().description());
+        Assertions.assertEquals("k", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CredentialListResponse model
             = new CredentialListResponse()
-                .withValue(Arrays.asList(
-                    new CredentialResourceInner().withId("nblwphqlkcc")
-                        .withProperties(new Credential().withDescription("t")
-                            .withAnnotations(
-                                Arrays.asList("dataxvgpiude", "datagfsxzec", "dataaxwk", "datafykhvuhxepmru"))
-                            .withAdditionalProperties(mapOf("type", "pvmjcdoewbid"))),
-                    new CredentialResourceInner().withId("yqwcabvnuil")
-                        .withProperties(new Credential().withDescription("ulwgniiprglvawuw")
-                            .withAnnotations(Arrays.asList("datafypiv", "datasbbjpmcu"))
-                            .withAdditionalProperties(mapOf("type", "gygqwah")))))
-                .withNextLink("yaswlpaugmr");
+                .withValue(
+                    Arrays.asList(
+                        new CredentialResourceInner().withId("mhqykizmdksa")
+                            .withProperties(new Credential().withDescription("oqhnlb")
+                                .withAnnotations(
+                                    Arrays.asList("dataldxea", "datalgsc", "dataorim", "datarsrrmoucsofldp"))
+                                .withAdditionalProperties(mapOf("type", "Credential"))),
+                        new CredentialResourceInner().withId("emc")
+                            .withProperties(new Credential().withDescription("fcluqvo")
+                                .withAnnotations(Arrays
+                                    .asList("datacjimryvwgcwwpbmz", "dataw", "datasydsxwefohe", "databvopwndyqle"))
+                                .withAdditionalProperties(mapOf("type", "Credential"))),
+                        new CredentialResourceInner().withId("lrvkmjc")
+                            .withProperties(new Credential().withDescription("kmmykyujxsglh")
+                                .withAnnotations(
+                                    Arrays.asList("datarye", "dataylmbkzudni", "datarfih", "datatjewlpxuzzj"))
+                                .withAdditionalProperties(mapOf("type", "Credential"))),
+                        new CredentialResourceInner().withId("ln")
+                            .withProperties(new Credential().withDescription("jvlgfggcvkyyliz")
+                                .withAnnotations(Arrays.asList("datajpsfxsfu", "datatl", "datatmvag", "dataw"))
+                                .withAdditionalProperties(mapOf("type", "Credential")))))
+                .withNextLink("k");
         model = BinaryData.fromObject(model).toObject(CredentialListResponse.class);
-        Assertions.assertEquals("nblwphqlkcc", model.value().get(0).id());
-        Assertions.assertEquals("t", model.value().get(0).properties().description());
-        Assertions.assertEquals("yaswlpaugmr", model.nextLink());
+        Assertions.assertEquals("mhqykizmdksa", model.value().get(0).id());
+        Assertions.assertEquals("oqhnlb", model.value().get(0).properties().description());
+        Assertions.assertEquals("k", model.nextLink());
     }
 
     // Use "Map.of" if available

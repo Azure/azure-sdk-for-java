@@ -14,7 +14,6 @@ import com.azure.resourcemanager.storage.models.ShareAccessTier;
 import com.azure.resourcemanager.storage.models.SignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,8 @@ public final class FileShareProperties {
     private Map<String, String> metadata;
 
     /*
-     * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
+     * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For
+     * Large File Shares, the maximum size is 102400.
      */
     @JsonProperty(value = "shareQuota")
     private Integer shareQuota;
@@ -80,7 +80,8 @@ public final class FileShareProperties {
     private Integer remainingRetentionDays;
 
     /*
-     * Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage account can choose Premium.
+     * Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool.
+     * FileStorage account can choose Premium.
      */
     @JsonProperty(value = "accessTier")
     private ShareAccessTier accessTier;
@@ -98,7 +99,8 @@ public final class FileShareProperties {
     private String accessTierStatus;
 
     /*
-     * The approximate size of the data stored on the share. Note that this value may not include all recently created or recently resized files.
+     * The approximate size of the data stored on the share. Note that this value may not include all recently created
+     * or recently resized files.
      */
     @JsonProperty(value = "shareUsageBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long shareUsageBytes;
@@ -141,7 +143,7 @@ public final class FileShareProperties {
 
     /**
      * Get the lastModifiedTime property: Returns the date and time the share was last modified.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -150,7 +152,7 @@ public final class FileShareProperties {
 
     /**
      * Get the metadata property: A name-value pair to associate with the share as metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -159,7 +161,7 @@ public final class FileShareProperties {
 
     /**
      * Set the metadata property: A name-value pair to associate with the share as metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the FileShareProperties object itself.
      */
@@ -171,7 +173,7 @@ public final class FileShareProperties {
     /**
      * Get the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
      * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     *
+     * 
      * @return the shareQuota value.
      */
     public Integer shareQuota() {
@@ -181,7 +183,7 @@ public final class FileShareProperties {
     /**
      * Set the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
      * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
-     *
+     * 
      * @param shareQuota the shareQuota value to set.
      * @return the FileShareProperties object itself.
      */
@@ -193,7 +195,7 @@ public final class FileShareProperties {
     /**
      * Get the enabledProtocols property: The authentication protocol that is used for the file share. Can only be
      * specified when creating a share.
-     *
+     * 
      * @return the enabledProtocols value.
      */
     public EnabledProtocols enabledProtocols() {
@@ -203,7 +205,7 @@ public final class FileShareProperties {
     /**
      * Set the enabledProtocols property: The authentication protocol that is used for the file share. Can only be
      * specified when creating a share.
-     *
+     * 
      * @param enabledProtocols the enabledProtocols value to set.
      * @return the FileShareProperties object itself.
      */
@@ -214,7 +216,7 @@ public final class FileShareProperties {
 
     /**
      * Get the rootSquash property: The property is for NFS share only. The default is NoRootSquash.
-     *
+     * 
      * @return the rootSquash value.
      */
     public RootSquashType rootSquash() {
@@ -223,7 +225,7 @@ public final class FileShareProperties {
 
     /**
      * Set the rootSquash property: The property is for NFS share only. The default is NoRootSquash.
-     *
+     * 
      * @param rootSquash the rootSquash value to set.
      * @return the FileShareProperties object itself.
      */
@@ -234,7 +236,7 @@ public final class FileShareProperties {
 
     /**
      * Get the version property: The version of the share.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -243,7 +245,7 @@ public final class FileShareProperties {
 
     /**
      * Get the deleted property: Indicates whether the share was deleted.
-     *
+     * 
      * @return the deleted value.
      */
     public Boolean deleted() {
@@ -252,7 +254,7 @@ public final class FileShareProperties {
 
     /**
      * Get the deletedTime property: The deleted time if the share was deleted.
-     *
+     * 
      * @return the deletedTime value.
      */
     public OffsetDateTime deletedTime() {
@@ -261,7 +263,7 @@ public final class FileShareProperties {
 
     /**
      * Get the remainingRetentionDays property: Remaining retention days for share that was soft deleted.
-     *
+     * 
      * @return the remainingRetentionDays value.
      */
     public Integer remainingRetentionDays() {
@@ -271,7 +273,7 @@ public final class FileShareProperties {
     /**
      * Get the accessTier property: Access tier for specific share. GpV2 account can choose between TransactionOptimized
      * (default), Hot, and Cool. FileStorage account can choose Premium.
-     *
+     * 
      * @return the accessTier value.
      */
     public ShareAccessTier accessTier() {
@@ -281,7 +283,7 @@ public final class FileShareProperties {
     /**
      * Set the accessTier property: Access tier for specific share. GpV2 account can choose between TransactionOptimized
      * (default), Hot, and Cool. FileStorage account can choose Premium.
-     *
+     * 
      * @param accessTier the accessTier value to set.
      * @return the FileShareProperties object itself.
      */
@@ -292,7 +294,7 @@ public final class FileShareProperties {
 
     /**
      * Get the accessTierChangeTime property: Indicates the last modification time for share access tier.
-     *
+     * 
      * @return the accessTierChangeTime value.
      */
     public OffsetDateTime accessTierChangeTime() {
@@ -301,7 +303,7 @@ public final class FileShareProperties {
 
     /**
      * Get the accessTierStatus property: Indicates if there is a pending transition for access tier.
-     *
+     * 
      * @return the accessTierStatus value.
      */
     public String accessTierStatus() {
@@ -311,7 +313,7 @@ public final class FileShareProperties {
     /**
      * Get the shareUsageBytes property: The approximate size of the data stored on the share. Note that this value may
      * not include all recently created or recently resized files.
-     *
+     * 
      * @return the shareUsageBytes value.
      */
     public Long shareUsageBytes() {
@@ -320,7 +322,7 @@ public final class FileShareProperties {
 
     /**
      * Get the leaseStatus property: The lease status of the share.
-     *
+     * 
      * @return the leaseStatus value.
      */
     public LeaseStatus leaseStatus() {
@@ -329,7 +331,7 @@ public final class FileShareProperties {
 
     /**
      * Get the leaseState property: Lease state of the share.
-     *
+     * 
      * @return the leaseState value.
      */
     public LeaseState leaseState() {
@@ -339,7 +341,7 @@ public final class FileShareProperties {
     /**
      * Get the leaseDuration property: Specifies whether the lease on a share is of infinite or fixed duration, only
      * when the share is leased.
-     *
+     * 
      * @return the leaseDuration value.
      */
     public LeaseDuration leaseDuration() {
@@ -348,7 +350,7 @@ public final class FileShareProperties {
 
     /**
      * Get the signedIdentifiers property: List of stored access policies specified on the share.
-     *
+     * 
      * @return the signedIdentifiers value.
      */
     public List<SignedIdentifier> signedIdentifiers() {
@@ -357,7 +359,7 @@ public final class FileShareProperties {
 
     /**
      * Set the signedIdentifiers property: List of stored access policies specified on the share.
-     *
+     * 
      * @param signedIdentifiers the signedIdentifiers value to set.
      * @return the FileShareProperties object itself.
      */
@@ -369,7 +371,7 @@ public final class FileShareProperties {
     /**
      * Get the snapshotTime property: Creation time of share snapshot returned in the response of list shares with
      * expand param "snapshots".
-     *
+     * 
      * @return the snapshotTime value.
      */
     public OffsetDateTime snapshotTime() {
@@ -378,7 +380,7 @@ public final class FileShareProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

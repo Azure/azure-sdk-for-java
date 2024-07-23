@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -30,7 +29,7 @@ public final class ListEncryptionScopesInclude extends ExpandableStringEnum<List
 
     /**
      * Creates a new instance of ListEncryptionScopesInclude value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +38,7 @@ public final class ListEncryptionScopesInclude extends ExpandableStringEnum<List
 
     /**
      * Creates or finds a ListEncryptionScopesInclude from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ListEncryptionScopesInclude.
      */
@@ -50,7 +49,7 @@ public final class ListEncryptionScopesInclude extends ExpandableStringEnum<List
 
     /**
      * Gets known ListEncryptionScopesInclude values.
-     *
+     * 
      * @return known ListEncryptionScopesInclude values.
      */
     public static Collection<ListEncryptionScopesInclude> values() {

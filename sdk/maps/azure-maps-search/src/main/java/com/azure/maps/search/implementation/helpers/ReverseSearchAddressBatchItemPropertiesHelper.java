@@ -10,7 +10,6 @@ import com.azure.maps.search.models.SearchAddressResult;
 
 /**
  * The helper class to set the non-public properties of an {@link ReverseSearchAddressBatchItem} instance.
- * @param <T>
  */
 public final class ReverseSearchAddressBatchItemPropertiesHelper {
     private static ReverseSearchAddressBatchItemAccessor accessor;
@@ -29,7 +28,7 @@ public final class ReverseSearchAddressBatchItemPropertiesHelper {
     /**
      * The method called from {@link SearchAddressResult} to set it's accessor.
      *
-     * @param searchAddressResultAccessor The accessor.
+     * @param batchResultAccessor The accessor.
      */
     public static void setAccessor(final ReverseSearchAddressBatchItemAccessor batchResultAccessor) {
         accessor = batchResultAccessor;

@@ -1,5 +1,35 @@
 # Release History
 
+## 1.14.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.13.1 (2024-07-16)
+
+### Features Added
+- Added support in `EnvironmentCredential` (and thus `DefaultAzureCredential` when it chooses `EnvironmentCredential`) for using subject name / issuer authentication with client certificates by setting `AZURE_CLIENT_SEND_CERTIFICATE_CHAIN` to `1` or `true`. [#40013](https://github.com/Azure/azure-sdk-for-java/issues/40013)
+### Bugs Fixed
+- Fixed certificate type detection, which fixes using a PFX certificate without a password. [#37210](https://github.com/Azure/azure-sdk-for-java/issues/37210)
+- Fix `PowershellCredential` issue when user had a profile [#41030](https://github.com/Azure/azure-sdk-for-java/pull/41030)
+#### Dependency Updates
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`
+- Upgraded `azure-core-http-netty` from `1.15.1` to `1.15.2`
+- Upgraded `msal4j` from `1.16.0` to `1.16.1`
+
+## 1.13.0 (2024-06-20)
+
+### Features Added
+- GA for `AzurePipelinesCredential`
+
+### Bugs Fixed
+- Fixed an issue which may block `AzurePowershellCredential` from functioning correctly. [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
+
 ## 1.13.0-beta.3 (Unreleased)
 
 ### Features Added
@@ -851,7 +881,7 @@ No feature was deprecated or removed.
 ## 1.0.0-preview.1 (2019-06-28)
 Version 1.0.0-preview.1 is a preview of our efforts in creating an authentication API for Azure SDK client libraries that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
-our efforts can be found in the [Azure SDK Design Guidelines for Java](https://azuresdkspecs.z5.web.core.windows.net/JavaSpec.html).
+our efforts can be found in the [Azure SDK Design Guidelines for Java](https://aka.ms/azsdk/guide/java).
 
 For details on the Azure SDK for Java (July 2019 Preview) release, you can refer to the [release announcement](https://aka.ms/azure-sdk-preview1-java).
 

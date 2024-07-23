@@ -28,7 +28,7 @@ public final class MachinesDeleteByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.machines()
-            .deleteByResourceGroupWithResponse("qvlgafcqusrdvetn", "sdtutnwlduyc", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("hchrphkmcrjdqn", "dfzpbgtgkylkdg", com.azure.core.util.Context.NONE);
 
     }
 }

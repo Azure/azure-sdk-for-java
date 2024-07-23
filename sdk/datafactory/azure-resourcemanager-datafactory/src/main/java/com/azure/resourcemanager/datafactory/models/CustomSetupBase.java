@@ -28,13 +28,12 @@ public class CustomSetupBase {
      */
     @JsonTypeId
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "CustomSetupBase";
 
     /**
      * Creates an instance of CustomSetupBase class.
      */
     public CustomSetupBase() {
-        this.type = "CustomSetupBase";
     }
 
     /**

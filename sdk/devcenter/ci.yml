@@ -38,7 +38,7 @@ parameters:
     displayName: azure-developer-devcenter
     type: boolean
     default: true
-    
+
   - name: release_azureresourcemanagerdevcenter
     displayName: azure-resourcemanager-devcenter
     type: boolean
@@ -48,7 +48,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: devcenter
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-devcenter
         groupId: com.azure.resourcemanager

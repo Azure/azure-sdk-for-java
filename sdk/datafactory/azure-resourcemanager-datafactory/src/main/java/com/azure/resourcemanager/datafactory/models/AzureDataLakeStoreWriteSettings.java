@@ -30,7 +30,8 @@ public final class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
     private String type = "AzureDataLakeStoreWriteSettings";
 
     /*
-     * Specifies the expiry time of the written files. The time is applied to the UTC time zone in the format of "2018-12-01T05:00:00Z". Default value is NULL. Type: string (or Expression with resultType string).
+     * Specifies the expiry time of the written files. The time is applied to the UTC time zone in the format of
+     * "2018-12-01T05:00:00Z". Default value is NULL. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "expiryDateTime")
     private Object expiryDateTime;

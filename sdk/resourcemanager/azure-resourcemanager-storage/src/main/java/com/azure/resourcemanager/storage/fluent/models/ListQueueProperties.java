@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Map;
 
 /**
@@ -30,7 +29,7 @@ public final class ListQueueProperties {
 
     /**
      * Get the metadata property: A name-value pair that represents queue metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -39,7 +38,7 @@ public final class ListQueueProperties {
 
     /**
      * Set the metadata property: A name-value pair that represents queue metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ListQueueProperties object itself.
      */
@@ -50,7 +49,7 @@ public final class ListQueueProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,7 +11,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
@@ -76,8 +75,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
 
     @Override
     protected void beforeTest() {
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        serviceClient = getClientBuilder(connectionString).buildClient();
+        serviceClient = getClientBuilder(false).buildClient();
     }
 
     @Test
@@ -93,7 +91,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
-    @LiveOnly
     @Test
 
     public void serviceCreateTableWithMultipleTenants() {
@@ -118,9 +115,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
                 .additionallyAllowedTenants("*")
                 .build();
         }
-        final TableServiceClient tableServiceClient =
-            getClientBuilder(Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
-                "https://tablestests.table.core.windows.com"), credential, true).buildClient();
+
+        final TableServiceClient tableServiceClient = getClientBuilder(true).buildClient();
 
         // Act & Assert
         // This request will use the tenant ID extracted from the previous request.
@@ -295,7 +291,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         TableClientTest.getEntityWithResponseImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
-    @LiveOnly
     @Test
     public void generateAccountSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -309,7 +304,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = serviceClient.generateAccountSas(sasSignatureValues);
+        TableServiceClient serviceClient2 = getClientBuilderWithConnectionString(false).buildClient();
+        final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
             sas.startsWith(
@@ -324,7 +320,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         );
     }
 
-    @LiveOnly
     @Test
     public void generateAccountSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -343,7 +338,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
                 .setStartTime(startTime)
                 .setSasIpRange(ipRange);
 
-        final String sas = serviceClient.generateAccountSas(sasSignatureValues);
+        TableServiceClient serviceClient2 = getClientBuilderWithConnectionString(false).buildClient();
+        final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
 
         assertTrue(
             sas.startsWith(
@@ -360,7 +356,6 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         );
     }
 
-    @LiveOnly
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
@@ -374,7 +369,8 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
                 .setProtocol(protocol)
                 .setVersion(TableServiceVersion.V2019_02_02.getVersion());
 
-        final String sas = serviceClient.generateAccountSas(sasSignatureValues);
+        TableServiceClient serviceClient2 = getClientBuilderWithConnectionString(false).buildClient();
+        final String sas = serviceClient2.generateAccountSas(sasSignatureValues);
         final String tableName = testResourceNamer.randomName("test", 20);
 
         serviceClient.createTable(tableName);
