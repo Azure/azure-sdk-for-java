@@ -33,6 +33,7 @@ public class PowershellManager {
             try {
                 String[] command = getCommandLine(input);
 
+
                 ProcessBuilder processBuilder = new ProcessBuilder(command);
                 processBuilder.redirectErrorStream(true);
                 Process process = processBuilder.start();

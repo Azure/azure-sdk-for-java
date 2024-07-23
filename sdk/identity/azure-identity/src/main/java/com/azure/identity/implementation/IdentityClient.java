@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.net.URI;
@@ -511,9 +512,16 @@ public class IdentityClient extends IdentityClientBase {
                 }
 
                 LOGGER.verbose("Az.accounts module was found installed.");
+                // on Windows we need to escape the double quotes, but it isn't necessary on non-Windows.
+                String tokenString = null;
+                if (Platform.isWindows()) {
+                    tokenString = "\"\"Token\"\"";
+                } else {
+                    tokenString = "\"Token\"";
+                }
                 String command = "Get-AzAccessToken -AsSecureString -WarningAction Ignore -ResourceUrl '"
                     + scope
-                    + "' | select ExpiresOn,@{l=\"\"Token\"\";e={ConvertFrom-SecureString -AsPlainText $_.Token}} | ConvertTo-Json";
+                    + "' | select ExpiresOn,@{l=" + tokenString + ";e={ConvertFrom-SecureString -AsPlainText $_.Token}} | ConvertTo-Json";
                 LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
                                + "Powershell to retrieve the Access Token.", command);
 
