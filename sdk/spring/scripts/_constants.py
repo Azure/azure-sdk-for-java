@@ -33,7 +33,13 @@ SKIP_ADDING_DEPENDENCY_MANAGEMENT_ARTIFACTS_WITH_SPRING_BOOT_VERSION = {
         'spring-cloud-azure-testcontainers'
     ]
 }
-
+# The artifact will be updated with different Spring versions of external dependencies to run the tests.
+INTEGRATION_TESTS_ARTIFACTS = [
+    'spring-cloud-azure-integration-tests',
+    'spring-cloud-azure-integration-test-appconfiguration-config'
+]
+COMPATIBILITY_USAGE_TYPE = 'compatibility'
+INTEGRATION_USAGE_TYPE = 'integration'
 
 def should_skip_artifacts_when_adding_dependency_management(file_path):
     for artifact in SKIP_ADDING_DEPENDENCY_MANAGEMENT_ARTIFACTS:
@@ -50,3 +56,11 @@ def should_skip_artifacts_when_adding_dependency_management_with_spring_version(
             if artifact in file_path:
                 return True
     return False
+
+
+def is_integration_tests_artifact(file_path):
+    for artifact in INTEGRATION_TESTS_ARTIFACTS:
+        if artifact in file_path:
+            return True
+    else:
+        return False
