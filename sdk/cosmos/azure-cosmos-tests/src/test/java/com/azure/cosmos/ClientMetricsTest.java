@@ -1683,11 +1683,11 @@ public class ClientMetricsTest extends BatchTestBase {
 
                logger.error("MetersTagPresent");
                for (Meter meter : metersTagPresent) {
-                     logger.error("Meter: {}", meter);
+                     logger.error("Meter: {}", meter.getId());
                }
                logger.error("MeterMatches");
                for (Meter meter : meterMatches) {
-                     logger.error("Meter: {}", meter);
+                     logger.error("Meter: {}", meter.getId());
                }
             }
             assertThat(metersTagPresent.size()).isEqualTo(meterMatches.size());
