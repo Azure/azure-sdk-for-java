@@ -12,6 +12,7 @@ import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTaskConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import org.apache.kafka.common.config.Config;
@@ -69,15 +70,16 @@ public final class CosmosSinkConnector extends SinkConnector {
         }
         queryStringBuilder.append(" )");
         CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), connectorName);
-        List<CosmosContainerProperties> cosmosContainerProperties = cosmosAsyncClient.getDatabase(this.sinkConfig.getContainersConfig().getDatabaseName())
-            .queryContainers(new SqlQuerySpec(queryStringBuilder.toString(), parameters))
-            .byPage()
-            .flatMapIterable(response -> response.getResults())
-            .collectList()
-            .onErrorMap(throwable -> KafkaCosmosExceptionsHelper.convertToConnectException(throwable, "getAllContainers failed.")).block();
-        if (cosmosContainerProperties.isEmpty() || cosmosContainerProperties.size() != containerNames.size()) {
-            throw new IllegalStateException("Containers specified in the topic to container map do not exist in the CosmosDB account.");
-        }
+        //List<CosmosContainerProperties> cosmosContainerProperties = cosmosAsyncClient.getDatabase(this.sinkConfig.getContainersConfig().getDatabaseName());
+        cosmosAsyncClient.getDatabase(this.sinkConfig.getContainersConfig().getDatabaseName()).read().block();
+//            .queryContainers(new SqlQuerySpec(queryStringBuilder.toString(), parameters))
+//            .byPage()
+//            .flatMapIterable(response -> response.getResults())
+//            .collectList()
+//            .onErrorMap(throwable -> KafkaCosmosExceptionsHelper.convertToConnectException(throwable, "getAllContainers failed.")).block();
+//        if (cosmosContainerProperties.isEmpty() || cosmosContainerProperties.size() != containerNames.size()) {
+//            throw new IllegalStateException("Containers specified in the topic to container map do not exist in the CosmosDB account.");
+//        }
     }
 
     @Override
