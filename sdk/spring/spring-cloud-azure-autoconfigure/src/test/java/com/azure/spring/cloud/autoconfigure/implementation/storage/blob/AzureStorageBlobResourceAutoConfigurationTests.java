@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.storage.blob;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.core.resource.AzureStorageBlobProtocolResolver;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisabledIfEnvironmentVariable(named = "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION", matches = "3.0.")
 class AzureStorageBlobResourceAutoConfigurationTests {
 
     private static final String MOCK_URL = "https://test.blob.core.windows.net/";

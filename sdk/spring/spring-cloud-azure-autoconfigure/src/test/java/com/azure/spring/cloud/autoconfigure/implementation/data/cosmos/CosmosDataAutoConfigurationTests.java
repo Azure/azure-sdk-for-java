@@ -14,7 +14,6 @@ import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import com.azure.spring.data.cosmos.core.mapping.EnableCosmosAuditing;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.mockito.MockedStatic;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -27,7 +26,6 @@ import static org.mockito.Mockito.RETURNS_MOCKS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 
-@DisabledIfEnvironmentVariable(named = "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION", matches = "3.0.")
 class CosmosDataAutoConfigurationTests {
 
     private static final String ENDPOINT = "https://test.documents.azure.com:443/";
