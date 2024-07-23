@@ -435,7 +435,7 @@ com.azure.resourcemanager:azure-resourcemanager-voiceservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-graphservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.1.0;1.2.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0;1.1.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0;2.0.0
 com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0;1.1.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-networkcloud;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-cosmosdbforpostgresql;1.0.0;1.1.0-beta.2
