@@ -19,13 +19,17 @@ def get_spring_boot_version_tag_prefix(spring_boot_version):
 
 
 # Since Spring Cloud Azure uses multiple versions of external dependencies managed by Spring Boot,
-# the modules that use Spring Boot 2 to manage dependencies are skipped.
+# the modules that still use Spring Boot 2 to manage dependencies will be skipped.
 SKIP_ADDING_DEPENDENCY_MANAGEMENT_ARTIFACTS = [
     'spring-cloud-azure-starter-monitor-test',
     'spring-cloud-azure-starter-monitor'
 ]
+# Since some features are based on a higher Spring Boot version, it is sufficient to let the modules
+# corresponding to these special Spring Boot versions use the latest Spring Boot version.
 SKIP_ADDING_DEPENDENCY_MANAGEMENT_ARTIFACTS_WITH_SPRING_BOOT_VERSION = {
     '3.0': [
+        # skip for test containers
+        'spring-cloud-azure-autoconfigure',
         'spring-cloud-azure-testcontainers'
     ]
 }
