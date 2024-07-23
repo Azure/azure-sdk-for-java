@@ -588,8 +588,8 @@ public class ShareFileClient {
      *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
      *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
      *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;&#41;;
-     * options.setFilePermissions&#40;new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
-     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;&#41;;
+     * options.setFilePermission&#40;&quot;filePermission&quot;&#41;;
+     * options.setFilePermissionFormat&#40;FilePermissionFormat.BINARY&#41;;
      * options.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
      * options.setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;;
      * &#47;&#47; NOTE: filePermission and filePermissionKey should never be both set
@@ -622,10 +622,10 @@ public class ShareFileClient {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(options.getFilePermissions().getPermission(), smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(options.getFilePermission(), smbProperties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
-        String finalFilePermission = smbProperties.setFilePermission(options.getFilePermissions().getPermission(), FileConstants.FILE_PERMISSION_INHERIT);
+        String finalFilePermission = smbProperties.setFilePermission(options.getFilePermission(), FileConstants.FILE_PERMISSION_INHERIT);
         String filePermissionKey = smbProperties.getFilePermissionKey();
 
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
@@ -635,7 +635,7 @@ public class ShareFileClient {
         Callable<ResponseBase<FilesCreateHeaders, Void>> operation = () ->
             this.azureFileStorageClient.getFiles().createWithResponse(shareName, filePath, options.getSize(),
                 fileAttributes, null, options.getMetadata(), finalFilePermission,
-                options.getFilePermissions().getPermissionFormat(), filePermissionKey, fileCreationTime,
+                options.getFilePermissionFormat(), filePermissionKey, fileCreationTime,
                 fileLastWriteTime, fileChangeTime, finalRequestConditions.getLeaseId(), options.getShareFileHttpHeaders(),
                 finalContext);
 

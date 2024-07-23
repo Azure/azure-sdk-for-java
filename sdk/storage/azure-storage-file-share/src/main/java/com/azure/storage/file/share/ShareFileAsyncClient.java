@@ -543,8 +543,8 @@ public class ShareFileAsyncClient {
      *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
      *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
      *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;&#41;;
-     * options.setFilePermissions&#40;new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
-     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;&#41;;
+     * options.setFilePermission&#40;&quot;filePermission&quot;&#41;;
+     * options.setFilePermissionFormat&#40;FilePermissionFormat.BINARY&#41;;
      * options.setRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;;
      * options.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
      *
@@ -567,7 +567,7 @@ public class ShareFileAsyncClient {
         try {
             return withContext(context ->
                 createWithResponse(options.getSize(), options.getShareFileHttpHeaders(), options.getSmbProperties(),
-                    options.getFilePermissions().getPermission(), options.getFilePermissions().getPermissionFormat(),
+                    options.getFilePermission(), options.getFilePermissionFormat(),
                     options.getMetadata(), options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

@@ -261,8 +261,8 @@ public class ShareFileAsyncJavaDocCodeSamples {
             .setFileCreationTime(OffsetDateTime.now())
             .setFileLastWriteTime(OffsetDateTime.now())
             .setFilePermissionKey("filePermissionKey"));
-        options.setFilePermissions(new ShareFilePermission().setPermission("filePermission")
-            .setPermissionFormat(FilePermissionFormat.BINARY));
+        options.setFilePermission("filePermission");
+        options.setFilePermissionFormat(FilePermissionFormat.BINARY);
         options.setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
         options.setMetadata(Collections.singletonMap("directory", "metadata"));
 

@@ -251,8 +251,8 @@ public class ShareFileJavaDocCodeSamples {
             .setFileCreationTime(OffsetDateTime.now())
             .setFileLastWriteTime(OffsetDateTime.now())
             .setFilePermissionKey("filePermissionKey"));
-        options.setFilePermissions(new ShareFilePermission().setPermission("filePermission")
-            .setPermissionFormat(FilePermissionFormat.BINARY));
+        options.setFilePermission("filePermission");
+        options.setFilePermissionFormat(FilePermissionFormat.BINARY);
         options.setMetadata(Collections.singletonMap("directory", "metadata"));
         options.setRequestConditions(new ShareRequestConditions().setLeaseId(leaseId));
         // NOTE: filePermission and filePermissionKey should never be both set
