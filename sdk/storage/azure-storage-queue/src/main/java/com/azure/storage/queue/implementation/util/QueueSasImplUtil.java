@@ -86,6 +86,23 @@ public class QueueSasImplUtil {
         return encode(signature);
     }
 
+    /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+        ensureState();
+
+        String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
+        return stringToSign(canonicalName);
+    }
+
     private String encode(String signature) {
         /*
          We should be url-encoding each key and each value, but because we know all the keys and values will encode to

@@ -2518,6 +2518,43 @@ public class BlobAsyncClientBase {
     }
 
     /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
+     * @param accountName The account name.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateUserDelegationSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+                                                        UserDelegationKey userDelegationKey, String accountName, Context context) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
+            getSnapshotId(), getVersionId(), getEncryptionScope())
+            .generateUserDelegationSasStringToSign(userDelegationKey, accountName, context);
+    }
+
+    /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateSasStringToSign(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
+        return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
+            getSnapshotId(), getVersionId(), getEncryptionScope())
+            .generateSasStringToSign(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+    }
+
+    /**
      * Queries the entire blob.
      *
      * <p>For more information, see the
