@@ -54,7 +54,7 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  */
 public class ClientLogger {
     private final Logger logger;
-    private final String globalContextSerialized;
+    private final byte[] globalContextSerialized;
     private final boolean hasGlobalContext;
 
     static {
@@ -123,7 +123,7 @@ public class ClientLogger {
     ClientLogger(Logger logger, Map<String, Object> context) {
         this.logger = logger;
         this.globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
-        this.hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
+        this.hasGlobalContext = globalContextSerialized.length > 0;
     }
 
     /**
