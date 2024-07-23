@@ -7,13 +7,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
+import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkContainersConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTaskConfig;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
@@ -28,6 +25,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.kafka.connect.implementation.CosmosContainerUtils.validateContainers;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateCosmosAccountAuthConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateWriteConfig;
@@ -47,38 +45,13 @@ public final class CosmosSinkConnector extends SinkConnector {
         LOGGER.info("Starting the kafka cosmos sink connector");
         this.sinkConfig = new CosmosSinkConfig(props);
         this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
-        validateContainers();
+        CosmosSinkContainersConfig containersConfig = this.sinkConfig.getContainersConfig();
+        CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
+        validateContainers(new ArrayList<>(containersConfig.getTopicToContainerMap().values()), cosmosAsyncClient,
+            containersConfig.getDatabaseName());
     }
 
-    private void validateContainers() {
-        List<String> containerNames = new ArrayList<>(this.sinkConfig.getContainersConfig().getTopicToContainerMap().values());
-        StringBuilder queryStringBuilder = new StringBuilder();
-        List<SqlParameter> parameters = new ArrayList<>();
 
-        queryStringBuilder.append("SELECT * FROM c WHERE c.id IN ( ");
-        for (int i = 0; i < containerNames.size(); i++) {
-            String idValue = containerNames.get(i);
-            String idParamName = "@param" + i;
-
-            parameters.add(new SqlParameter(idParamName, idValue));
-            queryStringBuilder.append(idParamName);
-
-            if (i < containerNames.size() - 1) {
-                queryStringBuilder.append(", ");
-            }
-        }
-        queryStringBuilder.append(" )");
-        CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), connectorName);
-        List<CosmosContainerProperties> cosmosContainerProperties = cosmosAsyncClient.getDatabase(this.sinkConfig.getContainersConfig().getDatabaseName())
-            .queryContainers(new SqlQuerySpec(queryStringBuilder.toString(), parameters))
-            .byPage()
-            .flatMapIterable(response -> response.getResults())
-            .collectList()
-            .onErrorMap(throwable -> KafkaCosmosExceptionsHelper.convertToConnectException(throwable, "getAllContainers failed.")).block();
-        if (cosmosContainerProperties.isEmpty() || cosmosContainerProperties.size() != containerNames.size()) {
-            throw new IllegalStateException("Containers specified in the topic to container map do not exist in the CosmosDB account.");
-        }
-    }
 
     @Override
     public Class<? extends Task> taskClass() {

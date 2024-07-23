@@ -21,7 +21,6 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -71,10 +70,6 @@ public class MetadataMonitorThread extends Thread {
         this.metadataReader = metadataReader;
         this.cosmosClient = cosmosClient;
         this.containersQuerySpec = this.getContainersQuerySpec();
-        int numContainers = Objects.requireNonNull(this.getAllContainers().block()).size();
-        if ((numContainers == 0 || numContainers != sourceContainersConfig.getIncludedContainers().size()) && !sourceContainersConfig.isIncludeAllContainers()) {
-            throw new IllegalStateException("Cosmos container config is invalid. Either includeAllContainers should be true or containers should be provided.");
-        }
         this.containersMetadataTopicPartition = new ContainersMetadataTopicPartition(containersConfig.getDatabaseName(), connectorName);
     }
 

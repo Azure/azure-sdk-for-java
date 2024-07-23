@@ -190,7 +190,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
             ConnectorStatus connectorStatus = kafkaCosmosConnectContainer.getConnectorStatus(connectorName);
             assertThat(connectorStatus.getConnector().get("state").equals("FAILED")).isTrue();
             assertThat(connectorStatus.getConnector().get("trace")
-                .contains("java.lang.IllegalStateException: Containers specified in the topic to container map do not exist in the CosmosDB account.")).isTrue();
+                .contains("java.lang.IllegalStateException: Containers specified in the config do not exist in the CosmosDB account.")).isTrue();
 
         } catch (InterruptedException e) {
             throw new RuntimeException(e);

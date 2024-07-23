@@ -276,7 +276,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             ConnectorStatus connectorStatus = kafkaCosmosConnectContainer.getConnectorStatus(connectorName);
             assertThat(connectorStatus.getConnector().get("state").equals("FAILED")).isTrue();
             assertThat(connectorStatus.getConnector().get("trace")
-                .contains("java.lang.IllegalStateException: Cosmos container config is invalid. Either includeAllContainers should be true or containers should be provided.")).isTrue();
+                .contains("java.lang.IllegalStateException: Containers specified in the config do not exist in the CosmosDB account.")).isTrue();
         }  catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
