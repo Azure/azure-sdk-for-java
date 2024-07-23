@@ -107,6 +107,22 @@ public final class WorkloadNetworkDhcpImpl
         this.dhcpId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dhcpConfigurations");
     }
 
+    public WorkloadNetworkDhcp refresh() {
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkloadNetworks()
+            .getDhcpWithResponse(resourceGroupName, dhcpId, privateCloudName, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public WorkloadNetworkDhcp refresh(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkloadNetworks()
+            .getDhcpWithResponse(resourceGroupName, dhcpId, privateCloudName, context)
+            .getValue();
+        return this;
+    }
+
     public WorkloadNetworkDhcpImpl withProperties(WorkloadNetworkDhcpEntity properties) {
         this.innerModel().withProperties(properties);
         return this;

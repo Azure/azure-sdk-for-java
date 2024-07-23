@@ -172,7 +172,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{dhcpId}/{privateCloudName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dhcpConfigurations/{dhcpId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadNetworkDhcpInner>> getDhcp(@HostParam("endpoint") String endpoint,
@@ -279,7 +279,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{portMirroringId}/{privateCloudName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/portMirroringProfiles/{portMirroringId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deletePortMirroring(@HostParam("endpoint") String endpoint,
@@ -332,7 +332,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @BodyParam("application/json") WorkloadNetworkVMGroupInner workloadNetworkVMGroup, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{vmGroupId}/{privateCloudName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/vmGroups/{vmGroupId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteVMGroup(@HostParam("endpoint") String endpoint,
@@ -405,7 +405,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @BodyParam("application/json") WorkloadNetworkDnsServiceInner workloadNetworkDnsService, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{dnsServiceId}/{privateCloudName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsServices/{dnsServiceId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteDnsService(@HostParam("endpoint") String endpoint,
@@ -457,7 +457,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @BodyParam("application/json") WorkloadNetworkDnsZoneInner workloadNetworkDnsZone, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{dnsZoneId}/{privateCloudName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/dnsZones/{dnsZoneId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteDnsZone(@HostParam("endpoint") String endpoint,
@@ -498,7 +498,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             @BodyParam("application/json") WorkloadNetworkPublicIpInner workloadNetworkPublicIP, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{publicIPId}/{privateCloudName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deletePublicIP(@HostParam("endpoint") String endpoint,

@@ -757,6 +757,29 @@ public interface WorkloadNetworks {
     Response<WorkloadNetworkSegment> getSegmentByIdWithResponse(String id, Context context);
 
     /**
+     * Get a WorkloadNetworkDhcp.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkDhcp along with {@link Response}.
+     */
+    WorkloadNetworkDhcp getDhcpById(String id);
+
+    /**
+     * Get a WorkloadNetworkDhcp.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a WorkloadNetworkDhcp along with {@link Response}.
+     */
+    Response<WorkloadNetworkDhcp> getDhcpByIdWithResponse(String id, Context context);
+
+    /**
      * Get a WorkloadNetworkPortMirroring.
      * 
      * @param id the resource ID.
@@ -912,6 +935,111 @@ public interface WorkloadNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteDhcpByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete a WorkloadNetworkPortMirroring.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deletePortMirroringById(String id);
+
+    /**
+     * Delete a WorkloadNetworkPortMirroring.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deletePortMirroringByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete a WorkloadNetworkVMGroup.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteVMGroupById(String id);
+
+    /**
+     * Delete a WorkloadNetworkVMGroup.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteVMGroupByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete a WorkloadNetworkDnsService.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteDnsServiceById(String id);
+
+    /**
+     * Delete a WorkloadNetworkDnsService.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteDnsServiceByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete a WorkloadNetworkDnsZone.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteDnsZoneById(String id);
+
+    /**
+     * Delete a WorkloadNetworkDnsZone.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteDnsZoneByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete a WorkloadNetworkPublicIP.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deletePublicIPById(String id);
+
+    /**
+     * Delete a WorkloadNetworkPublicIP.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deletePublicIPByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new WorkloadNetworkSegment resource.

@@ -496,6 +496,44 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         return this.getSegmentWithResponse(resourceGroupName, privateCloudName, segmentId, context);
     }
 
+    public WorkloadNetworkDhcp getDhcpById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String dhcpId = ResourceManagerUtils.getValueFromIdByName(id, "dhcpConfigurations");
+        if (dhcpId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dhcpConfigurations'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        return this.getDhcpWithResponse(resourceGroupName, dhcpId, privateCloudName, Context.NONE).getValue();
+    }
+
+    public Response<WorkloadNetworkDhcp> getDhcpByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String dhcpId = ResourceManagerUtils.getValueFromIdByName(id, "dhcpConfigurations");
+        if (dhcpId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dhcpConfigurations'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        return this.getDhcpWithResponse(resourceGroupName, dhcpId, privateCloudName, context);
+    }
+
     public WorkloadNetworkPortMirroring getPortMirroringById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
@@ -762,6 +800,196 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
                 String.format("The resource ID '%s' is not valid. Missing path segment 'dhcpConfigurations'.", id)));
         }
         this.deleteDhcp(resourceGroupName, privateCloudName, dhcpId, context);
+    }
+
+    public void deletePortMirroringById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String portMirroringId = ResourceManagerUtils.getValueFromIdByName(id, "portMirroringProfiles");
+        if (portMirroringId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'portMirroringProfiles'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deletePortMirroring(resourceGroupName, portMirroringId, privateCloudName, Context.NONE);
+    }
+
+    public void deletePortMirroringByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String portMirroringId = ResourceManagerUtils.getValueFromIdByName(id, "portMirroringProfiles");
+        if (portMirroringId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'portMirroringProfiles'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deletePortMirroring(resourceGroupName, portMirroringId, privateCloudName, context);
+    }
+
+    public void deleteVMGroupById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String vmGroupId = ResourceManagerUtils.getValueFromIdByName(id, "vmGroups");
+        if (vmGroupId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vmGroups'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deleteVMGroup(resourceGroupName, vmGroupId, privateCloudName, Context.NONE);
+    }
+
+    public void deleteVMGroupByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String vmGroupId = ResourceManagerUtils.getValueFromIdByName(id, "vmGroups");
+        if (vmGroupId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vmGroups'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deleteVMGroup(resourceGroupName, vmGroupId, privateCloudName, context);
+    }
+
+    public void deleteDnsServiceById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String dnsServiceId = ResourceManagerUtils.getValueFromIdByName(id, "dnsServices");
+        if (dnsServiceId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsServices'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deleteDnsService(resourceGroupName, dnsServiceId, privateCloudName, Context.NONE);
+    }
+
+    public void deleteDnsServiceByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String dnsServiceId = ResourceManagerUtils.getValueFromIdByName(id, "dnsServices");
+        if (dnsServiceId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsServices'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deleteDnsService(resourceGroupName, dnsServiceId, privateCloudName, context);
+    }
+
+    public void deleteDnsZoneById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String dnsZoneId = ResourceManagerUtils.getValueFromIdByName(id, "dnsZones");
+        if (dnsZoneId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsZones'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deleteDnsZone(resourceGroupName, dnsZoneId, privateCloudName, Context.NONE);
+    }
+
+    public void deleteDnsZoneByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String dnsZoneId = ResourceManagerUtils.getValueFromIdByName(id, "dnsZones");
+        if (dnsZoneId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dnsZones'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deleteDnsZone(resourceGroupName, dnsZoneId, privateCloudName, context);
+    }
+
+    public void deletePublicIPById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String publicIPId = ResourceManagerUtils.getValueFromIdByName(id, "publicIPs");
+        if (publicIPId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'publicIPs'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deletePublicIP(resourceGroupName, publicIPId, privateCloudName, Context.NONE);
+    }
+
+    public void deletePublicIPByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String publicIPId = ResourceManagerUtils.getValueFromIdByName(id, "publicIPs");
+        if (publicIPId == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'publicIPs'.", id)));
+        }
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
+        if (privateCloudName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+        }
+        this.deletePublicIP(resourceGroupName, publicIPId, privateCloudName, context);
     }
 
     private WorkloadNetworksClient serviceClient() {
