@@ -8,18 +8,6 @@
 
 * Change `listVirtualMachineScaleSets` to pageable operation (as there is a bug fix in spec). 
 
-### Features Added
-
-* `implementation.models.VirtualMachineScaleSetListResult` was added
-
-#### `models.VirtualMachineScaleSet` was modified
-
-* `innerModel()` was added
-
-#### `models.Fleets` was modified
-
-* `listVirtualMachineScaleSets(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-
 ## 1.0.0-beta.1 (2024-07-22)
 
 - Azure Resource Manager Compute Fleet client library for Java. This package contains Microsoft Azure SDK for Compute Fleet Management SDK. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
