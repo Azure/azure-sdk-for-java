@@ -14,7 +14,7 @@ jobs:
     variables:
       - template: ../../../eng/pipelines/templates/variables/globals.yml
       - name: SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
-        value: '3.0.13'
+        value: ${{ parameters.Matrix.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION }}
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
