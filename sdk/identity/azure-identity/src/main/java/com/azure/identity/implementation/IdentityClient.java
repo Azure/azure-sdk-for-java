@@ -511,9 +511,9 @@ public class IdentityClient extends IdentityClientBase {
                 }
 
                 LOGGER.verbose("Az.accounts module was found installed.");
-                String command = "Get-AzAccessToken -ResourceUrl '"
+                String command = "Get-AzAccessToken -AsSecureString -WarningAction Ignore -ResourceUrl '"
                     + scope
-                    + "' | ConvertTo-Json";
+                    + "' | select ExpiresOn,@{l=\"\"Token\"\";e={ConvertFrom-SecureString -AsPlainText $_.Token}} | ConvertTo-Json";
                 LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
                                + "Powershell to retrieve the Access Token.", command);
 
