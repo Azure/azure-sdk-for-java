@@ -6,18 +6,23 @@ package com.azure.identity.implementation;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.RequestRetryCondition;
 import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.function.Predicate;
 
+/**
+ * The retry strategy when sending a request for the IMDS endpoint.
+ */
 public class ImdsRetryStrategy implements RetryStrategy {
-    private static final ClientLogger LOGGER = new ClientLogger(ImdsRetryStrategy.class);
+    private static final int MAX_RETRIES = 5;
     private final int maxRetries;
     private final Duration baseDelay;
     private final Predicate<RequestRetryCondition> shouldRetryCondition;
 
+    public ImdsRetryStrategy() {
+        this(MAX_RETRIES, Duration.ofMillis(800));
+    }
     public ImdsRetryStrategy(int maxRetries) {
         this(maxRetries, Duration.ofMillis(800));
     }
@@ -35,8 +40,7 @@ public class ImdsRetryStrategy implements RetryStrategy {
 
     @Override
     public Duration calculateRetryDelay(int retryAttempts) {
-        long retries = retryAttempts + 1;
-        long delay = (long) (baseDelay.toMillis() * Math.pow(2, retries - 1));
+        long delay = (long) (baseDelay.toMillis() * Math.pow(2, retryAttempts));
         return Duration.ofMillis(delay);
     }
 
@@ -45,27 +49,36 @@ public class ImdsRetryStrategy implements RetryStrategy {
         return this.shouldRetryCondition.test(requestRetryCondition);
     }
 
-    private boolean defaultShouldRetryCondition(RequestRetryCondition condition) {
-        HttpResponse response = condition.getResponse();
-        Throwable throwable = condition.getThrowable();
-
-        if (response != null) {
-            int statusCode = response.getStatusCode();
+    @Override
+    public boolean shouldRetry(HttpResponse httpResponse) {
+        if (httpResponse != null) {
+            int statusCode = httpResponse.getStatusCode();
             if (statusCode == 400) {
                 return false;
             }
             if (statusCode == 403) {
-                return response.getHeaderValue("ResponseMessage").contains("A socket operation was attempted to an unreachable network");
+                return httpResponse.getHeaderValue("ResponseMessage").contains("A socket operation was attempted to an unreachable network");
             }
             if (statusCode == 410 || statusCode == 429 || statusCode == 404 || (statusCode >= 500 && statusCode <= 599)) {
                 return true;
             }
         }
+        return false;
+    }
 
-        if (throwable instanceof IOException) {
-            return true;
+    @Override
+    public boolean shouldRetryException(Throwable throwable) {
+        return throwable instanceof IOException;
+    }
+
+    private boolean defaultShouldRetryCondition(RequestRetryCondition condition) {
+        HttpResponse response = condition.getResponse();
+        Throwable throwable = condition.getThrowable();
+
+        if (response != null) {
+            return shouldRetry(response);
         }
 
-        return false;
+        return shouldRetryException(throwable);
     }
 }

@@ -473,7 +473,10 @@ public abstract class IdentityClientBase {
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        options.setUseImdsRetryStrategy();
+        if ("DEFAULT_TO_IMDS".equals(ManagedIdentityApplication.getManagedIdentitySource())) {
+            options.setUseImdsRetryStrategy();
+        }
+
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
             miBuilder.httpClient(httpPipelineAdapter);
@@ -894,7 +897,7 @@ public abstract class IdentityClientBase {
         // Add retry policy.
         RetryPolicy retryPolicy = options.getRetryPolicy();
         if (retryPolicy == null && options.getUseImdsRetryStrategy()) {
-            retryPolicy = new RetryPolicy(new ImdsRetryStrategy(5));
+            retryPolicy = new RetryPolicy(new ImdsRetryStrategy());
         }
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, options.getRetryOptions()));
         policies.addAll(options.getPerRetryPolicies());
