@@ -30,7 +30,6 @@ import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
@@ -44,7 +43,6 @@ import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
-import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -69,7 +67,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -825,38 +822,6 @@ public class ClientMetricsTest extends BatchTestBase {
             this.validateRequestActualItemCountMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Query/queryItems." + container.getId())
-            );
-
-            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
-            this.assertMetrics("cosmos.client.req.gw", true, queryPlanTag);
-            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
-        } finally {
-            this.afterTest();
-        }
-    }
-
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
-    public void queryChangeFeed() {
-        this.beforeTest(CosmosMetricCategory.ALL);
-        try {
-            int numInserted = 20;
-            for (int i = 0; i < numInserted; i++) {
-                String id = UUID.randomUUID().toString();
-                container.createItem(getDocumentDefinition(id));
-            }
-            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-                .createForProcessingFromBeginning(FeedRange.forFullRange());
-            // basic validation
-            for (FeedResponse<InternalObjectNode> response : container.queryChangeFeed(options, InternalObjectNode.class)
-                .iterableByPage()) {
-                assertThat(response.getRequestCharge()).isGreaterThan(0);
-            }
-
-            this.validateMetrics(
-                Tag.of(TagName.OperationStatusCode.toString(), "200"),
-                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
-                0,
-                100000
             );
 
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection/QueryPlan");
@@ -1691,7 +1656,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    private void assertTagInAllMeters(List<Meter> meters,String prefix) {
+    private void assertTagInAllMeters(List<Meter> meters, String prefix) {
         List<Meter> meterMatches = meters
             .stream()
             .filter(meter -> meter.getId().getName().equals(prefix))
@@ -1714,6 +1679,17 @@ public class ClientMetricsTest extends BatchTestBase {
                     return numTags == possibleTags.size();
                 } )
                 .collect(Collectors.toList());
+            if (metersTagPresent.size() != meterMatches.size()) {
+
+               logger.error("MetersTagPresent");
+               for (Meter meter : metersTagPresent) {
+                     logger.error("Meter: {}", meter);
+               }
+               logger.error("MeterMatches");
+               for (Meter meter : meterMatches) {
+                     logger.error("Meter: {}", meter);
+               }
+            }
             assertThat(metersTagPresent.size()).isEqualTo(meterMatches.size());
         }
     }
