@@ -109,11 +109,12 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 .policies(CREDENTIAL_POLICY)
                 .build();
 
-            ImmutableStorageWithVersioning immutableStorageWithVersioning = new ImmutableStorageWithVersioning();
+            ImmutableStorageWithVersioningTests.ImmutableStorageWithVersioning immutableStorageWithVersioning =
+                new ImmutableStorageWithVersioningTests.ImmutableStorageWithVersioning();
             immutableStorageWithVersioning.setEnabled(true);
-            Properties properties = new Properties();
+            ImmutableStorageWithVersioningTests.Properties properties = new ImmutableStorageWithVersioningTests.Properties();
             properties.setImmutableStorageWithVersioning(immutableStorageWithVersioning);
-            Body body = new Body();
+            ImmutableStorageWithVersioningTests.Body body = new ImmutableStorageWithVersioningTests.Body();
             body.setId(String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
                     + "%s/blobServices/default/containers/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME,
                 vlwContainerName));
@@ -142,92 +143,6 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             testResourceNamer.recordValueFromConfig(vlwContainerName));
         vlwBlob = vlwContainer.getBlobAsyncClient(generateBlobName());
         vlwBlob.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null).block();
-    }
-
-    public static final class Body implements JsonSerializable<Body> {
-        private String id;
-        private String name;
-        private String type;
-        private Properties properties;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public Properties getProperties() {
-            return properties;
-        }
-
-        public void setProperties(Properties properties) {
-            this.properties = properties;
-        }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeStringField("id", this.id)
-                .writeStringField("name", this.name)
-                .writeStringField("type", this.type)
-                .writeJsonField("properties", this.properties);
-
-            return jsonWriter.writeEndObject();
-        }
-    }
-
-    public static final class Properties implements JsonSerializable<Properties> {
-        private ImmutableStorageWithVersioning immutableStorageWithVersioning;
-
-        public ImmutableStorageWithVersioning getImmutableStorageWithVersioning() {
-            return immutableStorageWithVersioning;
-        }
-
-        public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
-            this.immutableStorageWithVersioning = immutableStorageWithVersioning;
-        }
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
-
-            return jsonWriter.writeEndObject();
-        }
-    }
-
-    public static final class ImmutableStorageWithVersioning implements JsonSerializable<ImmutableStorageWithVersioning> {
-        private boolean enabled;
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeBooleanField("enabled", this.enabled);
-
-            return jsonWriter.writeEndObject();
-        }
     }
 
     @AfterAll
