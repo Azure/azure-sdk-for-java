@@ -55,6 +55,7 @@ class AzureMonitorLogRecordExporter implements LogRecordExporter {
 
         List<TelemetryItem> telemetryItems = new ArrayList<>();
         for (LogRecordData log : logs) {
+            // TODO (heya) consider using suppress_instrumentation https://github.com/open-telemetry/opentelemetry-java/pull/6546 later when available
             if (log.getInstrumentationScopeInfo().getName().startsWith(EXPORTER_LOGGER_PREFIX)) {
                 continue;
             }
