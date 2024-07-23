@@ -8,49 +8,40 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.qumulo.models.FileSystemResourceUpdateProperties;
 import com.azure.resourcemanager.qumulo.models.MarketplaceDetails;
 import com.azure.resourcemanager.qumulo.models.UserDetails;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class FileSystemResourceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileSystemResourceUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"marketplaceDetails\":{\"marketplaceSubscriptionId\":\"wjfeusnhutjel\",\"planId\":\"mrldhu\",\"offerId\":\"jzzd\",\"publisherId\":\"tqxhocdgeab\",\"marketplaceSubscriptionStatus\":\"PendingFulfillmentStart\"},\"userDetails\":{\"email\":\"uticndvkaozwyif\"},\"delegatedSubnetId\":\"hxh\",\"clusterLoginUrl\":\"okftyxolniwpwcuk\",\"privateIPs\":[\"giawx\",\"lryplwckbasyy\",\"nddhsgcbacph\",\"jkot\"]}")
-                .toObject(FileSystemResourceUpdateProperties.class);
-        Assertions.assertEquals("wjfeusnhutjel", model.marketplaceDetails().marketplaceSubscriptionId());
-        Assertions.assertEquals("mrldhu", model.marketplaceDetails().planId());
-        Assertions.assertEquals("jzzd", model.marketplaceDetails().offerId());
-        Assertions.assertEquals("tqxhocdgeab", model.marketplaceDetails().publisherId());
-        Assertions.assertEquals("uticndvkaozwyif", model.userDetails().email());
-        Assertions.assertEquals("hxh", model.delegatedSubnetId());
-        Assertions.assertEquals("okftyxolniwpwcuk", model.clusterLoginUrl());
-        Assertions.assertEquals("giawx", model.privateIPs().get(0));
+        FileSystemResourceUpdateProperties model = BinaryData.fromString(
+            "{\"marketplaceDetails\":{\"marketplaceSubscriptionId\":\"gou\",\"planId\":\"zndlikwy\",\"offerId\":\"kgfg\",\"publisherId\":\"madgakeqsrxyb\",\"termUnit\":\"qedqytbciqfoufl\",\"marketplaceSubscriptionStatus\":\"Suspended\"},\"userDetails\":{\"email\":\"zsm\"},\"delegatedSubnetId\":\"mglougpbkw\"}")
+            .toObject(FileSystemResourceUpdateProperties.class);
+        Assertions.assertEquals("gou", model.marketplaceDetails().marketplaceSubscriptionId());
+        Assertions.assertEquals("zndlikwy", model.marketplaceDetails().planId());
+        Assertions.assertEquals("kgfg", model.marketplaceDetails().offerId());
+        Assertions.assertEquals("madgakeqsrxyb", model.marketplaceDetails().publisherId());
+        Assertions.assertEquals("qedqytbciqfoufl", model.marketplaceDetails().termUnit());
+        Assertions.assertEquals("zsm", model.userDetails().email());
+        Assertions.assertEquals("mglougpbkw", model.delegatedSubnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemResourceUpdateProperties model =
-            new FileSystemResourceUpdateProperties()
-                .withMarketplaceDetails(
-                    new MarketplaceDetails()
-                        .withMarketplaceSubscriptionId("wjfeusnhutjel")
-                        .withPlanId("mrldhu")
-                        .withOfferId("jzzd")
-                        .withPublisherId("tqxhocdgeab"))
-                .withUserDetails(new UserDetails().withEmail("uticndvkaozwyif"))
-                .withDelegatedSubnetId("hxh")
-                .withClusterLoginUrl("okftyxolniwpwcuk")
-                .withPrivateIPs(Arrays.asList("giawx", "lryplwckbasyy", "nddhsgcbacph", "jkot"));
+        FileSystemResourceUpdateProperties model = new FileSystemResourceUpdateProperties()
+            .withMarketplaceDetails(new MarketplaceDetails().withMarketplaceSubscriptionId("gou")
+                .withPlanId("zndlikwy")
+                .withOfferId("kgfg")
+                .withPublisherId("madgakeqsrxyb")
+                .withTermUnit("qedqytbciqfoufl"))
+            .withUserDetails(new UserDetails().withEmail("zsm"))
+            .withDelegatedSubnetId("mglougpbkw");
         model = BinaryData.fromObject(model).toObject(FileSystemResourceUpdateProperties.class);
-        Assertions.assertEquals("wjfeusnhutjel", model.marketplaceDetails().marketplaceSubscriptionId());
-        Assertions.assertEquals("mrldhu", model.marketplaceDetails().planId());
-        Assertions.assertEquals("jzzd", model.marketplaceDetails().offerId());
-        Assertions.assertEquals("tqxhocdgeab", model.marketplaceDetails().publisherId());
-        Assertions.assertEquals("uticndvkaozwyif", model.userDetails().email());
-        Assertions.assertEquals("hxh", model.delegatedSubnetId());
-        Assertions.assertEquals("okftyxolniwpwcuk", model.clusterLoginUrl());
-        Assertions.assertEquals("giawx", model.privateIPs().get(0));
+        Assertions.assertEquals("gou", model.marketplaceDetails().marketplaceSubscriptionId());
+        Assertions.assertEquals("zndlikwy", model.marketplaceDetails().planId());
+        Assertions.assertEquals("kgfg", model.marketplaceDetails().offerId());
+        Assertions.assertEquals("madgakeqsrxyb", model.marketplaceDetails().publisherId());
+        Assertions.assertEquals("qedqytbciqfoufl", model.marketplaceDetails().termUnit());
+        Assertions.assertEquals("zsm", model.userDetails().email());
+        Assertions.assertEquals("mglougpbkw", model.delegatedSubnetId());
     }
 }
