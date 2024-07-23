@@ -49,6 +49,7 @@ public final class CosmosSinkConnector extends SinkConnector {
         CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
         validateContainers(new ArrayList<>(containersConfig.getTopicToContainerMap().values()), cosmosAsyncClient,
             containersConfig.getDatabaseName());
+        cosmosAsyncClient.close();
     }
 
     @Override
