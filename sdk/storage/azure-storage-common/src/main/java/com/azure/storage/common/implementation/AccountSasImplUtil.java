@@ -83,6 +83,25 @@ public class AccountSasImplUtil {
         return encode(signature);
     }
 
+    /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
+        StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
+        StorageImplUtils.assertNotNull("services", this.services);
+        StorageImplUtils.assertNotNull("resourceTypes", this.resourceTypes);
+        StorageImplUtils.assertNotNull("expiryTime", this.expiryTime);
+        StorageImplUtils.assertNotNull("permissions", this.permissions);
+
+        return stringToSign(storageSharedKeyCredentials);
+    }
+
     private String stringToSign(final StorageSharedKeyCredential storageSharedKeyCredentials) {
         if (VERSION.compareTo("2020-10-02") <= 0) {
             return String.join("\n",

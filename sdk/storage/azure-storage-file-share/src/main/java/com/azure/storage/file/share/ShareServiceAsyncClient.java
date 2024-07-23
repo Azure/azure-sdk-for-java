@@ -741,6 +741,21 @@ public final class ShareServiceAsyncClient {
     }
 
     /**
+     * For debugging purposes only.
+     * Returns the string to sign that will be used to generate the signature for the SAS URL.
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return The string to sign that will be used to generate the signature for the SAS URL.
+     */
+    @Deprecated
+    public String generateAccountSasStringToSign(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return new AccountSasImplUtil(accountSasSignatureValues, null)
+            .generateSasStringToSign(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+    }
+
+    /**
      * Restores a previously deleted share.
      * <p>
      * If the share associated with provided <code>deletedShareName</code>
