@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -399,5 +400,33 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             })
             .thenConsumeWhile(x -> true)
             .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void listSharePaidBursting() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setEnablePaidBursting(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        String shareName = generateShareName();
+
+        ShareAsyncClient shareClient = premiumFileServiceAsyncClient.getShareAsyncClient(shareName);
+
+        Flux<ShareItem> response = shareClient.createWithResponse(options)
+            .thenMany(premiumFileServiceAsyncClient.listShares());
+
+        List<ShareItem> shares = new ArrayList<>();
+
+        StepVerifier.create(response)
+            .thenConsumeWhile(shares::add)
+            .verifyComplete();
+
+        ShareItem share = shares.stream().filter(r -> r.getName().equals(shareName)).findFirst().get();
+
+        assertTrue(share.getProperties().getEnablePaidBursting());
+        assertEquals(5000L, share.getProperties().getPaidBurstingMaxIops());
+        assertEquals(1000L, share.getProperties().getPaidBurstingMaxBandwidthMibps());
     }
 }

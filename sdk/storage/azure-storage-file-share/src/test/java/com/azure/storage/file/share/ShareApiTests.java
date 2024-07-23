@@ -1416,4 +1416,40 @@ public class ShareApiTests extends FileShareTestBase {
             assertFalse(response.isSnapshotVirtualDirectoryAccessEnabled());
         }
     }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void createSharePaidBursting() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setEnablePaidBursting(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null);
+
+        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
+
+        assertTrue(response.getEnablePaidBursting());
+        assertEquals(5000L, response.getPaidBurstingMaxIops());
+        assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @Test
+    public void setPropertiesSharePaidBursting() {
+        premiumFileServiceClient.getShareClient(shareName).createWithResponse(null, null, null);
+
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions()
+            .setEnablePaidBursting(true)
+            .setPaidBurstingMaxIops(5000L)
+            .setPaidBurstingMaxBandwidthMibps(1000L);
+
+        premiumFileServiceClient.getShareClient(shareName).setProperties(options);
+
+        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
+
+        assertTrue(response.getEnablePaidBursting());
+        assertEquals(5000L, response.getPaidBurstingMaxIops());
+        assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
+    }
 }
