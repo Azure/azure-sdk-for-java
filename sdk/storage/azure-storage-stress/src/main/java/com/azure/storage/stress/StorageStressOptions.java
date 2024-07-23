@@ -16,6 +16,8 @@ public class StorageStressOptions extends PerfStressOptions {
     private String pageBlobConnectionString = Configuration.getGlobalConfiguration().get("PAGE_BLOB_STORAGE_CONNECTION_STRING");
     @Parameter(names = { "--uploadFaults" }, description = "Enable fault injection for uploads")
     private boolean enableFaultInjectionUploads = false;
+    @Parameter(names = { "--parallelRuns" }, description = "Number of parallel runs")
+    private int parallelRuns = 1;
 
     public boolean isFaultInjectionEnabledForDownloads() {
         return enableFaultInjectionDownloads;
@@ -37,5 +39,9 @@ public class StorageStressOptions extends PerfStressOptions {
      */
     public boolean isFaultInjectionEnabledForUploads() {
         return enableFaultInjectionUploads;
+    }
+
+    public int getParallelRuns() {
+        return parallelRuns;
     }
 }

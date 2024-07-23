@@ -6,6 +6,8 @@ package com.azure.storage.blob.stress;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -34,12 +36,15 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     public BlobScenarioBase(TOptions options) {
         super(options);
 
+        DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
+
         String connectionString = options.getConnectionString();
 
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
         BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
             .connectionString(connectionString)
+            //.credential(defaultAzureCredential)
             .httpLogOptions(getLogOptions());
 
         BlobServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
