@@ -70,11 +70,13 @@ def is_target_version(spring_boot_version, target_version_prefix, non_target_ver
     if not spring_boot_version.startswith(get_args().spring_boot_major_version_number + "."):
         return False
 
-    if not spring_boot_version.startswith(target_version_prefix):
+    if target_version_prefix is not None and not spring_boot_version.startswith(target_version_prefix):
         return False
-    for entry in non_target_version_prefix_list:
-        if spring_boot_version.startswith(entry):
-            return False
+
+    if non_target_version_prefix_list is not None:
+        for entry in non_target_version_prefix_list:
+            if spring_boot_version.startswith(entry):
+                return False
     return True
 
 
