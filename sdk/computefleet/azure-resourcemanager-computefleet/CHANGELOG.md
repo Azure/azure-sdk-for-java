@@ -6,22 +6,7 @@
 
 ### Breaking Changes
 
-* `models.VirtualMachineScaleSetListResult` was removed
-
-#### `models.VirtualMachineScaleSet` was modified
-
-* `java.lang.String type()` -> `java.lang.String type()`
-* `validate()` was removed
-* `models.ProvisioningState operationStatus()` -> `models.ProvisioningState operationStatus()`
-* `java.lang.String id()` -> `java.lang.String id()`
-* `models.ApiError error()` -> `models.ApiError error()`
-* `fromJson(com.azure.json.JsonReader)` was removed
-* `toJson(com.azure.json.JsonWriter)` was removed
-
-#### `models.Fleets` was modified
-
-* `listVirtualMachineScaleSetsWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
-* `models.VirtualMachineScaleSetListResult listVirtualMachineScaleSets(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listVirtualMachineScaleSets(java.lang.String,java.lang.String)`
+* Change `listVirtualMachineScaleSets` to pageable operation (as there is a bug fix in spec). 
 
 ### Features Added
 
