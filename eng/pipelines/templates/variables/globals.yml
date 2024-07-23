@@ -24,7 +24,7 @@ variables:
   MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
   # See https://github.com/actions/virtual-environments/issues/1499 for more info about the wagon options
   # If reports about Maven dependency downloads become more common investigate re-introducing "-Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false", or other iterations of the configurations.
-  WagonOptions: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -Dorg.slf4j.simpleLogger.log.org.apache.maven.wagon.providers.http.httpclient=DEBUG -Dorg.slf4j.simpleLogger.log.org.apache.maven.wagon.providers.http.httpclient.wire=INFO'
+  WagonOptions: '-Dmaven.wagon.httpconnectionManager.ttlSeconds=60 -Dorg.slf4j.simpleLogger.log.org.apache.maven.wagon=DEBUG -Dorg.slf4j.simpleLogger.log.org.apache.maven.wagon.providers.http.httpclient.wire=INFO -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.showThreadName=true -Dorg.slf4j.simpleLogger.log.org.eclipse.aether=DEBUG -Dorg.slf4j.simpleLogger.showLogName=true'
   DefaultOptions: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=$(MavenLogLevel) -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
   MemoryOptions: '-Xmx4096m'
