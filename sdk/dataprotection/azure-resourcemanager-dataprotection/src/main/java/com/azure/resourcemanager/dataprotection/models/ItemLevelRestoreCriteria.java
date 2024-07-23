@@ -5,36 +5,35 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Class to contain criteria for item level restore.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "objectType",
-    defaultImpl = ItemLevelRestoreCriteria.class)
-@JsonTypeName("ItemLevelRestoreCriteria")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ItemPathBasedRestoreCriteria", value = ItemPathBasedRestoreCriteria.class),
-    @JsonSubTypes.Type(name = "RangeBasedItemLevelRestoreCriteria", value = RangeBasedItemLevelRestoreCriteria.class),
-    @JsonSubTypes.Type(
-        name = "KubernetesStorageClassRestoreCriteria",
-        value = KubernetesStorageClassRestoreCriteria.class),
-    @JsonSubTypes.Type(name = "KubernetesPVRestoreCriteria", value = KubernetesPVRestoreCriteria.class),
-    @JsonSubTypes.Type(name = "KubernetesClusterRestoreCriteria", value = KubernetesClusterRestoreCriteria.class),
-    @JsonSubTypes.Type(
-        name = "KubernetesClusterVaultTierRestoreCriteria",
-        value = KubernetesClusterVaultTierRestoreCriteria.class) })
 @Immutable
-public class ItemLevelRestoreCriteria {
+public class ItemLevelRestoreCriteria implements JsonSerializable<ItemLevelRestoreCriteria> {
+    /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "ItemLevelRestoreCriteria";
+
     /**
      * Creates an instance of ItemLevelRestoreCriteria class.
      */
     public ItemLevelRestoreCriteria() {
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -43,5 +42,76 @@ public class ItemLevelRestoreCriteria {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ItemLevelRestoreCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ItemLevelRestoreCriteria if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ItemLevelRestoreCriteria.
+     */
+    public static ItemLevelRestoreCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ItemPathBasedRestoreCriteria".equals(discriminatorValue)) {
+                    return ItemPathBasedRestoreCriteria.fromJson(readerToUse.reset());
+                } else if ("RangeBasedItemLevelRestoreCriteria".equals(discriminatorValue)) {
+                    return RangeBasedItemLevelRestoreCriteria.fromJson(readerToUse.reset());
+                } else if ("KubernetesStorageClassRestoreCriteria".equals(discriminatorValue)) {
+                    return KubernetesStorageClassRestoreCriteria.fromJson(readerToUse.reset());
+                } else if ("KubernetesPVRestoreCriteria".equals(discriminatorValue)) {
+                    return KubernetesPVRestoreCriteria.fromJson(readerToUse.reset());
+                } else if ("KubernetesClusterRestoreCriteria".equals(discriminatorValue)) {
+                    return KubernetesClusterRestoreCriteria.fromJson(readerToUse.reset());
+                } else if ("KubernetesClusterVaultTierRestoreCriteria".equals(discriminatorValue)) {
+                    return KubernetesClusterVaultTierRestoreCriteria.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ItemLevelRestoreCriteria fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ItemLevelRestoreCriteria deserializedItemLevelRestoreCriteria = new ItemLevelRestoreCriteria();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedItemLevelRestoreCriteria.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedItemLevelRestoreCriteria;
+        });
     }
 }
