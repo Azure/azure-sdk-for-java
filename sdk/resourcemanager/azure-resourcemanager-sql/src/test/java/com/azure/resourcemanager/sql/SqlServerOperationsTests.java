@@ -57,6 +57,7 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -70,10 +71,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -84,9 +87,19 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private static final String SQL_FIREWALLRULE_NAME = "firewallrule1";
     private static final String START_IPADDRESS = "10.102.1.10";
     private static final String END_IPADDRESS = "10.102.1.12";
+    private static final List<String> REGION_CAPABILITIES_TEST_METHOD_NAMES = Arrays.asList("canGetSqlServerCapabilitiesAndCreateIdentity", "testRandomSku", "generateSku");
+    private static RegionCapabilities regionCapabilities;
 
     // Only one sync database is allowed per region per subscription
     // canCRUDSqlSyncMember and canCRUDSqlSyncGroup need to be in 2 different region
+
+    @BeforeEach
+    public void initRegionCapabilities() {
+        if (Objects.isNull(regionCapabilities)
+            && REGION_CAPABILITIES_TEST_METHOD_NAMES.contains(this.testContextManager.getTestName())) {
+            regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
+        }
+    }
 
     @Test
     public void canCRUDSqlSyncMember() throws Exception {
@@ -589,7 +602,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
 
-        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
         Assertions.assertNotNull(regionCapabilities);
         Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
         Assertions
@@ -598,10 +610,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions
             .assertTrue(
                 regionCapabilities
-                        .supportedCapabilitiesByServerVersion()
-                        .get("12.0")
-                        .supportedElasticPoolEditions()
-                        .size()
+                    .supportedCapabilitiesByServerVersion()
+                    .get("12.0")
+                    .supportedElasticPoolEditions()
+                    .size()
                     > 0);
 
         // Create
@@ -1660,23 +1672,25 @@ public class SqlServerOperationsTests extends SqlServerTest {
         List<ElasticPoolSku> elasticPoolSkus = ElasticPoolSku.getAll().stream().filter(sku -> !"M".equals(sku.toSku().family())).collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(elasticPoolSkus);
 
-        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
-            .forEach((x, serverVersionCapability) -> {
-                serverVersionCapability.supportedEditions().forEach(edition -> {
-                    edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
-                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT || "M".equals(serviceObjective.sku().family())) {
-                            databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku()));
-                        }
-                    });
-                });
-                serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
-                    edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
-                        if (performance.status() != CapabilityStatus.AVAILABLE && performance.status() != CapabilityStatus.DEFAULT || "M".equals(performance.sku().family())) {
-                            elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku()));
-                        }
-                    });
-                });
+        regionCapabilities.supportedCapabilitiesByServerVersion().values().forEach(serverVersionCapability -> {
+            serverVersionCapability.supportedEditions().forEach(edition -> {
+                edition.supportedServiceLevelObjectives()
+                    .stream().filter(serviceObjective ->
+                        (serviceObjective.status() != CapabilityStatus.AVAILABLE
+                            && serviceObjective.status() != CapabilityStatus.DEFAULT)
+                            || "M".equals(serviceObjective.sku().family()))
+                    .forEach(serviceObjective -> databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku())));
             });
+
+            serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
+                edition.supportedElasticPoolPerformanceLevels()
+                    .stream().filter(performance ->
+                        (performance.status() != CapabilityStatus.AVAILABLE
+                            && performance.status() != CapabilityStatus.DEFAULT)
+                            || "M".equals(performance.sku().family()))
+                    .forEach(performance -> elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku())));
+            });
+        });
 
         SqlServer sqlServer = sqlServerManager.sqlServers().define(sqlServerName)
             .withRegion(Region.US_EAST)
@@ -1688,11 +1702,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Too many elastic pools defined will hit sql server DTU quota limits.
         // https://learn.microsoft.com/en-us/azure/azure-sql/database/resource-limits-logical-server?view=azuresql#logical-server-limits
         Flux.merge(
-            Flux.range(0, 3)
-                .flatMap(i -> sqlServer.databases().define("database" + i).withSku(databaseSkus.get(i)).createAsync().cast(Indexable.class)),
-            Flux.range(0, 3)
-                .flatMap(i -> sqlServer.elasticPools().define("elasticPool" + i).withSku(elasticPoolSkus.get(i)).createAsync().cast(Indexable.class))
-        )
+                Flux.range(0, 3)
+                    .flatMap(i -> sqlServer.databases().define("database" + i).withSku(databaseSkus.get(i)).createAsync().cast(Indexable.class)),
+                Flux.range(0, 3)
+                    .flatMap(i -> sqlServer.elasticPools().define("elasticPool" + i).withSku(elasticPoolSkus.get(i)).createAsync().cast(Indexable.class))
+            )
             .blockLast();
     }
 
@@ -1701,7 +1715,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void generateSku() throws IOException {
         StringBuilder databaseSkuBuilder = new StringBuilder();
         StringBuilder elasticPoolSkuBuilder = new StringBuilder();
-        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
+        regionCapabilities.supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
                     if (edition.name().equalsIgnoreCase("System")) {
@@ -1752,16 +1766,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .append("\n    ").append("/** ").append(edition).append(" Edition with ").append(detailName).append(" sku. */")
             .append("\n    ").append("public static final ").append(className).append(" ").append(String.format("%s_%s", edition.toUpperCase(Locale.ROOT), detailName.toUpperCase(Locale.ROOT))).append(" =")
             .append("\n        new ").append(className).append("(")
-                .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
-                .append(", ")
-                .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
-                .append(", ")
-                .append(sku.family() == null ? null : "\"" + sku.family() + "\"")
-                .append(", ")
-                .append(sku.capacity())
-                .append(", ")
-                .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
-                .append(");");
+            .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
+            .append(", ")
+            .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
+            .append(", ")
+            .append(sku.family() == null ? null : "\"" + sku.family() + "\"")
+            .append(", ")
+            .append(sku.capacity())
+            .append(", ")
+            .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
+            .append(");");
     }
 
     @Test
