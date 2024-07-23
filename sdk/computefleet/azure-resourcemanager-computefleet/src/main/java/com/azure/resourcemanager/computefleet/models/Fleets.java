@@ -108,26 +108,26 @@ public interface Fleets {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualMachineScaleSet list operation along with {@link Response}.
+     * @return the response of a VirtualMachineScaleSet list operation as paginated response with {@link PagedIterable}.
      */
-    Response<VirtualMachineScaleSetListResult> listVirtualMachineScaleSetsWithResponse(String resourceGroupName,
-        String name, Context context);
+    PagedIterable<VirtualMachineScaleSet> listVirtualMachineScaleSets(String resourceGroupName, String name);
 
     /**
      * List VirtualMachineScaleSet resources by Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualMachineScaleSet list operation.
+     * @return the response of a VirtualMachineScaleSet list operation as paginated response with {@link PagedIterable}.
      */
-    VirtualMachineScaleSetListResult listVirtualMachineScaleSets(String resourceGroupName, String name);
+    PagedIterable<VirtualMachineScaleSet> listVirtualMachineScaleSets(String resourceGroupName, String name,
+        Context context);
 
     /**
      * Get a Fleet.
