@@ -36,6 +36,7 @@ import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -1916,6 +1917,29 @@ public class ShareClient {
     }
 
     /**
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it, else creates a
+     * new permission and returns the key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareClient.createPermission#ShareFilePermission -->
+     * <pre>
+     * ShareFilePermission permission = new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
+     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;;
+     * String response1 = shareClient.createPermission&#40;permission&#41;;
+     * System.out.printf&#40;&quot;The file permission key is %s&quot;, response1&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareClient.createPermission#ShareFilePermission -->
+     *
+     * @param filePermission The file permission to get/create.
+     * @return The file permission key associated with the file permission.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String createPermission(ShareFilePermission filePermission) {
+        return createPermissionWithResponse(filePermission, Context.NONE).getValue();
+    }
+
+    /**
      * Creates a permission t the share level. If a permission already exists, it returns the key of it, else creates a
      * new permission and returns the key.
      *
@@ -1936,6 +1960,37 @@ public class ShareClient {
     public Response<String> createPermissionWithResponse(String filePermission, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         SharePermission sharePermission = new SharePermission().setPermission(filePermission);
+        ResponseBase<SharesCreatePermissionHeaders, Void> response = this.azureFileStorageClient.getShares()
+            .createPermissionWithResponse(shareName, sharePermission, null, finalContext);
+
+        return new SimpleResponse<>(response,
+            response.getDeserializedHeaders().getXMsFilePermissionKey());
+    }
+
+    /**
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it, else creates a
+     * new permission and returns the key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareClient.createPermissionWithResponse#ShareFilePermission-context -->
+     * <pre>
+     * ShareFilePermission permission = new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
+     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;;
+     * Response&lt;String&gt; response1 = shareClient.createPermissionWithResponse&#40;permission, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;The file permission key is %s&quot;, response1.getValue&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareClient.createPermissionWithResponse#ShareFilePermission-context -->
+     *
+     * @param filePermission The file permission to get/create.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response that contains the file permission key associated with the file permission.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<String> createPermissionWithResponse(ShareFilePermission filePermission, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        SharePermission sharePermission = new SharePermission().setPermission(filePermission.getPermission())
+            .setFormat(filePermission.getPermissionFormat());
         ResponseBase<SharesCreatePermissionHeaders, Void> response = this.azureFileStorageClient.getShares()
             .createPermissionWithResponse(shareName, sharePermission, null, finalContext);
 
@@ -1969,6 +2024,11 @@ public class ShareClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.getPermission#string-FilePermissionFormat -->
+     * <pre>
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * String response2 = shareClient.getPermission&#40;&quot;filePermissionKey&quot;, filePermissionFormat&#41;;
+     * System.out.printf&#40;&quot;The file permission is %s&quot;, response2&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.share.ShareClient.getPermission#string-FilePermissionFormat -->
      *
      * @param filePermissionKey The file permission key.
@@ -2014,9 +2074,19 @@ public class ShareClient {
      * <p><strong>Code Samples</strong></p>
      *
      * <!-- src_embed com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-FilePermissionFormat-context -->
+     * <pre>
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * Response&lt;String&gt; response1 = shareClient.getPermissionWithResponse&#40;&quot;filePermissionKey&quot;,
+     *     filePermissionFormat, Context.NONE&#41;;
+     * System.out.printf&#40;&quot;The file permission is %s&quot;, response1.getValue&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.storage.file.share.ShareClient.getPermissionWithResponse#string-FilePermissionFormat-context -->
      *
      * @param filePermissionKey The file permission key.
+     * @param filePermissionFormat Optional. Available for version 2024-11-04 and later. Specifies the format in which
+     * the permission is returned. If filePermissionFormat is unspecified or explicitly set to SDDL, the permission will
+     * be returned in SSDL format. If filePermissionFormat is explicity set to binary, the permission is returned as a
+     * base64 string representing the binary encoding of the permission in self-relative format.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response that contains th file permission associated with the file permission key.
      */

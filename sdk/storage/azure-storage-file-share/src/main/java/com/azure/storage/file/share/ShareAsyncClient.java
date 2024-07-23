@@ -21,11 +21,13 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -368,7 +370,8 @@ public class ShareAsyncClient {
         return azureFileStorageClient.getShares()
             .createNoCustomHeadersWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(),
-                options.isSnapshotVirtualDirectoryAccessEnabled(), context)
+                options.isSnapshotVirtualDirectoryAccessEnabled(), null, null,
+                null, context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -925,7 +928,8 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().setPropertiesNoCustomHeadersWithResponseAsync(shareName, null,
             options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
-            options.isSnapshotVirtualDirectoryAccessEnabled(), context)
+            options.isSnapshotVirtualDirectoryAccessEnabled(), null, null,
+            null, context)
             .map(ModelHelper::mapToShareInfoResponse);
     }
 
@@ -1679,7 +1683,7 @@ public class ShareAsyncClient {
         Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, metadata, requestConditions,
                 context).map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
@@ -2047,6 +2051,29 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createPermission#ShareFilePermission -->
+     * <pre>
+     * ShareFilePermission permission = new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
+     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;;
+     * shareAsyncClient.createPermission&#40;permission&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;The file permission key is %s&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createPermission#ShareFilePermission -->
+     *
+     * @param filePermission The file permission to get/create.
+     * @return The file permission key associated with the file permission.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> createPermission(ShareFilePermission filePermission) {
+        return createPermissionWithResponse(filePermission).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it, else creates a
+     * new permission and returns the key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createPermissionWithResponse#string -->
      * <pre>
      * shareAsyncClient.createPermissionWithResponse&#40;&quot;filePermission&quot;&#41;.subscribe&#40;
@@ -2069,6 +2096,43 @@ public class ShareAsyncClient {
     Mono<Response<String>> createPermissionWithResponse(String filePermission, Context context) {
         // NOTE: Should we check for null or empty?
         SharePermission sharePermission = new SharePermission().setPermission(filePermission);
+        return azureFileStorageClient.getShares()
+            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
+            .map(response -> new SimpleResponse<>(response,
+                response.getDeserializedHeaders().getXMsFilePermissionKey()));
+    }
+
+    /**
+     * Creates a permission at the share level. If a permission already exists, it returns the key of it, else creates a
+     * new permission and returns the key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.createPermissionWithResponse#ShareFilePermission -->
+     * <pre>
+     * ShareFilePermission permission = new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
+     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;;
+     * shareAsyncClient.createPermissionWithResponse&#40;permission&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;The file permission key is %s&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareAsyncClient.createPermissionWithResponse#ShareFilePermission -->
+     *
+     * @param filePermission The file permission to get/create.
+     * @return A response that contains the file permission key associated with the file permission.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> createPermissionWithResponse(ShareFilePermission filePermission) {
+        try {
+            return withContext(context -> createPermissionWithResponse(filePermission, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<String>> createPermissionWithResponse(ShareFilePermission filePermission, Context context) {
+        // NOTE: Should we check for null or empty?
+        SharePermission sharePermission = new SharePermission().setPermission(filePermission.getPermission())
+            .setFormat(filePermission.getPermissionFormat());
         return azureFileStorageClient.getShares()
             .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
             .map(response -> new SimpleResponse<>(response,
@@ -2100,6 +2164,31 @@ public class ShareAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getPermission#string-FilePermissionFormat -->
+     * <pre>
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * shareAsyncClient.getPermission&#40;&quot;filePermissionKey&quot;, filePermissionFormat&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;The file permission is %s&quot;, response&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getPermission#string-FilePermissionFormat -->
+     *
+     * @param filePermissionKey The file permission key.
+     * @param filePermissionFormat Optional. Available for version 2024-11-04 and later. Specifies the format in which
+     * the permission is returned. If filePermissionFormat is unspecified or explicitly set to SDDL, the permission will
+     * be returned in SSDL format. If filePermissionFormat is explicity set to binary, the permission is returned as a
+     * base64 string representing the binary encoding of the permission in self-relative format.
+     * @return The file permission associated with the file permission key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> getPermission(String filePermissionKey, FilePermissionFormat filePermissionFormat) {
+        return getPermissionWithResponse(filePermissionKey, filePermissionFormat).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets a permission for a given key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getPermissionWithResponse#string -->
      * <pre>
      * shareAsyncClient.getPermissionWithResponse&#40;&quot;filePermissionKey&quot;&#41;.subscribe&#40;
@@ -2113,15 +2202,46 @@ public class ShareAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> getPermissionWithResponse(String filePermissionKey) {
         try {
-            return withContext(context -> getPermissionWithResponse(filePermissionKey, context));
+            return withContext(context -> getPermissionWithResponse(filePermissionKey, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, Context context) {
+    /**
+     * Gets a permission for a given key.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareAsyncClient.getPermissionWithResponse#string-FilePermissionFormat -->
+     * <pre>
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * shareAsyncClient.getPermissionWithResponse&#40;&quot;filePermissionKey&quot;, filePermissionFormat&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;The file permission is %s&quot;, response.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareAsyncClient.getPermissionWithResponse#string-FilePermissionFormat -->
+     *
+     * @param filePermissionKey The file permission key.
+     * @param filePermissionFormat Optional. Available for version 2024-11-04 and later. Specifies the format in which
+     * the permission is returned. If filePermissionFormat is unspecified or explicitly set to SDDL, the permission will
+     * be returned in SSDL format. If filePermissionFormat is explicity set to binary, the permission is returned as a
+     * base64 string representing the binary encoding of the permission in self-relative format.
+     * @return A response that contains th file permission associated with the file permission key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<String>> getPermissionWithResponse(String filePermissionKey,
+                                                            FilePermissionFormat filePermissionFormat) {
+        try {
+            return withContext(context -> getPermissionWithResponse(filePermissionKey, filePermissionFormat, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<String>> getPermissionWithResponse(String filePermissionKey, FilePermissionFormat filePermissionFormat,
+        Context context) {
         return azureFileStorageClient.getShares()
-            .getPermissionWithResponseAsync(shareName, filePermissionKey, null, context)
+            .getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat, null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue().getPermission()));
     }
 

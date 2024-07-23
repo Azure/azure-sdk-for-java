@@ -31,6 +31,7 @@ import com.azure.storage.file.share.implementation.models.DirectoriesGetProperti
 import com.azure.storage.file.share.implementation.models.DirectoriesListHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
@@ -50,6 +51,7 @@ import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
+import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -663,12 +665,44 @@ public class ShareDirectoryClient {
      *
      * <p>Set directory properties</p>
      *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setProperties#FileSmbProperties-String-FilePermissionFormat -->
+     * <pre>
+     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;;
+     * String filePermission1 = &quot;filePermission&quot;;
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * ShareDirectoryInfo response1 = shareDirectoryClient.setProperties&#40;smbProperties1, filePermission1,
+     *     filePermissionFormat&#41;;
+     * System.out.printf&#40;&quot;Directory latest modified date is %s.&quot;, response1.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setProperties#FileSmbProperties-String-FilePermissionFormat -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @param filePermissionFormat The file permission format of the file.
+     * @return The storage directory SMB properties
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareDirectoryInfo setProperties(FileSmbProperties smbProperties, String filePermission,
+        FilePermissionFormat filePermissionFormat) {
+        return setPropertiesWithResponse(smbProperties, filePermission, filePermissionFormat, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Sets the properties of this directory. The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-Duration-Context -->
      * <pre>
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
      * String filePermission = &quot;filePermission&quot;;
-     * Response&lt;ShareDirectoryInfo&gt; response = shareDirectoryClient.setPropertiesWithResponse&#40;smbProperties, filePermission,
-     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;ShareDirectoryInfo&gt; response = shareDirectoryClient.setPropertiesWithResponse&#40;smbProperties,
+     *     filePermission, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
      * System.out.printf&#40;&quot;Directory latest modified date is %s.&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-Duration-Context -->
@@ -702,8 +736,116 @@ public class ShareDirectoryClient {
         String fileChangeTime = smbProperties.getFileChangeTimeString();
         Callable<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> operation = () ->
             this.azureFileStorageClient.getDirectories().setPropertiesWithResponse(shareName, directoryPath,
-                fileAttributes, null, finalFilePermission, filePermissionKey, fileCreationTime, fileLastWriteTime,
+                fileAttributes, null, finalFilePermission, null, filePermissionKey, fileCreationTime, fileLastWriteTime,
                 fileChangeTime, finalContext);
+
+        return ModelHelper.mapSetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
+    }
+
+    /**
+     * Sets the properties of this directory. The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-FilePermissionFormat-Duration-Context -->
+     * <pre>
+     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;;
+     * String filePermission1 = &quot;filePermission&quot;;
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * Response&lt;ShareDirectoryInfo&gt; response1 = shareDirectoryClient.setPropertiesWithResponse&#40;smbProperties1,
+     *     filePermission1, filePermissionFormat, Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;Directory latest modified date is %s.&quot;, response1.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#FileSmbProperties-String-FilePermissionFormat-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @param filePermissionFormat The file permission format of the file.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the storage directory smb properties with headers and response status code
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareDirectoryInfo> setPropertiesWithResponse(FileSmbProperties smbProperties,
+        String filePermission, FilePermissionFormat filePermissionFormat, Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        // Checks that file permission and file permission key are valid
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+
+        // If file permission and file permission key are both not set then set default value
+        String finalFilePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
+        String filePermissionKey = smbProperties.getFilePermissionKey();
+
+        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
+        Callable<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> operation = () ->
+            this.azureFileStorageClient.getDirectories().setPropertiesWithResponse(shareName, directoryPath,
+                fileAttributes, null, finalFilePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
+                fileChangeTime, finalContext);
+
+        return ModelHelper.mapSetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
+    }
+
+    /**
+     * Sets the properties of this directory. The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions-Duration-Context -->
+     * <pre>
+     * ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions&#40;&#41;;
+     * options.setSmbProperties&#40;new FileSmbProperties&#40;&#41;&#41;;
+     * options.setFilePermissions&#40;new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
+     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;&#41;;
+     * Response&lt;ShareDirectoryInfo&gt; response2 = shareDirectoryClient.setPropertiesWithResponse&#40;options,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * System.out.printf&#40;&quot;Directory latest modified date is %s.&quot;, response2.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareDirectorySetPropertiesOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the storage directory smb properties with headers and response status code
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareDirectoryInfo> setPropertiesWithResponse(ShareDirectorySetPropertiesOptions options,
+        Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        FileSmbProperties smbProperties = options.getSmbProperties();
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        // Checks that file permission and file permission key are valid
+        ModelHelper.validateFilePermissionAndKey(options.getFilePermissions().getPermission(), smbProperties.getFilePermissionKey());
+
+        // If file permission and file permission key are both not set then set default value
+        String finalFilePermission = smbProperties.setFilePermission(options.getFilePermissions().getPermission(), FileConstants.PRESERVE);
+        String filePermissionKey = smbProperties.getFilePermissionKey();
+
+        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
+        Callable<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> operation = () ->
+            this.azureFileStorageClient.getDirectories().setPropertiesWithResponse(shareName, directoryPath,
+                fileAttributes, null, finalFilePermission, options.getFilePermissions().getPermissionFormat(),
+                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, finalContext);
 
         return ModelHelper.mapSetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -1221,8 +1363,8 @@ public class ShareDirectoryClient {
             .renameNoCustomHeadersWithResponse(destinationDirectoryClient.getShareName(),
                 destinationDirectoryClient.getDirectoryPath(), renameSource, null /* timeout */,
                 options.getReplaceIfExists(), options.isIgnoreReadOnly(), options.getFilePermission(),
-                filePermissionKey, options.getMetadata(), sourceConditions, destinationConditions, smbInfo,
-                finalContext);
+                options.getFilePermissionFormat(), filePermissionKey, options.getMetadata(), sourceConditions,
+                destinationConditions, smbInfo, finalContext);
 
         return new SimpleResponse<>(sendRequest(operation, timeout, ShareStorageException.class),
             destinationDirectoryClient);

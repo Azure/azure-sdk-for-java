@@ -1,37 +1,35 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
-import java.util.Map;
+
 
 /**
- * Extended options that may be passed when creating a share.
+ * Extended options that may be passed when setting properties of a file.
  */
 @Fluent
-public class ShareFileCreateOptions {
-
+public class ShareFileSetPropertiesOptions {
     private final long size;
     private ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
     private ShareFilePermission filePermissions;
-    private Map<String, String> metadata;
     private ShareRequestConditions requestConditions;
 
     /**
-     * @param size Specifies the maximum size for the file share.
+     * @param size Specifies the size for the file share.
      */
-    public ShareFileCreateOptions(long size) {
+    public ShareFileSetPropertiesOptions(long size) {
         this.size = size;
     }
 
     /**
-     * @return Specifies the maximum size for the file share.
+     * @return Gets the size for the file share.
      */
     public long getSize() {
         return this.size;
@@ -40,17 +38,17 @@ public class ShareFileCreateOptions {
     /**
      * @return the file's http headers.
      */
-    public ShareFileHttpHeaders getShareFileHttpHeaders() {
+    public ShareFileHttpHeaders getHttpHeaders() {
         return httpHeaders;
     }
 
     /**
      * Sets the file's http headers.
-     * @param headers the http headers.
+     * @param httpHeaders the http headers.
      * @return the updated options.
      */
-    public ShareFileCreateOptions setShareFileHttpHeaders(ShareFileHttpHeaders headers) {
-        httpHeaders = headers;
+    public ShareFileSetPropertiesOptions setHttpHeaders(ShareFileHttpHeaders httpHeaders) {
+        this.httpHeaders = httpHeaders;
         return this;
     }
 
@@ -69,45 +67,8 @@ public class ShareFileCreateOptions {
      * rest are ignored.
      * @return The updated options.
      */
-    public ShareFileCreateOptions setSmbProperties(FileSmbProperties smbProperties) {
+    public ShareFileSetPropertiesOptions setSmbProperties(FileSmbProperties smbProperties) {
         this.smbProperties = smbProperties;
-        return this;
-    }
-
-    /**
-     * @return Metadata to associate with the share
-     */
-    public Map<String, String> getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * @param metadata Metadata to associate with the share. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
-     * @return The updated options.
-     */
-    public ShareFileCreateOptions setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Gets the {@link ShareRequestConditions}.
-     *
-     * @return {@link ShareRequestConditions}
-     */
-    public ShareRequestConditions getRequestConditions() {
-        return requestConditions;
-    }
-
-    /**
-     * Sets the {@link ShareRequestConditions}.
-     *
-     * @param requestConditions {@link ShareRequestConditions}
-     * @return The updated options.
-     */
-    public ShareFileCreateOptions setRequestConditions(ShareRequestConditions requestConditions) {
-        this.requestConditions = requestConditions;
         return this;
     }
 
@@ -126,8 +87,28 @@ public class ShareFileCreateOptions {
      * @param filePermissions {@link ShareFilePermission}
      * @return The updated options.
      */
-    public ShareFileCreateOptions setFilePermissions(ShareFilePermission filePermissions) {
+    public ShareFileSetPropertiesOptions setFilePermissions(ShareFilePermission filePermissions) {
         this.filePermissions = filePermissions;
+        return this;
+    }
+
+    /**
+     * Gets the {@link ShareRequestConditions}.
+     *
+     * @return {@link ShareRequestConditions}
+     */
+    public ShareRequestConditions getRequestConditions() {
+        return requestConditions;
+    }
+
+    /**
+     * Sets the {@link ShareRequestConditions}.
+     *
+     * @param requestConditions {@link ShareRequestConditions}
+     * @return The updated options.
+     */
+    public ShareFileSetPropertiesOptions setRequestConditions(ShareRequestConditions requestConditions) {
+        this.requestConditions = requestConditions;
         return this;
     }
 }

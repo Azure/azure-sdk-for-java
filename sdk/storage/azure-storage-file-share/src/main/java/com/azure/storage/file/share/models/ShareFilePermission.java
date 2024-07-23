@@ -19,7 +19,6 @@ public class ShareFilePermission {
      */
     private String permission;
 
-
     /**
      * Get the format of file permission.
      *
@@ -29,15 +28,32 @@ public class ShareFilePermission {
         return permissionFormat;
     }
 
+    /**
+     * Set the format of file permission.
+     *
+     * @param permissionFormat the format of the file permission.
+     * @return the ShareFilePermission object itself.
+     */
     public ShareFilePermission setPermissionFormat(FilePermissionFormat permissionFormat) {
         this.permissionFormat = permissionFormat;
         return this;
     }
 
+    /**
+     * Gets the permission of file.
+     *
+     * @return the permission of file.
+     */
     public String getPermission() {
         return permission;
     }
 
+    /**
+     * Set the permission of file.
+     *
+     * @param permission the file permission.
+     * @return the ShareFilePermission object itself.
+     */
     public ShareFilePermission setPermission(String permission) {
         this.permission = permission;
         return this;

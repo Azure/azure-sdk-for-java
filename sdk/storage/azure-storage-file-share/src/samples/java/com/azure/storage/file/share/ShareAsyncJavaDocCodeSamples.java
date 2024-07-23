@@ -4,9 +4,11 @@ package com.azure.storage.file.share;
 
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -648,7 +650,8 @@ public class ShareAsyncJavaDocCodeSamples {
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createPermission(String)}
+     * Generates a code sample for using {@link ShareAsyncClient#createPermission(String)} and
+     * {@link ShareAsyncClient#createPermission(ShareFilePermission)}
      */
     public void createPermissionAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
@@ -656,10 +659,18 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.createPermission("filePermission").subscribe(
             response -> System.out.printf("The file permission key is %s", response));
         // END: com.azure.storage.file.share.ShareAsyncClient.createPermission#string
+
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createPermission#ShareFilePermission
+        ShareFilePermission permission = new ShareFilePermission().setPermission("filePermission")
+            .setPermissionFormat(FilePermissionFormat.BINARY);
+        shareAsyncClient.createPermission(permission).subscribe(
+            response -> System.out.printf("The file permission key is %s", response));
+        // END: com.azure.storage.file.share.ShareAsyncClient.createPermission#ShareFilePermission
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#createPermissionWithResponse(String)}
+     * Generates a code sample for using {@link ShareAsyncClient#createPermissionWithResponse(String)} and
+     * {@link ShareAsyncClient#createPermissionWithResponse(ShareFilePermission)}
      */
     public void createPermissionWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
@@ -667,10 +678,18 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.createPermissionWithResponse("filePermission").subscribe(
             response -> System.out.printf("The file permission key is %s", response.getValue()));
         // END: com.azure.storage.file.share.ShareAsyncClient.createPermissionWithResponse#string
+
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.createPermissionWithResponse#ShareFilePermission
+        ShareFilePermission permission = new ShareFilePermission().setPermission("filePermission")
+            .setPermissionFormat(FilePermissionFormat.BINARY);
+        shareAsyncClient.createPermissionWithResponse(permission).subscribe(
+            response -> System.out.printf("The file permission key is %s", response.getValue()));
+        // END: com.azure.storage.file.share.ShareAsyncClient.createPermissionWithResponse#ShareFilePermission
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#getPermission(String)}
+     * Generates a code sample for using {@link ShareAsyncClient#getPermission(String)} and
+     * {@link ShareAsyncClient#getPermission(String, FilePermissionFormat)}
      */
     public void getPermissionAsync() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
@@ -678,10 +697,17 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.getPermission("filePermissionKey").subscribe(
             response -> System.out.printf("The file permission is %s", response));
         // END: com.azure.storage.file.share.ShareAsyncClient.getPermission#string
+
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.getPermission#string-FilePermissionFormat
+        FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+        shareAsyncClient.getPermission("filePermissionKey", filePermissionFormat).subscribe(
+            response -> System.out.printf("The file permission is %s", response));
+        // END: com.azure.storage.file.share.ShareAsyncClient.getPermission#string-FilePermissionFormat
     }
 
     /**
-     * Generates a code sample for using {@link ShareAsyncClient#getPermissionWithResponse(String)}
+     * Generates a code sample for using {@link ShareAsyncClient#getPermissionWithResponse(String)} and
+     * {@link ShareAsyncClient#getPermissionWithResponse(String, FilePermissionFormat)}
      */
     public void getPermissionWithResponse() {
         ShareAsyncClient shareAsyncClient = createAsyncClientWithSASToken();
@@ -689,6 +715,12 @@ public class ShareAsyncJavaDocCodeSamples {
         shareAsyncClient.getPermissionWithResponse("filePermissionKey").subscribe(
             response -> System.out.printf("The file permission is %s", response.getValue()));
         // END: com.azure.storage.file.share.ShareAsyncClient.getPermissionWithResponse#string
+
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.getPermissionWithResponse#string-FilePermissionFormat
+        FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+        shareAsyncClient.getPermissionWithResponse("filePermissionKey", filePermissionFormat).subscribe(
+            response -> System.out.printf("The file permission is %s", response.getValue()));
+        // END: com.azure.storage.file.share.ShareAsyncClient.getPermissionWithResponse#string-FilePermissionFormat
     }
 
     /**

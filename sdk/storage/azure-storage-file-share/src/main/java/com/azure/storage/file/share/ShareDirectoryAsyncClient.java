@@ -25,6 +25,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
+import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -41,6 +42,7 @@ import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
+import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -665,6 +667,39 @@ public class ShareDirectoryAsyncClient {
      *
      * <p>Set directory properties</p>
      *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.setProperties#FileSmbProperties-String-FilePermissionFormat -->
+     * <pre>
+     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;;
+     * String filePermission1 = &quot;filePermission&quot;;
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * shareDirectoryAsyncClient.setProperties&#40;smbProperties1, filePermission1, filePermissionFormat&#41;
+     *     .subscribe&#40;properties -&gt; &#123;
+     *     System.out.printf&#40;&quot;Directory latest modified date is %s:&quot;, properties.getLastModified&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.setProperties#FileSmbProperties-String-FilePermissionFormat -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @param filePermissionFormat The file permission format of the file.
+     * @return The storage directory SMB properties
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ShareDirectoryInfo> setProperties(FileSmbProperties smbProperties, String filePermission,
+        FilePermissionFormat filePermissionFormat) {
+        return setPropertiesWithResponse(smbProperties, filePermission, filePermissionFormat).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Sets the properties of this directory. The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
      * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String -->
      * <pre>
      * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
@@ -686,14 +721,88 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties,
                                                                         String filePermission) {
         try {
-            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, context));
+            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, null,
+                context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Sets the properties of this directory. The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String-FilePermissionFormat -->
+     * <pre>
+     * FileSmbProperties smbProperties1 = new FileSmbProperties&#40;&#41;;
+     * String filePermission1 = &quot;filePermission&quot;;
+     * FilePermissionFormat filePermissionFormat = FilePermissionFormat.BINARY;
+     * shareDirectoryAsyncClient.setPropertiesWithResponse&#40;smbProperties1, filePermission1, filePermissionFormat&#41;
+     *     .subscribe&#40;properties -&gt; &#123;
+     *     System.out.printf&#40;&quot;Directory latest modified date is %s:&quot;, properties.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#FileSmbProperties-String-FilePermissionFormat -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param smbProperties The SMB properties of the directory.
+     * @param filePermission The file permission of the directory.
+     * @param filePermissionFormat The file permission format of the file.
+     * @return A response containing the storage directory smb properties with headers and response status code
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties,
+        String filePermission, FilePermissionFormat filePermissionFormat) {
+        try {
+            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission,
+                filePermissionFormat, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    /**
+     * Sets the properties of this directory. The properties include the file SMB properties and the file permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Set directory properties</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions -->
+     * <pre>
+     * ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions&#40;&#41;;
+     * options.setSmbProperties&#40;new FileSmbProperties&#40;&#41;&#41;;
+     * options.setFilePermissions&#40;new ShareFilePermission&#40;&#41;.setPermission&#40;&quot;filePermission&quot;&#41;
+     *     .setPermissionFormat&#40;FilePermissionFormat.BINARY&#41;&#41;;
+     * shareDirectoryAsyncClient.setPropertiesWithResponse&#40;options&#41;.subscribe&#40;properties -&gt; &#123;
+     *     System.out.printf&#40;&quot;Directory latest modified date is %s:&quot;, properties.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryAsyncClient.setPropertiesWithResponse#ShareDirectorySetPropertiesOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-directory-properties">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareDirectorySetPropertiesOptions}
+     * @return A response containing the storage directory smb properties with headers and response status code
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(ShareDirectorySetPropertiesOptions options) {
+        try {
+            return withContext(context -> setPropertiesWithResponse(options.getSmbProperties(),
+                options.getFilePermissions().getPermission(), options.getFilePermissions().getPermissionFormat(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
-                                                                 Context context) {
+        FilePermissionFormat filePermissionFormat, Context context) {
 
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
@@ -712,7 +821,7 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, null, filePermission,
-                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
+                filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
             .map(ModelHelper::mapSetPropertiesResponse);
     }
 
@@ -1214,8 +1323,8 @@ public class ShareDirectoryAsyncClient {
         return destinationDirectoryClient.azureFileStorageClient.getDirectories().renameWithResponseAsync(
             destinationDirectoryClient.getShareName(), destinationDirectoryClient.getDirectoryPath(), renameSource,
             null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
-            options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
-            destinationConditions, smbInfo, context)
+            options.getFilePermission(), options.getFilePermissionFormat(), filePermissionKey, options.getMetadata(),
+            sourceConditions, destinationConditions, smbInfo, context)
             .map(response -> new SimpleResponse<>(response, destinationDirectoryClient));
     }
 
@@ -1696,7 +1805,7 @@ public class ShareDirectoryAsyncClient {
         Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, metadata, requestConditions,
                 context).map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
