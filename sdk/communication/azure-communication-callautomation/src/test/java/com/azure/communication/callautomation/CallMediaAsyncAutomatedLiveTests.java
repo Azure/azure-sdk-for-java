@@ -431,6 +431,10 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(answerCallResult.getCallConnectionProperties());
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
+             // wait for callConnected
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
+             
             // Start Media Streaming
             StartMediaStreamingOptions startMediaStreamingOptions = new StartMediaStreamingOptions();
             // startMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
@@ -444,7 +448,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // Stop Media Streaming
             StopMediaStreamingOptions stopMediaStreamingOptions = new StopMediaStreamingOptions();
-            stopMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+           // stopMediaStreamingOptions.setOperationCallbackUrl(DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
 
             callerAsyncClient.getCallConnectionAsync(callerConnectionId).getCallMediaAsync().stopMediaStreamingWithResponse(stopMediaStreamingOptions);
             MediaStreamingStopped mediaStreamingStopped = waitForEvent(MediaStreamingStopped.class, callerConnectionId, Duration.ofSeconds(10));
