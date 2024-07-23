@@ -12,7 +12,8 @@
 - [Azure Subscription][azure_subscription]
 - An existing Cognitive Services or Anomaly Detector resource.
 
-For more information about creating the resource or how to get the location and sku information see [here][cognitive_resource_cli].
+For more information about creating the resource or how to get the location and sku information see 
+[here][cognitive_resource_cli].
 
 ### Include the Package
 
@@ -30,7 +31,10 @@ For more information about creating the resource or how to get the location and 
 
 ### Authenticate the client
 
-In order to interact with the Anomaly Detector service, you'll need to create an instance of the [`AnomalyDetectorClient`][anomaly_detector_client_class] class.  You will need an **endpoint** and an **API key** to instantiate a client object.  
+In order to interact with the Anomaly Detector service, you'll need to create an instance of 
+[`MultivariateClient`][multivariate_client_class], [`MultivariateAsyncClient`][multivariate_async_client_class],
+[`UnivariateClient`][univariate_client_class], or [`UnivariateAsyncClient`][univariate_async_client_class]. You will
+need an **endpoint** and an **API key** to instantiate a client object.  
 
 #### Get API Key
 
@@ -44,9 +48,12 @@ az cognitiveservices account keys list --resource-group <your-resource-group-nam
 
 #### Create AnomalyDetectorClient with Azure Active Directory Credential
 
-You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity]. Note that regional endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order to use this type of authentication.
+You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity]. Note that regional
+endpoints do not support AAD authentication. Create a [custom subdomain][custom_subdomain] for your resource in order
+to use this type of authentication.
 
-To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
+To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided
+with the Azure SDK, please include the `azure-identity` package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 
@@ -58,9 +65,11 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 </dependency>
 ```
 
-You will also need to [register a new AAD application][register_aad_app] and [grant access][aad_grant_access] to Anomaly Detector by assigning the `"Cognitive Services User"` role to your service principal.
+You will also need to [register a new AAD application][register_aad_app] and [grant access][aad_grant_access] to 
+Anomaly Detector by assigning the `"Cognitive Services User"` role to your service principal.
 
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
+AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Sync client
 
@@ -68,16 +77,21 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
-AnomalyDetectorClient anomalyDetectorClient =
-    new AnomalyDetectorClientBuilder()
-        .credential(new AzureKeyCredential(key))
-        .endpoint(endpoint)
-        .buildClient();
+MultivariateClient multivariateClient = new AnomalyDetectorClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint)
+    .buildMultivariateClient();
+
+UnivariateClient univariateClient = new AnomalyDetectorClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint)
+    .buildUnivariateClient();
 ```
 
 ## Key concepts
 
-With the Anomaly Detector, you can either detect anomalies in one variable using **Univariate Anomaly Detection**, or detect anomalies in multiple variables with **Multivariate Anomaly Detection**.
+With the Anomaly Detector, you can either detect anomalies in one variable using **Univariate Anomaly Detection**, or 
+detect anomalies in multiple variables with **Multivariate Anomaly Detection**.
 
 |Feature  |Description  |
 |---------|---------|
@@ -86,11 +100,16 @@ With the Anomaly Detector, you can either detect anomalies in one variable using
 
 ### Univariate Anomaly Detection
 
-The Univariate Anomaly Detection API enables you to monitor and detect abnormalities in your time series data without having to know machine learning. The algorithms adapt by automatically identifying and applying the best-fitting models to your data, regardless of industry, scenario, or data volume. Using your time series data, the API determines boundaries for anomaly detection, expected values, and which data points are anomalies.
+The Univariate Anomaly Detection API enables you to monitor and detect abnormalities in your time series data without 
+having to know machine learning. The algorithms adapt by automatically identifying and applying the best-fitting models
+to your data, regardless of industry, scenario, or data volume. Using your time series data, the API determines
+boundaries for anomaly detection, expected values, and which data points are anomalies.
 
-Using the Anomaly Detector doesn't require any prior experience in machine learning, and the REST API enables you to easily integrate the service into your applications and processes.
+Using the Anomaly Detector doesn't require any prior experience in machine learning, and the REST API enables you to
+easily integrate the service into your applications and processes.
 
-With the Univariate Anomaly Detection, you can automatically detect anomalies throughout your time series data, or as they occur in real-time.
+With the Univariate Anomaly Detection, you can automatically detect anomalies throughout your time series data, or as
+they occur in real-time.
 
 |Feature  |Description  |
 |---------|---------|
@@ -100,9 +119,14 @@ With the Univariate Anomaly Detection, you can automatically detect anomalies th
 
 ### Multivariate Anomaly Detection
 
-The **Multivariate Anomaly Detection** APIs further enable developers by easily integrating advanced AI for detecting anomalies from groups of metrics, without the need for machine learning knowledge or labeled data. Dependencies and inter-correlations between up to 300 different signals are now automatically counted as key factors. This new capability helps you to proactively protect your complex systems such as software applications, servers, factory machines, spacecraft, or even your business, from failures.
+The **Multivariate Anomaly Detection** APIs further enable developers by easily integrating advanced AI for detecting
+anomalies from groups of metrics, without the need for machine learning knowledge or labeled data. Dependencies and 
+inter-correlations between up to 300 different signals are now automatically counted as key factors. This new 
+capability helps you to proactively protect your complex systems such as software applications, servers, factory 
+machines, spacecraft, or even your business, from failures.
 
-With the Multivariate Anomaly Detection, you can automatically detect anomalies throughout your time series data, or as they occur in real-time. There are three processes to use Multivariate Anomaly Detection.
+With the Multivariate Anomaly Detection, you can automatically detect anomalies throughout your time series data, or as
+they occur in real-time. There are three processes to use Multivariate Anomaly Detection.
 
 - **Training**: Use Train Model API to create and train a model, then use Get Model Status API to get the status and model metadata.
 - **Inference**:
@@ -112,11 +136,13 @@ With the Multivariate Anomaly Detection, you can automatically detect anomalies 
 
 ### Thread safety
 
-We guarantee that all client instance methods are thread-safe and independent of each other ([guideline](https://azure.github.io/azure-sdk/dotnet_introduction.html#dotnet-service-methods-thread-safety)). This ensures that the recommendation of reusing client instances is always safe, even across threads.
+We guarantee that all client instance methods are thread-safe and independent of each other. This
+ensures that the recommendation of reusing client instances is always safe, even across threads.
 
 ## Examples
 
-The following section provides several code snippets covering some of the most common Anomaly Detector service tasks, including:
+The following section provides several code snippets covering some of the most common Anomaly Detector service tasks,
+including:
 
 - [Univariate Anomaly Detection - Batch detection](#batch-detection)
 - [Univariate Anomaly Detection - Streaming detection](#streaming-detection)
@@ -129,24 +155,31 @@ The following section provides several code snippets covering some of the most c
 String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
-AnomalyDetectorClient anomalyDetectorClient =
-    new AnomalyDetectorClientBuilder()
-        .credential(new AzureKeyCredential(key))
-        .endpoint(endpoint)
-        .buildClient();
+MultivariateClient multivariateClient = new AnomalyDetectorClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint)
+    .buildMultivariateClient();
+
+UnivariateClient univariateClient = new AnomalyDetectorClientBuilder()
+    .credential(new AzureKeyCredential(key))
+    .endpoint(endpoint)
+    .buildUnivariateClient();
 ```
 
 ### Batch detection
 
-For batch detection in univariate anomaly detection, please go to this sample for better understanding the workflow: [DetectAnomaliesEntireSeries.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesEntireSeries.java)
+For batch detection in univariate anomaly detection, please go to this sample for better understanding the workflow:
+[DetectAnomaliesEntireSeries.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesEntireSeries.java)
 
 ### Streaming detection
 
-For streaming/last detection in univariate anomaly detection, please go to this sample for better understanding the workflow: [DetectAnomaliesLastPoint.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesLastPoint.java)
+For streaming/last detection in univariate anomaly detection, please go to this sample for better understanding the 
+workflow: [DetectAnomaliesLastPoint.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesLastPoint.java)
 
 ### Detect change points
 
-For change points detection in univariate anomaly detection, please go to this sample for better understanding the workflow: [DetectChangePoints.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectChangePoints.java)
+For change points detection in univariate anomaly detection, please go to this sample for better understanding the
+workflow: [DetectChangePoints.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectChangePoints.java)
 
 ### Multivariate Anomaly Detection Sample
 
@@ -162,17 +195,24 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 ## Next steps
 
-These code samples show common scenario operations with the Azure Anomaly Detector library. More samples can be found under the [samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector) directory.
+These code samples show common scenario operations with the Azure Anomaly Detector library. More samples can be found
+under the [samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector) directory.
 
-For more extensive documentation on Azure Anomaly Detector, see the [Anomaly Detector documentation](https://learn.microsoft.com/azure/cognitive-services/anomaly-detector/overview) on docs.microsoft.com.
+For more extensive documentation on Azure Anomaly Detector, see the [Anomaly Detector documentation](https://learn.microsoft.com/azure/cognitive-services/anomaly-detector/overview) on
+docs.microsoft.com.
 
 ## Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit [cla.microsoft.com][cla].
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License
+Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. 
+For details, visit [cla.microsoft.com][cla].
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to 
+do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information see the 
+[Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
 [cla]: https://cla.microsoft.com
@@ -186,7 +226,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [api_reference_doc]: https://azure.github.io/azure-sdk-for-java/
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/anomaly-detector/
 [cognitive_resource_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli
-[anomaly_detector_client_class]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/AnomalyDetectorClient.java
+[multivariate_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/8b2622353dd8c4a03a87c7e04a6f82bf0712bab5/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/MultivariateClient.java
+[multivariate_async_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/8b2622353dd8c4a03a87c7e04a6f82bf0712bab5/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/MultivariateAsyncClient.java
+[univariate_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/8b2622353dd8c4a03a87c7e04a6f82bf0712bab5/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/UnivariateClient.java
+[univariate_async_client_class]: https://github.com/Azure/azure-sdk-for-java/blob/8b2622353dd8c4a03a87c7e04a6f82bf0712bab5/sdk/anomalydetector/azure-ai-anomalydetector/src/main/java/com/azure/ai/anomalydetector/UnivariateAsyncClient.java
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity

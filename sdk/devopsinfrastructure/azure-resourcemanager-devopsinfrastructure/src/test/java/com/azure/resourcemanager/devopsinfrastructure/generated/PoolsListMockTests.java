@@ -24,7 +24,7 @@ public final class PoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"maximumConcurrency\":164113652,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datauvfbtkuwh\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"hykojoxafnndlpic\"},\"identity\":{\"principalId\":\"ymkcdyhb\",\"tenantId\":\"kpw\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"dsytgadgvr\":{\"principalId\":\"ovvqfovljxywsu\",\"clientId\":\"yrs\"}}},\"location\":\"aeneqnzarrwl\",\"tags\":{\"bjibwwiftohq\":\"ijfqkacewiipfp\",\"plsaknynfsynljph\":\"vpuvks\"},\"id\":\"op\",\"name\":\"odlqiyntor\",\"type\":\"ihleos\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"maximumConcurrency\":422897894,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ayrhyrnx\"},\"identity\":{\"principalId\":\"eedndrdvstkwqqtc\",\"tenantId\":\"alm\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"gyqagvrvmnpkuk\":{\"principalId\":\"aygdvwvgpioh\",\"clientId\":\"xrtfudxep\"}}},\"location\":\"i\",\"tags\":{\"xw\":\"lxgwimfnjhf\",\"fkzikfj\":\"szkkfoqre\"},\"id\":\"wneaiv\",\"name\":\"wczelpci\",\"type\":\"elsfeaen\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,13 @@ public final class PoolsListMockTests {
 
         PagedIterable<Pool> response = manager.pools().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aeneqnzarrwl", response.iterator().next().location());
-        Assertions.assertEquals("ijfqkacewiipfp", response.iterator().next().tags().get("bjibwwiftohq"));
-        Assertions.assertEquals(ProvisioningState.CANCELED,
+        Assertions.assertEquals("i", response.iterator().next().location());
+        Assertions.assertEquals("lxgwimfnjhf", response.iterator().next().tags().get("xw"));
+        Assertions.assertEquals(ProvisioningState.UPDATING,
             response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals(164113652, response.iterator().next().properties().maximumConcurrency());
-        Assertions.assertEquals("hykojoxafnndlpic",
-            response.iterator().next().properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals(422897894, response.iterator().next().properties().maximumConcurrency());
+        Assertions.assertEquals("ayrhyrnx", response.iterator().next().properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().identity().type());
     }
 }
