@@ -22,7 +22,6 @@ import com.azure.resourcemanager.network.models.FirewallPolicyLogAnalyticsWorksp
 import com.azure.resourcemanager.network.models.FirewallPolicySnat;
 import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
-
 import java.util.Arrays;
 
 /**
@@ -30,11 +29,12 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyDraftsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyDraftPut.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/FirewallPolicyDraftPut.json
      */
     /**
      * Sample code: create or update firewall policy draft.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateFirewallPolicyDraft(com.azure.resourcemanager.AzureResourceManager azure) {

@@ -1,14 +1,11 @@
 # Release History
 
-## 1.0.0-beta.48 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
+## 1.0.0-beta.48 (2024-07-12)
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
 
 ## 1.0.0-beta.47 (2024-06-06)
 
@@ -439,7 +436,6 @@ and
 
 ## 1.0.0-beta.1 (2019-11-26)
 
-For details on the Azure SDK for Java (Decemeber 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 Version 1.0.0-beta.1 is the first preview of our efforts to provide low level interfaces and helper methods to support tracing for Java client libraries.
 This library includes [OpenTelemetry](https://opentelemetry.io/) implementation of the interface.
 This library added tracing instrumentation for AMQP and HTTP Java SDK client libraries across different languages and platforms.

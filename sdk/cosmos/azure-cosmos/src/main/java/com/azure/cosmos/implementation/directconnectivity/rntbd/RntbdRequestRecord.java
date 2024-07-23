@@ -264,6 +264,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     public boolean expire() {
         final CosmosException error;
+
         if ((this.args.serviceRequest().isReadOnly() || !this.hasSendingRequestStarted()) ||
             this.args.serviceRequest().getNonIdempotentWriteRetriesEnabled()){
             // Convert from requestTimeoutException to GoneException for the following two scenarios so they can be safely retried:
@@ -272,7 +273,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             error = new GoneException(this.toString(), null, this.args.physicalAddressUri().getURI(), HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
         } else {
             // For sent write request, converting to requestTimeout, will not be retried.
-            error = new RequestTimeoutException(this.toString(), this.args.physicalAddressUri().getURI());
+            error = new RequestTimeoutException(this.toString(), this.args.physicalAddressUri().getURI(), HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT);
         }
 
         BridgeInternal.setRequestHeaders(error, this.args.serviceRequest().getHeaders());

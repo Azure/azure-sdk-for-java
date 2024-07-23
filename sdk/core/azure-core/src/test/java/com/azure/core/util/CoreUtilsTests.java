@@ -20,6 +20,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -627,5 +628,17 @@ public class CoreUtilsTests {
     @Test
     public void addShutdownHookSafelyWithNullThreadDoesNothing() {
         assertNull(CoreUtils.addShutdownHookSafely(null));
+    }
+
+    @Test
+    public void parseBestNoColonInTimezoneOffset() {
+        OffsetDateTime parsed = CoreUtils.parseBestOffsetDateTime("2023-09-26T18:32:05+0000");
+        assertEquals(2023, parsed.getYear());
+        assertEquals(9, parsed.getMonthValue());
+        assertEquals(26, parsed.getDayOfMonth());
+        assertEquals(18, parsed.getHour());
+        assertEquals(32, parsed.getMinute());
+        assertEquals(5, parsed.getSecond());
+        assertEquals(0, parsed.getOffset().getTotalSeconds());
     }
 }

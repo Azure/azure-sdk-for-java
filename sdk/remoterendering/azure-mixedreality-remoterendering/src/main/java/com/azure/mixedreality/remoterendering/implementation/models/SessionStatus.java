@@ -5,38 +5,62 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SessionStatus. */
+/**
+ * The status of the rendering session. Terminal states are 'Error', 'Expired', and 'Stopped'.
+ */
 public final class SessionStatus extends ExpandableStringEnum<SessionStatus> {
-    /** Static value Error for SessionStatus. */
+    /**
+     * The rendering session has encountered an error, and is unusable. This is a terminal state.
+     */
     public static final SessionStatus ERROR = fromString("Error");
 
-    /** Static value Expired for SessionStatus. */
+    /**
+     * The rendering session enters the 'Expired' state when it has been in the 'Ready' state longer than its lease
+     * time. This is a terminal state.
+     */
     public static final SessionStatus EXPIRED = fromString("Expired");
 
-    /** Static value Starting for SessionStatus. */
+    /**
+     * The rendering session is starting, but not accepting incoming connections yet.
+     */
     public static final SessionStatus STARTING = fromString("Starting");
 
-    /** Static value Ready for SessionStatus. */
+    /**
+     * The rendering session is ready for incoming connections.
+     */
     public static final SessionStatus READY = fromString("Ready");
 
-    /** Static value Stopped for SessionStatus. */
+    /**
+     * The rendering session has been stopped with the 'Stop Session' operation. This is a terminal state.
+     */
     public static final SessionStatus STOPPED = fromString("Stopped");
 
     /**
+     * Creates a new instance of SessionStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SessionStatus() {
+    }
+
+    /**
      * Creates or finds a SessionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SessionStatus.
      */
-    @JsonCreator
     public static SessionStatus fromString(String name) {
         return fromString(name, SessionStatus.class);
     }
 
-    /** @return known SessionStatus values. */
+    /**
+     * Gets known SessionStatus values.
+     * 
+     * @return known SessionStatus values.
+     */
     public static Collection<SessionStatus> values() {
         return values(SessionStatus.class);
     }

@@ -59,13 +59,13 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-exporter-logging</artifactId>
-      <version>1.38.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
+      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
-      <version>1.38.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
+      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -77,7 +77,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

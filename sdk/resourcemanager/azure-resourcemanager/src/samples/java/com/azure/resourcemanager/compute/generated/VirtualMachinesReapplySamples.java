@@ -19,7 +19,10 @@ public final class VirtualMachinesReapplySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void reapplyTheStateOfAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().reapply("ResourceGroup", "VMName",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .reapply("ResourceGroup", "VMName", com.azure.core.util.Context.NONE);
     }
 }

@@ -17,6 +17,7 @@ It includes the following main features:
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [AI Services or Document Intelligence account][form_recognizer_account] to use this package.
 

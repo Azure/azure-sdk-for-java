@@ -6,25 +6,29 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.fluent.models.HybridComputePrivateLinkScopeInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the list of Azure Arc PrivateLinkScope resources.
  */
 @Fluent
-public final class HybridComputePrivateLinkScopeListResult {
+public final class HybridComputePrivateLinkScopeListResult
+    implements JsonSerializable<HybridComputePrivateLinkScopeListResult> {
     /*
      * List of Azure Arc PrivateLinkScope definitions.
      */
-    @JsonProperty(value = "value", required = true)
     private List<HybridComputePrivateLinkScopeInner> value;
 
     /*
-     * The URI to get the next set of Azure Arc PrivateLinkScope definitions if too many PrivateLinkScopes where returned in the result set.
+     * The URI to get the next set of Azure Arc PrivateLinkScope definitions if too many PrivateLinkScopes where
+     * returned in the result set.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -91,4 +95,47 @@ public final class HybridComputePrivateLinkScopeListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HybridComputePrivateLinkScopeListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridComputePrivateLinkScopeListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridComputePrivateLinkScopeListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HybridComputePrivateLinkScopeListResult.
+     */
+    public static HybridComputePrivateLinkScopeListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridComputePrivateLinkScopeListResult deserializedHybridComputePrivateLinkScopeListResult
+                = new HybridComputePrivateLinkScopeListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<HybridComputePrivateLinkScopeInner> value
+                        = reader.readArray(reader1 -> HybridComputePrivateLinkScopeInner.fromJson(reader1));
+                    deserializedHybridComputePrivateLinkScopeListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedHybridComputePrivateLinkScopeListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridComputePrivateLinkScopeListResult;
+        });
+    }
 }

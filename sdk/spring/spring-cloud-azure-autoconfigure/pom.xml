@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-  <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+  <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
 
   <name>Spring Cloud Azure AutoConfigure</name>
   <description>Spring Cloud Azure AutoConfigure</description>
@@ -32,25 +32,21 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
-
+  <properties>
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-service</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
-      <optional>true</optional>
-    </dependency>
-
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -59,7 +55,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-eventhubs</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-eventhubs;current} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -73,7 +69,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-servicebus</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-servicebus;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -81,7 +77,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-integration-azure-storage-queue</artifactId>
-      <version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-storage-queue;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -89,21 +85,33 @@
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
-      <version>2.9.11</version> <!-- {x-version-update;org.springframework.kafka:spring-kafka;external_dependency} -->
+      <version>3.2.1</version> <!-- {x-version-update;springboot3_org.springframework.kafka:spring-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-stream-kafka</artifactId>
-      <version>3.2.10</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+      <version>4.1.2</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Spring Data -->
 		<!-- Redis -->
     <dependency>
+      <groupId>io.lettuce</groupId>
+      <artifactId>lettuce-core</artifactId>
+      <version>6.3.2.RELEASE</version> <!-- {x-version-update;springboot3_io.lettuce:lettuce-core;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-redis</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.data:spring-data-redis;external_dependency} -->
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-redis;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -111,7 +119,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-spring-data-cosmos</artifactId>
-      <version>3.47.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
+      <version>5.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
       <optional>true</optional>
     </dependency>
 
@@ -119,29 +127,19 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-servicebus-jms</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+      <groupId>org.apache.qpid</groupId>
+      <artifactId>qpid-jms-client</artifactId>
+      <version>2.0.0</version> <!-- {x-version-update;springboot3_org.apache.qpid:qpid-jms-client;external_dependency} -->
       <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-identity</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
-      <version>1.2.6</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
+      <version>3.1.6</version> <!-- {x-version-update;springboot3_org.messaginghub:pooled-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -151,26 +149,56 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.9.6</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.9.7</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
       <version>4.62.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.module</groupId>
+          <artifactId>jackson-module-afterburner</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -181,8 +209,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.17.0</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.17.1</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-xml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -213,43 +247,61 @@
       <artifactId>azure-storage-blob</artifactId>
       <version>12.26.1</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-xml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-file-share</artifactId>
       <version>12.22.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-xml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
       <version>12.21.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-xml</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Spring -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -257,25 +309,25 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-client</artifactId>
-      <version>5.7.11</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+      <version>6.3.1</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-resource-server</artifactId>
-      <version>5.7.11</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+      <version>6.3.1</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
-      <version>5.7.11</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+      <version>6.3.1</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>5.7.11</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
+      <version>6.3.1</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -285,26 +337,26 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
-      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <version>3.0.2</version> <!-- {x-version-update;springboot3_com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;javax.servlet:javax.servlet-api;external_dependency} -->
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version> <!-- {x-version-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>6.2.5.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+      <version>8.0.1.Final</version> <!-- {x-version-update;springboot3_org.hibernate.validator:hibernate-validator;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
+      <version>3.0.2</version> <!-- {x-version-update;springboot3_jakarta.validation:jakarta.validation-api;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -314,17 +366,69 @@
       <optional>true</optional>
     </dependency>
 
+    <!--Remove after dependent jackson > 2.14, refer to https://github.com/spring-projects/spring-boot/issues/38634 -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.module</groupId>
+      <artifactId>jackson-module-afterburner</artifactId>
+      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
     <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-core-test</artifactId>
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-core-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-metadata</artifactId>
+      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Add mockito-core 4.11.0 to work with Java 21 -->
+    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>5.11.0</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
@@ -332,85 +436,34 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-configuration-metadata</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish</groupId>
-      <artifactId>jakarta.el</artifactId>
-      <version>3.0.4</version> <!-- {x-version-update;org.glassfish:jakarta.el;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <!-- for the samples   -->
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.14</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-sleuth</artifactId>
-      <version>3.1.10</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <!-- Jedis -->
-    <dependency>
-      <groupId>redis.clients</groupId>
-      <artifactId>jedis</artifactId>
-      <version>3.8.0</version> <!-- {x-version-update;spring_redis.clients:jedis;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-
     <!-- used to test AzureJdbcAutoConfiguration -->
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
-      <version>8.0.33</version> <!-- {x-version-update;com.mysql:mysql-connector-j;external_dependency} -->
+      <version>8.3.0</version> <!-- {x-version-update;springboot3_com.mysql:mysql-connector-j;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.9</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.7.3</version> <!-- {x-version-update;springboot3_org.postgresql:postgresql;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <!--testcontainers-->
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>testcontainers</artifactId>
-      <version>1.17.6</version> <!-- {x-version-update;org.testcontainers:testcontainers;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>1.17.6</version> <!-- {x-version-update;org.testcontainers:junit-jupiter;external_dependency} -->
+      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -419,34 +472,119 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.2.0</version> <!-- {x-version-update;springboot3_com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;springboot3_com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.14.6</version> <!-- {x-version-update;springboot3_org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <executions>
+          <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+          <execution>
+            <id>base-modules-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile without module-info for Java 8 -->
+          <execution>
+            <id>base-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile with Java 8 -->
+          <execution>
+            <id>base-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- Ensure we compile with Java 17 -->
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>17</release>
+              <compilerArgs>
+                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
+              </compilerArgs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>annotation-process</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <compilerArgs>
+                <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+              </compilerArgs>
+              <release>17</release>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-servicebus-jms:[1.0.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-                <include>org.messaginghub:pooled-jms:[1.2.6]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
-                <include>jakarta.validation:jakarta.validation-api:[2.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
-                <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.data:spring-data-mongodb:[3.4.18]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
-                <include>org.springframework.data:spring-data-redis:[2.7.18]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
-                <include>org.springframework.kafka:spring-kafka:[2.9.11]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[3.2.10]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
-                <include>org.springframework:spring-context-support:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-client:[5.7.11]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-resource-server:[5.7.11]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
-                <include>org.springframework.security:spring-security-oauth2-jose:[5.7.11]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
-                <include>org.springframework.security:spring-security-config:[5.7.11]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework:spring-jms:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
-                <include>org.springframework:spring-jdbc:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
-                <include>redis.clients:jedis:[3.8.0]</include> <!-- {x-include-update;spring_redis.clients:jedis;external_dependency} -->
+                <include>com.mysql:mysql-connector-j:[8.3.0]</include> <!-- {x-include-update;springboot3_com.mysql:mysql-connector-j;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+                <include>io.lettuce:lettuce-core:[6.3.2.RELEASE]</include> <!-- {x-include-update;springboot3_io.lettuce:lettuce-core;external_dependency} -->
+                <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
+                <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;springboot3_jakarta.validation:jakarta.validation-api;external_dependency} -->
+                <include>org.apache.qpid:qpid-jms-client:[2.0.0]</include> <!-- {x-include-update;springboot3_org.apache.qpid:qpid-jms-client;external_dependency} -->
+                <include>org.hibernate.validator:hibernate-validator:[8.0.1.Final]</include> <!-- {x-include-update;springboot3_org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>org.messaginghub:pooled-jms:[3.1.6]</include> <!-- {x-include-update;springboot3_org.messaginghub:pooled-jms;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.7.3]</include> <!-- {x-include-update;springboot3_org.postgresql:postgresql;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.1.2]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+                <include>org.springframework.data:spring-data-redis:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-redis;external_dependency} -->
+                <include>org.springframework.kafka:spring-kafka:[3.2.1]</include> <!-- {x-include-update;springboot3_org.springframework.kafka:spring-kafka;external_dependency} -->
+                <include>org.springframework.security:spring-security-config:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-client:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-jose:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-resource-server:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+                <include>org.springframework:spring-context-support:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
+                <include>org.springframework:spring-jdbc:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
+                <include>org.springframework:spring-jms:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-tx:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -455,7 +593,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>
@@ -465,66 +603,5 @@
         </configuration>
       </plugin>
     </plugins>
-
   </build>
-  <profiles>
-    <!-- Generate "spring-configuration-metadata.json" by annotation process -->
-    <profile>
-      <id>annotation-process-for-java-8</id>
-      <activation>
-        <jdk>[1.8,9)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>annotation-process-for-java-8</id>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-                <configuration>
-                  <compilerArgs>
-                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
-                  </compilerArgs>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>annotation-process-for-java-11</id>
-      <activation>
-        <jdk>[11,)</jdk>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>annotation-process-for-java-11</id>
-                <goals>
-                  <goal>compile</goal>
-                </goals>
-                <configuration>
-                  <compilerArgs>
-                    <arg>-proc:only</arg> <!-- Turn on annotation processing -->
-                  </compilerArgs>
-                  <release>11</release>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

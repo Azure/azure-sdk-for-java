@@ -14,16 +14,16 @@ public final class DppProxyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppProxyResource model = BinaryData.fromString(
-            "{\"tags\":{\"zq\":\"gyepsbjt\",\"fjz\":\"gxywpmue\"},\"id\":\"qkqujidsu\",\"name\":\"onobglaocqx\",\"type\":\"ccm\"}")
+            "{\"tags\":{\"kix\":\"kgshwa\",\"eputtmrywnuzoqf\":\"bin\"},\"id\":\"yqzrnkcqvyxlw\",\"name\":\"zlsico\",\"type\":\"oqqnwvlryav\"}")
             .toObject(DppProxyResource.class);
-        Assertions.assertEquals("gyepsbjt", model.tags().get("zq"));
+        Assertions.assertEquals("kgshwa", model.tags().get("kix"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DppProxyResource model = new DppProxyResource().withTags(mapOf("zq", "gyepsbjt", "fjz", "gxywpmue"));
+        DppProxyResource model = new DppProxyResource().withTags(mapOf("kix", "kgshwa", "eputtmrywnuzoqf", "bin"));
         model = BinaryData.fromObject(model).toObject(DppProxyResource.class);
-        Assertions.assertEquals("gyepsbjt", model.tags().get("zq"));
+        Assertions.assertEquals("kgshwa", model.tags().get("kix"));
     }
 
     // Use "Map.of" if available

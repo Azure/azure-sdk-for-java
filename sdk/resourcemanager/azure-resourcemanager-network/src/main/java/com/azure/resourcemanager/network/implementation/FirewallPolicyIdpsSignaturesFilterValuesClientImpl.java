@@ -78,7 +78,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Describes the filter values possibles for a given column.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -109,7 +109,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -122,7 +122,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Describes the filter values possibles for a given column.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -154,7 +154,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), resourceGroupName, firewallPolicyName,
@@ -166,7 +166,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Describes the filter values possibles for a given column.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -185,7 +185,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Describes the filter values possibles for a given column.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -203,7 +203,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
      * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Describes the filter values possibles for a given column.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

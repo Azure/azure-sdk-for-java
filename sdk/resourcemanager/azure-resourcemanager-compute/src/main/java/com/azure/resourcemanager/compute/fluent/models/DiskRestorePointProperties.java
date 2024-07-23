@@ -158,8 +158,7 @@ public final class DiskRestorePointProperties {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -168,8 +167,7 @@ public final class DiskRestorePointProperties {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the DiskRestorePointProperties object itself.
@@ -330,8 +328,8 @@ public final class DiskRestorePointProperties {
     }
 
     /**
-     * Get the completionPercent property: Percentage complete for the background copy of disk restore point when
-     * source resource is from a different region.
+     * Get the completionPercent property: Percentage complete for the background copy of disk restore point when source
+     * resource is from a different region.
      * 
      * @return the completionPercent value.
      */
@@ -340,8 +338,8 @@ public final class DiskRestorePointProperties {
     }
 
     /**
-     * Set the completionPercent property: Percentage complete for the background copy of disk restore point when
-     * source resource is from a different region.
+     * Set the completionPercent property: Percentage complete for the background copy of disk restore point when source
+     * resource is from a different region.
      * 
      * @param completionPercent the completionPercent value to set.
      * @return the DiskRestorePointProperties object itself.

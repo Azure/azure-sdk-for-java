@@ -171,7 +171,6 @@ def get_dependency_management_content():
       </dependency>
     </dependencies>
   </dependencyManagement>
-
 """
 
 

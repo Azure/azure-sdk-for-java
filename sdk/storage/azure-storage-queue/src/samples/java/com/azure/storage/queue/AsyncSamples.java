@@ -20,7 +20,7 @@ public class AsyncSamples {
      */
     public static void main(String[] args) {
         // Create an async queue client.
-        String queueURL = String.format("https://%s.queue.core.windows.net/%s%s", ACCOUNT_NAME, QUEUE_NAME, SAS_TOKEN);
+        String queueURL = String.format("https://%s.queue.core.windows.net/%s?%s", ACCOUNT_NAME, QUEUE_NAME, SAS_TOKEN);
         QueueAsyncClient queueAsyncClient = new QueueClientBuilder().endpoint(queueURL).buildAsyncClient();
 
         // Create a queue, enqueue two messages.

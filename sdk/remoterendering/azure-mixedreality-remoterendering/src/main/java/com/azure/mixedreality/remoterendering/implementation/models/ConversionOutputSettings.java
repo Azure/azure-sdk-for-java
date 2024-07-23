@@ -5,62 +5,56 @@
 package com.azure.mixedreality.remoterendering.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Conversion output settings describe the destination of conversion output. */
+/**
+ * Conversion output settings describe the destination of conversion output.
+ */
 @Fluent
-public final class ConversionOutputSettings {
+public final class ConversionOutputSettings implements JsonSerializable<ConversionOutputSettings> {
     /*
-     * The URI of the Azure blob storage container where the result of the
-     * conversion should be written to.
+     * The URI of the Azure blob storage container where the result of the conversion should be written to.
      */
-    @JsonProperty(value = "storageContainerUri", required = true)
-    private String storageContainerUri;
+    private final String storageContainerUri;
 
     /*
-     * An Azure blob storage container shared access signature giving write
-     * access to the storage container. Optional. If not provided, the Azure
-     * Remote Rendering account needs to be linked with the storage account
-     * containing the blob container. See
-     * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts
-     * for details. For security purposes this field will never be filled out
-     * in responses bodies.
+     * An Azure blob storage container shared access signature giving write access to the storage container. Optional.
+     * If not provided, the Azure Remote Rendering account needs to be linked with the storage account containing the
+     * blob container. See
+     * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
+     * For security purposes this field will never be filled out in responses bodies.
      */
-    @JsonProperty(value = "storageContainerWriteSas")
     private String storageContainerWriteSas;
 
     /*
-     * A prefix which gets prepended in front of all files produced by the
-     * conversion process. Will be treated as a virtual folder. Optional. If
-     * not provided, output files will be stored at the container root.
+     * A prefix which gets prepended in front of all files produced by the conversion process. Will be treated as a
+     * virtual folder. Optional. If not provided, output files will be stored at the container root.
      */
-    @JsonProperty(value = "blobPrefix")
     private String blobPrefix;
 
     /*
-     * The file name of the output asset. Must end in '.arrAsset'. Optional. If
-     * not provided, file name will the same name as the input asset, with
-     * '.arrAsset' extension
+     * The file name of the output asset. Must end in '.arrAsset'. Optional. If not provided, file name will the same
+     * name as the input asset, with '.arrAsset' extension
      */
-    @JsonProperty(value = "outputAssetFilename")
     private String outputAssetFilename;
 
     /**
      * Creates an instance of ConversionOutputSettings class.
-     *
+     * 
      * @param storageContainerUri the storageContainerUri value to set.
      */
-    @JsonCreator
-    public ConversionOutputSettings(
-            @JsonProperty(value = "storageContainerUri", required = true) String storageContainerUri) {
+    public ConversionOutputSettings(String storageContainerUri) {
         this.storageContainerUri = storageContainerUri;
     }
 
     /**
      * Get the storageContainerUri property: The URI of the Azure blob storage container where the result of the
      * conversion should be written to.
-     *
+     * 
      * @return the storageContainerUri value.
      */
     public String getStorageContainerUri() {
@@ -73,7 +67,7 @@ public final class ConversionOutputSettings {
      * with the storage account containing the blob container. See
      * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
      * For security purposes this field will never be filled out in responses bodies.
-     *
+     * 
      * @return the storageContainerWriteSas value.
      */
     public String getStorageContainerWriteSas() {
@@ -86,7 +80,7 @@ public final class ConversionOutputSettings {
      * with the storage account containing the blob container. See
      * https://docs.microsoft.com/azure/remote-rendering/how-tos/create-an-account#link-storage-accounts for details.
      * For security purposes this field will never be filled out in responses bodies.
-     *
+     * 
      * @param storageContainerWriteSas the storageContainerWriteSas value to set.
      * @return the ConversionOutputSettings object itself.
      */
@@ -99,7 +93,7 @@ public final class ConversionOutputSettings {
      * Get the blobPrefix property: A prefix which gets prepended in front of all files produced by the conversion
      * process. Will be treated as a virtual folder. Optional. If not provided, output files will be stored at the
      * container root.
-     *
+     * 
      * @return the blobPrefix value.
      */
     public String getBlobPrefix() {
@@ -110,7 +104,7 @@ public final class ConversionOutputSettings {
      * Set the blobPrefix property: A prefix which gets prepended in front of all files produced by the conversion
      * process. Will be treated as a virtual folder. Optional. If not provided, output files will be stored at the
      * container root.
-     *
+     * 
      * @param blobPrefix the blobPrefix value to set.
      * @return the ConversionOutputSettings object itself.
      */
@@ -122,7 +116,7 @@ public final class ConversionOutputSettings {
     /**
      * Get the outputAssetFilename property: The file name of the output asset. Must end in '.arrAsset'. Optional. If
      * not provided, file name will the same name as the input asset, with '.arrAsset' extension.
-     *
+     * 
      * @return the outputAssetFilename value.
      */
     public String getOutputAssetFilename() {
@@ -132,12 +126,71 @@ public final class ConversionOutputSettings {
     /**
      * Set the outputAssetFilename property: The file name of the output asset. Must end in '.arrAsset'. Optional. If
      * not provided, file name will the same name as the input asset, with '.arrAsset' extension.
-     *
+     * 
      * @param outputAssetFilename the outputAssetFilename value to set.
      * @return the ConversionOutputSettings object itself.
      */
     public ConversionOutputSettings setOutputAssetFilename(String outputAssetFilename) {
         this.outputAssetFilename = outputAssetFilename;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageContainerUri", this.storageContainerUri);
+        jsonWriter.writeStringField("storageContainerWriteSas", this.storageContainerWriteSas);
+        jsonWriter.writeStringField("blobPrefix", this.blobPrefix);
+        jsonWriter.writeStringField("outputAssetFilename", this.outputAssetFilename);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConversionOutputSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConversionOutputSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConversionOutputSettings.
+     */
+    public static ConversionOutputSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean storageContainerUriFound = false;
+            String storageContainerUri = null;
+            String storageContainerWriteSas = null;
+            String blobPrefix = null;
+            String outputAssetFilename = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageContainerUri".equals(fieldName)) {
+                    storageContainerUri = reader.getString();
+                    storageContainerUriFound = true;
+                } else if ("storageContainerWriteSas".equals(fieldName)) {
+                    storageContainerWriteSas = reader.getString();
+                } else if ("blobPrefix".equals(fieldName)) {
+                    blobPrefix = reader.getString();
+                } else if ("outputAssetFilename".equals(fieldName)) {
+                    outputAssetFilename = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (storageContainerUriFound) {
+                ConversionOutputSettings deserializedConversionOutputSettings
+                    = new ConversionOutputSettings(storageContainerUri);
+                deserializedConversionOutputSettings.storageContainerWriteSas = storageContainerWriteSas;
+                deserializedConversionOutputSettings.blobPrefix = blobPrefix;
+                deserializedConversionOutputSettings.outputAssetFilename = outputAssetFilename;
+
+                return deserializedConversionOutputSettings;
+            }
+            throw new IllegalStateException("Missing required property: storageContainerUri");
+        });
     }
 }
