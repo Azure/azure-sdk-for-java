@@ -14,7 +14,7 @@ import time
 import argparse
 
 from log import log
-from _constants import should_skip_adding_dependency_management
+from _constants import should_skip_artifacts_when_adding_dependency_management, should_skip_artifacts_when_adding_dependency_management_with_spring_version
 
 
 def get_args():
@@ -43,7 +43,9 @@ def add_dependency_management_for_all_poms_files_in_directory(directory, spring_
         for file_name in files:
             if file_name.startswith('pom') and file_name.endswith('.xml'):
                 file_path = root + os.sep + file_name
-                if should_skip_adding_dependency_management(file_path):
+                if (should_skip_artifacts_when_adding_dependency_management_with_spring_version(spring_boot_dependencies_version, file_path)
+                    or should_skip_artifacts_when_adding_dependency_management(file_path)):
+                    log.warn("Skip inserting dependency management for file: " + file_path)
                     continue
                 add_dependency_management_for_file(file_path, spring_boot_dependencies_version, spring_cloud_dependencies_version)
                 update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependencies_version)
