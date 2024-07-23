@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class PredictionPreference extends ExpandableStringEnum<PredictionP
      * @param name a name to look for.
      * @return the corresponding PredictionPreference.
      */
-    @JsonCreator
     public static PredictionPreference fromString(String name) {
         return fromString(name, PredictionPreference.class);
     }

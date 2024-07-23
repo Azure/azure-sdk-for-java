@@ -5,45 +5,54 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DependencyCondition. */
+/**
+ * Defines values for DependencyCondition.
+ */
 public final class DependencyCondition extends ExpandableStringEnum<DependencyCondition> {
-    /** Static value Succeeded for DependencyCondition. */
+    /**
+     * Static value Succeeded for DependencyCondition.
+     */
     public static final DependencyCondition SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for DependencyCondition. */
+    /**
+     * Static value Failed for DependencyCondition.
+     */
     public static final DependencyCondition FAILED = fromString("Failed");
 
-    /** Static value Skipped for DependencyCondition. */
+    /**
+     * Static value Skipped for DependencyCondition.
+     */
     public static final DependencyCondition SKIPPED = fromString("Skipped");
 
-    /** Static value Completed for DependencyCondition. */
+    /**
+     * Static value Completed for DependencyCondition.
+     */
     public static final DependencyCondition COMPLETED = fromString("Completed");
 
     /**
      * Creates a new instance of DependencyCondition value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DependencyCondition() {}
+    public DependencyCondition() {
+    }
 
     /**
      * Creates or finds a DependencyCondition from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DependencyCondition.
      */
-    @JsonCreator
     public static DependencyCondition fromString(String name) {
         return fromString(name, DependencyCondition.class);
     }
 
     /**
      * Gets known DependencyCondition values.
-     *
+     * 
      * @return known DependencyCondition values.
      */
     public static Collection<DependencyCondition> values() {

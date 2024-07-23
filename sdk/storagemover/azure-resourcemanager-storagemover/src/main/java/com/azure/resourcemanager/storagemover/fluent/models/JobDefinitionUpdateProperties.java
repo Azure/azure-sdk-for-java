@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Job definition properties. */
+/**
+ * Job definition properties.
+ */
 @Fluent
 public final class JobDefinitionUpdateProperties {
     /*
@@ -29,13 +31,15 @@ public final class JobDefinitionUpdateProperties {
     @JsonProperty(value = "agentName")
     private String agentName;
 
-    /** Creates an instance of JobDefinitionUpdateProperties class. */
+    /**
+     * Creates an instance of JobDefinitionUpdateProperties class.
+     */
     public JobDefinitionUpdateProperties() {
     }
 
     /**
      * Get the description property: A description for the Job Definition.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -44,7 +48,7 @@ public final class JobDefinitionUpdateProperties {
 
     /**
      * Set the description property: A description for the Job Definition.
-     *
+     * 
      * @param description the description value to set.
      * @return the JobDefinitionUpdateProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class JobDefinitionUpdateProperties {
 
     /**
      * Get the copyMode property: Strategy to use for copy.
-     *
+     * 
      * @return the copyMode value.
      */
     public CopyMode copyMode() {
@@ -64,7 +68,7 @@ public final class JobDefinitionUpdateProperties {
 
     /**
      * Set the copyMode property: Strategy to use for copy.
-     *
+     * 
      * @param copyMode the copyMode value to set.
      * @return the JobDefinitionUpdateProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class JobDefinitionUpdateProperties {
 
     /**
      * Get the agentName property: Name of the Agent to assign for new Job Runs of this Job Definition.
-     *
+     * 
      * @return the agentName value.
      */
     public String agentName() {
@@ -84,7 +88,7 @@ public final class JobDefinitionUpdateProperties {
 
     /**
      * Set the agentName property: Name of the Agent to assign for new Job Runs of this Job Definition.
-     *
+     * 
      * @param agentName the agentName value to set.
      * @return the JobDefinitionUpdateProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class JobDefinitionUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

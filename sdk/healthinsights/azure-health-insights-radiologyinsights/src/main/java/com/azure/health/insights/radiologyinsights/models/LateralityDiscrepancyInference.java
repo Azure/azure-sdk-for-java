@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class LateralityDiscrepancyInference extends RadiologyInsightsInference {
 
     /*
-     * The kind property.
+     * Discriminator property for RadiologyInsightsInference.
      */
     @Generated
     @JsonTypeId
@@ -60,7 +60,7 @@ public final class LateralityDiscrepancyInference extends RadiologyInsightsInfer
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: Discriminator property for RadiologyInsightsInference.
      *
      * @return the kind value.
      */

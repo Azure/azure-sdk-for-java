@@ -6,13 +6,14 @@ package com.azure.storage.queue;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
-import com.azure.storage.queue.models.QueueStorageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,7 +43,6 @@ import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeA
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -807,6 +807,23 @@ public class QueueAsyncApiTests extends QueueTestBase {
     }
 
     @Test
+    public void updateMessageWithBase64Client() {
+        String updateMsg = "Updated test message";
+        QueueAsyncClient encodingQueueClient = getBase64Client();
+        encodingQueueClient.create().block();
+        encodingQueueClient.sendMessage("test message before update").block();
+
+        QueueMessageItem dequeueMsg = encodingQueueClient.receiveMessage().block();
+
+        assertAsyncResponseStatusCode(encodingQueueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1)), 204);
+
+        StepVerifier.create(encodingQueueClient.peekMessage().delaySubscription(getMessageUpdateDelay(2000)))
+            .assertNext(peekedMessageItem -> assertEquals(updateMsg, peekedMessageItem.getMessageText()))
+            .verifyComplete();
+    }
+
+    @Test
     public void getQueueName() {
         assertEquals(queueName, queueAsyncClient.getQueueName());
     }
@@ -835,6 +852,11 @@ public class QueueAsyncApiTests extends QueueTestBase {
             assertEquals("2017-11-09", queuePropertiesResponse.getHeaders().getValue("x-ms-version"))).verifyComplete();
     }
 
+    private QueueAsyncClient getBase64Client() {
+        return queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64)
+            .buildAsyncClient().getQueueAsyncClient(queueName);
+    }
+
     @Test
     public void defaultAudience() {
         queueAsyncClient.createIfNotExists().block();
@@ -861,8 +883,13 @@ public class QueueAsyncApiTests extends QueueTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = QueueServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
         queueAsyncClient.createIfNotExists().block();
         QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
             .queueName(queueAsyncClient.getQueueName())
@@ -870,10 +897,8 @@ public class QueueAsyncApiTests extends QueueTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadQueue.getProperties())
-            .verifyErrorSatisfies(r -> {
-                QueueStorageException e = assertInstanceOf(QueueStorageException.class, r);
-                assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-            });
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test

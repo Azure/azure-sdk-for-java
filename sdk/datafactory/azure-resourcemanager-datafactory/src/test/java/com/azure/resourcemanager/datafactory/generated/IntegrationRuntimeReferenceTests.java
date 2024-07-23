@@ -14,18 +14,17 @@ public final class IntegrationRuntimeReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeReference model = BinaryData.fromString(
-            "{\"referenceName\":\"kqze\",\"parameters\":{\"mhhv\":\"datadltfz\",\"tibqdxbxwakb\":\"datagureodkwobdag\",\"podxunkb\":\"datagqxndlkzgxhuripl\",\"lrb\":\"databxmubyynt\"}}")
+            "{\"referenceName\":\"dggkzzlvmbmpa\",\"parameters\":{\"yw\":\"datadfvue\",\"yhrfouyftaakcpw\":\"databpfvm\",\"nubexk\":\"datayzvqt\"}}")
             .toObject(IntegrationRuntimeReference.class);
-        Assertions.assertEquals("kqze", model.referenceName());
+        Assertions.assertEquals("dggkzzlvmbmpa", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeReference model = new IntegrationRuntimeReference().withReferenceName("kqze")
-            .withParameters(mapOf("mhhv", "datadltfz", "tibqdxbxwakb", "datagureodkwobdag", "podxunkb",
-                "datagqxndlkzgxhuripl", "lrb", "databxmubyynt"));
+        IntegrationRuntimeReference model = new IntegrationRuntimeReference().withReferenceName("dggkzzlvmbmpa")
+            .withParameters(mapOf("yw", "datadfvue", "yhrfouyftaakcpw", "databpfvm", "nubexk", "datayzvqt"));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeReference.class);
-        Assertions.assertEquals("kqze", model.referenceName());
+        Assertions.assertEquals("dggkzzlvmbmpa", model.referenceName());
     }
 
     // Use "Map.of" if available

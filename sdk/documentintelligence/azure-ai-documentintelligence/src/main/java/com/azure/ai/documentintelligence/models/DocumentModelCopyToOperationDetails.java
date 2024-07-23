@@ -32,6 +32,30 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
     @Generated
     private DocumentModelDetails result;
 
+    /*
+     * Operation progress (0-100).
+     */
+    @Generated
+    private Integer percentCompleted;
+
+    /*
+     * API version used to create this operation.
+     */
+    @Generated
+    private String apiVersion;
+
+    /*
+     * List of key-value tag attributes associated with the document model.
+     */
+    @Generated
+    private Map<String, String> tags;
+
+    /*
+     * Encountered error.
+     */
+    @Generated
+    private Error error;
+
     /**
      * Creates an instance of DocumentModelCopyToOperationDetails class.
      * 
@@ -65,6 +89,50 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
     @Generated
     public DocumentModelDetails getResult() {
         return this.result;
+    }
+
+    /**
+     * Get the percentCompleted property: Operation progress (0-100).
+     * 
+     * @return the percentCompleted value.
+     */
+    @Generated
+    @Override
+    public Integer getPercentCompleted() {
+        return this.percentCompleted;
+    }
+
+    /**
+     * Get the apiVersion property: API version used to create this operation.
+     * 
+     * @return the apiVersion value.
+     */
+    @Generated
+    @Override
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
+     * Get the tags property: List of key-value tag attributes associated with the document model.
+     * 
+     * @return the tags value.
+     */
+    @Generated
+    @Override
+    public Map<String, String> getTags() {
+        return this.tags;
+    }
+
+    /**
+     * Get the error property: Encountered error.
+     * 
+     * @return the error value.
+     */
+    @Generated
+    @Override
+    public Error getError() {
+        return this.error;
     }
 
     /**
@@ -150,10 +218,10 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
                 = new DocumentModelCopyToOperationDetails(status, createdDateTime, lastUpdatedDateTime,
                     resourceLocation);
             deserializedDocumentModelCopyToOperationDetails.setOperationId(operationId);
-            deserializedDocumentModelCopyToOperationDetails.setPercentCompleted(percentCompleted);
-            deserializedDocumentModelCopyToOperationDetails.setApiVersion(apiVersion);
-            deserializedDocumentModelCopyToOperationDetails.setTags(tags);
-            deserializedDocumentModelCopyToOperationDetails.setError(error);
+            deserializedDocumentModelCopyToOperationDetails.percentCompleted = percentCompleted;
+            deserializedDocumentModelCopyToOperationDetails.apiVersion = apiVersion;
+            deserializedDocumentModelCopyToOperationDetails.tags = tags;
+            deserializedDocumentModelCopyToOperationDetails.error = error;
             deserializedDocumentModelCopyToOperationDetails.kind = kind;
             deserializedDocumentModelCopyToOperationDetails.result = result;
 

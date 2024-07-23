@@ -12,27 +12,27 @@ public final class UserAccessPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserAccessPolicy model = BinaryData.fromString(
-            "{\"permissions\":\"fkbey\",\"accessResourcePath\":\"wrmjmwvvjektc\",\"profileName\":\"enhwlrs\",\"startTime\":\"rzpwvlqdqgbiq\",\"expireTime\":\"ihkaetcktvfc\"}")
+            "{\"permissions\":\"eputtmrywnuzoqf\",\"accessResourcePath\":\"yqzrnkcqvyxlw\",\"profileName\":\"lsicohoqqnwv\",\"startTime\":\"yav\",\"expireTime\":\"heun\"}")
             .toObject(UserAccessPolicy.class);
-        Assertions.assertEquals("fkbey", model.permissions());
-        Assertions.assertEquals("wrmjmwvvjektc", model.accessResourcePath());
-        Assertions.assertEquals("enhwlrs", model.profileName());
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.startTime());
-        Assertions.assertEquals("ihkaetcktvfc", model.expireTime());
+        Assertions.assertEquals("eputtmrywnuzoqf", model.permissions());
+        Assertions.assertEquals("yqzrnkcqvyxlw", model.accessResourcePath());
+        Assertions.assertEquals("lsicohoqqnwv", model.profileName());
+        Assertions.assertEquals("yav", model.startTime());
+        Assertions.assertEquals("heun", model.expireTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAccessPolicy model = new UserAccessPolicy().withPermissions("fkbey")
-            .withAccessResourcePath("wrmjmwvvjektc")
-            .withProfileName("enhwlrs")
-            .withStartTime("rzpwvlqdqgbiq")
-            .withExpireTime("ihkaetcktvfc");
+        UserAccessPolicy model = new UserAccessPolicy().withPermissions("eputtmrywnuzoqf")
+            .withAccessResourcePath("yqzrnkcqvyxlw")
+            .withProfileName("lsicohoqqnwv")
+            .withStartTime("yav")
+            .withExpireTime("heun");
         model = BinaryData.fromObject(model).toObject(UserAccessPolicy.class);
-        Assertions.assertEquals("fkbey", model.permissions());
-        Assertions.assertEquals("wrmjmwvvjektc", model.accessResourcePath());
-        Assertions.assertEquals("enhwlrs", model.profileName());
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.startTime());
-        Assertions.assertEquals("ihkaetcktvfc", model.expireTime());
+        Assertions.assertEquals("eputtmrywnuzoqf", model.permissions());
+        Assertions.assertEquals("yqzrnkcqvyxlw", model.accessResourcePath());
+        Assertions.assertEquals("lsicohoqqnwv", model.profileName());
+        Assertions.assertEquals("yav", model.startTime());
+        Assertions.assertEquals("heun", model.expireTime());
     }
 }

@@ -5,30 +5,37 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Settings for copy activity log. */
+/**
+ * Settings for copy activity log.
+ */
 @Fluent
-public final class CopyActivityLogSettings {
+public final class CopyActivityLogSettings implements JsonSerializable<CopyActivityLogSettings> {
     /*
      * Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "logLevel")
     private Object logLevel;
 
     /*
      * Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enableReliableLogging")
     private Object enableReliableLogging;
 
-    /** Creates an instance of CopyActivityLogSettings class. */
-    public CopyActivityLogSettings() {}
+    /**
+     * Creates an instance of CopyActivityLogSettings class.
+     */
+    public CopyActivityLogSettings() {
+    }
 
     /**
      * Get the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the logLevel value.
      */
     public Object getLogLevel() {
@@ -38,7 +45,7 @@ public final class CopyActivityLogSettings {
     /**
      * Set the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param logLevel the logLevel value to set.
      * @return the CopyActivityLogSettings object itself.
      */
@@ -50,7 +57,7 @@ public final class CopyActivityLogSettings {
     /**
      * Get the enableReliableLogging property: Specifies whether to enable reliable logging. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the enableReliableLogging value.
      */
     public Object getEnableReliableLogging() {
@@ -60,12 +67,51 @@ public final class CopyActivityLogSettings {
     /**
      * Set the enableReliableLogging property: Specifies whether to enable reliable logging. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param enableReliableLogging the enableReliableLogging value to set.
      * @return the CopyActivityLogSettings object itself.
      */
     public CopyActivityLogSettings setEnableReliableLogging(Object enableReliableLogging) {
         this.enableReliableLogging = enableReliableLogging;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("logLevel", this.logLevel);
+        jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopyActivityLogSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopyActivityLogSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CopyActivityLogSettings.
+     */
+    public static CopyActivityLogSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CopyActivityLogSettings deserializedCopyActivityLogSettings = new CopyActivityLogSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logLevel".equals(fieldName)) {
+                    deserializedCopyActivityLogSettings.logLevel = reader.readUntyped();
+                } else if ("enableReliableLogging".equals(fieldName)) {
+                    deserializedCopyActivityLogSettings.enableReliableLogging = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCopyActivityLogSettings;
+        });
     }
 }

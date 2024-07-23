@@ -4,12 +4,86 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Map;
 
-/** Azure Open AI Dialog. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("AzureOpenAI")
-@Immutable
-public final class AzureOpenAIDialog extends BaseDialog {}
+/**
+ * Azure Open AI Dialog.
+ */
+@Fluent
+public final class AzureOpenAIDialog extends BaseDialog {
+    /*
+     * Determines the type of the dialog.
+     */
+    private DialogInputType kind = DialogInputType.AZURE_OPEN_AI;
+
+    /**
+     * Creates an instance of AzureOpenAIDialog class.
+     */
+    public AzureOpenAIDialog() {
+    }
+
+    /**
+     * Get the kind property: Determines the type of the dialog.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DialogInputType getKind() {
+        return this.kind;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureOpenAIDialog setContext(Map<String, Object> context) {
+        super.setContext(context);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("context", getContext(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureOpenAIDialog from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureOpenAIDialog if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureOpenAIDialog.
+     */
+    public static AzureOpenAIDialog fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureOpenAIDialog deserializedAzureOpenAIDialog = new AzureOpenAIDialog();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("context".equals(fieldName)) {
+                    Map<String, Object> context = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAzureOpenAIDialog.setContext(context);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAzureOpenAIDialog.kind = DialogInputType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureOpenAIDialog;
+        });
+    }
+}

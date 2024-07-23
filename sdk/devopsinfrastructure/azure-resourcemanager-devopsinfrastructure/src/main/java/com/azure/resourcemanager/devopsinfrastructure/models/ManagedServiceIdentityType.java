@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The kind of managed identity assigned to this resource.
+ * Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
  */
 public final class ManagedServiceIdentityType extends ExpandableStringEnum<ManagedServiceIdentityType> {
     /**
@@ -28,10 +27,10 @@ public final class ManagedServiceIdentityType extends ExpandableStringEnum<Manag
     public static final ManagedServiceIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /**
-     * Static value SystemAssigned, UserAssigned for ManagedServiceIdentityType.
+     * Static value SystemAssigned,UserAssigned for ManagedServiceIdentityType.
      */
     public static final ManagedServiceIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED
-        = fromString("SystemAssigned, UserAssigned");
+        = fromString("SystemAssigned,UserAssigned");
 
     /**
      * Creates a new instance of ManagedServiceIdentityType value.
@@ -48,7 +47,6 @@ public final class ManagedServiceIdentityType extends ExpandableStringEnum<Manag
      * @param name a name to look for.
      * @return the corresponding ManagedServiceIdentityType.
      */
-    @JsonCreator
     public static ManagedServiceIdentityType fromString(String name) {
         return fromString(name, ManagedServiceIdentityType.class);
     }

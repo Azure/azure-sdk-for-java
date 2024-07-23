@@ -4,33 +4,48 @@
 
 package com.azure.storage.file.datalake.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ListBlobsIncludeItem. */
+/**
+ * Defines values for ListBlobsIncludeItem.
+ */
 public enum ListBlobsIncludeItem {
-    /** Enum value copy. */
+    /**
+     * Enum value copy.
+     */
     COPY("copy"),
 
-    /** Enum value deleted. */
+    /**
+     * Enum value deleted.
+     */
     DELETED("deleted"),
 
-    /** Enum value metadata. */
+    /**
+     * Enum value metadata.
+     */
     METADATA("metadata"),
 
-    /** Enum value snapshots. */
+    /**
+     * Enum value snapshots.
+     */
     SNAPSHOTS("snapshots"),
 
-    /** Enum value uncommittedblobs. */
+    /**
+     * Enum value uncommittedblobs.
+     */
     UNCOMMITTEDBLOBS("uncommittedblobs"),
 
-    /** Enum value versions. */
+    /**
+     * Enum value versions.
+     */
     VERSIONS("versions"),
 
-    /** Enum value tags. */
+    /**
+     * Enum value tags.
+     */
     TAGS("tags");
 
-    /** The actual serialized value for a ListBlobsIncludeItem instance. */
+    /**
+     * The actual serialized value for a ListBlobsIncludeItem instance.
+     */
     private final String value;
 
     ListBlobsIncludeItem(String value) {
@@ -39,11 +54,10 @@ public enum ListBlobsIncludeItem {
 
     /**
      * Parses a serialized value to a ListBlobsIncludeItem instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ListBlobsIncludeItem object, or null if unable to parse.
      */
-    @JsonCreator
     public static ListBlobsIncludeItem fromString(String value) {
         if (value == null) {
             return null;
@@ -57,8 +71,9 @@ public enum ListBlobsIncludeItem {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

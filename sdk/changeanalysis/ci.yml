@@ -31,7 +31,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: changeanalysis
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-changeanalysis
         groupId: com.azure.resourcemanager

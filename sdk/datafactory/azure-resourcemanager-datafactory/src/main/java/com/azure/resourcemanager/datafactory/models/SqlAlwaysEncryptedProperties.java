@@ -20,7 +20,8 @@ public final class SqlAlwaysEncryptedProperties {
     private SqlAlwaysEncryptedAkvAuthType alwaysEncryptedAkvAuthType;
 
     /*
-     * The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string (or Expression with resultType string).
+     * The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;

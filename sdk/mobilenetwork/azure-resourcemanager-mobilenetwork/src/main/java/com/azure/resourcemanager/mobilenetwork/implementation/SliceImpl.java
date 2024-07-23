@@ -96,14 +96,16 @@ public final class SliceImpl implements Slice, Slice.Definition, Slice.Update {
     }
 
     public Slice create() {
-        this.innerObject = serviceManager.serviceClient().getSlices().createOrUpdate(resourceGroupName,
-            mobileNetworkName, sliceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, sliceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Slice create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSlices().createOrUpdate(resourceGroupName,
-            mobileNetworkName, sliceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, sliceName, this.innerModel(), context);
         return this;
     }
 
@@ -119,14 +121,16 @@ public final class SliceImpl implements Slice, Slice.Definition, Slice.Update {
     }
 
     public Slice apply() {
-        this.innerObject = serviceManager.serviceClient().getSlices()
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
             .updateTagsWithResponse(resourceGroupName, mobileNetworkName, sliceName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public Slice apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSlices()
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
             .updateTagsWithResponse(resourceGroupName, mobileNetworkName, sliceName, updateParameters, context)
             .getValue();
         return this;
@@ -141,14 +145,18 @@ public final class SliceImpl implements Slice, Slice.Definition, Slice.Update {
     }
 
     public Slice refresh() {
-        this.innerObject = serviceManager.serviceClient().getSlices()
-            .getWithResponse(resourceGroupName, mobileNetworkName, sliceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .getWithResponse(resourceGroupName, mobileNetworkName, sliceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Slice refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSlices()
-            .getWithResponse(resourceGroupName, mobileNetworkName, sliceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSlices()
+            .getWithResponse(resourceGroupName, mobileNetworkName, sliceName, context)
+            .getValue();
         return this;
     }
 

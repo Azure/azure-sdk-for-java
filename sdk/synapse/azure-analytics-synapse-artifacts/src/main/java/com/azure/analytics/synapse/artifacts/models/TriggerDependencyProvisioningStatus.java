@@ -5,29 +5,37 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the response of a provision trigger dependency operation. */
+/**
+ * Defines the response of a provision trigger dependency operation.
+ */
 @Fluent
-public final class TriggerDependencyProvisioningStatus {
+public final class TriggerDependencyProvisioningStatus
+    implements JsonSerializable<TriggerDependencyProvisioningStatus> {
     /*
      * Trigger name.
      */
-    @JsonProperty(value = "triggerName", required = true)
     private String triggerName;
 
     /*
      * Provisioning status.
      */
-    @JsonProperty(value = "provisioningStatus", required = true)
     private String provisioningStatus;
 
-    /** Creates an instance of TriggerDependencyProvisioningStatus class. */
-    public TriggerDependencyProvisioningStatus() {}
+    /**
+     * Creates an instance of TriggerDependencyProvisioningStatus class.
+     */
+    public TriggerDependencyProvisioningStatus() {
+    }
 
     /**
      * Get the triggerName property: Trigger name.
-     *
+     * 
      * @return the triggerName value.
      */
     public String getTriggerName() {
@@ -36,7 +44,7 @@ public final class TriggerDependencyProvisioningStatus {
 
     /**
      * Set the triggerName property: Trigger name.
-     *
+     * 
      * @param triggerName the triggerName value to set.
      * @return the TriggerDependencyProvisioningStatus object itself.
      */
@@ -47,7 +55,7 @@ public final class TriggerDependencyProvisioningStatus {
 
     /**
      * Get the provisioningStatus property: Provisioning status.
-     *
+     * 
      * @return the provisioningStatus value.
      */
     public String getProvisioningStatus() {
@@ -56,12 +64,53 @@ public final class TriggerDependencyProvisioningStatus {
 
     /**
      * Set the provisioningStatus property: Provisioning status.
-     *
+     * 
      * @param provisioningStatus the provisioningStatus value to set.
      * @return the TriggerDependencyProvisioningStatus object itself.
      */
     public TriggerDependencyProvisioningStatus setProvisioningStatus(String provisioningStatus) {
         this.provisioningStatus = provisioningStatus;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("triggerName", this.triggerName);
+        jsonWriter.writeStringField("provisioningStatus", this.provisioningStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggerDependencyProvisioningStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggerDependencyProvisioningStatus if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TriggerDependencyProvisioningStatus.
+     */
+    public static TriggerDependencyProvisioningStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggerDependencyProvisioningStatus deserializedTriggerDependencyProvisioningStatus
+                = new TriggerDependencyProvisioningStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("triggerName".equals(fieldName)) {
+                    deserializedTriggerDependencyProvisioningStatus.triggerName = reader.getString();
+                } else if ("provisioningStatus".equals(fieldName)) {
+                    deserializedTriggerDependencyProvisioningStatus.provisioningStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggerDependencyProvisioningStatus;
+        });
     }
 }

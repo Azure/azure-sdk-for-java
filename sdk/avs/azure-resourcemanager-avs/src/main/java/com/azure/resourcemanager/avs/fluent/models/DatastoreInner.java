@@ -6,28 +6,56 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.avs.models.DatastoreProvisioningState;
 import com.azure.resourcemanager.avs.models.DatastoreStatus;
 import com.azure.resourcemanager.avs.models.DiskPoolVolume;
+import com.azure.resourcemanager.avs.models.ElasticSanVolume;
 import com.azure.resourcemanager.avs.models.NetAppVolume;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A datastore resource. */
+/**
+ * A datastore resource.
+ */
 @Fluent
 public final class DatastoreInner extends ProxyResource {
     /*
-     * The properties of a datastore resource
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
     private DatastoreProperties innerProperties;
 
-    /** Creates an instance of DatastoreInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of DatastoreInner class.
+     */
     public DatastoreInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of a datastore resource.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private DatastoreProperties innerProperties() {
@@ -35,8 +63,47 @@ public final class DatastoreInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the provisioningState property: The state of the datastore provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DatastoreProvisioningState provisioningState() {
@@ -45,7 +112,7 @@ public final class DatastoreInner extends ProxyResource {
 
     /**
      * Get the netAppVolume property: An Azure NetApp Files volume.
-     *
+     * 
      * @return the netAppVolume value.
      */
     public NetAppVolume netAppVolume() {
@@ -54,7 +121,7 @@ public final class DatastoreInner extends ProxyResource {
 
     /**
      * Set the netAppVolume property: An Azure NetApp Files volume.
-     *
+     * 
      * @param netAppVolume the netAppVolume value to set.
      * @return the DatastoreInner object itself.
      */
@@ -68,7 +135,7 @@ public final class DatastoreInner extends ProxyResource {
 
     /**
      * Get the diskPoolVolume property: An iSCSI volume.
-     *
+     * 
      * @return the diskPoolVolume value.
      */
     public DiskPoolVolume diskPoolVolume() {
@@ -77,7 +144,7 @@ public final class DatastoreInner extends ProxyResource {
 
     /**
      * Set the diskPoolVolume property: An iSCSI volume.
-     *
+     * 
      * @param diskPoolVolume the diskPoolVolume value to set.
      * @return the DatastoreInner object itself.
      */
@@ -90,8 +157,31 @@ public final class DatastoreInner extends ProxyResource {
     }
 
     /**
+     * Get the elasticSanVolume property: An Elastic SAN volume.
+     * 
+     * @return the elasticSanVolume value.
+     */
+    public ElasticSanVolume elasticSanVolume() {
+        return this.innerProperties() == null ? null : this.innerProperties().elasticSanVolume();
+    }
+
+    /**
+     * Set the elasticSanVolume property: An Elastic SAN volume.
+     * 
+     * @param elasticSanVolume the elasticSanVolume value to set.
+     * @return the DatastoreInner object itself.
+     */
+    public DatastoreInner withElasticSanVolume(ElasticSanVolume elasticSanVolume) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatastoreProperties();
+        }
+        this.innerProperties().withElasticSanVolume(elasticSanVolume);
+        return this;
+    }
+
+    /**
      * Get the status property: The operational status of the datastore.
-     *
+     * 
      * @return the status value.
      */
     public DatastoreStatus status() {
@@ -100,12 +190,57 @@ public final class DatastoreInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatastoreInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatastoreInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatastoreInner.
+     */
+    public static DatastoreInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatastoreInner deserializedDatastoreInner = new DatastoreInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDatastoreInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatastoreInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatastoreInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDatastoreInner.innerProperties = DatastoreProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDatastoreInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatastoreInner;
+        });
     }
 }

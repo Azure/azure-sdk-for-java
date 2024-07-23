@@ -16,8 +16,7 @@ import java.util.Arrays;
  */
 public final class SimsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/SimCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimCreate.json
      */
     /**
      * Sample code: Create SIM.
@@ -25,11 +24,14 @@ public final class SimsCreateOrUpdateSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createSIM(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.sims().define("testSim").withExistingSimGroup("rg1", "testSimGroup")
+        manager.sims()
+            .define("testSim")
+            .withExistingSimGroup("rg1", "testSimGroup")
             .withInternationalMobileSubscriberIdentity("00000")
             .withAuthenticationKey("00000000000000000000000000000000")
             .withOperatorKeyCode("00000000000000000000000000000000")
-            .withIntegratedCircuitCardIdentifier("8900000000000000000").withDeviceType("Video camera")
+            .withIntegratedCircuitCardIdentifier("8900000000000000000")
+            .withDeviceType("Video camera")
             .withSimPolicy(new SimPolicyResourceId().withId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork/simPolicies/MySimPolicy"))
             .withStaticIpConfiguration(Arrays.asList(new SimStaticIpProperties()

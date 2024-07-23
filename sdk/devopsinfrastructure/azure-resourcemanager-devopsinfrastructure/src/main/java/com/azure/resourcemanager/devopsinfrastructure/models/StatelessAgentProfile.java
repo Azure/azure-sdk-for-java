@@ -5,23 +5,19 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Stateless profile meaning that the machines will be cleaned up after running a job.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = StatelessAgentProfile.class, visible = true)
-@JsonTypeName("Stateless")
 @Fluent
 public final class StatelessAgentProfile extends AgentProfile {
     /*
-     * The kind property.
+     * Discriminator property for AgentProfile.
      */
-    @JsonTypeId
-    @JsonProperty(value = "kind", required = true)
     private String kind = "Stateless";
 
     /**
@@ -31,7 +27,7 @@ public final class StatelessAgentProfile extends AgentProfile {
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: Discriminator property for AgentProfile.
      * 
      * @return the kind value.
      */
@@ -44,7 +40,7 @@ public final class StatelessAgentProfile extends AgentProfile {
      * {@inheritDoc}
      */
     @Override
-    public StatelessAgentProfile withResourcePredictions(Object resourcePredictions) {
+    public StatelessAgentProfile withResourcePredictions(ResourcePredictions resourcePredictions) {
         super.withResourcePredictions(resourcePredictions);
         return this;
     }
@@ -66,5 +62,48 @@ public final class StatelessAgentProfile extends AgentProfile {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourcePredictions", resourcePredictions());
+        jsonWriter.writeJsonField("resourcePredictionsProfile", resourcePredictionsProfile());
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatelessAgentProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatelessAgentProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatelessAgentProfile.
+     */
+    public static StatelessAgentProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatelessAgentProfile deserializedStatelessAgentProfile = new StatelessAgentProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourcePredictions".equals(fieldName)) {
+                    deserializedStatelessAgentProfile.withResourcePredictions(ResourcePredictions.fromJson(reader));
+                } else if ("resourcePredictionsProfile".equals(fieldName)) {
+                    deserializedStatelessAgentProfile
+                        .withResourcePredictionsProfile(ResourcePredictionsProfile.fromJson(reader));
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStatelessAgentProfile.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatelessAgentProfile;
+        });
     }
 }

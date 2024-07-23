@@ -9,7 +9,9 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class TriggerRunsCancelSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Cancel.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Cancel.
+     * json
      */
     /**
      * Sample code: Triggers_Cancel.

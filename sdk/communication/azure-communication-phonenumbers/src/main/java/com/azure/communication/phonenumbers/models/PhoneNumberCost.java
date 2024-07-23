@@ -5,32 +5,41 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The incurred cost for a single phone number. */
+/**
+ * The incurred cost for a single phone number.
+ */
 @Immutable
-public final class PhoneNumberCost {
+public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
     /*
      * The cost amount.
      */
-    @JsonProperty(value = "amount", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double amount;
 
     /*
      * The ISO 4217 currency code for the cost amount, e.g. USD.
      */
-    @JsonProperty(value = "currencyCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String currencyCode;
 
     /*
      * The frequency with which the cost gets billed.
      */
-    @JsonProperty(value = "billingFrequency", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private BillingFrequency billingFrequency;
 
     /**
+     * Creates an instance of PhoneNumberCost class.
+     */
+    public PhoneNumberCost() {
+    }
+
+    /**
      * Get the amount property: The cost amount.
-     *
+     * 
      * @return the amount value.
      */
     public double getAmount() {
@@ -39,7 +48,7 @@ public final class PhoneNumberCost {
 
     /**
      * Get the currencyCode property: The ISO 4217 currency code for the cost amount, e.g. USD.
-     *
+     * 
      * @return the currencyCode value.
      */
     public String getCurrencyCode() {
@@ -48,10 +57,50 @@ public final class PhoneNumberCost {
 
     /**
      * Get the billingFrequency property: The frequency with which the cost gets billed.
-     *
+     * 
      * @return the billingFrequency value.
      */
     public BillingFrequency getBillingFrequency() {
         return this.billingFrequency;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PhoneNumberCost from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PhoneNumberCost if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PhoneNumberCost.
+     */
+    public static PhoneNumberCost fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PhoneNumberCost deserializedPhoneNumberCost = new PhoneNumberCost();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("amount".equals(fieldName)) {
+                    deserializedPhoneNumberCost.amount = reader.getDouble();
+                } else if ("currencyCode".equals(fieldName)) {
+                    deserializedPhoneNumberCost.currencyCode = reader.getString();
+                } else if ("billingFrequency".equals(fieldName)) {
+                    deserializedPhoneNumberCost.billingFrequency = BillingFrequency.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPhoneNumberCost;
+        });
     }
 }

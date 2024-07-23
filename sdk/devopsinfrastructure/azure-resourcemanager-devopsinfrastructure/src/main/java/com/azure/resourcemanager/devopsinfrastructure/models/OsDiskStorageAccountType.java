@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class OsDiskStorageAccountType extends ExpandableStringEnum<OsDiskS
      * @param name a name to look for.
      * @return the corresponding OsDiskStorageAccountType.
      */
-    @JsonCreator
     public static OsDiskStorageAccountType fromString(String name) {
         return fromString(name, OsDiskStorageAccountType.class);
     }

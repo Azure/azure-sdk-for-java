@@ -5,28 +5,107 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** The location of file server dataset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureFileStorageLocation")
+/**
+ * The location of file server dataset.
+ */
 @Fluent
 public final class AzureFileStorageLocation extends DatasetLocation {
-    /** Creates an instance of AzureFileStorageLocation class. */
-    public AzureFileStorageLocation() {}
+    /*
+     * Type of dataset storage location.
+     */
+    private String type = "AzureFileStorageLocation";
 
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of AzureFileStorageLocation class.
+     */
+    public AzureFileStorageLocation() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage location.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileStorageLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileStorageLocation setFileName(Object fileName) {
         super.setFileName(fileName);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", getFolderPath());
+        jsonWriter.writeUntypedField("fileName", getFileName());
+        jsonWriter.writeStringField("type", this.type);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileStorageLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileStorageLocation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFileStorageLocation.
+     */
+    public static AzureFileStorageLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileStorageLocation deserializedAzureFileStorageLocation = new AzureFileStorageLocation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedAzureFileStorageLocation.setFolderPath(reader.readUntyped());
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedAzureFileStorageLocation.setFileName(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureFileStorageLocation.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureFileStorageLocation.setAdditionalProperties(additionalProperties);
+
+            return deserializedAzureFileStorageLocation;
+        });
     }
 }

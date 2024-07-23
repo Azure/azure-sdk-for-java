@@ -28,7 +28,7 @@ public final class ChangeDataCapturesDeleteWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.changeDataCaptures()
-            .deleteWithResponse("plhzmezcsm", "kfgjqgbhulsqlets", "vmbpmdxbiueus", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("kwkxlnl", "ba", "ycnjxyproqebsuij", com.azure.core.util.Context.NONE);
 
     }
 }

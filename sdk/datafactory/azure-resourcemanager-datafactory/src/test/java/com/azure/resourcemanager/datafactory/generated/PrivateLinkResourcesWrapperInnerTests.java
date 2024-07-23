@@ -15,18 +15,16 @@ public final class PrivateLinkResourcesWrapperInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourcesWrapperInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"wggahttzlswvaj\",\"requiredMembers\":[\"t\",\"x\",\"oqza\",\"unwqr\"],\"requiredZoneNames\":[\"rg\",\"haohcmbuo\",\"njrohmbpy\"]},\"name\":\"xameblydyvkfkm\",\"type\":\"cxneh\",\"etag\":\"mtodl\",\"id\":\"yapucygvoa\"},{\"properties\":{\"groupId\":\"nssxlgh\",\"requiredMembers\":[\"gjlgvvpase\",\"sgb\",\"xantuygdhg\"],\"requiredZoneNames\":[\"pirpiwrqof\"]},\"name\":\"o\",\"type\":\"jnlex\",\"etag\":\"cbjpibkephuu\",\"id\":\"rctat\"},{\"properties\":{\"groupId\":\"ntqpbr\",\"requiredMembers\":[\"rduczkgofxyfs\",\"uc\",\"crrpcjttbstvje\",\"qnrmvvfko\"],\"requiredZoneNames\":[\"ghktuidvrm\",\"zlpdwwex\",\"mzvlazipbh\"]},\"name\":\"vqs\",\"type\":\"yy\",\"etag\":\"ziven\",\"id\":\"pmeyyvpkpatlbijp\"}]}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"mmuc\",\"requiredMembers\":[\"i\",\"kflrmymy\",\"nc\"],\"requiredZoneNames\":[\"riswslmiiio\"]},\"name\":\"qcgxuug\",\"type\":\"ctotiowlx\",\"etag\":\"qd\",\"id\":\"jgwdtgukranbl\"}]}")
             .toObject(PrivateLinkResourcesWrapperInner.class);
-        Assertions.assertEquals("yapucygvoa", model.value().get(0).id());
+        Assertions.assertEquals("jgwdtgukranbl", model.value().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkResourcesWrapperInner model = new PrivateLinkResourcesWrapperInner().withValue(Arrays.asList(
-            new PrivateLinkResource().withId("yapucygvoa").withProperties(new PrivateLinkResourceProperties()),
-            new PrivateLinkResource().withId("rctat").withProperties(new PrivateLinkResourceProperties()),
-            new PrivateLinkResource().withId("pmeyyvpkpatlbijp").withProperties(new PrivateLinkResourceProperties())));
+            new PrivateLinkResource().withId("jgwdtgukranbl").withProperties(new PrivateLinkResourceProperties())));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourcesWrapperInner.class);
-        Assertions.assertEquals("yapucygvoa", model.value().get(0).id());
+        Assertions.assertEquals("jgwdtgukranbl", model.value().get(0).id());
     }
 }

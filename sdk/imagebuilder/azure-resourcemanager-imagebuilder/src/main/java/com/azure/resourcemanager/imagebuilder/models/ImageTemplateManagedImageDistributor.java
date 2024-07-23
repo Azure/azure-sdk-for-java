@@ -6,34 +6,46 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Distribute as a Managed Disk Image.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ManagedImage")
 @Fluent
 public final class ImageTemplateManagedImageDistributor extends ImageTemplateDistributor {
     /*
+     * Type of distribution.
+     */
+    private String type = "ManagedImage";
+
+    /*
      * Resource Id of the Managed Disk Image
      */
-    @JsonProperty(value = "imageId", required = true)
     private String imageId;
 
     /*
      * Azure location for the image, should match if image already exists
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /**
      * Creates an instance of ImageTemplateManagedImageDistributor class.
      */
     public ImageTemplateManagedImageDistributor() {
+    }
+
+    /**
+     * Get the type property: Type of distribution.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -103,14 +115,67 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
     public void validate() {
         super.validate();
         if (imageId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property imageId in model ImageTemplateManagedImageDistributor"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property imageId in model ImageTemplateManagedImageDistributor"));
         }
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property location in model ImageTemplateManagedImageDistributor"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ImageTemplateManagedImageDistributor"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateManagedImageDistributor.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("runOutputName", runOutputName());
+        jsonWriter.writeMapField("artifactTags", artifactTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("imageId", this.imageId);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageTemplateManagedImageDistributor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageTemplateManagedImageDistributor if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageTemplateManagedImageDistributor.
+     */
+    public static ImageTemplateManagedImageDistributor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageTemplateManagedImageDistributor deserializedImageTemplateManagedImageDistributor
+                = new ImageTemplateManagedImageDistributor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runOutputName".equals(fieldName)) {
+                    deserializedImageTemplateManagedImageDistributor.withRunOutputName(reader.getString());
+                } else if ("artifactTags".equals(fieldName)) {
+                    Map<String, String> artifactTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedImageTemplateManagedImageDistributor.withArtifactTags(artifactTags);
+                } else if ("imageId".equals(fieldName)) {
+                    deserializedImageTemplateManagedImageDistributor.imageId = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedImageTemplateManagedImageDistributor.location = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedImageTemplateManagedImageDistributor.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageTemplateManagedImageDistributor;
+        });
+    }
 }

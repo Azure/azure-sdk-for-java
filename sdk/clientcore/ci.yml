@@ -43,7 +43,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: clientcore
-    EnableBatchRelease: true
     Artifacts:
       - name: core
         groupId: io.clientcore

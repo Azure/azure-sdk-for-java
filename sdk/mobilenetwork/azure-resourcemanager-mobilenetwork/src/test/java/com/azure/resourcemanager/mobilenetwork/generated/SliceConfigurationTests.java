@@ -21,60 +21,95 @@ public final class SliceConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SliceConfiguration model = BinaryData.fromString(
-            "{\"slice\":{\"id\":\"mjihyeozphv\"},\"defaultDataNetwork\":{\"id\":\"auyqncygupkv\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"mdscwxqupev\"},\"sessionAmbr\":{\"uplink\":\"hfstotxhojujbyp\",\"downlink\":\"lmcuvhixb\"},\"5qi\":1696706590,\"allocationAndRetentionPriorityLevel\":12838706,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"defaultSessionType\":\"IPv4\",\"additionalAllowedSessionTypes\":[\"IPv4\",\"IPv6\",\"IPv6\",\"IPv4\"],\"allowedServices\":[{\"id\":\"iwkkbn\"},{\"id\":\"jrywvtylbfpnc\"},{\"id\":\"rd\"}],\"maximumNumberOfBufferedPackets\":287864608}]}")
+            "{\"slice\":{\"id\":\"jfybvpoekrsgsgb\"},\"defaultDataNetwork\":{\"id\":\"huzqgn\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"gkynscliqh\"},\"sessionAmbr\":{\"uplink\":\"vhxnk\",\"downlink\":\"mtk\"},\"5qi\":1432155819,\"allocationAndRetentionPriorityLevel\":1726395306,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"defaultSessionType\":\"IPv4\",\"additionalAllowedSessionTypes\":[\"IPv6\",\"IPv4\",\"IPv4\",\"IPv4\"],\"allowedServices\":[{\"id\":\"b\"}],\"maximumNumberOfBufferedPackets\":725466961},{\"dataNetwork\":{\"id\":\"qagt\"},\"sessionAmbr\":{\"uplink\":\"tdhlfkqo\",\"downlink\":\"py\"},\"5qi\":811580474,\"allocationAndRetentionPriorityLevel\":904889038,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"defaultSessionType\":\"IPv4\",\"additionalAllowedSessionTypes\":[\"IPv4\",\"IPv4\",\"IPv6\",\"IPv4\"],\"allowedServices\":[{\"id\":\"rnysux\"}],\"maximumNumberOfBufferedPackets\":1439980159},{\"dataNetwork\":{\"id\":\"a\"},\"sessionAmbr\":{\"uplink\":\"wgck\",\"downlink\":\"ocxvdfffwafqr\"},\"5qi\":1019115621,\"allocationAndRetentionPriorityLevel\":1181286444,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"defaultSessionType\":\"IPv4\",\"additionalAllowedSessionTypes\":[\"IPv4\",\"IPv6\",\"IPv4\"],\"allowedServices\":[{\"id\":\"zoz\"}],\"maximumNumberOfBufferedPackets\":83009194},{\"dataNetwork\":{\"id\":\"cxgkmoyxcdyui\"},\"sessionAmbr\":{\"uplink\":\"hmfdnbzydvfvfcj\",\"downlink\":\"aeoisrvh\"},\"5qi\":510741232,\"allocationAndRetentionPriorityLevel\":107488795,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"NotPreemptable\",\"defaultSessionType\":\"IPv6\",\"additionalAllowedSessionTypes\":[\"IPv6\"],\"allowedServices\":[{\"id\":\"hwplefaxvx\"},{\"id\":\"l\"},{\"id\":\"btgn\"},{\"id\":\"nzeyqxtjj\"}],\"maximumNumberOfBufferedPackets\":715633855}]}")
             .toObject(SliceConfiguration.class);
-        Assertions.assertEquals("mjihyeozphv", model.slice().id());
-        Assertions.assertEquals("auyqncygupkv", model.defaultDataNetwork().id());
-        Assertions.assertEquals("mdscwxqupev", model.dataNetworkConfigurations().get(0).dataNetwork().id());
-        Assertions.assertEquals("hfstotxhojujbyp", model.dataNetworkConfigurations().get(0).sessionAmbr().uplink());
-        Assertions.assertEquals("lmcuvhixb", model.dataNetworkConfigurations().get(0).sessionAmbr().downlink());
-        Assertions.assertEquals(1696706590, model.dataNetworkConfigurations().get(0).fiveQi());
-        Assertions.assertEquals(12838706,
+        Assertions.assertEquals("jfybvpoekrsgsgb", model.slice().id());
+        Assertions.assertEquals("huzqgn", model.defaultDataNetwork().id());
+        Assertions.assertEquals("gkynscliqh", model.dataNetworkConfigurations().get(0).dataNetwork().id());
+        Assertions.assertEquals("vhxnk", model.dataNetworkConfigurations().get(0).sessionAmbr().uplink());
+        Assertions.assertEquals("mtk", model.dataNetworkConfigurations().get(0).sessionAmbr().downlink());
+        Assertions.assertEquals(1432155819, model.dataNetworkConfigurations().get(0).fiveQi());
+        Assertions.assertEquals(1726395306,
             model.dataNetworkConfigurations().get(0).allocationAndRetentionPriorityLevel());
-        Assertions.assertEquals(PreemptionCapability.NOT_PREEMPT,
+        Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT,
             model.dataNetworkConfigurations().get(0).preemptionCapability());
         Assertions.assertEquals(PreemptionVulnerability.NOT_PREEMPTABLE,
             model.dataNetworkConfigurations().get(0).preemptionVulnerability());
         Assertions.assertEquals(PduSessionType.IPV4, model.dataNetworkConfigurations().get(0).defaultSessionType());
-        Assertions.assertEquals(PduSessionType.IPV4,
+        Assertions.assertEquals(PduSessionType.IPV6,
             model.dataNetworkConfigurations().get(0).additionalAllowedSessionTypes().get(0));
-        Assertions.assertEquals("iwkkbn", model.dataNetworkConfigurations().get(0).allowedServices().get(0).id());
-        Assertions.assertEquals(287864608, model.dataNetworkConfigurations().get(0).maximumNumberOfBufferedPackets());
+        Assertions.assertEquals("b", model.dataNetworkConfigurations().get(0).allowedServices().get(0).id());
+        Assertions.assertEquals(725466961, model.dataNetworkConfigurations().get(0).maximumNumberOfBufferedPackets());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SliceConfiguration model = new SliceConfiguration().withSlice(new SliceResourceId().withId("mjihyeozphv"))
-            .withDefaultDataNetwork(new DataNetworkResourceId().withId("auyqncygupkv"))
-            .withDataNetworkConfigurations(Arrays.asList(new DataNetworkConfiguration()
-                .withDataNetwork(new DataNetworkResourceId().withId("mdscwxqupev"))
-                .withSessionAmbr(new Ambr().withUplink("hfstotxhojujbyp").withDownlink("lmcuvhixb"))
-                .withFiveQi(1696706590).withAllocationAndRetentionPriorityLevel(12838706)
-                .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
-                .withPreemptionVulnerability(PreemptionVulnerability.NOT_PREEMPTABLE)
-                .withDefaultSessionType(PduSessionType.IPV4)
-                .withAdditionalAllowedSessionTypes(
-                    Arrays.asList(PduSessionType.IPV4, PduSessionType.IPV6, PduSessionType.IPV6, PduSessionType.IPV4))
-                .withAllowedServices(Arrays.asList(new ServiceResourceId().withId("iwkkbn"),
-                    new ServiceResourceId().withId("jrywvtylbfpnc"), new ServiceResourceId().withId("rd")))
-                .withMaximumNumberOfBufferedPackets(287864608)));
+        SliceConfiguration model
+            = new SliceConfiguration().withSlice(new SliceResourceId().withId("jfybvpoekrsgsgb"))
+                .withDefaultDataNetwork(new DataNetworkResourceId().withId("huzqgn"))
+                .withDataNetworkConfigurations(Arrays.asList(
+                    new DataNetworkConfiguration().withDataNetwork(new DataNetworkResourceId().withId("gkynscliqh"))
+                        .withSessionAmbr(new Ambr().withUplink("vhxnk").withDownlink("mtk"))
+                        .withFiveQi(1432155819)
+                        .withAllocationAndRetentionPriorityLevel(1726395306)
+                        .withPreemptionCapability(PreemptionCapability.MAY_PREEMPT)
+                        .withPreemptionVulnerability(PreemptionVulnerability.NOT_PREEMPTABLE)
+                        .withDefaultSessionType(PduSessionType.IPV4)
+                        .withAdditionalAllowedSessionTypes(Arrays.asList(PduSessionType.IPV6, PduSessionType.IPV4,
+                            PduSessionType.IPV4, PduSessionType.IPV4))
+                        .withAllowedServices(Arrays.asList(new ServiceResourceId().withId("b")))
+                        .withMaximumNumberOfBufferedPackets(725466961),
+                    new DataNetworkConfiguration().withDataNetwork(new DataNetworkResourceId().withId("qagt"))
+                        .withSessionAmbr(new Ambr().withUplink("tdhlfkqo").withDownlink("py"))
+                        .withFiveQi(811580474)
+                        .withAllocationAndRetentionPriorityLevel(904889038)
+                        .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
+                        .withPreemptionVulnerability(PreemptionVulnerability.NOT_PREEMPTABLE)
+                        .withDefaultSessionType(PduSessionType.IPV4)
+                        .withAdditionalAllowedSessionTypes(Arrays.asList(PduSessionType.IPV4, PduSessionType.IPV4,
+                            PduSessionType.IPV6, PduSessionType.IPV4))
+                        .withAllowedServices(Arrays.asList(new ServiceResourceId().withId("rnysux")))
+                        .withMaximumNumberOfBufferedPackets(1439980159),
+                    new DataNetworkConfiguration().withDataNetwork(new DataNetworkResourceId().withId("a"))
+                        .withSessionAmbr(new Ambr().withUplink("wgck").withDownlink("ocxvdfffwafqr"))
+                        .withFiveQi(1019115621)
+                        .withAllocationAndRetentionPriorityLevel(1181286444)
+                        .withPreemptionCapability(PreemptionCapability.MAY_PREEMPT)
+                        .withPreemptionVulnerability(PreemptionVulnerability.NOT_PREEMPTABLE)
+                        .withDefaultSessionType(PduSessionType.IPV4)
+                        .withAdditionalAllowedSessionTypes(
+                            Arrays.asList(PduSessionType.IPV4, PduSessionType.IPV6, PduSessionType.IPV4))
+                        .withAllowedServices(Arrays.asList(new ServiceResourceId().withId("zoz")))
+                        .withMaximumNumberOfBufferedPackets(83009194),
+                    new DataNetworkConfiguration().withDataNetwork(new DataNetworkResourceId().withId("cxgkmoyxcdyui"))
+                        .withSessionAmbr(new Ambr().withUplink("hmfdnbzydvfvfcj").withDownlink("aeoisrvh"))
+                        .withFiveQi(510741232)
+                        .withAllocationAndRetentionPriorityLevel(107488795)
+                        .withPreemptionCapability(PreemptionCapability.MAY_PREEMPT)
+                        .withPreemptionVulnerability(PreemptionVulnerability.NOT_PREEMPTABLE)
+                        .withDefaultSessionType(PduSessionType.IPV6)
+                        .withAdditionalAllowedSessionTypes(Arrays.asList(PduSessionType.IPV6))
+                        .withAllowedServices(Arrays.asList(new ServiceResourceId().withId("hwplefaxvx"),
+                            new ServiceResourceId().withId("l"), new ServiceResourceId().withId("btgn"),
+                            new ServiceResourceId().withId("nzeyqxtjj")))
+                        .withMaximumNumberOfBufferedPackets(715633855)));
         model = BinaryData.fromObject(model).toObject(SliceConfiguration.class);
-        Assertions.assertEquals("mjihyeozphv", model.slice().id());
-        Assertions.assertEquals("auyqncygupkv", model.defaultDataNetwork().id());
-        Assertions.assertEquals("mdscwxqupev", model.dataNetworkConfigurations().get(0).dataNetwork().id());
-        Assertions.assertEquals("hfstotxhojujbyp", model.dataNetworkConfigurations().get(0).sessionAmbr().uplink());
-        Assertions.assertEquals("lmcuvhixb", model.dataNetworkConfigurations().get(0).sessionAmbr().downlink());
-        Assertions.assertEquals(1696706590, model.dataNetworkConfigurations().get(0).fiveQi());
-        Assertions.assertEquals(12838706,
+        Assertions.assertEquals("jfybvpoekrsgsgb", model.slice().id());
+        Assertions.assertEquals("huzqgn", model.defaultDataNetwork().id());
+        Assertions.assertEquals("gkynscliqh", model.dataNetworkConfigurations().get(0).dataNetwork().id());
+        Assertions.assertEquals("vhxnk", model.dataNetworkConfigurations().get(0).sessionAmbr().uplink());
+        Assertions.assertEquals("mtk", model.dataNetworkConfigurations().get(0).sessionAmbr().downlink());
+        Assertions.assertEquals(1432155819, model.dataNetworkConfigurations().get(0).fiveQi());
+        Assertions.assertEquals(1726395306,
             model.dataNetworkConfigurations().get(0).allocationAndRetentionPriorityLevel());
-        Assertions.assertEquals(PreemptionCapability.NOT_PREEMPT,
+        Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT,
             model.dataNetworkConfigurations().get(0).preemptionCapability());
         Assertions.assertEquals(PreemptionVulnerability.NOT_PREEMPTABLE,
             model.dataNetworkConfigurations().get(0).preemptionVulnerability());
         Assertions.assertEquals(PduSessionType.IPV4, model.dataNetworkConfigurations().get(0).defaultSessionType());
-        Assertions.assertEquals(PduSessionType.IPV4,
+        Assertions.assertEquals(PduSessionType.IPV6,
             model.dataNetworkConfigurations().get(0).additionalAllowedSessionTypes().get(0));
-        Assertions.assertEquals("iwkkbn", model.dataNetworkConfigurations().get(0).allowedServices().get(0).id());
-        Assertions.assertEquals(287864608, model.dataNetworkConfigurations().get(0).maximumNumberOfBufferedPackets());
+        Assertions.assertEquals("b", model.dataNetworkConfigurations().get(0).allowedServices().get(0).id());
+        Assertions.assertEquals(725466961, model.dataNetworkConfigurations().get(0).maximumNumberOfBufferedPackets());
     }
 }

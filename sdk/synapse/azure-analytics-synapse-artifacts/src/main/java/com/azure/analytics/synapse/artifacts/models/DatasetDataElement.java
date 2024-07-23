@@ -5,29 +5,36 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Columns that define the structure of the dataset. */
+/**
+ * Columns that define the structure of the dataset.
+ */
 @Fluent
-public final class DatasetDataElement {
+public final class DatasetDataElement implements JsonSerializable<DatasetDataElement> {
     /*
      * Name of the column. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "name")
     private Object name;
 
     /*
      * Type of the column. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "type")
     private Object type;
 
-    /** Creates an instance of DatasetDataElement class. */
-    public DatasetDataElement() {}
+    /**
+     * Creates an instance of DatasetDataElement class.
+     */
+    public DatasetDataElement() {
+    }
 
     /**
      * Get the name property: Name of the column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the name value.
      */
     public Object getName() {
@@ -36,7 +43,7 @@ public final class DatasetDataElement {
 
     /**
      * Set the name property: Name of the column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param name the name value to set.
      * @return the DatasetDataElement object itself.
      */
@@ -47,7 +54,7 @@ public final class DatasetDataElement {
 
     /**
      * Get the type property: Type of the column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the type value.
      */
     public Object getType() {
@@ -56,12 +63,51 @@ public final class DatasetDataElement {
 
     /**
      * Set the type property: Type of the column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param type the type value to set.
      * @return the DatasetDataElement object itself.
      */
     public DatasetDataElement setType(Object type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("name", this.name);
+        jsonWriter.writeUntypedField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatasetDataElement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatasetDataElement if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatasetDataElement.
+     */
+    public static DatasetDataElement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatasetDataElement deserializedDatasetDataElement = new DatasetDataElement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDatasetDataElement.name = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatasetDataElement.type = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatasetDataElement;
+        });
     }
 }

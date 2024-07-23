@@ -3,28 +3,33 @@
 
 package com.azure.maps.route.models;
 
-import java.util.List;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.maps.route.implementation.helpers.RouteDirectionsBatchResultPropertiesHelper;
 import com.azure.maps.route.implementation.models.RouteDirectionsBatchResultPrivate;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Route Directions Batch Result
  *
  */
-public class RouteDirectionsBatchResult {
+public class RouteDirectionsBatchResult implements JsonSerializable<RouteDirectionsBatchResult> {
     private List<RouteDirectionsBatchItem> batchItems;
     private String batchId;
 
     static {
         RouteDirectionsBatchResultPropertiesHelper.setAccessor(
-            new RouteDirectionsBatchResultPropertiesHelper.RouteDirectionsBatchResultAccessor() {
-                @Override
-                public void setFromRouteDirectionsBatchResultPrivate(RouteDirectionsBatchResult result,
-                        RouteDirectionsBatchResultPrivate privateResult) {
-                    result.setFromRouteDirectionsBatchResultPrivate(privateResult);
-                }
-            });
+            RouteDirectionsBatchResult::setFromRouteDirectionsBatchResultPrivate);
+    }
+
+    /**
+     * Creates a new instance of {@link RouteDirectionsBatchResult}.
+     */
+    public RouteDirectionsBatchResult() {
     }
 
     /**
@@ -56,5 +61,43 @@ public class RouteDirectionsBatchResult {
     // private setter
     private void setFromRouteDirectionsBatchResultPrivate(RouteDirectionsBatchResultPrivate privateResult) {
         this.batchItems = privateResult.getBatchItems();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteDirectionsBatchResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteDirectionsBatchResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteDirectionsBatchResult.
+     */
+    public static RouteDirectionsBatchResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteDirectionsBatchResult deserializedRouteDirectionsBatchResult
+                = new RouteDirectionsBatchResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("batchItems".equals(fieldName)) {
+                    List<RouteDirectionsBatchItem> batchItems
+                        = reader.readArray(reader1 -> RouteDirectionsBatchItem.fromJson(reader1));
+                    deserializedRouteDirectionsBatchResult.batchItems = batchItems;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteDirectionsBatchResult;
+        });
     }
 }

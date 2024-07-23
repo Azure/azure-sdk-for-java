@@ -5,72 +5,72 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Run notebook snapshot. */
+/**
+ * Run notebook snapshot.
+ */
 @Fluent
-public final class RunNotebookSnapshot {
+public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSnapshot> {
     /*
      * Output of exit command.
      */
-    @JsonProperty(value = "exitValue")
     private String exitValue;
 
     /*
      * Run notebook runId.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Notebook name.
      */
-    @JsonProperty(value = "notebook", required = true)
     private String notebook;
 
     /*
      * Session properties.
      */
-    @JsonProperty(value = "sessionOptions")
     private RunNotebookSparkSessionOptions sessionOptions;
 
     /*
      * Whether session should run till time to live after run completes.
      */
-    @JsonProperty(value = "honorSessionTimeToLive")
     private Boolean honorSessionTimeToLive;
 
     /*
      * Livy session id.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * SparkPool name.
      */
-    @JsonProperty(value = "sparkPool")
     private String sparkPool;
 
     /*
      * Run notebook parameters
      */
-    @JsonProperty(value = "parameters")
     private Map<String, RunNotebookParameter> parameters;
 
     /*
      * Notebook resource type.
      */
-    @JsonProperty(value = "notebookContent")
     private NotebookResource notebookContent;
 
-    /** Creates an instance of RunNotebookSnapshot class. */
-    public RunNotebookSnapshot() {}
+    /**
+     * Creates an instance of RunNotebookSnapshot class.
+     */
+    public RunNotebookSnapshot() {
+    }
 
     /**
      * Get the exitValue property: Output of exit command.
-     *
+     * 
      * @return the exitValue value.
      */
     public String getExitValue() {
@@ -79,7 +79,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the exitValue property: Output of exit command.
-     *
+     * 
      * @param exitValue the exitValue value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -90,7 +90,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the id property: Run notebook runId.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -99,7 +99,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the id property: Run notebook runId.
-     *
+     * 
      * @param id the id value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -110,7 +110,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the notebook property: Notebook name.
-     *
+     * 
      * @return the notebook value.
      */
     public String getNotebook() {
@@ -119,7 +119,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the notebook property: Notebook name.
-     *
+     * 
      * @param notebook the notebook value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -130,7 +130,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the sessionOptions property: Session properties.
-     *
+     * 
      * @return the sessionOptions value.
      */
     public RunNotebookSparkSessionOptions getSessionOptions() {
@@ -139,7 +139,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the sessionOptions property: Session properties.
-     *
+     * 
      * @param sessionOptions the sessionOptions value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -150,7 +150,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the honorSessionTimeToLive property: Whether session should run till time to live after run completes.
-     *
+     * 
      * @return the honorSessionTimeToLive value.
      */
     public Boolean isHonorSessionTimeToLive() {
@@ -159,7 +159,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the honorSessionTimeToLive property: Whether session should run till time to live after run completes.
-     *
+     * 
      * @param honorSessionTimeToLive the honorSessionTimeToLive value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -170,7 +170,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the sessionId property: Livy session id.
-     *
+     * 
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -179,7 +179,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the sessionId property: Livy session id.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -190,7 +190,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the sparkPool property: SparkPool name.
-     *
+     * 
      * @return the sparkPool value.
      */
     public String getSparkPool() {
@@ -199,7 +199,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the sparkPool property: SparkPool name.
-     *
+     * 
      * @param sparkPool the sparkPool value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -210,7 +210,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the parameters property: Run notebook parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, RunNotebookParameter> getParameters() {
@@ -219,7 +219,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the parameters property: Run notebook parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the RunNotebookSnapshot object itself.
      */
@@ -230,7 +230,7 @@ public final class RunNotebookSnapshot {
 
     /**
      * Get the notebookContent property: Notebook resource type.
-     *
+     * 
      * @return the notebookContent value.
      */
     public NotebookResource getNotebookContent() {
@@ -239,12 +239,75 @@ public final class RunNotebookSnapshot {
 
     /**
      * Set the notebookContent property: Notebook resource type.
-     *
+     * 
      * @param notebookContent the notebookContent value to set.
      * @return the RunNotebookSnapshot object itself.
      */
     public RunNotebookSnapshot setNotebookContent(NotebookResource notebookContent) {
         this.notebookContent = notebookContent;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("notebook", this.notebook);
+        jsonWriter.writeStringField("exitValue", this.exitValue);
+        jsonWriter.writeJsonField("sessionOptions", this.sessionOptions);
+        jsonWriter.writeBooleanField("honorSessionTimeToLive", this.honorSessionTimeToLive);
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeStringField("sparkPool", this.sparkPool);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("notebookContent", this.notebookContent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunNotebookSnapshot from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunNotebookSnapshot if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunNotebookSnapshot.
+     */
+    public static RunNotebookSnapshot fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunNotebookSnapshot deserializedRunNotebookSnapshot = new RunNotebookSnapshot();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRunNotebookSnapshot.id = reader.getString();
+                } else if ("notebook".equals(fieldName)) {
+                    deserializedRunNotebookSnapshot.notebook = reader.getString();
+                } else if ("exitValue".equals(fieldName)) {
+                    deserializedRunNotebookSnapshot.exitValue = reader.getString();
+                } else if ("sessionOptions".equals(fieldName)) {
+                    deserializedRunNotebookSnapshot.sessionOptions = RunNotebookSparkSessionOptions.fromJson(reader);
+                } else if ("honorSessionTimeToLive".equals(fieldName)) {
+                    deserializedRunNotebookSnapshot.honorSessionTimeToLive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sessionId".equals(fieldName)) {
+                    deserializedRunNotebookSnapshot.sessionId = reader.getString();
+                } else if ("sparkPool".equals(fieldName)) {
+                    deserializedRunNotebookSnapshot.sparkPool = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, RunNotebookParameter> parameters
+                        = reader.readMap(reader1 -> RunNotebookParameter.fromJson(reader1));
+                    deserializedRunNotebookSnapshot.parameters = parameters;
+                } else if ("notebookContent".equals(fieldName)) {
+                    deserializedRunNotebookSnapshot.notebookContent = NotebookResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunNotebookSnapshot;
+        });
     }
 }

@@ -12,15 +12,15 @@ public final class DataNetworkPropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataNetworkPropertiesFormat model
-            = BinaryData.fromString("{\"provisioningState\":\"Failed\",\"description\":\"mdwzjeiachboo\"}")
+            = BinaryData.fromString("{\"provisioningState\":\"Deleting\",\"description\":\"ixuigdtopbobj\"}")
                 .toObject(DataNetworkPropertiesFormat.class);
-        Assertions.assertEquals("mdwzjeiachboo", model.description());
+        Assertions.assertEquals("ixuigdtopbobj", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataNetworkPropertiesFormat model = new DataNetworkPropertiesFormat().withDescription("mdwzjeiachboo");
+        DataNetworkPropertiesFormat model = new DataNetworkPropertiesFormat().withDescription("ixuigdtopbobj");
         model = BinaryData.fromObject(model).toObject(DataNetworkPropertiesFormat.class);
-        Assertions.assertEquals("mdwzjeiachboo", model.description());
+        Assertions.assertEquals("ixuigdtopbobj", model.description());
     }
 }

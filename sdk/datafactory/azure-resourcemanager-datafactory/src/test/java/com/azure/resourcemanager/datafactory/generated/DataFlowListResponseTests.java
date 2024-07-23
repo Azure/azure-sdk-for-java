@@ -16,38 +16,30 @@ public final class DataFlowListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataFlowListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"type\":\"ecwcrojphslhcawj\",\"description\":\"i\",\"annotations\":[\"datafmvigorqjbttzh\",\"dataaglkafhon\",\"datajuj\"],\"folder\":{\"name\":\"kpzvcpopmxelnwc\"}},\"name\":\"yjede\",\"type\":\"mlfmkqs\",\"etag\":\"zuawxtzxpuamwa\",\"id\":\"xrvxcushsphai\"},{\"properties\":{\"type\":\"xyasflvgsgzw\",\"description\":\"akoi\",\"annotations\":[\"datasmjblmljhlnym\",\"dataotqyry\"],\"folder\":{\"name\":\"bmqqvxmvw\"}},\"name\":\"tayx\",\"type\":\"supe\",\"etag\":\"lzqnhcvs\",\"id\":\"tnzoibgsxgnxfy\"},{\"properties\":{\"type\":\"nmpqoxwdofdb\",\"description\":\"qxeiiqbimhtmwwi\",\"annotations\":[\"datahfqpofv\",\"databcblemb\",\"datakbwvqvxkdiv\"],\"folder\":{\"name\":\"ebwtswb\"}},\"name\":\"wfmdurage\",\"type\":\"zvcjfelisdjubggb\",\"etag\":\"gkxkbsazgakg\",\"id\":\"yrcmjdmspofap\"},{\"properties\":{\"type\":\"hryl\",\"description\":\"ofrzgb\",\"annotations\":[\"datadmstk\"],\"folder\":{\"name\":\"v\"}},\"name\":\"c\",\"type\":\"iznk\",\"etag\":\"f\",\"id\":\"snvpdibmi\"}],\"nextLink\":\"stbz\"}")
+            "{\"value\":[{\"properties\":{\"type\":\"DataFlow\",\"description\":\"eevy\",\"annotations\":[\"datasgzfczbg\"],\"folder\":{\"name\":\"gbeglqgleo\"}},\"name\":\"betnluankrrfxee\",\"type\":\"tijv\",\"etag\":\"vbmqzbqq\",\"id\":\"aj\"},{\"properties\":{\"type\":\"DataFlow\",\"description\":\"wxacevehj\",\"annotations\":[\"dataxoafgaoqltfae\",\"datalinmfgv\"],\"folder\":{\"name\":\"pghriypoqeyhl\"}},\"name\":\"ykprlpyznu\",\"type\":\"qdsmexiit\",\"etag\":\"uxtyasiibmi\",\"id\":\"nnust\"}],\"nextLink\":\"ljhnmgixhcmav\"}")
             .toObject(DataFlowListResponse.class);
-        Assertions.assertEquals("xrvxcushsphai", model.value().get(0).id());
-        Assertions.assertEquals("i", model.value().get(0).properties().description());
-        Assertions.assertEquals("kpzvcpopmxelnwc", model.value().get(0).properties().folder().name());
-        Assertions.assertEquals("stbz", model.nextLink());
+        Assertions.assertEquals("aj", model.value().get(0).id());
+        Assertions.assertEquals("eevy", model.value().get(0).properties().description());
+        Assertions.assertEquals("gbeglqgleo", model.value().get(0).properties().folder().name());
+        Assertions.assertEquals("ljhnmgixhcmav", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataFlowListResponse model = new DataFlowListResponse().withValue(Arrays.asList(
-            new DataFlowResourceInner().withId("xrvxcushsphai")
-                .withProperties(new DataFlow().withDescription("i")
-                    .withAnnotations(Arrays.asList("datafmvigorqjbttzh", "dataaglkafhon", "datajuj"))
-                    .withFolder(new DataFlowFolder().withName("kpzvcpopmxelnwc"))),
-            new DataFlowResourceInner().withId("tnzoibgsxgnxfy")
-                .withProperties(new DataFlow().withDescription("akoi")
-                    .withAnnotations(Arrays.asList("datasmjblmljhlnym", "dataotqyry"))
-                    .withFolder(new DataFlowFolder().withName("bmqqvxmvw"))),
-            new DataFlowResourceInner().withId("yrcmjdmspofap")
-                .withProperties(new DataFlow().withDescription("qxeiiqbimhtmwwi")
-                    .withAnnotations(Arrays.asList("datahfqpofv", "databcblemb", "datakbwvqvxkdiv"))
-                    .withFolder(new DataFlowFolder().withName("ebwtswb"))),
-            new DataFlowResourceInner().withId("snvpdibmi")
-                .withProperties(new DataFlow().withDescription("ofrzgb")
-                    .withAnnotations(Arrays.asList("datadmstk"))
-                    .withFolder(new DataFlowFolder().withName("v")))))
-            .withNextLink("stbz");
+            new DataFlowResourceInner().withId("aj")
+                .withProperties(new DataFlow().withDescription("eevy")
+                    .withAnnotations(Arrays.asList("datasgzfczbg"))
+                    .withFolder(new DataFlowFolder().withName("gbeglqgleo"))),
+            new DataFlowResourceInner().withId("nnust")
+                .withProperties(new DataFlow().withDescription("wxacevehj")
+                    .withAnnotations(Arrays.asList("dataxoafgaoqltfae", "datalinmfgv"))
+                    .withFolder(new DataFlowFolder().withName("pghriypoqeyhl")))))
+            .withNextLink("ljhnmgixhcmav");
         model = BinaryData.fromObject(model).toObject(DataFlowListResponse.class);
-        Assertions.assertEquals("xrvxcushsphai", model.value().get(0).id());
-        Assertions.assertEquals("i", model.value().get(0).properties().description());
-        Assertions.assertEquals("kpzvcpopmxelnwc", model.value().get(0).properties().folder().name());
-        Assertions.assertEquals("stbz", model.nextLink());
+        Assertions.assertEquals("aj", model.value().get(0).id());
+        Assertions.assertEquals("eevy", model.value().get(0).properties().description());
+        Assertions.assertEquals("gbeglqgleo", model.value().get(0).properties().folder().name());
+        Assertions.assertEquals("ljhnmgixhcmav", model.nextLink());
     }
 }

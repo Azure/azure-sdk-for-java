@@ -5,11 +5,13 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This activity will fail within its own scope and output a custom error message and error code. The error message and
@@ -17,32 +19,43 @@ import java.util.List;
  * activity scope can be the whole pipeline or a control activity (e.g. foreach, switch, until), if the fail activity is
  * contained in it.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Fail")
-@JsonFlatten
 @Fluent
 public class FailActivity extends ControlActivity {
     /*
-     * The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non
-     * empty/blank string at runtime. Type: string (or Expression with resultType string).
+     * Type of activity.
      */
-    @JsonProperty(value = "typeProperties.message", required = true)
+    private String type = "Fail";
+
+    /*
+     * The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
+     */
     private Object message;
 
     /*
-     * The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated
-     * to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
+     * The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.errorCode", required = true)
     private Object errorCode;
 
-    /** Creates an instance of FailActivity class. */
-    public FailActivity() {}
+    /**
+     * Creates an instance of FailActivity class.
+     */
+    public FailActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the message property: The error message that surfaced in the Fail activity. It can be dynamic content that's
      * evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the message value.
      */
     public Object getMessage() {
@@ -52,7 +65,7 @@ public class FailActivity extends ControlActivity {
     /**
      * Set the message property: The error message that surfaced in the Fail activity. It can be dynamic content that's
      * evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param message the message value to set.
      * @return the FailActivity object itself.
      */
@@ -65,7 +78,7 @@ public class FailActivity extends ControlActivity {
      * Get the errorCode property: The error code that categorizes the error type of the Fail activity. It can be
      * dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the errorCode value.
      */
     public Object getErrorCode() {
@@ -76,7 +89,7 @@ public class FailActivity extends ControlActivity {
      * Set the errorCode property: The error code that categorizes the error type of the Fail activity. It can be
      * dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the FailActivity object itself.
      */
@@ -85,45 +98,148 @@ public class FailActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (message != null || errorCode != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("message", this.message);
+            jsonWriter.writeUntypedField("errorCode", this.errorCode);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FailActivity.
+     */
+    public static FailActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailActivity deserializedFailActivity = new FailActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFailActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedFailActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedFailActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedFailActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedFailActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedFailActivity.setUserProperties(userProperties);
+                } else if ("type".equals(fieldName)) {
+                    deserializedFailActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("message".equals(fieldName)) {
+                            deserializedFailActivity.message = reader.readUntyped();
+                        } else if ("errorCode".equals(fieldName)) {
+                            deserializedFailActivity.errorCode = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedFailActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedFailActivity;
+        });
     }
 }

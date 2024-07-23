@@ -294,7 +294,7 @@ public final class DataFactoryManager {
                 .append("-")
                 .append("com.azure.resourcemanager.datafactory")
                 .append("/")
-                .append("1.0.0-beta.28");
+                .append("1.0.0-beta.29");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -549,7 +549,7 @@ public final class DataFactoryManager {
     }
 
     /**
-     * Gets the resource collection API of CredentialOperations.
+     * Gets the resource collection API of CredentialOperations. It manages CredentialResource.
      * 
      * @return Resource collection API of CredentialOperations.
      */

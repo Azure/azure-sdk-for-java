@@ -32,7 +32,8 @@ public final class ConnectionMonitorTestConfiguration {
     private ConnectionMonitorTestConfigurationProtocol protocol;
 
     /*
-     * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version depending on other parameters.
+     * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version
+     * depending on other parameters.
      */
     @JsonProperty(value = "preferredIPVersion")
     private PreferredIpVersion preferredIpVersion;

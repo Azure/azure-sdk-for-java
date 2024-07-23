@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HomeNetworkPublicKey {
     /*
-     * The Home Network Public Key Identifier determines which public key was used to generate the SUCI sent to the
-     * AMF. See TS 23.003 Section 2.2B Section 5.
+     * The Home Network Public Key Identifier determines which public key was used to generate the SUCI sent to the AMF. See TS 23.003 Section 2.2B Section 5.
      */
     @JsonProperty(value = "id", required = true)
     private int id;
 
     /*
-     * The URL of Azure Key Vault secret containing the private key, versioned or unversioned. For example:
-     * https://contosovault.vault.azure.net/secrets/mySuciPrivateKey/562a4bb76b524a1493a6afe8e536ee78.
+     * The URL of Azure Key Vault secret containing the private key, versioned or unversioned. For example: https://contosovault.vault.azure.net/secrets/mySuciPrivateKey/562a4bb76b524a1493a6afe8e536ee78.
      */
     @JsonProperty(value = "url")
     private String url;
@@ -55,8 +53,8 @@ public final class HomeNetworkPublicKey {
     }
 
     /**
-     * Get the url property: The URL of Azure Key Vault secret containing the private key, versioned or unversioned.
-     * For example: https://contosovault.vault.azure.net/secrets/mySuciPrivateKey/562a4bb76b524a1493a6afe8e536ee78.
+     * Get the url property: The URL of Azure Key Vault secret containing the private key, versioned or unversioned. For
+     * example: https://contosovault.vault.azure.net/secrets/mySuciPrivateKey/562a4bb76b524a1493a6afe8e536ee78.
      * 
      * @return the url value.
      */
@@ -65,8 +63,8 @@ public final class HomeNetworkPublicKey {
     }
 
     /**
-     * Set the url property: The URL of Azure Key Vault secret containing the private key, versioned or unversioned.
-     * For example: https://contosovault.vault.azure.net/secrets/mySuciPrivateKey/562a4bb76b524a1493a6afe8e536ee78.
+     * Set the url property: The URL of Azure Key Vault secret containing the private key, versioned or unversioned. For
+     * example: https://contosovault.vault.azure.net/secrets/mySuciPrivateKey/562a4bb76b524a1493a6afe8e536ee78.
      * 
      * @param url the url value to set.
      * @return the HomeNetworkPublicKey object itself.

@@ -5,23 +5,31 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The MetastoreRegisterObject model. */
+/**
+ * The MetastoreRegisterObject model.
+ */
 @Fluent
-public final class MetastoreRegisterObject {
+public final class MetastoreRegisterObject implements JsonSerializable<MetastoreRegisterObject> {
     /*
      * The input folder containing CDM files.
      */
-    @JsonProperty(value = "inputFolder", required = true)
     private String inputFolder;
 
-    /** Creates an instance of MetastoreRegisterObject class. */
-    public MetastoreRegisterObject() {}
+    /**
+     * Creates an instance of MetastoreRegisterObject class.
+     */
+    public MetastoreRegisterObject() {
+    }
 
     /**
      * Get the inputFolder property: The input folder containing CDM files.
-     *
+     * 
      * @return the inputFolder value.
      */
     public String getInputFolder() {
@@ -30,12 +38,49 @@ public final class MetastoreRegisterObject {
 
     /**
      * Set the inputFolder property: The input folder containing CDM files.
-     *
+     * 
      * @param inputFolder the inputFolder value to set.
      * @return the MetastoreRegisterObject object itself.
      */
     public MetastoreRegisterObject setInputFolder(String inputFolder) {
         this.inputFolder = inputFolder;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inputFolder", this.inputFolder);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetastoreRegisterObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetastoreRegisterObject if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetastoreRegisterObject.
+     */
+    public static MetastoreRegisterObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetastoreRegisterObject deserializedMetastoreRegisterObject = new MetastoreRegisterObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inputFolder".equals(fieldName)) {
+                    deserializedMetastoreRegisterObject.inputFolder = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetastoreRegisterObject;
+        });
     }
 }

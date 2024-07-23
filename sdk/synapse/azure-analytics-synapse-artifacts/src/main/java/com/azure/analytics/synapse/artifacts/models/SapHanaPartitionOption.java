@@ -5,42 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The partition mechanism that will be used for SAP HANA read in parallel. */
+/**
+ * The partition mechanism that will be used for SAP HANA read in parallel.
+ */
 public final class SapHanaPartitionOption extends ExpandableStringEnum<SapHanaPartitionOption> {
-    /** Static value None for SapHanaPartitionOption. */
+    /**
+     * Static value None for SapHanaPartitionOption.
+     */
     public static final SapHanaPartitionOption NONE = fromString("None");
 
-    /** Static value PhysicalPartitionsOfTable for SapHanaPartitionOption. */
+    /**
+     * Static value PhysicalPartitionsOfTable for SapHanaPartitionOption.
+     */
     public static final SapHanaPartitionOption PHYSICAL_PARTITIONS_OF_TABLE = fromString("PhysicalPartitionsOfTable");
 
-    /** Static value SapHanaDynamicRange for SapHanaPartitionOption. */
+    /**
+     * Static value SapHanaDynamicRange for SapHanaPartitionOption.
+     */
     public static final SapHanaPartitionOption SAP_HANA_DYNAMIC_RANGE = fromString("SapHanaDynamicRange");
 
     /**
      * Creates a new instance of SapHanaPartitionOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SapHanaPartitionOption() {}
+    public SapHanaPartitionOption() {
+    }
 
     /**
      * Creates or finds a SapHanaPartitionOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SapHanaPartitionOption.
      */
-    @JsonCreator
     public static SapHanaPartitionOption fromString(String name) {
         return fromString(name, SapHanaPartitionOption.class);
     }
 
     /**
      * Gets known SapHanaPartitionOption values.
-     *
+     * 
      * @return known SapHanaPartitionOption values.
      */
     public static Collection<SapHanaPartitionOption> values() {

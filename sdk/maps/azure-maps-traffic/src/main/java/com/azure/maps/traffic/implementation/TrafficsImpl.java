@@ -16,13 +16,17 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.maps.traffic.implementation.models.ErrorResponseException;
 import com.azure.maps.traffic.implementation.models.ResponseFormat;
+import com.azure.maps.traffic.implementation.models.TrafficsGetTrafficFlowTileHeaders;
+import com.azure.maps.traffic.implementation.models.TrafficsGetTrafficIncidentTileHeaders;
 import com.azure.maps.traffic.models.IncidentDetailStyle;
 import com.azure.maps.traffic.models.IncidentGeometryType;
 import com.azure.maps.traffic.models.ProjectionStandard;
@@ -38,17 +42,23 @@ import com.azure.maps.traffic.models.TrafficIncidentViewport;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Traffics. */
+/**
+ * An instance of this class provides access to all the operations defined in Traffics.
+ */
 public final class TrafficsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TrafficsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final TrafficClientImpl client;
 
     /**
      * Initializes an instance of TrafficsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TrafficsImpl(TrafficClientImpl client) {
@@ -62,111 +72,205 @@ public final class TrafficsImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "TrafficClientTraffic")
-    private interface TrafficsService {
+    public interface TrafficsService {
         @Get("/traffic/flow/tile/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<StreamResponse> getTrafficFlowTile(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") TileFormat format,
-                @QueryParam("style") TrafficFlowTileStyle style,
-                @QueryParam("zoom") int zoom,
-                @QueryParam("x") int x,
-                @QueryParam("y") int y,
-                @QueryParam("thickness") Integer thickness,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<TrafficsGetTrafficFlowTileHeaders, BinaryData>> getTrafficFlowTile(
+            @HostParam("$host") String host, @HeaderParam("x-ms-client-id") String clientId,
+            @QueryParam("api-version") String apiVersion, @PathParam("format") TileFormat format,
+            @QueryParam("style") TrafficFlowTileStyle style, @QueryParam("zoom") int zoom, @QueryParam("x") int x,
+            @QueryParam("y") int y, @QueryParam("thickness") Integer thickness, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("/traffic/flow/tile/{format}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<BinaryData>> getTrafficFlowTileNoCustomHeaders(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") TileFormat format, @QueryParam("style") TrafficFlowTileStyle style,
+            @QueryParam("zoom") int zoom, @QueryParam("x") int x, @QueryParam("y") int y,
+            @QueryParam("thickness") Integer thickness, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/traffic/flow/segment/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegment(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") ResponseFormat format,
-                @QueryParam("style") TrafficFlowSegmentStyle style,
-                @QueryParam("zoom") int zoom,
-                @QueryParam("query") String coordinates,
-                @QueryParam("unit") SpeedUnit unit,
-                @QueryParam("thickness") Integer thickness,
-                @QueryParam("openLr") Boolean openLr,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegment(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") ResponseFormat format, @QueryParam("style") TrafficFlowSegmentStyle style,
+            @QueryParam("zoom") int zoom, @QueryParam("query") String coordinates, @QueryParam("unit") SpeedUnit unit,
+            @QueryParam("thickness") Integer thickness, @QueryParam("openLr") Boolean openLr,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/traffic/incident/tile/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<StreamResponse> getTrafficIncidentTile(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") TileFormat format,
-                @QueryParam("style") TrafficIncidentTileStyle style,
-                @QueryParam("zoom") int zoom,
-                @QueryParam("x") int x,
-                @QueryParam("y") int y,
-                @QueryParam("t") String trafficState,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<TrafficsGetTrafficIncidentTileHeaders, BinaryData>> getTrafficIncidentTile(
+            @HostParam("$host") String host, @HeaderParam("x-ms-client-id") String clientId,
+            @QueryParam("api-version") String apiVersion, @PathParam("format") TileFormat format,
+            @QueryParam("style") TrafficIncidentTileStyle style, @QueryParam("zoom") int zoom, @QueryParam("x") int x,
+            @QueryParam("y") int y, @QueryParam("t") String trafficState, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Get("/traffic/incident/tile/{format}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<BinaryData>> getTrafficIncidentTileNoCustomHeaders(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") TileFormat format, @QueryParam("style") TrafficIncidentTileStyle style,
+            @QueryParam("zoom") int zoom, @QueryParam("x") int x, @QueryParam("y") int y,
+            @QueryParam("t") String trafficState, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/traffic/incident/detail/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetail(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") ResponseFormat format,
-                @QueryParam("style") IncidentDetailStyle style,
-                @QueryParam("boundingbox") String boundingbox,
-                @QueryParam("boundingZoom") int boundingZoom,
-                @QueryParam("trafficmodelid") String trafficmodelid,
-                @QueryParam("language") String language,
-                @QueryParam("projection") ProjectionStandard projection,
-                @QueryParam("geometries") IncidentGeometryType geometries,
-                @QueryParam("expandCluster") Boolean expandCluster,
-                @QueryParam("originalPosition") Boolean originalPosition,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetail(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") ResponseFormat format, @QueryParam("style") IncidentDetailStyle style,
+            @QueryParam("boundingbox") String boundingbox, @QueryParam("boundingZoom") int boundingZoom,
+            @QueryParam("trafficmodelid") String trafficmodelid, @QueryParam("language") String language,
+            @QueryParam("projection") ProjectionStandard projection,
+            @QueryParam("geometries") IncidentGeometryType geometries,
+            @QueryParam("expandCluster") Boolean expandCluster,
+            @QueryParam("originalPosition") Boolean originalPosition, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/traffic/incident/viewport/{format}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewport(
-                @HostParam("$host") String host,
-                @HeaderParam("x-ms-client-id") String clientId,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("format") ResponseFormat format,
-                @QueryParam("boundingbox") String boundingbox,
-                @QueryParam("boundingzoom") int boundingzoom,
-                @QueryParam("overviewbox") String overviewbox,
-                @QueryParam("overviewzoom") int overviewzoom,
-                @QueryParam("copyright") Boolean copyright,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewport(@HostParam("$host") String host,
+            @HeaderParam("x-ms-client-id") String clientId, @QueryParam("api-version") String apiVersion,
+            @PathParam("format") ResponseFormat format, @QueryParam("boundingbox") String boundingbox,
+            @QueryParam("boundingzoom") int boundingzoom, @QueryParam("overviewbox") String overviewbox,
+            @QueryParam("overviewzoom") int overviewzoom, @QueryParam("copyright") Boolean copyright,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * __Traffic Flow Tile__
-     *
-     * <p>**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>The Azure Flow Tile API serves 256 x 256 pixel tiles showing traffic flow. All tiles use the same grid system.
-     * Because the traffic tiles use transparent images, they can be layered on top of map tiles to create a compound
-     * display. The Flow tiles use colors to indicate either the speed of traffic on different road segments, or the
-     * difference between that speed and the free-flow speed on the road segment in question.
-     *
+     * Use to get 256 x 256 pixel tiles showing traffic flow.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
+     * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
+     * use transparent images, they can be layered on top of map tiles to create a compound display. The Flow tiles use
+     * colors to indicate either the speed of traffic on different road segments, or the difference between that speed
+     * and the free-flow speed on the road segment in question.
+     * 
      * @param format Desired format of the response. Possible values are png &amp; pbf.
      * @param style &lt;p&gt;The style to be used to render the tile.&lt;/p&gt;.
      * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
-     *     For _vector_ tiles, value must be in the range: 0-22 (inclusive). Please see [Zoom Levels and Tile
-     *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @param tileIndex Parameter group.
      * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
-     *     accepted values range from 1 - 20. The default value is 10. This parameter is not valid when format is pbf.
+     * accepted values range from 1 - 20. The default value is 10. This parameter is not valid when format is pbf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TrafficsGetTrafficFlowTileHeaders, BinaryData>> getTrafficFlowTileWithResponseAsync(
+        TileFormat format, TrafficFlowTileStyle style, int zoom, TileIndex tileIndex, Integer thickness) {
+        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
+        int x = tileIndex.getX();
+        int y = tileIndex.getY();
+        return FluxUtil
+            .withContext(context -> service.getTrafficFlowTile(this.client.getHost(), this.client.getClientId(),
+                this.client.getApiVersion(), format, style, zoom, x, y, thickness, accept, context));
+    }
+
+    /**
+     * Use to get 256 x 256 pixel tiles showing traffic flow.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
+     * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
+     * use transparent images, they can be layered on top of map tiles to create a compound display. The Flow tiles use
+     * colors to indicate either the speed of traffic on different road segments, or the difference between that speed
+     * and the free-flow speed on the road segment in question.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style &lt;p&gt;The style to be used to render the tile.&lt;/p&gt;.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
+     * accepted values range from 1 - 20. The default value is 10. This parameter is not valid when format is pbf.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TrafficsGetTrafficFlowTileHeaders, BinaryData>> getTrafficFlowTileWithResponseAsync(
+        TileFormat format, TrafficFlowTileStyle style, int zoom, TileIndex tileIndex, Integer thickness,
+        Context context) {
+        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
+        int x = tileIndex.getX();
+        int y = tileIndex.getY();
+        return service.getTrafficFlowTile(this.client.getHost(), this.client.getClientId(), this.client.getApiVersion(),
+            format, style, zoom, x, y, thickness, accept, context);
+    }
+
+    /**
+     * Use to get 256 x 256 pixel tiles showing traffic flow.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
+     * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
+     * use transparent images, they can be layered on top of map tiles to create a compound display. The Flow tiles use
+     * colors to indicate either the speed of traffic on different road segments, or the difference between that speed
+     * and the free-flow speed on the road segment in question.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style &lt;p&gt;The style to be used to render the tile.&lt;/p&gt;.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
+     * accepted values range from 1 - 20. The default value is 10. This parameter is not valid when format is pbf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getTrafficFlowTileAsync(TileFormat format, TrafficFlowTileStyle style, int zoom,
+        TileIndex tileIndex, Integer thickness) {
+        return getTrafficFlowTileWithResponseAsync(format, style, zoom, tileIndex, thickness)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use to get 256 x 256 pixel tiles showing traffic flow.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
+     * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
+     * use transparent images, they can be layered on top of map tiles to create a compound display. The Flow tiles use
+     * colors to indicate either the speed of traffic on different road segments, or the difference between that speed
+     * and the free-flow speed on the road segment in question.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style &lt;p&gt;The style to be used to render the tile.&lt;/p&gt;.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
+     * accepted values range from 1 - 20. The default value is 10. This parameter is not valid when format is pbf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -174,109 +278,378 @@ public final class TrafficsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> getTrafficFlowTileWithResponseAsync(
-            TileFormat format,
-            TrafficFlowTileStyle style,
-            int zoom,
-            TileIndex tileIndex,
-            Integer thickness,
-            Context context) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return service.getTrafficFlowTile(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                style,
-                zoom,
-                x,
-                y,
-                thickness,
-                accept,
-                context);
+    public Mono<BinaryData> getTrafficFlowTileAsync(TileFormat format, TrafficFlowTileStyle style, int zoom,
+        TileIndex tileIndex, Integer thickness, Context context) {
+        return getTrafficFlowTileWithResponseAsync(format, style, zoom, tileIndex, thickness, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * __Traffic Flow Segment__
-     *
-     * <p>**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>This service provides information about the speeds and travel times of the road fragment closest to the given
-     * coordinates. It is designed to work alongside the Flow layer of the Render Service to support clickable flow data
-     * visualizations. With this API, the client side can connect any place in the map with flow data on the closest
-     * road and present it to the user.
-     *
+     * Use to get 256 x 256 pixel tiles showing traffic flow.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
+     * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
+     * use transparent images, they can be layered on top of map tiles to create a compound display. The Flow tiles use
+     * colors to indicate either the speed of traffic on different road segments, or the difference between that speed
+     * and the free-flow speed on the road segment in question.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style &lt;p&gt;The style to be used to render the tile.&lt;/p&gt;.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
+     * accepted values range from 1 - 20. The default value is 10. This parameter is not valid when format is pbf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getTrafficFlowTileNoCustomHeadersWithResponseAsync(TileFormat format,
+        TrafficFlowTileStyle style, int zoom, TileIndex tileIndex, Integer thickness) {
+        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
+        int x = tileIndex.getX();
+        int y = tileIndex.getY();
+        return FluxUtil.withContext(
+            context -> service.getTrafficFlowTileNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
+                this.client.getApiVersion(), format, style, zoom, x, y, thickness, accept, context));
+    }
+
+    /**
+     * Use to get 256 x 256 pixel tiles showing traffic flow.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
+     * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
+     * use transparent images, they can be layered on top of map tiles to create a compound display. The Flow tiles use
+     * colors to indicate either the speed of traffic on different road segments, or the difference between that speed
+     * and the free-flow speed on the road segment in question.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style &lt;p&gt;The style to be used to render the tile.&lt;/p&gt;.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
+     * accepted values range from 1 - 20. The default value is 10. This parameter is not valid when format is pbf.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getTrafficFlowTileNoCustomHeadersWithResponseAsync(TileFormat format,
+        TrafficFlowTileStyle style, int zoom, TileIndex tileIndex, Integer thickness, Context context) {
+        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
+        int x = tileIndex.getX();
+        int y = tileIndex.getY();
+        return service.getTrafficFlowTileNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
+            this.client.getApiVersion(), format, style, zoom, x, y, thickness, accept, context);
+    }
+
+    /**
+     * Use to get information about the speeds and travel times of the specified section of road.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Segment` API is an HTTP `GET` request that provides information about the speeds and travel
+     * times of the road fragment closest to the given coordinates. It is designed to work alongside the Flow layer of
+     * the [Render](/rest/api/maps/render) Service to support clickable flow data visualizations. With the `Traffic Flow
+     * Segment` API, the client side can connect any place in the map with flow data on the closest road and present it
+     * to the user.
+     * 
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param style The style to be used to render the tile. Valid values are absolute which returns colors reflecting
-     *     the absolute speed measured, relative which returns the speed relative to free-flow, Relative-delay which
-     *     displays relative speeds only where they are different from the freeflow speeds.
-     * @param zoom Zoom level for the desired tile. Zoom value must be in the range: 0-22 (inclusive). Please see [Zoom
-     *     Levels and Tile
-     *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * the absolute speed measured, relative which returns the speed relative to free-flow, Relative-delay which
+     * displays relative speeds only where they are different from the freeflow speeds.
+     * @param zoom Zoom level for the desired tile. Zoom value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @param coordinates Coordinates of the point close to the road segment. This parameter is a list of four
-     *     coordinates, containing two coordinate pairs (lat, long, lat, long), and calculated using EPSG4326
-     *     projection. When this endpoint is called directly, coordinates are passed in as a single string containing
-     *     four coordinates, separated by commas.
+     * coordinates, containing two coordinate pairs (lat, long, lat, long), and calculated using EPSG4326 projection.
+     * When this endpoint is called directly, coordinates are passed in as a single string containing four coordinates,
+     * separated by commas.
      * @param unit Unit of speed in KMPH or MPH.
      * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
-     *     accepted values range from 1 - 20. The default value is 10.
+     * accepted values range from 1 - 20. The default value is 10.
+     * @param openLr Boolean on whether the response should include OpenLR code.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Traffic Flow Segment call along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegmentWithResponseAsync(ResponseFormat format,
+        TrafficFlowSegmentStyle style, int zoom, List<Double> coordinates, SpeedUnit unit, Integer thickness,
+        Boolean openLr) {
+        final String accept = "application/json";
+        String coordinatesConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
+        return FluxUtil.withContext(context -> service.getTrafficFlowSegment(this.client.getHost(),
+            this.client.getClientId(), this.client.getApiVersion(), format, style, zoom, coordinatesConverted, unit,
+            thickness, openLr, accept, context));
+    }
+
+    /**
+     * Use to get information about the speeds and travel times of the specified section of road.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Segment` API is an HTTP `GET` request that provides information about the speeds and travel
+     * times of the road fragment closest to the given coordinates. It is designed to work alongside the Flow layer of
+     * the [Render](/rest/api/maps/render) Service to support clickable flow data visualizations. With the `Traffic Flow
+     * Segment` API, the client side can connect any place in the map with flow data on the closest road and present it
+     * to the user.
+     * 
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param style The style to be used to render the tile. Valid values are absolute which returns colors reflecting
+     * the absolute speed measured, relative which returns the speed relative to free-flow, Relative-delay which
+     * displays relative speeds only where they are different from the freeflow speeds.
+     * @param zoom Zoom level for the desired tile. Zoom value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param coordinates Coordinates of the point close to the road segment. This parameter is a list of four
+     * coordinates, containing two coordinate pairs (lat, long, lat, long), and calculated using EPSG4326 projection.
+     * When this endpoint is called directly, coordinates are passed in as a single string containing four coordinates,
+     * separated by commas.
+     * @param unit Unit of speed in KMPH or MPH.
+     * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
+     * accepted values range from 1 - 20. The default value is 10.
      * @param openLr Boolean on whether the response should include OpenLR code.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Traffic Flow Segment call along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegmentWithResponseAsync(
-            ResponseFormat format,
-            TrafficFlowSegmentStyle style,
-            int zoom,
-            List<Double> coordinates,
-            SpeedUnit unit,
-            Integer thickness,
-            Boolean openLr,
-            Context context) {
+    public Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegmentWithResponseAsync(ResponseFormat format,
+        TrafficFlowSegmentStyle style, int zoom, List<Double> coordinates, SpeedUnit unit, Integer thickness,
+        Boolean openLr, Context context) {
         final String accept = "application/json";
-        String coordinatesConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(coordinates, CollectionFormat.CSV);
-        return service.getTrafficFlowSegment(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                style,
-                zoom,
-                coordinatesConverted,
-                unit,
-                thickness,
-                openLr,
-                accept,
-                context);
+        String coordinatesConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
+        return service.getTrafficFlowSegment(this.client.getHost(), this.client.getClientId(),
+            this.client.getApiVersion(), format, style, zoom, coordinatesConverted, unit, thickness, openLr, accept,
+            context);
     }
 
     /**
-     * __Traffic Incident Tile__
-     *
-     * <p>**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>This service serves 256 x 256 pixel tiles showing traffic incidents. All tiles use the same grid system.
-     * Because the traffic tiles use transparent images, they can be layered on top of map tiles to create a compound
-     * display. Traffic tiles render graphics to indicate traffic on the roads in the specified area.
-     *
+     * Use to get information about the speeds and travel times of the specified section of road.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Segment` API is an HTTP `GET` request that provides information about the speeds and travel
+     * times of the road fragment closest to the given coordinates. It is designed to work alongside the Flow layer of
+     * the [Render](/rest/api/maps/render) Service to support clickable flow data visualizations. With the `Traffic Flow
+     * Segment` API, the client side can connect any place in the map with flow data on the closest road and present it
+     * to the user.
+     * 
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param style The style to be used to render the tile. Valid values are absolute which returns colors reflecting
+     * the absolute speed measured, relative which returns the speed relative to free-flow, Relative-delay which
+     * displays relative speeds only where they are different from the freeflow speeds.
+     * @param zoom Zoom level for the desired tile. Zoom value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param coordinates Coordinates of the point close to the road segment. This parameter is a list of four
+     * coordinates, containing two coordinate pairs (lat, long, lat, long), and calculated using EPSG4326 projection.
+     * When this endpoint is called directly, coordinates are passed in as a single string containing four coordinates,
+     * separated by commas.
+     * @param unit Unit of speed in KMPH or MPH.
+     * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
+     * accepted values range from 1 - 20. The default value is 10.
+     * @param openLr Boolean on whether the response should include OpenLR code.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Traffic Flow Segment call on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TrafficFlowSegmentData> getTrafficFlowSegmentAsync(ResponseFormat format, TrafficFlowSegmentStyle style,
+        int zoom, List<Double> coordinates, SpeedUnit unit, Integer thickness, Boolean openLr) {
+        return getTrafficFlowSegmentWithResponseAsync(format, style, zoom, coordinates, unit, thickness, openLr)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use to get information about the speeds and travel times of the specified section of road.
+     * 
+     * 
+     * 
+     * The `Traffic Flow Segment` API is an HTTP `GET` request that provides information about the speeds and travel
+     * times of the road fragment closest to the given coordinates. It is designed to work alongside the Flow layer of
+     * the [Render](/rest/api/maps/render) Service to support clickable flow data visualizations. With the `Traffic Flow
+     * Segment` API, the client side can connect any place in the map with flow data on the closest road and present it
+     * to the user.
+     * 
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param style The style to be used to render the tile. Valid values are absolute which returns colors reflecting
+     * the absolute speed measured, relative which returns the speed relative to free-flow, Relative-delay which
+     * displays relative speeds only where they are different from the freeflow speeds.
+     * @param zoom Zoom level for the desired tile. Zoom value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param coordinates Coordinates of the point close to the road segment. This parameter is a list of four
+     * coordinates, containing two coordinate pairs (lat, long, lat, long), and calculated using EPSG4326 projection.
+     * When this endpoint is called directly, coordinates are passed in as a single string containing four coordinates,
+     * separated by commas.
+     * @param unit Unit of speed in KMPH or MPH.
+     * @param thickness The value of the width of the line representing traffic. This value is a multiplier and the
+     * accepted values range from 1 - 20. The default value is 10.
+     * @param openLr Boolean on whether the response should include OpenLR code.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Traffic Flow Segment call on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TrafficFlowSegmentData> getTrafficFlowSegmentAsync(ResponseFormat format, TrafficFlowSegmentStyle style,
+        int zoom, List<Double> coordinates, SpeedUnit unit, Integer thickness, Boolean openLr, Context context) {
+        return getTrafficFlowSegmentWithResponseAsync(format, style, zoom, coordinates, unit, thickness, openLr,
+            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use to get 256 x 256 pixel tiles showing traffic incidents.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
+     * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
+     * layered on top of map tiles to create a compound display. Traffic tiles render graphics to indicate traffic on
+     * the roads in the specified area.
+     * 
      * @param format Desired format of the response. Possible values are png &amp; pbf.
      * @param style The style to be used to render the tile. This parameter is not valid when format is pbf.
      * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
-     *     For _vector_ tiles, value must be in the range: 0-22 (inclusive). Please see [Zoom Levels and Tile
-     *     Grid](https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
      * @param tileIndex Parameter group.
      * @param trafficState Reference value for the state of traffic at a particular time, obtained from the Viewport API
-     *     call, trafficModelId attribute in trafficState field. It is updated every minute, and is valid for two
-     *     minutes before it times out. Use -1 to get the most recent traffic information. Default: most recent traffic
-     *     information.
+     * call, trafficModelId attribute in trafficState field. It is updated every minute, and is valid for two minutes
+     * before it times out. Use -1 to get the most recent traffic information. Default: most recent traffic information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TrafficsGetTrafficIncidentTileHeaders, BinaryData>>
+        getTrafficIncidentTileWithResponseAsync(TileFormat format, TrafficIncidentTileStyle style, int zoom,
+            TileIndex tileIndex, String trafficState) {
+        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
+        int x = tileIndex.getX();
+        int y = tileIndex.getY();
+        return FluxUtil
+            .withContext(context -> service.getTrafficIncidentTile(this.client.getHost(), this.client.getClientId(),
+                this.client.getApiVersion(), format, style, zoom, x, y, trafficState, accept, context));
+    }
+
+    /**
+     * Use to get 256 x 256 pixel tiles showing traffic incidents.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
+     * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
+     * layered on top of map tiles to create a compound display. Traffic tiles render graphics to indicate traffic on
+     * the roads in the specified area.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style The style to be used to render the tile. This parameter is not valid when format is pbf.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param trafficState Reference value for the state of traffic at a particular time, obtained from the Viewport API
+     * call, trafficModelId attribute in trafficState field. It is updated every minute, and is valid for two minutes
+     * before it times out. Use -1 to get the most recent traffic information. Default: most recent traffic information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<TrafficsGetTrafficIncidentTileHeaders, BinaryData>>
+        getTrafficIncidentTileWithResponseAsync(TileFormat format, TrafficIncidentTileStyle style, int zoom,
+            TileIndex tileIndex, String trafficState, Context context) {
+        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
+        int x = tileIndex.getX();
+        int y = tileIndex.getY();
+        return service.getTrafficIncidentTile(this.client.getHost(), this.client.getClientId(),
+            this.client.getApiVersion(), format, style, zoom, x, y, trafficState, accept, context);
+    }
+
+    /**
+     * Use to get 256 x 256 pixel tiles showing traffic incidents.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
+     * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
+     * layered on top of map tiles to create a compound display. Traffic tiles render graphics to indicate traffic on
+     * the roads in the specified area.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style The style to be used to render the tile. This parameter is not valid when format is pbf.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param trafficState Reference value for the state of traffic at a particular time, obtained from the Viewport API
+     * call, trafficModelId attribute in trafficState field. It is updated every minute, and is valid for two minutes
+     * before it times out. Use -1 to get the most recent traffic information. Default: most recent traffic information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BinaryData> getTrafficIncidentTileAsync(TileFormat format, TrafficIncidentTileStyle style, int zoom,
+        TileIndex tileIndex, String trafficState) {
+        return getTrafficIncidentTileWithResponseAsync(format, style, zoom, tileIndex, trafficState)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use to get 256 x 256 pixel tiles showing traffic incidents.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
+     * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
+     * layered on top of map tiles to create a compound display. Traffic tiles render graphics to indicate traffic on
+     * the roads in the specified area.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style The style to be used to render the tile. This parameter is not valid when format is pbf.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param trafficState Reference value for the state of traffic at a particular time, obtained from the Viewport API
+     * call, trafficModelId attribute in trafficState field. It is updated every minute, and is valid for two minutes
+     * before it times out. Use -1 to get the most recent traffic information. Default: most recent traffic information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -284,178 +657,521 @@ public final class TrafficsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> getTrafficIncidentTileWithResponseAsync(
-            TileFormat format,
-            TrafficIncidentTileStyle style,
-            int zoom,
-            TileIndex tileIndex,
-            String trafficState,
-            Context context) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return service.getTrafficIncidentTile(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                style,
-                zoom,
-                x,
-                y,
-                trafficState,
-                accept,
-                context);
+    public Mono<BinaryData> getTrafficIncidentTileAsync(TileFormat format, TrafficIncidentTileStyle style, int zoom,
+        TileIndex tileIndex, String trafficState, Context context) {
+        return getTrafficIncidentTileWithResponseAsync(format, style, zoom, tileIndex, trafficState, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * __Traffic Incident Detail__
-     *
-     * <p>**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>This API provides information on traffic incidents inside a given bounding box, based on the current Traffic
-     * Model ID. The Traffic Model ID is available to grant synchronization of data between calls and API's. The Traffic
-     * Model ID is a key value for determining the currency of traffic incidents. It is updated every minute, and is
-     * valid for two minutes before it times out. It is used in rendering [incident
-     * tiles](https://docs.microsoft.com/en-us/rest/api/maps/traffic/gettrafficincidenttile). It can be obtained from
-     * the [Viewport API](https://docs.microsoft.com/en-us/rest/api/maps/traffic/gettrafficincidentviewport).
-     *
+     * Use to get 256 x 256 pixel tiles showing traffic incidents.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
+     * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
+     * layered on top of map tiles to create a compound display. Traffic tiles render graphics to indicate traffic on
+     * the roads in the specified area.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style The style to be used to render the tile. This parameter is not valid when format is pbf.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param trafficState Reference value for the state of traffic at a particular time, obtained from the Viewport API
+     * call, trafficModelId attribute in trafficState field. It is updated every minute, and is valid for two minutes
+     * before it times out. Use -1 to get the most recent traffic information. Default: most recent traffic information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getTrafficIncidentTileNoCustomHeadersWithResponseAsync(TileFormat format,
+        TrafficIncidentTileStyle style, int zoom, TileIndex tileIndex, String trafficState) {
+        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
+        int x = tileIndex.getX();
+        int y = tileIndex.getY();
+        return FluxUtil.withContext(
+            context -> service.getTrafficIncidentTileNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
+                this.client.getApiVersion(), format, style, zoom, x, y, trafficState, accept, context));
+    }
+
+    /**
+     * Use to get 256 x 256 pixel tiles showing traffic incidents.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
+     * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
+     * layered on top of map tiles to create a compound display. Traffic tiles render graphics to indicate traffic on
+     * the roads in the specified area.
+     * 
+     * @param format Desired format of the response. Possible values are png &amp; pbf.
+     * @param style The style to be used to render the tile. This parameter is not valid when format is pbf.
+     * @param zoom Zoom level for the desired tile. For _raster_ tiles, value must be in the range: 0-22 (inclusive).
+     * For _vector_ tiles, value must be in the range: 0-22 (inclusive).
+     * Please see [Zoom Levels and Tile
+     * Grid](https://docs.microsoft.com/azure/location-based-services/zoom-levels-and-tile-grid) for details.
+     * @param tileIndex Parameter group.
+     * @param trafficState Reference value for the state of traffic at a particular time, obtained from the Viewport API
+     * call, trafficModelId attribute in trafficState field. It is updated every minute, and is valid for two minutes
+     * before it times out. Use -1 to get the most recent traffic information. Default: most recent traffic information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getTrafficIncidentTileNoCustomHeadersWithResponseAsync(TileFormat format,
+        TrafficIncidentTileStyle style, int zoom, TileIndex tileIndex, String trafficState, Context context) {
+        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
+        int x = tileIndex.getX();
+        int y = tileIndex.getY();
+        return service.getTrafficIncidentTileNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
+            this.client.getApiVersion(), format, style, zoom, x, y, trafficState, accept, context);
+    }
+
+    /**
+     * Use to get information on traffic incidents inside a given bounding box.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Detail` API is an HTTP `GET` request that provides information on traffic incidents inside
+     * a given bounding box, based on the current [Traffic Model ID](#uri-parameters). The Traffic Model ID is available
+     * to grant synchronization of data between calls and API's. The Traffic Model ID is a key value for determining the
+     * currency of traffic incidents. It is updated every minute, and is valid for two minutes before it times out. It
+     * is used in rendering [incident tiles](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidenttile).
+     * It can be obtained from the
+     * [Viewport](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentviewport) API.
+     * 
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
-     * @param style The style that will be used to render the tile in Traffic [Incident Tile
-     *     API](https://docs.microsoft.com/en-us/rest/api/maps/traffic/gettrafficincidenttile). This will have an effect
-     *     on the coordinates of traffic incidents in the reply.
+     * @param style The style that will be used to render the tile in Traffic [Incident
+     * Tile](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidenttile) API. This will have an effect on
+     * the coordinates of traffic incidents in the reply.
      * @param boundingbox The `boundingbox` is represented by two value pairs describing it's corners (first pair for
-     *     lower left corner and second for upper right). The pairs can either be specified using any of the
-     *     `projection`'s specified below (e.g., _minY,minX,maxY,maxX_) or by two latitude-longitude pairs (e.g.,
-     *     _minLat,minLon,maxLat,maxLon_).&lt;br&gt;&lt;br&gt;NOTE: If latitude/longitude pairs are used, then the
-     *     `projection` parameter must be set to "EPSG4326".
+     * lower left corner and second for upper right). The pairs can either be specified using any of the `projection`'s
+     * specified below (e.g., _minY,minX,maxY,maxX_) or by two latitude-longitude pairs (e.g.,
+     * _minLat,minLon,maxLat,maxLon_).&lt;br&gt;&lt;br&gt;NOTE: If latitude/longitude pairs are used, then the
+     * `projection` parameter must be set to "EPSG4326".
      * @param boundingZoom Zoom level for desired tile. 0 to 22 for raster tiles, 0 through 22 for vector tiles.
-     * @param trafficmodelid Number referencing traffic model. This can be obtained from the [Viewport
-     *     API](https://docs.microsoft.com/en-us/rest/api/maps/traffic/gettrafficincidentviewport). It is updated every
-     *     minute, and is valid for two minutes before it times out. If the wrong Traffic Model ID is specified, the
-     *     correct one will be returned by the interface. A value of -1 will always invoke the most recent traffic
-     *     model.
+     * @param trafficmodelid Number referencing traffic model. This can be obtained from the
+     * [Viewport](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentviewport) API. It is updated every
+     * minute, and is valid for two minutes before it times out. If the wrong Traffic Model ID is specified, the correct
+     * one will be returned by the interface. A value of -1 will always invoke the most recent traffic model.
      * @param language [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for the output language.
-     *     Supported languages are ar, ca, cs, da, de, el, en, en-GB, en-US, es, et, fi, fr, he, hu, id, in*, it, lt,
-     *     lv, nb, nl, no, pl, pt, ro, ru, sk, sv, th, tr, zh.
-     *     <p>Please refer to [Supported
-     *     Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details. When invalid
-     *     language code is provided response is returned in English. When incident cause or description does not have
-     *     translation, English description is returned.
+     * Supported languages are ar, ca, cs, da, de, el, en, en-GB, en-US, es, et, fi, fr, he, hu, id, in*, it, lt, lv,
+     * nb, nl, no, pl, pt, ro, ru, sk, sv, th, tr, zh.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details. When invalid language code is provided response is returned in English. When incident cause or
+     * description does not have translation, English description is returned.
      * @param projection The projection used to specify the coordinates in the request and response.
-     *     [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) (default) or
-     *     [EPSG4326](http://spatialreference.org/ref/epsg/4326/).
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) (default) or
+     * [EPSG4326](http://spatialreference.org/ref/epsg/4326/).
      * @param geometries The type of vector geometry added to incidents (returned in the &lt;v&gt; element of the
-     *     response).
+     * response).
      * @param expandCluster Boolean to indicate whether to list all traffic incidents in a cluster separately.
      * @param originalPosition Boolean on whether to return the original position of the incident (&lt;op&gt;) as well
-     *     as the one shifted to the beginning of the traffic tube (&lt;op&gt;).
+     * as the one shifted to the beginning of the traffic tube (&lt;op&gt;).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Traffic incident Detail call along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetailWithResponseAsync(ResponseFormat format,
+        IncidentDetailStyle style, List<Double> boundingbox, int boundingZoom, String trafficmodelid, String language,
+        ProjectionStandard projection, IncidentGeometryType geometries, Boolean expandCluster,
+        Boolean originalPosition) {
+        final String accept = "application/json";
+        String boundingboxConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(boundingbox, CollectionFormat.CSV);
+        return FluxUtil.withContext(context -> service.getTrafficIncidentDetail(this.client.getHost(),
+            this.client.getClientId(), this.client.getApiVersion(), format, style, boundingboxConverted, boundingZoom,
+            trafficmodelid, language, projection, geometries, expandCluster, originalPosition, accept, context));
+    }
+
+    /**
+     * Use to get information on traffic incidents inside a given bounding box.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Detail` API is an HTTP `GET` request that provides information on traffic incidents inside
+     * a given bounding box, based on the current [Traffic Model ID](#uri-parameters). The Traffic Model ID is available
+     * to grant synchronization of data between calls and API's. The Traffic Model ID is a key value for determining the
+     * currency of traffic incidents. It is updated every minute, and is valid for two minutes before it times out. It
+     * is used in rendering [incident tiles](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidenttile).
+     * It can be obtained from the
+     * [Viewport](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentviewport) API.
+     * 
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param style The style that will be used to render the tile in Traffic [Incident
+     * Tile](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidenttile) API. This will have an effect on
+     * the coordinates of traffic incidents in the reply.
+     * @param boundingbox The `boundingbox` is represented by two value pairs describing it's corners (first pair for
+     * lower left corner and second for upper right). The pairs can either be specified using any of the `projection`'s
+     * specified below (e.g., _minY,minX,maxY,maxX_) or by two latitude-longitude pairs (e.g.,
+     * _minLat,minLon,maxLat,maxLon_).&lt;br&gt;&lt;br&gt;NOTE: If latitude/longitude pairs are used, then the
+     * `projection` parameter must be set to "EPSG4326".
+     * @param boundingZoom Zoom level for desired tile. 0 to 22 for raster tiles, 0 through 22 for vector tiles.
+     * @param trafficmodelid Number referencing traffic model. This can be obtained from the
+     * [Viewport](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentviewport) API. It is updated every
+     * minute, and is valid for two minutes before it times out. If the wrong Traffic Model ID is specified, the correct
+     * one will be returned by the interface. A value of -1 will always invoke the most recent traffic model.
+     * @param language [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for the output language.
+     * Supported languages are ar, ca, cs, da, de, el, en, en-GB, en-US, es, et, fi, fr, he, hu, id, in*, it, lt, lv,
+     * nb, nl, no, pl, pt, ro, ru, sk, sv, th, tr, zh.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details. When invalid language code is provided response is returned in English. When incident cause or
+     * description does not have translation, English description is returned.
+     * @param projection The projection used to specify the coordinates in the request and response.
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) (default) or
+     * [EPSG4326](http://spatialreference.org/ref/epsg/4326/).
+     * @param geometries The type of vector geometry added to incidents (returned in the &lt;v&gt; element of the
+     * response).
+     * @param expandCluster Boolean to indicate whether to list all traffic incidents in a cluster separately.
+     * @param originalPosition Boolean on whether to return the original position of the incident (&lt;op&gt;) as well
+     * as the one shifted to the beginning of the traffic tube (&lt;op&gt;).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Traffic incident Detail call along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetailWithResponseAsync(
-            ResponseFormat format,
-            IncidentDetailStyle style,
-            List<Double> boundingbox,
-            int boundingZoom,
-            String trafficmodelid,
-            String language,
-            ProjectionStandard projection,
-            IncidentGeometryType geometries,
-            Boolean expandCluster,
-            Boolean originalPosition,
-            Context context) {
+    public Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetailWithResponseAsync(ResponseFormat format,
+        IncidentDetailStyle style, List<Double> boundingbox, int boundingZoom, String trafficmodelid, String language,
+        ProjectionStandard projection, IncidentGeometryType geometries, Boolean expandCluster, Boolean originalPosition,
+        Context context) {
         final String accept = "application/json";
-        String boundingboxConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(boundingbox, CollectionFormat.CSV);
-        return service.getTrafficIncidentDetail(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                style,
-                boundingboxConverted,
-                boundingZoom,
-                trafficmodelid,
-                language,
-                projection,
-                geometries,
-                expandCluster,
-                originalPosition,
-                accept,
-                context);
+        String boundingboxConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(boundingbox, CollectionFormat.CSV);
+        return service.getTrafficIncidentDetail(this.client.getHost(), this.client.getClientId(),
+            this.client.getApiVersion(), format, style, boundingboxConverted, boundingZoom, trafficmodelid, language,
+            projection, geometries, expandCluster, originalPosition, accept, context);
     }
 
     /**
-     * __Traffic Incident Viewport__
-     *
-     * <p>**Applies to**: see pricing [tiers](https://aka.ms/AzureMapsPricingTier).
-     *
-     * <p>This API returns legal and technical information for the viewport described in the request. It should be
-     * called by client applications whenever the viewport changes (for instance, through zooming, panning, going to a
-     * location, or displaying a route). The request should contain the bounding box and zoom level of the viewport
-     * whose information is needed. The return will contain map version information, as well as the current Traffic
-     * Model ID and copyright IDs. The Traffic Model ID returned by the Viewport Description is used by other APIs to
-     * retrieve last traffic information for further processing.
-     *
+     * Use to get information on traffic incidents inside a given bounding box.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Detail` API is an HTTP `GET` request that provides information on traffic incidents inside
+     * a given bounding box, based on the current [Traffic Model ID](#uri-parameters). The Traffic Model ID is available
+     * to grant synchronization of data between calls and API's. The Traffic Model ID is a key value for determining the
+     * currency of traffic incidents. It is updated every minute, and is valid for two minutes before it times out. It
+     * is used in rendering [incident tiles](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidenttile).
+     * It can be obtained from the
+     * [Viewport](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentviewport) API.
+     * 
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param style The style that will be used to render the tile in Traffic [Incident
+     * Tile](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidenttile) API. This will have an effect on
+     * the coordinates of traffic incidents in the reply.
+     * @param boundingbox The `boundingbox` is represented by two value pairs describing it's corners (first pair for
+     * lower left corner and second for upper right). The pairs can either be specified using any of the `projection`'s
+     * specified below (e.g., _minY,minX,maxY,maxX_) or by two latitude-longitude pairs (e.g.,
+     * _minLat,minLon,maxLat,maxLon_).&lt;br&gt;&lt;br&gt;NOTE: If latitude/longitude pairs are used, then the
+     * `projection` parameter must be set to "EPSG4326".
+     * @param boundingZoom Zoom level for desired tile. 0 to 22 for raster tiles, 0 through 22 for vector tiles.
+     * @param trafficmodelid Number referencing traffic model. This can be obtained from the
+     * [Viewport](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentviewport) API. It is updated every
+     * minute, and is valid for two minutes before it times out. If the wrong Traffic Model ID is specified, the correct
+     * one will be returned by the interface. A value of -1 will always invoke the most recent traffic model.
+     * @param language [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for the output language.
+     * Supported languages are ar, ca, cs, da, de, el, en, en-GB, en-US, es, et, fi, fr, he, hu, id, in*, it, lt, lv,
+     * nb, nl, no, pl, pt, ro, ru, sk, sv, th, tr, zh.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details. When invalid language code is provided response is returned in English. When incident cause or
+     * description does not have translation, English description is returned.
+     * @param projection The projection used to specify the coordinates in the request and response.
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) (default) or
+     * [EPSG4326](http://spatialreference.org/ref/epsg/4326/).
+     * @param geometries The type of vector geometry added to incidents (returned in the &lt;v&gt; element of the
+     * response).
+     * @param expandCluster Boolean to indicate whether to list all traffic incidents in a cluster separately.
+     * @param originalPosition Boolean on whether to return the original position of the incident (&lt;op&gt;) as well
+     * as the one shifted to the beginning of the traffic tube (&lt;op&gt;).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Traffic incident Detail call on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TrafficIncidentDetail> getTrafficIncidentDetailAsync(ResponseFormat format, IncidentDetailStyle style,
+        List<Double> boundingbox, int boundingZoom, String trafficmodelid, String language,
+        ProjectionStandard projection, IncidentGeometryType geometries, Boolean expandCluster,
+        Boolean originalPosition) {
+        return getTrafficIncidentDetailWithResponseAsync(format, style, boundingbox, boundingZoom, trafficmodelid,
+            language, projection, geometries, expandCluster, originalPosition)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use to get information on traffic incidents inside a given bounding box.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Detail` API is an HTTP `GET` request that provides information on traffic incidents inside
+     * a given bounding box, based on the current [Traffic Model ID](#uri-parameters). The Traffic Model ID is available
+     * to grant synchronization of data between calls and API's. The Traffic Model ID is a key value for determining the
+     * currency of traffic incidents. It is updated every minute, and is valid for two minutes before it times out. It
+     * is used in rendering [incident tiles](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidenttile).
+     * It can be obtained from the
+     * [Viewport](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentviewport) API.
+     * 
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param style The style that will be used to render the tile in Traffic [Incident
+     * Tile](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidenttile) API. This will have an effect on
+     * the coordinates of traffic incidents in the reply.
+     * @param boundingbox The `boundingbox` is represented by two value pairs describing it's corners (first pair for
+     * lower left corner and second for upper right). The pairs can either be specified using any of the `projection`'s
+     * specified below (e.g., _minY,minX,maxY,maxX_) or by two latitude-longitude pairs (e.g.,
+     * _minLat,minLon,maxLat,maxLon_).&lt;br&gt;&lt;br&gt;NOTE: If latitude/longitude pairs are used, then the
+     * `projection` parameter must be set to "EPSG4326".
+     * @param boundingZoom Zoom level for desired tile. 0 to 22 for raster tiles, 0 through 22 for vector tiles.
+     * @param trafficmodelid Number referencing traffic model. This can be obtained from the
+     * [Viewport](https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentviewport) API. It is updated every
+     * minute, and is valid for two minutes before it times out. If the wrong Traffic Model ID is specified, the correct
+     * one will be returned by the interface. A value of -1 will always invoke the most recent traffic model.
+     * @param language [ISO 639-1 code](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for the output language.
+     * Supported languages are ar, ca, cs, da, de, el, en, en-GB, en-US, es, et, fi, fr, he, hu, id, in*, it, lt, lv,
+     * nb, nl, no, pl, pt, ro, ru, sk, sv, th, tr, zh.
+     * 
+     * Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for
+     * details. When invalid language code is provided response is returned in English. When incident cause or
+     * description does not have translation, English description is returned.
+     * @param projection The projection used to specify the coordinates in the request and response.
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) (default) or
+     * [EPSG4326](http://spatialreference.org/ref/epsg/4326/).
+     * @param geometries The type of vector geometry added to incidents (returned in the &lt;v&gt; element of the
+     * response).
+     * @param expandCluster Boolean to indicate whether to list all traffic incidents in a cluster separately.
+     * @param originalPosition Boolean on whether to return the original position of the incident (&lt;op&gt;) as well
+     * as the one shifted to the beginning of the traffic tube (&lt;op&gt;).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Traffic incident Detail call on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TrafficIncidentDetail> getTrafficIncidentDetailAsync(ResponseFormat format, IncidentDetailStyle style,
+        List<Double> boundingbox, int boundingZoom, String trafficmodelid, String language,
+        ProjectionStandard projection, IncidentGeometryType geometries, Boolean expandCluster, Boolean originalPosition,
+        Context context) {
+        return getTrafficIncidentDetailWithResponseAsync(format, style, boundingbox, boundingZoom, trafficmodelid,
+            language, projection, geometries, expandCluster, originalPosition, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use to get legal and technical information for a viewport.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Viewport` API is an HTTP `GET` request that returns legal and technical information for the
+     * viewport described in the request. It should be called by client applications whenever the viewport changes (for
+     * instance, through zooming, panning, going to a location, or displaying a route). The request should contain the
+     * bounding box and zoom level of the viewport whose information is needed. The return will contain map version
+     * information, as well as the current Traffic Model ID and copyright IDs. The Traffic Model ID returned by the
+     * Viewport Description is used by other APIs to retrieve last traffic information for further processing.
+     * 
      * @param format Desired format of the response. Value can be either _json_ or _xml_.
      * @param boundingbox Bounding box of the map viewport in
-     *     [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection. The `boundingbox` is
-     *     represented by two value pairs describing it's corners (first pair for lower left corner and second for upper
-     *     right). When this endpoint is called directly, all values should be separated by commas (e.g.,
-     *     _minY,minX,maxY,maxX_). The maximum size of the bounding box that can be passed is dependent on the requested
-     *     zoom level. The width and height cannot exceed 4092 pixels when rendered on the given zoom
-     *     level.&lt;br&gt;&lt;br&gt;NOTE: Bounding boxes that cross the 180° meridian require special treatment. For
-     *     such boxes, the eastern _maxX_ value will be negative, and thus less than the _minX_ value west of the 180°
-     *     meridian. To address that, the value 40075016.6855874 should be added to the true _maxX_ value before it is
-     *     passed in the request.
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection. The `boundingbox` is
+     * represented by two value pairs describing it's corners (first pair for lower left corner and second for upper
+     * right). When this endpoint is called directly, all values should be separated by commas (e.g.,
+     * _minY,minX,maxY,maxX_). The maximum size of the bounding box that can be passed is dependent on the requested
+     * zoom level. The width and height cannot exceed 4092 pixels when rendered on the given zoom
+     * level.&lt;br&gt;&lt;br&gt;NOTE: Bounding boxes that cross the 180° meridian require special treatment. For such
+     * boxes, the eastern _maxX_ value will be negative, and thus less than the _minX_ value west of the 180° meridian.
+     * To address that, the value 40075016.6855874 should be added to the true _maxX_ value before it is passed in the
+     * request.
      * @param boundingzoom Zoom level of the map viewport. Used to determine whether the view can be zoomed in.
      * @param overviewbox Bounding box of the overview map in
-     *     [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection.&lt;br&gt;&lt;br&gt;Used
-     *     in case the overview box/mini map has different copyright data than the main map. If there is no mini map,
-     *     the same coordinates as `boundingBox` is used. When this endpoint is called directly, coordinates are passed
-     *     in as a single string containing four coordinates, separated by commas.
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection.&lt;br&gt;&lt;br&gt;Used in
+     * case the overview box/mini map has different copyright data than the main map. If there is no mini map, the same
+     * coordinates as `boundingBox` is used. When this endpoint is called directly, coordinates are passed in as a
+     * single string containing four coordinates, separated by commas.
      * @param overviewzoom Zoom level of the overview map. If there is no mini map, use the same zoom level as
-     *     boundingZoom.
+     * boundingZoom.
      * @param copyright Determines what copyright information to return. When true the copyright text is returned; when
-     *     false only the copyright index is returned.
+     * false only the copyright index is returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Traffic Incident Viewport call along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponseAsync(ResponseFormat format,
+        List<Double> boundingbox, int boundingzoom, List<Double> overviewbox, int overviewzoom, Boolean copyright) {
+        final String accept = "application/json";
+        String boundingboxConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(boundingbox, CollectionFormat.CSV);
+        String overviewboxConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(overviewbox, CollectionFormat.CSV);
+        return FluxUtil.withContext(context -> service.getTrafficIncidentViewport(this.client.getHost(),
+            this.client.getClientId(), this.client.getApiVersion(), format, boundingboxConverted, boundingzoom,
+            overviewboxConverted, overviewzoom, copyright, accept, context));
+    }
+
+    /**
+     * Use to get legal and technical information for a viewport.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Viewport` API is an HTTP `GET` request that returns legal and technical information for the
+     * viewport described in the request. It should be called by client applications whenever the viewport changes (for
+     * instance, through zooming, panning, going to a location, or displaying a route). The request should contain the
+     * bounding box and zoom level of the viewport whose information is needed. The return will contain map version
+     * information, as well as the current Traffic Model ID and copyright IDs. The Traffic Model ID returned by the
+     * Viewport Description is used by other APIs to retrieve last traffic information for further processing.
+     * 
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param boundingbox Bounding box of the map viewport in
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection. The `boundingbox` is
+     * represented by two value pairs describing it's corners (first pair for lower left corner and second for upper
+     * right). When this endpoint is called directly, all values should be separated by commas (e.g.,
+     * _minY,minX,maxY,maxX_). The maximum size of the bounding box that can be passed is dependent on the requested
+     * zoom level. The width and height cannot exceed 4092 pixels when rendered on the given zoom
+     * level.&lt;br&gt;&lt;br&gt;NOTE: Bounding boxes that cross the 180° meridian require special treatment. For such
+     * boxes, the eastern _maxX_ value will be negative, and thus less than the _minX_ value west of the 180° meridian.
+     * To address that, the value 40075016.6855874 should be added to the true _maxX_ value before it is passed in the
+     * request.
+     * @param boundingzoom Zoom level of the map viewport. Used to determine whether the view can be zoomed in.
+     * @param overviewbox Bounding box of the overview map in
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection.&lt;br&gt;&lt;br&gt;Used in
+     * case the overview box/mini map has different copyright data than the main map. If there is no mini map, the same
+     * coordinates as `boundingBox` is used. When this endpoint is called directly, coordinates are passed in as a
+     * single string containing four coordinates, separated by commas.
+     * @param overviewzoom Zoom level of the overview map. If there is no mini map, use the same zoom level as
+     * boundingZoom.
+     * @param copyright Determines what copyright information to return. When true the copyright text is returned; when
+     * false only the copyright index is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Traffic Incident Viewport call along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponseAsync(
-            ResponseFormat format,
-            List<Double> boundingbox,
-            int boundingzoom,
-            List<Double> overviewbox,
-            int overviewzoom,
-            Boolean copyright,
-            Context context) {
+    public Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponseAsync(ResponseFormat format,
+        List<Double> boundingbox, int boundingzoom, List<Double> overviewbox, int overviewzoom, Boolean copyright,
+        Context context) {
         final String accept = "application/json";
-        String boundingboxConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(boundingbox, CollectionFormat.CSV);
-        String overviewboxConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(overviewbox, CollectionFormat.CSV);
-        return service.getTrafficIncidentViewport(
-                this.client.getHost(),
-                this.client.getClientId(),
-                this.client.getApiVersion(),
-                format,
-                boundingboxConverted,
-                boundingzoom,
-                overviewboxConverted,
-                overviewzoom,
-                copyright,
-                accept,
-                context);
+        String boundingboxConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(boundingbox, CollectionFormat.CSV);
+        String overviewboxConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(overviewbox, CollectionFormat.CSV);
+        return service.getTrafficIncidentViewport(this.client.getHost(), this.client.getClientId(),
+            this.client.getApiVersion(), format, boundingboxConverted, boundingzoom, overviewboxConverted, overviewzoom,
+            copyright, accept, context);
+    }
+
+    /**
+     * Use to get legal and technical information for a viewport.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Viewport` API is an HTTP `GET` request that returns legal and technical information for the
+     * viewport described in the request. It should be called by client applications whenever the viewport changes (for
+     * instance, through zooming, panning, going to a location, or displaying a route). The request should contain the
+     * bounding box and zoom level of the viewport whose information is needed. The return will contain map version
+     * information, as well as the current Traffic Model ID and copyright IDs. The Traffic Model ID returned by the
+     * Viewport Description is used by other APIs to retrieve last traffic information for further processing.
+     * 
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param boundingbox Bounding box of the map viewport in
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection. The `boundingbox` is
+     * represented by two value pairs describing it's corners (first pair for lower left corner and second for upper
+     * right). When this endpoint is called directly, all values should be separated by commas (e.g.,
+     * _minY,minX,maxY,maxX_). The maximum size of the bounding box that can be passed is dependent on the requested
+     * zoom level. The width and height cannot exceed 4092 pixels when rendered on the given zoom
+     * level.&lt;br&gt;&lt;br&gt;NOTE: Bounding boxes that cross the 180° meridian require special treatment. For such
+     * boxes, the eastern _maxX_ value will be negative, and thus less than the _minX_ value west of the 180° meridian.
+     * To address that, the value 40075016.6855874 should be added to the true _maxX_ value before it is passed in the
+     * request.
+     * @param boundingzoom Zoom level of the map viewport. Used to determine whether the view can be zoomed in.
+     * @param overviewbox Bounding box of the overview map in
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection.&lt;br&gt;&lt;br&gt;Used in
+     * case the overview box/mini map has different copyright data than the main map. If there is no mini map, the same
+     * coordinates as `boundingBox` is used. When this endpoint is called directly, coordinates are passed in as a
+     * single string containing four coordinates, separated by commas.
+     * @param overviewzoom Zoom level of the overview map. If there is no mini map, use the same zoom level as
+     * boundingZoom.
+     * @param copyright Determines what copyright information to return. When true the copyright text is returned; when
+     * false only the copyright index is returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Traffic Incident Viewport call on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TrafficIncidentViewport> getTrafficIncidentViewportAsync(ResponseFormat format,
+        List<Double> boundingbox, int boundingzoom, List<Double> overviewbox, int overviewzoom, Boolean copyright) {
+        return getTrafficIncidentViewportWithResponseAsync(format, boundingbox, boundingzoom, overviewbox, overviewzoom,
+            copyright).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Use to get legal and technical information for a viewport.
+     * 
+     * 
+     * 
+     * The `Traffic Incident Viewport` API is an HTTP `GET` request that returns legal and technical information for the
+     * viewport described in the request. It should be called by client applications whenever the viewport changes (for
+     * instance, through zooming, panning, going to a location, or displaying a route). The request should contain the
+     * bounding box and zoom level of the viewport whose information is needed. The return will contain map version
+     * information, as well as the current Traffic Model ID and copyright IDs. The Traffic Model ID returned by the
+     * Viewport Description is used by other APIs to retrieve last traffic information for further processing.
+     * 
+     * @param format Desired format of the response. Value can be either _json_ or _xml_.
+     * @param boundingbox Bounding box of the map viewport in
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection. The `boundingbox` is
+     * represented by two value pairs describing it's corners (first pair for lower left corner and second for upper
+     * right). When this endpoint is called directly, all values should be separated by commas (e.g.,
+     * _minY,minX,maxY,maxX_). The maximum size of the bounding box that can be passed is dependent on the requested
+     * zoom level. The width and height cannot exceed 4092 pixels when rendered on the given zoom
+     * level.&lt;br&gt;&lt;br&gt;NOTE: Bounding boxes that cross the 180° meridian require special treatment. For such
+     * boxes, the eastern _maxX_ value will be negative, and thus less than the _minX_ value west of the 180° meridian.
+     * To address that, the value 40075016.6855874 should be added to the true _maxX_ value before it is passed in the
+     * request.
+     * @param boundingzoom Zoom level of the map viewport. Used to determine whether the view can be zoomed in.
+     * @param overviewbox Bounding box of the overview map in
+     * [EPSG900913](http://docs.openlayers.org/library/spherical_mercator.html) projection.&lt;br&gt;&lt;br&gt;Used in
+     * case the overview box/mini map has different copyright data than the main map. If there is no mini map, the same
+     * coordinates as `boundingBox` is used. When this endpoint is called directly, coordinates are passed in as a
+     * single string containing four coordinates, separated by commas.
+     * @param overviewzoom Zoom level of the overview map. If there is no mini map, use the same zoom level as
+     * boundingZoom.
+     * @param copyright Determines what copyright information to return. When true the copyright text is returned; when
+     * false only the copyright index is returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return this object is returned from a successful Traffic Incident Viewport call on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TrafficIncidentViewport> getTrafficIncidentViewportAsync(ResponseFormat format,
+        List<Double> boundingbox, int boundingzoom, List<Double> overviewbox, int overviewzoom, Boolean copyright,
+        Context context) {
+        return getTrafficIncidentViewportWithResponseAsync(format, boundingbox, boundingzoom, overviewbox, overviewzoom,
+            copyright, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 }

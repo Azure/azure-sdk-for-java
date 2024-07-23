@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.scvmm.fluent.VmmServersClient;
 import com.azure.resourcemanager.scvmm.fluent.models.VmmServerInner;
+import com.azure.resourcemanager.scvmm.models.ForceDelete;
 import com.azure.resourcemanager.scvmm.models.VmmServer;
 import com.azure.resourcemanager.scvmm.models.VmmServers;
 
@@ -26,6 +27,38 @@ public final class VmmServersImpl implements VmmServers {
         this.serviceManager = serviceManager;
     }
 
+    public PagedIterable<VmmServer> list() {
+        PagedIterable<VmmServerInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VmmServerImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<VmmServer> list(Context context) {
+        PagedIterable<VmmServerInner> inner = this.serviceClient().list(context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VmmServerImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<VmmServer> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<VmmServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VmmServerImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<VmmServer> listByResourceGroup(String resourceGroupName, Context context) {
+        PagedIterable<VmmServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VmmServerImpl(inner1, this.manager()));
+    }
+
+    public Response<VmmServer> getByResourceGroupWithResponse(String resourceGroupName, String vmmServerName,
+        Context context) {
+        Response<VmmServerInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, vmmServerName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VmmServerImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public VmmServer getByResourceGroup(String resourceGroupName, String vmmServerName) {
         VmmServerInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, vmmServerName);
         if (inner != null) {
@@ -35,126 +68,67 @@ public final class VmmServersImpl implements VmmServers {
         }
     }
 
-    public Response<VmmServer> getByResourceGroupWithResponse(
-        String resourceGroupName, String vmmServerName, Context context) {
-        Response<VmmServerInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, vmmServerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new VmmServerImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public void delete(String resourceGroupName, String vmmServerName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, vmmServerName, force);
-    }
-
     public void delete(String resourceGroupName, String vmmServerName) {
         this.serviceClient().delete(resourceGroupName, vmmServerName);
     }
 
-    public void delete(String resourceGroupName, String vmmServerName, Boolean force, Context context) {
+    public void delete(String resourceGroupName, String vmmServerName, ForceDelete force, Context context) {
         this.serviceClient().delete(resourceGroupName, vmmServerName, force, context);
     }
 
-    public PagedIterable<VmmServer> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<VmmServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new VmmServerImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<VmmServer> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<VmmServerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new VmmServerImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<VmmServer> list() {
-        PagedIterable<VmmServerInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new VmmServerImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<VmmServer> list(Context context) {
-        PagedIterable<VmmServerInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new VmmServerImpl(inner1, this.manager()));
-    }
-
     public VmmServer getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vmmServerName = Utils.getValueFromIdByName(id, "vmmServers");
+        String vmmServerName = ResourceManagerUtils.getValueFromIdByName(id, "vmmServers");
         if (vmmServerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vmmServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vmmServers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, vmmServerName, Context.NONE).getValue();
     }
 
     public Response<VmmServer> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vmmServerName = Utils.getValueFromIdByName(id, "vmmServers");
+        String vmmServerName = ResourceManagerUtils.getValueFromIdByName(id, "vmmServers");
         if (vmmServerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vmmServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vmmServers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, vmmServerName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vmmServerName = Utils.getValueFromIdByName(id, "vmmServers");
+        String vmmServerName = ResourceManagerUtils.getValueFromIdByName(id, "vmmServers");
         if (vmmServerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vmmServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vmmServers'.", id)));
         }
-        Boolean localForce = null;
+        ForceDelete localForce = null;
         this.delete(resourceGroupName, vmmServerName, localForce, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Boolean force, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public void deleteByIdWithResponse(String id, ForceDelete force, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vmmServerName = Utils.getValueFromIdByName(id, "vmmServers");
+        String vmmServerName = ResourceManagerUtils.getValueFromIdByName(id, "vmmServers");
         if (vmmServerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vmmServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vmmServers'.", id)));
         }
         this.delete(resourceGroupName, vmmServerName, force, context);
     }

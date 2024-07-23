@@ -19,14 +19,17 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class LibraryAsyncClient {
-    @Generated private final LibrariesImpl serviceClient;
+    @Generated
+    private final LibrariesImpl serviceClient;
 
     /**
      * Initializes an instance of LibraryAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,7 +39,7 @@ public final class LibraryAsyncClient {
 
     /**
      * Lists Library.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Library resources as paginated response with {@link PagedFlux}.
@@ -49,9 +52,9 @@ public final class LibraryAsyncClient {
 
     /**
      * Flush Library.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -65,9 +68,9 @@ public final class LibraryAsyncClient {
 
     /**
      * Flush Library.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -81,7 +84,7 @@ public final class LibraryAsyncClient {
 
     /**
      * Get Operation result for Library.
-     *
+     * 
      * @param operationId operation id for which status is requested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -96,7 +99,7 @@ public final class LibraryAsyncClient {
 
     /**
      * Get Operation result for Library.
-     *
+     * 
      * @param operationId operation id for which status is requested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -111,9 +114,9 @@ public final class LibraryAsyncClient {
 
     /**
      * Delete Library.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -127,9 +130,9 @@ public final class LibraryAsyncClient {
 
     /**
      * Delete Library.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -143,9 +146,9 @@ public final class LibraryAsyncClient {
 
     /**
      * Get Library.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -159,9 +162,9 @@ public final class LibraryAsyncClient {
 
     /**
      * Get Library.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -175,9 +178,9 @@ public final class LibraryAsyncClient {
 
     /**
      * Creates a library with the library name.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,9 +194,9 @@ public final class LibraryAsyncClient {
 
     /**
      * Creates a library with the library name.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -208,14 +211,14 @@ public final class LibraryAsyncClient {
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
-     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
+     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -223,23 +226,23 @@ public final class LibraryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> appendWithResponse(
-            String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
-        return this.serviceClient.appendWithResponseAsync(
-                libraryName, content, contentLength, blobConditionAppendPosition);
+    public Mono<Response<Void>> appendWithResponse(String libraryName, Flux<ByteBuffer> content, long contentLength,
+        Long blobConditionAppendPosition) {
+        return this.serviceClient.appendWithResponseAsync(libraryName, content, contentLength,
+            blobConditionAppendPosition);
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
-     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
+     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -247,17 +250,17 @@ public final class LibraryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> append(
-            String libraryName, Flux<ByteBuffer> content, long contentLength, Long blobConditionAppendPosition) {
+    public Mono<Void> append(String libraryName, Flux<ByteBuffer> content, long contentLength,
+        Long blobConditionAppendPosition) {
         return this.serviceClient.appendAsync(libraryName, content, contentLength, blobConditionAppendPosition);
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,14 +277,14 @@ public final class LibraryAsyncClient {
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
-     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
+     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -289,23 +292,23 @@ public final class LibraryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> appendWithResponse(
-            String libraryName, BinaryData content, long contentLength, Long blobConditionAppendPosition) {
-        return this.serviceClient.appendWithResponseAsync(
-                libraryName, content, contentLength, blobConditionAppendPosition);
+    public Mono<Response<Void>> appendWithResponse(String libraryName, BinaryData content, long contentLength,
+        Long blobConditionAppendPosition) {
+        return this.serviceClient.appendWithResponseAsync(libraryName, content, contentLength,
+            blobConditionAppendPosition);
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @param blobConditionAppendPosition Set this header to a byte offset at which the block is expected to be
-     *     appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails
-     *     with the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
+     * appended. The request succeeds only if the current offset matches this value. Otherwise, the request fails with
+     * the AppendPositionConditionNotMet error (HTTP status code 412 – Precondition Failed).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -313,17 +316,17 @@ public final class LibraryAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> append(
-            String libraryName, BinaryData content, long contentLength, Long blobConditionAppendPosition) {
+    public Mono<Void> append(String libraryName, BinaryData content, long contentLength,
+        Long blobConditionAppendPosition) {
         return this.serviceClient.appendAsync(libraryName, content, contentLength, blobConditionAppendPosition);
     }
 
     /**
      * Append the content to the library resource created using the create operation. The maximum content size is 4MiB.
      * Content larger than 4MiB must be appended in 4MiB chunks.
-     *
+     * 
      * @param libraryName file name to upload. Minimum length of the filename should be 1 excluding the extension
-     *     length.
+     * length.
      * @param content Library file chunk.
      * @param contentLength The Content-Length header for the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

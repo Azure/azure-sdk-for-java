@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datafactory.models.ConnectionStateProperties;
 public final class ConnectionStatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectionStateProperties model = BinaryData
-            .fromString("{\"actionsRequired\":\"klelssxb\",\"description\":\"c\",\"status\":\"zujksrlsmdes\"}")
+        ConnectionStateProperties model = BinaryData.fromString(
+            "{\"actionsRequired\":\"ppdbwnupgahxkum\",\"description\":\"jcaacfdmmcpugm\",\"status\":\"qepvufhbzeh\"}")
             .toObject(ConnectionStateProperties.class);
     }
 

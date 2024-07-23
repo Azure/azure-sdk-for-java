@@ -10,7 +10,7 @@ package com.azure.resourcemanager.imagebuilder.generated;
 public final class VirtualMachineImageTemplatesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2023-07-01/examples/
+     * specification/imagebuilder/resource-manager/Microsoft.VirtualMachineImages/stable/2024-02-01/examples/
      * DeleteImageTemplate.json
      */
     /**
@@ -19,7 +19,7 @@ public final class VirtualMachineImageTemplatesDeleteSamples {
      * @param manager Entry point to ImageBuilderManager.
      */
     public static void deleteAnImageTemplate(com.azure.resourcemanager.imagebuilder.ImageBuilderManager manager) {
-        manager.virtualMachineImageTemplates().delete("myResourceGroup", "myImageTemplate",
-            com.azure.core.util.Context.NONE);
+        manager.virtualMachineImageTemplates()
+            .delete("myResourceGroup", "myImageTemplate", com.azure.core.util.Context.NONE);
     }
 }

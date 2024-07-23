@@ -92,8 +92,9 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
@@ -103,8 +104,9 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
@@ -114,8 +116,9 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
@@ -125,8 +128,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -551,8 +555,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -562,8 +567,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -573,8 +579,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -584,8 +591,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -793,6 +801,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -801,11 +810,12 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
         final String restype = "share";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.create(this.client.getUrl(), shareName, restype, timeout,
-            metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash, accept, context));
+            metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, accept, context));
     }
 
     /**
@@ -821,6 +831,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -830,11 +841,12 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.create(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
-            this.client.getVersion(), enabledProtocols, rootSquash, accept, context);
+            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, accept,
+            context);
     }
 
     /**
@@ -850,6 +862,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -857,9 +870,10 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
-        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash) {
-        return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash)
-            .flatMap(ignored -> Mono.empty());
+        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess) {
+        return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -875,6 +889,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -883,9 +898,10 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
-        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash, Context context) {
+        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
-            context).flatMap(ignored -> Mono.empty());
+            enableSnapshotVirtualDirectoryAccess, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -901,6 +917,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -909,12 +926,12 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout,
-                metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash, accept, context));
+        return FluxUtil.withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, restype,
+            timeout, metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, accept, context));
     }
 
     /**
@@ -930,6 +947,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -939,11 +957,12 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
-            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, accept, context);
+            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**
@@ -959,6 +978,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -968,11 +988,12 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesCreateHeaders, Void> createWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
-            this.client.getVersion(), enabledProtocols, rootSquash, accept, context);
+            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, accept,
+            context);
     }
 
     /**
@@ -988,14 +1009,17 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
-        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash) {
-        createWithResponse(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash, Context.NONE);
+        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess) {
+        createWithResponse(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, Context.NONE);
     }
 
     /**
@@ -1011,6 +1035,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -1020,11 +1045,12 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
-            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, accept, context);
+            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**
@@ -3484,6 +3510,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3491,12 +3518,14 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
-        Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash) {
+        Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setProperties(this.client.getUrl(), shareName, restype, comp,
-            timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash, accept, context));
+            timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, accept, context));
     }
 
     /**
@@ -3510,6 +3539,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3519,12 +3549,12 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
-        Context context) {
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setProperties(this.client.getUrl(), shareName, restype, comp, timeout, this.client.getVersion(),
-            quota, accessTier, leaseId, rootSquash, accept, context);
+            quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, accept, context);
     }
 
     /**
@@ -3538,6 +3568,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3545,9 +3576,9 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash) {
-        return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash)
-            .flatMap(ignored -> Mono.empty());
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3561,6 +3592,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3569,9 +3601,9 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash, Context context) {
-        return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash, context)
-            .flatMap(ignored -> Mono.empty());
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3585,6 +3617,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3592,12 +3625,14 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
-        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash) {
+        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil.withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName,
-            restype, comp, timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash, accept, context));
+            restype, comp, timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, accept, context));
     }
 
     /**
@@ -3611,6 +3646,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3619,12 +3655,14 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
-        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash, Context context) {
+        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, accept, context);
+            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**
@@ -3638,6 +3676,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3646,12 +3685,14 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesSetPropertiesHeaders, Void> setPropertiesWithResponse(String shareName, Integer timeout,
-        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash, Context context) {
+        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, accept, context);
+            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**
@@ -3665,14 +3706,16 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash) {
-        setPropertiesWithResponse(shareName, timeout, quota, accessTier, leaseId, rootSquash, Context.NONE);
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        setPropertiesWithResponse(shareName, timeout, quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, Context.NONE);
     }
 
     /**
@@ -3686,6 +3729,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3694,12 +3738,14 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(String shareName, Integer timeout, Integer quota,
-        ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash, Context context) {
+        ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, accept, context);
+            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**

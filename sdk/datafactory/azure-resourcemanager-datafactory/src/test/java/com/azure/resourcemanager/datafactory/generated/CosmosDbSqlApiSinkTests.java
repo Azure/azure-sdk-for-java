@@ -11,19 +11,19 @@ public final class CosmosDbSqlApiSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbSqlApiSink model = BinaryData.fromString(
-            "{\"type\":\"wqtbztogihpylf\",\"writeBehavior\":\"dataprnqjxsexzxbiwn\",\"writeBatchSize\":\"datayes\",\"writeBatchTimeout\":\"datalsparbjsvqy\",\"sinkRetryCount\":\"datagemkz\",\"sinkRetryWait\":\"datalvnosblc\",\"maxConcurrentConnections\":\"datatwac\",\"disableMetricsCollection\":\"datahkpdcv\",\"\":{\"tcijuntm\":\"datak\"}}")
+            "{\"type\":\"CosmosDbSqlApiSink\",\"writeBehavior\":\"datantakr\",\"writeBatchSize\":\"dataku\",\"writeBatchTimeout\":\"datasuwcmzpwkcagfq\",\"sinkRetryCount\":\"dataqgmjjprd\",\"sinkRetryWait\":\"datablonlhtgexwjhicu\",\"maxConcurrentConnections\":\"dataavimxnhylwogtvl\",\"disableMetricsCollection\":\"datagd\",\"\":{\"k\":\"datanhdxlfntdc\"}}")
             .toObject(CosmosDbSqlApiSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSqlApiSink model = new CosmosDbSqlApiSink().withWriteBatchSize("datayes")
-            .withWriteBatchTimeout("datalsparbjsvqy")
-            .withSinkRetryCount("datagemkz")
-            .withSinkRetryWait("datalvnosblc")
-            .withMaxConcurrentConnections("datatwac")
-            .withDisableMetricsCollection("datahkpdcv")
-            .withWriteBehavior("dataprnqjxsexzxbiwn");
+        CosmosDbSqlApiSink model = new CosmosDbSqlApiSink().withWriteBatchSize("dataku")
+            .withWriteBatchTimeout("datasuwcmzpwkcagfq")
+            .withSinkRetryCount("dataqgmjjprd")
+            .withSinkRetryWait("datablonlhtgexwjhicu")
+            .withMaxConcurrentConnections("dataavimxnhylwogtvl")
+            .withDisableMetricsCollection("datagd")
+            .withWriteBehavior("datantakr");
         model = BinaryData.fromObject(model).toObject(CosmosDbSqlApiSink.class);
     }
 }

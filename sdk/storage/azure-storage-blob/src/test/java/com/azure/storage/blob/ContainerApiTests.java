@@ -45,6 +45,7 @@ import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestHttpClientType;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -140,6 +141,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         cc.createWithResponse(null, publicAccess, null, null);
@@ -235,6 +237,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         Response<Boolean> result = cc.createIfNotExistsWithResponse(new BlobContainerCreateOptions()
@@ -409,6 +412,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType publicAccess) {
         Response<Void> response = cc.setAccessPolicyWithResponse(publicAccess, null, null, null, null);
 
@@ -1897,6 +1901,30 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getAccountInfoBase() {
+        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
+        StorageAccountInfo info = cc.getAccountInfo(null);
+
+        assertNotNull(info.getAccountKind());
+        assertNotNull(info.getSkuName());
+        assertFalse(info.isHierarchicalNamespaceEnabled());
+    }
+
+    @Test
+    public void getAccountInfoBaseFail() {
+        BlobServiceClient serviceClient = instrument(new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(new MockTokenCredential()))
+            .buildClient();
+
+        BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> containerClient.getAccountInfo(null));
+        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+
+    }
+
+    @Test
     public void getContainerName() {
         String containerName = generateContainerName();
         BlobContainerClient newcc = primaryBlobServiceClient.getBlobContainerClient(containerName);
@@ -1954,15 +1982,18 @@ public class ContainerApiTests extends BlobTestBase {
         assertTrue(aadContainer.exists());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlobContainerClient aadContainer = getContainerClientBuilder(cc.getBlobContainerUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
-            .buildClient();
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        BlobContainerClient aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+                .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+                .buildClient();
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadContainer.exists());
-        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+        assertNotNull(aadContainer.getProperties());
     }
 
     @Test

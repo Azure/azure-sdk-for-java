@@ -5,38 +5,54 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The snowflake dataset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SnowflakeV2Table")
-@JsonFlatten
+/**
+ * The snowflake dataset.
+ */
 @Fluent
 public class SnowflakeV2Dataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "SnowflakeV2Table";
+
+    /*
      * The schema name of the Snowflake database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
     /*
      * The table name of the Snowflake database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of SnowflakeV2Dataset class. */
-    public SnowflakeV2Dataset() {}
+    /**
+     * Creates an instance of SnowflakeV2Dataset class.
+     */
+    public SnowflakeV2Dataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of the Snowflake database. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the schemaTypePropertiesSchema value.
      */
     public Object getSchemaTypePropertiesSchema() {
@@ -46,7 +62,7 @@ public class SnowflakeV2Dataset extends Dataset {
     /**
      * Set the schemaTypePropertiesSchema property: The schema name of the Snowflake database. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the SnowflakeV2Dataset object itself.
      */
@@ -58,7 +74,7 @@ public class SnowflakeV2Dataset extends Dataset {
     /**
      * Get the table property: The table name of the Snowflake database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -68,7 +84,7 @@ public class SnowflakeV2Dataset extends Dataset {
     /**
      * Set the table property: The table name of the Snowflake database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the SnowflakeV2Dataset object itself.
      */
@@ -77,52 +93,157 @@ public class SnowflakeV2Dataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Dataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Dataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Dataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Dataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Dataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Dataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeV2Dataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeUntypedField("structure", getStructure());
+        jsonWriter.writeUntypedField("schema", getSchema());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", getFolder());
+        jsonWriter.writeStringField("type", this.type);
+        if (schemaTypePropertiesSchema != null || table != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("schema", this.schemaTypePropertiesSchema);
+            jsonWriter.writeUntypedField("table", this.table);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnowflakeV2Dataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnowflakeV2Dataset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnowflakeV2Dataset.
+     */
+    public static SnowflakeV2Dataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnowflakeV2Dataset deserializedSnowflakeV2Dataset = new SnowflakeV2Dataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedSnowflakeV2Dataset.setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSnowflakeV2Dataset.setDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedSnowflakeV2Dataset.setStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedSnowflakeV2Dataset.setSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSnowflakeV2Dataset.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSnowflakeV2Dataset.setAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedSnowflakeV2Dataset.setFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedSnowflakeV2Dataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("schema".equals(fieldName)) {
+                            deserializedSnowflakeV2Dataset.schemaTypePropertiesSchema = reader.readUntyped();
+                        } else if ("table".equals(fieldName)) {
+                            deserializedSnowflakeV2Dataset.table = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSnowflakeV2Dataset.setAdditionalProperties(additionalProperties);
+
+            return deserializedSnowflakeV2Dataset;
+        });
     }
 }

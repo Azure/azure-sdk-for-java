@@ -6,24 +6,52 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.avs.models.ScriptPackageProvisioningState;
+import java.io.IOException;
 
-/** Script Package resources available for execution. */
+/**
+ * Script Package resources available for execution.
+ */
 @Immutable
 public final class ScriptPackageInner extends ProxyResource {
     /*
-     * ScriptPackage resource properties
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
     private ScriptPackageProperties innerProperties;
 
-    /** Creates an instance of ScriptPackageInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of ScriptPackageInner class.
+     */
     public ScriptPackageInner() {
     }
 
     /**
-     * Get the innerProperties property: ScriptPackage resource properties.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private ScriptPackageProperties innerProperties() {
@@ -31,8 +59,56 @@ public final class ScriptPackageInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ScriptPackageProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the description property: User friendly description of the package.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -41,7 +117,7 @@ public final class ScriptPackageInner extends ProxyResource {
 
     /**
      * Get the version property: Module version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -50,7 +126,7 @@ public final class ScriptPackageInner extends ProxyResource {
 
     /**
      * Get the company property: Company that created and supports the package.
-     *
+     * 
      * @return the company value.
      */
     public String company() {
@@ -59,7 +135,7 @@ public final class ScriptPackageInner extends ProxyResource {
 
     /**
      * Get the uri property: Link to support by the package vendor.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -68,12 +144,57 @@ public final class ScriptPackageInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptPackageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptPackageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScriptPackageInner.
+     */
+    public static ScriptPackageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptPackageInner deserializedScriptPackageInner = new ScriptPackageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScriptPackageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScriptPackageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScriptPackageInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScriptPackageInner.innerProperties = ScriptPackageProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedScriptPackageInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptPackageInner;
+        });
     }
 }

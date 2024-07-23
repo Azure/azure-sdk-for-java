@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * OpenModeType enum.
+ * Open mode type enum.
  */
 public final class OpenModeType extends ExpandableStringEnum<OpenModeType> {
     /**
@@ -37,7 +36,6 @@ public final class OpenModeType extends ExpandableStringEnum<OpenModeType> {
      * @param name a name to look for.
      * @return the corresponding OpenModeType.
      */
-    @JsonCreator
     public static OpenModeType fromString(String name) {
         return fromString(name, OpenModeType.class);
     }

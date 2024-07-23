@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ public final class ImmutabilityPolicyState extends ExpandableStringEnum<Immutabi
 
     /**
      * Creates a new instance of ImmutabilityPolicyState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +33,7 @@ public final class ImmutabilityPolicyState extends ExpandableStringEnum<Immutabi
 
     /**
      * Creates or finds a ImmutabilityPolicyState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImmutabilityPolicyState.
      */
@@ -45,7 +44,7 @@ public final class ImmutabilityPolicyState extends ExpandableStringEnum<Immutabi
 
     /**
      * Gets known ImmutabilityPolicyState values.
-     *
+     * 
      * @return known ImmutabilityPolicyState values.
      */
     public static Collection<ImmutabilityPolicyState> values() {

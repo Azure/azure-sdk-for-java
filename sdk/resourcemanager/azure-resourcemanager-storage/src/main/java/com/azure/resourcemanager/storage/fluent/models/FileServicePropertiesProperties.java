@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FileServicePropertiesProperties {
     /*
-     * Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for the File service.
+     * Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no
+     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled for
+     * the File service.
      */
     @JsonProperty(value = "cors")
     private CorsRules cors;

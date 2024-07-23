@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceResourceId model
-            = BinaryData.fromString("{\"id\":\"fxqknpirgneptt\"}").toObject(ServiceResourceId.class);
-        Assertions.assertEquals("fxqknpirgneptt", model.id());
+        ServiceResourceId model = BinaryData.fromString("{\"id\":\"uxylfsbtkadpy\"}").toObject(ServiceResourceId.class);
+        Assertions.assertEquals("uxylfsbtkadpy", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceResourceId model = new ServiceResourceId().withId("fxqknpirgneptt");
+        ServiceResourceId model = new ServiceResourceId().withId("uxylfsbtkadpy");
         model = BinaryData.fromObject(model).toObject(ServiceResourceId.class);
-        Assertions.assertEquals("fxqknpirgneptt", model.id());
+        Assertions.assertEquals("uxylfsbtkadpy", model.id());
     }
 }

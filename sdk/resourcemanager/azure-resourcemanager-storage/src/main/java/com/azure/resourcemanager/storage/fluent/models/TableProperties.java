@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.models.TableSignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public final class TableProperties {
 
     /**
      * Get the tableName property: Table name under the specified account.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -44,7 +43,7 @@ public final class TableProperties {
 
     /**
      * Get the signedIdentifiers property: List of stored access policies specified on the table.
-     *
+     * 
      * @return the signedIdentifiers value.
      */
     public List<TableSignedIdentifier> signedIdentifiers() {
@@ -53,7 +52,7 @@ public final class TableProperties {
 
     /**
      * Set the signedIdentifiers property: List of stored access policies specified on the table.
-     *
+     * 
      * @param signedIdentifiers the signedIdentifiers value to set.
      * @return the TableProperties object itself.
      */
@@ -64,7 +63,7 @@ public final class TableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

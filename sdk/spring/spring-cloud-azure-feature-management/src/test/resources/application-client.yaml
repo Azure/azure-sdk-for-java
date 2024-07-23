@@ -1,0 +1,14 @@
+feature-management:
+    alpha:
+        enabled-for:
+            -   name: randomFilter
+                parameters:
+                    value: 50
+    beta:
+        enabled-for:
+            -
+                name: timeWindowFilter
+                parameters:
+                    start: 2023-12-18T02:00:00+08:00
+                    end: 2023-12-18T03:00:00+08:00
+    gamma: true

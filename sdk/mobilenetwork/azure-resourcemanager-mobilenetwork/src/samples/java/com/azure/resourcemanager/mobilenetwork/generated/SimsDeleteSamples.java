@@ -9,8 +9,7 @@ package com.azure.resourcemanager.mobilenetwork.generated;
  */
 public final class SimsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/SimDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimDelete.json
      */
     /**
      * Sample code: Delete SIM.

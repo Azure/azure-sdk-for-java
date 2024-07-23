@@ -515,7 +515,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * }
      * }</pre>
      *
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -547,10 +547,10 @@ public final class DeploymentEnvironmentsAsyncClient {
         // Generated convenience method for listAllEnvironments
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAllEnvironments(projectName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, DevCenterEnvironment>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -582,10 +582,10 @@ public final class DeploymentEnvironmentsAsyncClient {
         // Generated convenience method for listEnvironments
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listEnvironments(projectName, userId, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, DevCenterEnvironment>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -688,10 +688,10 @@ public final class DeploymentEnvironmentsAsyncClient {
         // Generated convenience method for listCatalogs
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listCatalogs(projectName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DevCenterCatalog>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
                 pagedResponse.getValue()
@@ -742,10 +742,10 @@ public final class DeploymentEnvironmentsAsyncClient {
         // Generated convenience method for listEnvironmentDefinitions
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listEnvironmentDefinitions(projectName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, EnvironmentDefinition>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -778,10 +778,10 @@ public final class DeploymentEnvironmentsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse
             = listEnvironmentDefinitionsByCatalog(projectName, catalogName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, EnvironmentDefinition>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
@@ -821,7 +821,7 @@ public final class DeploymentEnvironmentsAsyncClient {
     /**
      * Lists all environment types configured for a project.
      *
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -836,10 +836,10 @@ public final class DeploymentEnvironmentsAsyncClient {
         // Generated convenience method for listEnvironmentTypes
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listEnvironmentTypes(projectName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, DevCenterEnvironmentType>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),

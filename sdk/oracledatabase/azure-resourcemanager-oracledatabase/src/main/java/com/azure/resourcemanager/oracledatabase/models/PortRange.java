@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Port Range to specify particular destination ports for TCP rules.
  */
 @Fluent
-public final class PortRange {
+public final class PortRange implements JsonSerializable<PortRange> {
     /*
      * The minimum port number, which must not be greater than the maximum port number.
      */
-    @JsonProperty(value = "min", required = true)
     private int min;
 
     /*
-     * The maximum port number, which must not be less than the minimum port number. To specify a single port number, set both the min and max to the same value.
+     * The maximum port number, which must not be less than the minimum port number. To specify a single port number,
+     * set both the min and max to the same value.
      */
-    @JsonProperty(value = "max", required = true)
     private int max;
 
     /**
@@ -78,5 +81,45 @@ public final class PortRange {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("min", this.min);
+        jsonWriter.writeIntField("max", this.max);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortRange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortRange if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PortRange.
+     */
+    public static PortRange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortRange deserializedPortRange = new PortRange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("min".equals(fieldName)) {
+                    deserializedPortRange.min = reader.getInt();
+                } else if ("max".equals(fieldName)) {
+                    deserializedPortRange.max = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortRange;
+        });
     }
 }

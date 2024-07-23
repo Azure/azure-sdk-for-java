@@ -5,45 +5,54 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrcCompressionCodec. */
+/**
+ * Defines values for OrcCompressionCodec.
+ */
 public final class OrcCompressionCodec extends ExpandableStringEnum<OrcCompressionCodec> {
-    /** Static value none for OrcCompressionCodec. */
+    /**
+     * Static value none for OrcCompressionCodec.
+     */
     public static final OrcCompressionCodec NONE = fromString("none");
 
-    /** Static value zlib for OrcCompressionCodec. */
+    /**
+     * Static value zlib for OrcCompressionCodec.
+     */
     public static final OrcCompressionCodec ZLIB = fromString("zlib");
 
-    /** Static value snappy for OrcCompressionCodec. */
+    /**
+     * Static value snappy for OrcCompressionCodec.
+     */
     public static final OrcCompressionCodec SNAPPY = fromString("snappy");
 
-    /** Static value lzo for OrcCompressionCodec. */
+    /**
+     * Static value lzo for OrcCompressionCodec.
+     */
     public static final OrcCompressionCodec LZO = fromString("lzo");
 
     /**
      * Creates a new instance of OrcCompressionCodec value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public OrcCompressionCodec() {}
+    public OrcCompressionCodec() {
+    }
 
     /**
      * Creates or finds a OrcCompressionCodec from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OrcCompressionCodec.
      */
-    @JsonCreator
     public static OrcCompressionCodec fromString(String name) {
         return fromString(name, OrcCompressionCodec.class);
     }
 
     /**
      * Gets known OrcCompressionCodec values.
-     *
+     * 
      * @return known OrcCompressionCodec values.
      */
     public static Collection<OrcCompressionCodec> values() {

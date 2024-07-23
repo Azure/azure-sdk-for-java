@@ -92,10 +92,10 @@ public final class MessageTemplateAsyncClient {
         // Generated convenience method for listTemplates
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTemplates(channelId, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
                 ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, MessageTemplateItem>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),

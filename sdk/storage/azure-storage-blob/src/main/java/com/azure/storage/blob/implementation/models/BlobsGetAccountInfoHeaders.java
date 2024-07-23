@@ -31,6 +31,12 @@ public final class BlobsGetAccountInfoHeaders {
     private AccountKind xMsAccountKind;
 
     /*
+     * The x-ms-is-hns-enabled property.
+     */
+    @JsonProperty(value = "x-ms-is-hns-enabled")
+    private Boolean xMsIsHnsEnabled;
+
+    /*
      * The x-ms-sku-name property.
      */
     @JsonProperty(value = "x-ms-sku-name")
@@ -58,6 +64,8 @@ public final class BlobsGetAccountInfoHeaders {
 
     private static final HttpHeaderName X_MS_ACCOUNT_KIND = HttpHeaderName.fromString("x-ms-account-kind");
 
+    private static final HttpHeaderName X_MS_IS_HNS_ENABLED = HttpHeaderName.fromString("x-ms-is-hns-enabled");
+
     private static final HttpHeaderName X_MS_SKU_NAME = HttpHeaderName.fromString("x-ms-sku-name");
 
     private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
@@ -73,6 +81,10 @@ public final class BlobsGetAccountInfoHeaders {
         String xMsAccountKind = rawHeaders.getValue(X_MS_ACCOUNT_KIND);
         if (xMsAccountKind != null) {
             this.xMsAccountKind = AccountKind.fromString(xMsAccountKind);
+        }
+        String xMsIsHnsEnabled = rawHeaders.getValue(X_MS_IS_HNS_ENABLED);
+        if (xMsIsHnsEnabled != null) {
+            this.xMsIsHnsEnabled = Boolean.parseBoolean(xMsIsHnsEnabled);
         }
         String xMsSkuName = rawHeaders.getValue(X_MS_SKU_NAME);
         if (xMsSkuName != null) {
@@ -123,6 +135,26 @@ public final class BlobsGetAccountInfoHeaders {
      */
     public BlobsGetAccountInfoHeaders setXMsAccountKind(AccountKind xMsAccountKind) {
         this.xMsAccountKind = xMsAccountKind;
+        return this;
+    }
+
+    /**
+     * Get the xMsIsHnsEnabled property: The x-ms-is-hns-enabled property.
+     *
+     * @return the xMsIsHnsEnabled value.
+     */
+    public Boolean isXMsIsHnsEnabled() {
+        return this.xMsIsHnsEnabled;
+    }
+
+    /**
+     * Set the xMsIsHnsEnabled property: The x-ms-is-hns-enabled property.
+     *
+     * @param xMsIsHnsEnabled the xMsIsHnsEnabled value to set.
+     * @return the BlobsGetAccountInfoHeaders object itself.
+     */
+    public BlobsGetAccountInfoHeaders setXMsIsHnsEnabled(Boolean xMsIsHnsEnabled) {
+        this.xMsIsHnsEnabled = xMsIsHnsEnabled;
         return this;
     }
 

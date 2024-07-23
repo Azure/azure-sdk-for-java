@@ -85,14 +85,20 @@ public class CosmosFactoryTestIT {
 
     @Test
     public void testConnectionPolicyUserAgentKept() throws IllegalAccessException, NoSuchFieldException {
+        CosmosAsyncClient ignored = null;
+        try {
+            final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+                .endpoint(cosmosDbUri)
+                .key(cosmosDbKey);
+            ignored = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
 
-        final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .endpoint(cosmosDbUri)
-            .key(cosmosDbKey);
-        CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-
-        final String uaSuffix = getUserAgentSuffixValue(cosmosClientBuilder);
-        assertThat(uaSuffix).contains(Constants.USER_AGENT_SUFFIX);
+            final String uaSuffix = getUserAgentSuffixValue(cosmosClientBuilder);
+            assertThat(uaSuffix).contains(Constants.USER_AGENT_SUFFIX);
+        } finally {
+            if (ignored != null) {
+                ignored.close();
+            }
+        }
     }
 
     private String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) throws IllegalAccessException,

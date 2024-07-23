@@ -5,33 +5,52 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Avro sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AvroSink")
+/**
+ * A copy activity Avro sink.
+ */
 @Fluent
 public final class AvroSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "AvroSink";
+
+    /*
      * Avro store settings.
      */
-    @JsonProperty(value = "storeSettings")
     private StoreWriteSettings storeSettings;
 
     /*
      * Avro format settings.
      */
-    @JsonProperty(value = "formatSettings")
     private AvroWriteSettings formatSettings;
 
-    /** Creates an instance of AvroSink class. */
-    public AvroSink() {}
+    /**
+     * Creates an instance of AvroSink class.
+     */
+    public AvroSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the storeSettings property: Avro store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreWriteSettings getStoreSettings() {
@@ -40,7 +59,7 @@ public final class AvroSink extends CopySink {
 
     /**
      * Set the storeSettings property: Avro store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the AvroSink object itself.
      */
@@ -51,7 +70,7 @@ public final class AvroSink extends CopySink {
 
     /**
      * Get the formatSettings property: Avro format settings.
-     *
+     * 
      * @return the formatSettings value.
      */
     public AvroWriteSettings getFormatSettings() {
@@ -60,7 +79,7 @@ public final class AvroSink extends CopySink {
 
     /**
      * Set the formatSettings property: Avro format settings.
-     *
+     * 
      * @param formatSettings the formatSettings value to set.
      * @return the AvroSink object itself.
      */
@@ -69,38 +88,116 @@ public final class AvroSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvroSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("storeSettings", this.storeSettings);
+        jsonWriter.writeJsonField("formatSettings", this.formatSettings);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvroSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvroSink if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AvroSink.
+     */
+    public static AvroSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvroSink deserializedAvroSink = new AvroSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedAvroSink.setWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedAvroSink.setWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedAvroSink.setSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedAvroSink.setSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAvroSink.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAvroSink.type = reader.getString();
+                } else if ("storeSettings".equals(fieldName)) {
+                    deserializedAvroSink.storeSettings = StoreWriteSettings.fromJson(reader);
+                } else if ("formatSettings".equals(fieldName)) {
+                    deserializedAvroSink.formatSettings = AvroWriteSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAvroSink.setAdditionalProperties(additionalProperties);
+
+            return deserializedAvroSink;
+        });
     }
 }

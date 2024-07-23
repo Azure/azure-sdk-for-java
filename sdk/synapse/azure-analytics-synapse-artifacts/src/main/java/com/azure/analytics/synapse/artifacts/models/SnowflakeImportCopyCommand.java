@@ -5,40 +5,54 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Snowflake import command settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SnowflakeImportCopyCommand")
+/**
+ * Snowflake import command settings.
+ */
 @Fluent
 public final class SnowflakeImportCopyCommand extends ImportSettings {
     /*
-     * Additional copy options directly passed to snowflake Copy Command. Type: key value pairs (value should be string
-     * type) (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY",
-     * "TIME_FORMAT": "'HH24:MI:SS.FF'" }
+     * The import setting type.
      */
-    @JsonProperty(value = "additionalCopyOptions")
+    private String type = "SnowflakeImportCopyCommand";
+
+    /*
+     * Additional copy options directly passed to snowflake Copy Command. Type: key value pairs (value should be string type) (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }
+     */
     private Map<String, Object> additionalCopyOptions;
 
     /*
-     * Additional format options directly passed to snowflake Copy Command. Type: key value pairs (value should be
-     * string type) (or Expression with resultType object). Example: "additionalFormatOptions": { "FORCE": "TRUE",
-     * "LOAD_UNCERTAIN_FILES": "'FALSE'" }
+     * Additional format options directly passed to snowflake Copy Command. Type: key value pairs (value should be string type) (or Expression with resultType object). Example: "additionalFormatOptions": { "FORCE": "TRUE", "LOAD_UNCERTAIN_FILES": "'FALSE'" }
      */
-    @JsonProperty(value = "additionalFormatOptions")
     private Map<String, Object> additionalFormatOptions;
 
-    /** Creates an instance of SnowflakeImportCopyCommand class. */
-    public SnowflakeImportCopyCommand() {}
+    /**
+     * Creates an instance of SnowflakeImportCopyCommand class.
+     */
+    public SnowflakeImportCopyCommand() {
+    }
+
+    /**
+     * Get the type property: The import setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the additionalCopyOptions property: Additional copy options directly passed to snowflake Copy Command. Type:
      * key value pairs (value should be string type) (or Expression with resultType object). Example:
      * "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }.
-     *
+     * 
      * @return the additionalCopyOptions value.
      */
     public Map<String, Object> getAdditionalCopyOptions() {
@@ -49,7 +63,7 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      * Set the additionalCopyOptions property: Additional copy options directly passed to snowflake Copy Command. Type:
      * key value pairs (value should be string type) (or Expression with resultType object). Example:
      * "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }.
-     *
+     * 
      * @param additionalCopyOptions the additionalCopyOptions value to set.
      * @return the SnowflakeImportCopyCommand object itself.
      */
@@ -62,7 +76,7 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      * Get the additionalFormatOptions property: Additional format options directly passed to snowflake Copy Command.
      * Type: key value pairs (value should be string type) (or Expression with resultType object). Example:
      * "additionalFormatOptions": { "FORCE": "TRUE", "LOAD_UNCERTAIN_FILES": "'FALSE'" }.
-     *
+     * 
      * @return the additionalFormatOptions value.
      */
     public Map<String, Object> getAdditionalFormatOptions() {
@@ -73,12 +87,69 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      * Set the additionalFormatOptions property: Additional format options directly passed to snowflake Copy Command.
      * Type: key value pairs (value should be string type) (or Expression with resultType object). Example:
      * "additionalFormatOptions": { "FORCE": "TRUE", "LOAD_UNCERTAIN_FILES": "'FALSE'" }.
-     *
+     * 
      * @param additionalFormatOptions the additionalFormatOptions value to set.
      * @return the SnowflakeImportCopyCommand object itself.
      */
     public SnowflakeImportCopyCommand setAdditionalFormatOptions(Map<String, Object> additionalFormatOptions) {
         this.additionalFormatOptions = additionalFormatOptions;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeMapField("additionalCopyOptions", this.additionalCopyOptions,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("additionalFormatOptions", this.additionalFormatOptions,
+            (writer, element) -> writer.writeUntyped(element));
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnowflakeImportCopyCommand from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnowflakeImportCopyCommand if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SnowflakeImportCopyCommand.
+     */
+    public static SnowflakeImportCopyCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnowflakeImportCopyCommand deserializedSnowflakeImportCopyCommand = new SnowflakeImportCopyCommand();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedSnowflakeImportCopyCommand.type = reader.getString();
+                } else if ("additionalCopyOptions".equals(fieldName)) {
+                    Map<String, Object> additionalCopyOptions = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedSnowflakeImportCopyCommand.additionalCopyOptions = additionalCopyOptions;
+                } else if ("additionalFormatOptions".equals(fieldName)) {
+                    Map<String, Object> additionalFormatOptions = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedSnowflakeImportCopyCommand.additionalFormatOptions = additionalFormatOptions;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSnowflakeImportCopyCommand.setAdditionalProperties(additionalProperties);
+
+            return deserializedSnowflakeImportCopyCommand;
+        });
     }
 }

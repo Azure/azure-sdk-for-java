@@ -39,7 +39,7 @@ default_project = Project(None, None, None, None)
 valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
 
 # List of parent POMs that should be retained as projects to create a full from source POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -55,7 +55,7 @@ sdk_string = "/sdk/"
 # Function that creates the aggregate POM.
 def create_from_source_pom(artifacts_list: str, additional_modules_list: str, set_skip_linting_projects: str, match_any_version: bool):
     artifacts_list_identifiers = artifacts_list.split(',')
-    
+
     additional_modules_identifiers = []
     if additional_modules_list is not None:
         additional_modules_identifiers = additional_modules_list.split(',')

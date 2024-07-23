@@ -5,31 +5,20 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Determines how the stand-by scheme should be provided.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = ResourcePredictionsProfile.class,
-    visible = true)
-@JsonTypeName("ResourcePredictionsProfile")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Manual", value = ManualResourcePredictionsProfile.class),
-    @JsonSubTypes.Type(name = "Automatic", value = AutomaticResourcePredictionsProfile.class) })
 @Immutable
-public class ResourcePredictionsProfile {
+public class ResourcePredictionsProfile implements JsonSerializable<ResourcePredictionsProfile> {
     /*
      * Determines how the stand-by scheme should be provided.
      */
-    @JsonTypeId
-    @JsonProperty(value = "kind", required = true)
     private ResourcePredictionsProfileType kind
         = ResourcePredictionsProfileType.fromString("ResourcePredictionsProfile");
 
@@ -54,5 +43,69 @@ public class ResourcePredictionsProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourcePredictionsProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourcePredictionsProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourcePredictionsProfile.
+     */
+    public static ResourcePredictionsProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Manual".equals(discriminatorValue)) {
+                    return ManualResourcePredictionsProfile.fromJson(readerToUse.reset());
+                } else if ("Automatic".equals(discriminatorValue)) {
+                    return AutomaticResourcePredictionsProfile.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ResourcePredictionsProfile fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourcePredictionsProfile deserializedResourcePredictionsProfile = new ResourcePredictionsProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedResourcePredictionsProfile.kind
+                        = ResourcePredictionsProfileType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourcePredictionsProfile;
+        });
     }
 }

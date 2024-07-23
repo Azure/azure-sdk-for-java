@@ -21,7 +21,8 @@ public final class Office365LinkedServiceTypeProperties {
     private Object office365TenantId;
 
     /*
-     * Specify the tenant information under which your Azure AD web application resides. Type: string (or Expression with resultType string).
+     * Specify the tenant information under which your Azure AD web application resides. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "servicePrincipalTenantId", required = true)
     private Object servicePrincipalTenantId;
@@ -39,7 +40,8 @@ public final class Office365LinkedServiceTypeProperties {
     private SecretBase servicePrincipalKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;

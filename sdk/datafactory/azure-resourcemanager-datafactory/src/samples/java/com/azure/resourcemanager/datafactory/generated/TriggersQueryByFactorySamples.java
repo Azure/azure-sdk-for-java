@@ -11,7 +11,8 @@ import com.azure.resourcemanager.datafactory.models.TriggerFilterParameters;
  */
 public final class TriggersQueryByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_QueryByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Triggers_QueryByFactory.json
      */
     /**
      * Sample code: Triggers_QueryByFactory.

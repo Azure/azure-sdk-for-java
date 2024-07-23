@@ -6,8 +6,11 @@ package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,150 +18,126 @@ import java.util.Map;
  * Defines the asset properties.
  */
 @Fluent
-public final class AssetProperties {
+public final class AssetProperties implements JsonSerializable<AssetProperties> {
     /*
      * Globally unique, immutable, non-reusable id.
      */
-    @JsonProperty(value = "uuid", access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
 
     /*
      * Resource path to asset type (model) definition.
      */
-    @JsonProperty(value = "assetType")
     private String assetType;
 
     /*
      * Enabled/Disabled status of the asset.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Asset id provided by the customer.
      */
-    @JsonProperty(value = "externalAssetId")
     private String externalAssetId;
 
     /*
      * Human-readable display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Human-readable description of the asset.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * A reference to the asset endpoint profile (connection information) used by brokers to connect to an endpoint that
      * provides data points for this asset. Must have the format <ModuleCR.metadata.namespace>/<ModuleCR.metadata.name>.
      */
-    @JsonProperty(value = "assetEndpointProfileUri", required = true)
     private String assetEndpointProfileUri;
 
     /*
      * An integer that is incremented each time the resource is modified.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private Integer version;
 
     /*
      * Asset manufacturer name.
      */
-    @JsonProperty(value = "manufacturer")
     private String manufacturer;
 
     /*
      * Asset manufacturer URI.
      */
-    @JsonProperty(value = "manufacturerUri")
     private String manufacturerUri;
 
     /*
      * Asset model name.
      */
-    @JsonProperty(value = "model")
     private String model;
 
     /*
      * Asset product code.
      */
-    @JsonProperty(value = "productCode")
     private String productCode;
 
     /*
      * Revision number of the hardware.
      */
-    @JsonProperty(value = "hardwareRevision")
     private String hardwareRevision;
 
     /*
      * Revision number of the software.
      */
-    @JsonProperty(value = "softwareRevision")
     private String softwareRevision;
 
     /*
      * Reference to the documentation.
      */
-    @JsonProperty(value = "documentationUri")
     private String documentationUri;
 
     /*
      * Asset serial number.
      */
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
     /*
      * A set of key-value pairs that contain custom attributes set by the customer.
      */
-    @JsonProperty(value = "attributes")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> attributes;
 
     /*
      * Protocol-specific default configuration for all data points. Each data point can have its own configuration that
      * overrides the default settings here. This assumes that each asset instance has one protocol.
      */
-    @JsonProperty(value = "defaultDataPointsConfiguration")
     private String defaultDataPointsConfiguration;
 
     /*
      * Protocol-specific default configuration for all events. Each event can have its own configuration that overrides
      * the default settings here. This assumes that each asset instance has one protocol.
      */
-    @JsonProperty(value = "defaultEventsConfiguration")
     private String defaultEventsConfiguration;
 
     /*
      * Array of data points that are part of the asset. Each data point can reference an asset type capability and have
      * per-data point configuration. See below for more details for the definition of the dataPoints element.
      */
-    @JsonProperty(value = "dataPoints")
     private List<DataPoint> dataPoints;
 
     /*
      * Array of events that are part of the asset. Each event can reference an asset type capability and have per-event
      * configuration. See below for more details about the definition of the events element.
      */
-    @JsonProperty(value = "events")
     private List<Event> events;
 
     /*
      * Read only object to reflect changes that have occurred on the Edge. Similar to Kubernetes status property for
      * custom resources.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private AssetStatus status;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -627,4 +606,106 @@ public final class AssetProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AssetProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("assetEndpointProfileUri", this.assetEndpointProfileUri);
+        jsonWriter.writeStringField("assetType", this.assetType);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("externalAssetId", this.externalAssetId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("manufacturer", this.manufacturer);
+        jsonWriter.writeStringField("manufacturerUri", this.manufacturerUri);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("productCode", this.productCode);
+        jsonWriter.writeStringField("hardwareRevision", this.hardwareRevision);
+        jsonWriter.writeStringField("softwareRevision", this.softwareRevision);
+        jsonWriter.writeStringField("documentationUri", this.documentationUri);
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("defaultDataPointsConfiguration", this.defaultDataPointsConfiguration);
+        jsonWriter.writeStringField("defaultEventsConfiguration", this.defaultEventsConfiguration);
+        jsonWriter.writeArrayField("dataPoints", this.dataPoints, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AssetProperties.
+     */
+    public static AssetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetProperties deserializedAssetProperties = new AssetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("assetEndpointProfileUri".equals(fieldName)) {
+                    deserializedAssetProperties.assetEndpointProfileUri = reader.getString();
+                } else if ("uuid".equals(fieldName)) {
+                    deserializedAssetProperties.uuid = reader.getString();
+                } else if ("assetType".equals(fieldName)) {
+                    deserializedAssetProperties.assetType = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedAssetProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("externalAssetId".equals(fieldName)) {
+                    deserializedAssetProperties.externalAssetId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAssetProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAssetProperties.description = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedAssetProperties.version = reader.getNullable(JsonReader::getInt);
+                } else if ("manufacturer".equals(fieldName)) {
+                    deserializedAssetProperties.manufacturer = reader.getString();
+                } else if ("manufacturerUri".equals(fieldName)) {
+                    deserializedAssetProperties.manufacturerUri = reader.getString();
+                } else if ("model".equals(fieldName)) {
+                    deserializedAssetProperties.model = reader.getString();
+                } else if ("productCode".equals(fieldName)) {
+                    deserializedAssetProperties.productCode = reader.getString();
+                } else if ("hardwareRevision".equals(fieldName)) {
+                    deserializedAssetProperties.hardwareRevision = reader.getString();
+                } else if ("softwareRevision".equals(fieldName)) {
+                    deserializedAssetProperties.softwareRevision = reader.getString();
+                } else if ("documentationUri".equals(fieldName)) {
+                    deserializedAssetProperties.documentationUri = reader.getString();
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedAssetProperties.serialNumber = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    Map<String, Object> attributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAssetProperties.attributes = attributes;
+                } else if ("defaultDataPointsConfiguration".equals(fieldName)) {
+                    deserializedAssetProperties.defaultDataPointsConfiguration = reader.getString();
+                } else if ("defaultEventsConfiguration".equals(fieldName)) {
+                    deserializedAssetProperties.defaultEventsConfiguration = reader.getString();
+                } else if ("dataPoints".equals(fieldName)) {
+                    List<DataPoint> dataPoints = reader.readArray(reader1 -> DataPoint.fromJson(reader1));
+                    deserializedAssetProperties.dataPoints = dataPoints;
+                } else if ("events".equals(fieldName)) {
+                    List<Event> events = reader.readArray(reader1 -> Event.fromJson(reader1));
+                    deserializedAssetProperties.events = events;
+                } else if ("status".equals(fieldName)) {
+                    deserializedAssetProperties.status = AssetStatus.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAssetProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssetProperties;
+        });
+    }
 }

@@ -27,29 +27,24 @@ public final class DatastoresImpl implements Datastores {
     }
 
     public PagedIterable<Datastore> list(String resourceGroupName, String privateCloudName, String clusterName) {
-        PagedIterable<DatastoreInner> inner =
-            this.serviceClient().list(resourceGroupName, privateCloudName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
+        PagedIterable<DatastoreInner> inner
+            = this.serviceClient().list(resourceGroupName, privateCloudName, clusterName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Datastore> list(
-        String resourceGroupName, String privateCloudName, String clusterName, Context context) {
-        PagedIterable<DatastoreInner> inner =
-            this.serviceClient().list(resourceGroupName, privateCloudName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
+    public PagedIterable<Datastore> list(String resourceGroupName, String privateCloudName, String clusterName,
+        Context context) {
+        PagedIterable<DatastoreInner> inner
+            = this.serviceClient().list(resourceGroupName, privateCloudName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
     }
 
-    public Response<Datastore> getWithResponse(
-        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context) {
-        Response<DatastoreInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, context);
+    public Response<Datastore> getWithResponse(String resourceGroupName, String privateCloudName, String clusterName,
+        String datastoreName, Context context) {
+        Response<DatastoreInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DatastoreImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -57,8 +52,8 @@ public final class DatastoresImpl implements Datastores {
     }
 
     public Datastore get(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName) {
-        DatastoreInner inner =
-            this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, datastoreName);
+        DatastoreInner inner
+            = this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, datastoreName);
         if (inner != null) {
             return new DatastoreImpl(inner, this.manager());
         } else {
@@ -70,141 +65,104 @@ public final class DatastoresImpl implements Datastores {
         this.serviceClient().delete(resourceGroupName, privateCloudName, clusterName, datastoreName);
     }
 
-    public void delete(
-        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context) {
+    public void delete(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, privateCloudName, clusterName, datastoreName, context);
     }
 
     public Datastore getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String datastoreName = Utils.getValueFromIdByName(id, "datastores");
+        String datastoreName = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (datastoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, Context.NONE)
             .getValue();
     }
 
     public Response<Datastore> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String datastoreName = Utils.getValueFromIdByName(id, "datastores");
+        String datastoreName = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (datastoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
         }
         return this.getWithResponse(resourceGroupName, privateCloudName, clusterName, datastoreName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String datastoreName = Utils.getValueFromIdByName(id, "datastores");
+        String datastoreName = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (datastoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
         }
         this.delete(resourceGroupName, privateCloudName, clusterName, datastoreName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String datastoreName = Utils.getValueFromIdByName(id, "datastores");
+        String datastoreName = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (datastoreName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
         }
         this.delete(resourceGroupName, privateCloudName, clusterName, datastoreName, context);
     }

@@ -47,10 +47,9 @@ import com.azure.resourcemanager.storage.models.BlobContainersLockImmutabilityPo
 import com.azure.resourcemanager.storage.models.LeaseContainerRequest;
 import com.azure.resourcemanager.storage.models.ListContainerItems;
 import com.azure.resourcemanager.storage.models.ListContainersInclude;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in BlobContainersClient.
@@ -68,7 +67,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Initializes an instance of BlobContainersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BlobContainersClientImpl(StorageManagementClientImpl client) {
@@ -241,7 +240,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
      * token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -285,7 +284,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
      * token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -329,7 +328,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
      * token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -352,7 +351,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
      * token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -374,7 +373,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
      * token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -399,7 +398,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
      * token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -420,7 +419,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
      * token.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -443,7 +442,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates a new container under the specified account as described by request body. The container resource includes
      * metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -495,7 +494,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates a new container under the specified account as described by request body. The container resource includes
      * metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -546,7 +545,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates a new container under the specified account as described by request body. The container resource includes
      * metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -571,7 +570,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates a new container under the specified account as described by request body. The container resource includes
      * metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -596,7 +595,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates a new container under the specified account as described by request body. The container resource includes
      * metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -620,7 +619,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Updates container properties as specified in request body. Properties not mentioned in the request will be
      * unchanged. Update fails if the specified container doesn't already exist.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -672,7 +671,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Updates container properties as specified in request body. Properties not mentioned in the request will be
      * unchanged. Update fails if the specified container doesn't already exist.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -723,7 +722,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Updates container properties as specified in request body. Properties not mentioned in the request will be
      * unchanged. Update fails if the specified container doesn't already exist.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -748,7 +747,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Updates container properties as specified in request body. Properties not mentioned in the request will be
      * unchanged. Update fails if the specified container doesn't already exist.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -773,7 +772,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Updates container properties as specified in request body. Properties not mentioned in the request will be
      * unchanged. Update fails if the specified container doesn't already exist.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -796,7 +795,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets properties of a specified container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -839,7 +838,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets properties of a specified container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -882,7 +881,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets properties of a specified container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -903,7 +902,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets properties of a specified container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -925,7 +924,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets properties of a specified container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -945,7 +944,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Deletes specified container under its account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -987,7 +986,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Deletes specified container under its account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1029,7 +1028,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Deletes specified container under its account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1049,7 +1048,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Deletes specified container under its account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1071,7 +1070,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Deletes specified container under its account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1091,7 +1090,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
      * pattern and does not clear out the existing tags that are not specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1143,7 +1142,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
      * pattern and does not clear out the existing tags that are not specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1194,7 +1193,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
      * pattern and does not clear out the existing tags that are not specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1218,7 +1217,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
      * pattern and does not clear out the existing tags that are not specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1242,7 +1241,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
      * pattern and does not clear out the existing tags that are not specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1266,7 +1265,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
      * clears out only the specified tags in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1318,7 +1317,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
      * clears out only the specified tags in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1369,7 +1368,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
      * clears out only the specified tags in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1393,7 +1392,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
      * clears out only the specified tags in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1418,7 +1417,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
      * clears out only the specified tags in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1442,7 +1441,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
      * this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1497,7 +1496,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
      * this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1552,7 +1551,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
      * this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1578,7 +1577,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
      * this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1607,7 +1606,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for
      * this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1631,7 +1630,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1680,7 +1679,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1729,7 +1728,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1753,7 +1752,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1779,7 +1778,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1804,7 +1803,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
      * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
      * only way is to delete the container after deleting all expired blobs inside the policy locked container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1858,7 +1857,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
      * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
      * only way is to delete the container after deleting all expired blobs inside the policy locked container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1912,7 +1911,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
      * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
      * only way is to delete the container after deleting all expired blobs inside the policy locked container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1940,7 +1939,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
      * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
      * only way is to delete the container after deleting all expired blobs inside the policy locked container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1968,7 +1967,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
      * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, the
      * only way is to delete the container after deleting all expired blobs inside the policy locked container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1994,7 +1993,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
      * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2046,7 +2045,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
      * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2097,7 +2096,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
      * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2124,7 +2123,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
      * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2151,7 +2150,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Sets the ImmutabilityPolicy to Locked state. The only action allowed on a Locked policy is
      * ExtendImmutabilityPolicy action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2177,7 +2176,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
      * Locked policy will be this action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2234,7 +2233,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
      * Locked policy will be this action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2291,7 +2290,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
      * Locked policy will be this action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2319,7 +2318,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
      * Locked policy will be this action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2347,7 +2346,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * Extends the immutabilityPeriodSinceCreationInDays of a locked immutabilityPolicy. The only action allowed on a
      * Locked policy will be this action. ETag in If-Match is required for this operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2374,7 +2373,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
      * duration can be 15 to 60 seconds, or can be infinite.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2423,7 +2422,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
      * duration can be 15 to 60 seconds, or can be infinite.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2471,7 +2470,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
      * duration can be 15 to 60 seconds, or can be infinite.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2495,7 +2494,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
      * duration can be 15 to 60 seconds, or can be infinite.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2519,7 +2518,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
     /**
      * The Lease Container operation establishes and manages a lock on a container for delete operations. The lock
      * duration can be 15 to 60 seconds, or can be infinite.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2542,7 +2541,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2587,7 +2586,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2632,7 +2631,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2658,7 +2657,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2686,7 +2685,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2709,7 +2708,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2733,7 +2732,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2756,7 +2755,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2781,7 +2780,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2802,7 +2801,7 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
      * This operation migrates a blob container from container level WORM to object level immutability enabled
      * container. Prerequisites require a container level immutability policy either in locked or unlocked state,
      * Account level versioning must be enabled and there should be no Legal hold on the container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2822,10 +2821,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2849,10 +2846,8 @@ public final class BlobContainersClientImpl implements BlobContainersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

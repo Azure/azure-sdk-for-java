@@ -15,21 +15,23 @@ public final class TaggingCriteriaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TaggingCriteria model = BinaryData.fromString(
-            "{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":false,\"taggingPriority\":6127684200554474555,\"tagInfo\":{\"eTag\":\"alxlllchp\",\"id\":\"bzevwrd\",\"tagName\":\"hfuk\"}}")
+            "{\"criteria\":[{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"},{\"objectType\":\"BackupCriteria\"}],\"isDefault\":false,\"taggingPriority\":3911214432429494755,\"tagInfo\":{\"eTag\":\"ilbywdxsm\",\"id\":\"cwrwfs\",\"tagName\":\"jfnynszqujizdvoq\"}}")
             .toObject(TaggingCriteria.class);
         Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals(6127684200554474555L, model.taggingPriority());
-        Assertions.assertEquals("hfuk", model.tagInfo().tagName());
+        Assertions.assertEquals(3911214432429494755L, model.taggingPriority());
+        Assertions.assertEquals("jfnynszqujizdvoq", model.tagInfo().tagName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TaggingCriteria model = new TaggingCriteria()
-            .withCriteria(Arrays.asList(new BackupCriteria(), new BackupCriteria())).withIsDefault(false)
-            .withTaggingPriority(6127684200554474555L).withTagInfo(new RetentionTag().withTagName("hfuk"));
+            .withCriteria(Arrays.asList(new BackupCriteria(), new BackupCriteria(), new BackupCriteria()))
+            .withIsDefault(false)
+            .withTaggingPriority(3911214432429494755L)
+            .withTagInfo(new RetentionTag().withTagName("jfnynszqujizdvoq"));
         model = BinaryData.fromObject(model).toObject(TaggingCriteria.class);
         Assertions.assertEquals(false, model.isDefault());
-        Assertions.assertEquals(6127684200554474555L, model.taggingPriority());
-        Assertions.assertEquals("hfuk", model.tagInfo().tagName());
+        Assertions.assertEquals(3911214432429494755L, model.taggingPriority());
+        Assertions.assertEquals("jfnynszqujizdvoq", model.tagInfo().tagName());
     }
 }

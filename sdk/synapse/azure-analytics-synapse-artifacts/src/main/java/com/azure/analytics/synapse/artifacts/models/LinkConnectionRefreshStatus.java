@@ -5,29 +5,36 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LinkConnectionRefreshStatus model. */
+/**
+ * The LinkConnectionRefreshStatus model.
+ */
 @Immutable
-public final class LinkConnectionRefreshStatus {
+public final class LinkConnectionRefreshStatus implements JsonSerializable<LinkConnectionRefreshStatus> {
     /*
      * Link connection refresh status
      */
-    @JsonProperty(value = "refreshStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String refreshStatus;
 
     /*
      * Link connection refresh error message
      */
-    @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /** Creates an instance of LinkConnectionRefreshStatus class. */
-    public LinkConnectionRefreshStatus() {}
+    /**
+     * Creates an instance of LinkConnectionRefreshStatus class.
+     */
+    public LinkConnectionRefreshStatus() {
+    }
 
     /**
      * Get the refreshStatus property: Link connection refresh status.
-     *
+     * 
      * @return the refreshStatus value.
      */
     public String getRefreshStatus() {
@@ -36,10 +43,47 @@ public final class LinkConnectionRefreshStatus {
 
     /**
      * Get the errorMessage property: Link connection refresh error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
         return this.errorMessage;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkConnectionRefreshStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkConnectionRefreshStatus if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkConnectionRefreshStatus.
+     */
+    public static LinkConnectionRefreshStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkConnectionRefreshStatus deserializedLinkConnectionRefreshStatus = new LinkConnectionRefreshStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("refreshStatus".equals(fieldName)) {
+                    deserializedLinkConnectionRefreshStatus.refreshStatus = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedLinkConnectionRefreshStatus.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkConnectionRefreshStatus;
+        });
     }
 }

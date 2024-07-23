@@ -5,28 +5,39 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Entity type source of the bounding box. For reverse-geocoding this is always equal to position. */
+/**
+ * Entity type source of the bounding box. For reverse-geocoding this is always equal to position.
+ */
 public final class Entity extends ExpandableStringEnum<Entity> {
-    /** Static value position for Entity. */
+    /**
+     * Position entity.
+     */
     public static final Entity POSITION = fromString("position");
 
     /**
+     * Creates a new instance of Entity value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Entity() {
+    }
+
+    /**
      * Creates or finds a Entity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Entity.
      */
-    @JsonCreator
     public static Entity fromString(String name) {
         return fromString(name, Entity.class);
     }
 
     /**
      * Gets known Entity values.
-     *
+     * 
      * @return known Entity values.
      */
     public static Collection<Entity> values() {

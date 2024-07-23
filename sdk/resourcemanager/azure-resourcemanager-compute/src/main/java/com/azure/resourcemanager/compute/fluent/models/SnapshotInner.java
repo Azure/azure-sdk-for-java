@@ -176,8 +176,7 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -186,8 +185,7 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the SnapshotInner object itself.
@@ -251,8 +249,8 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Get the creationData property: Disk source information. CreationData information cannot be changed after the
-     * disk has been created.
+     * Get the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
      * 
      * @return the creationData value.
      */
@@ -261,8 +259,8 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Set the creationData property: Disk source information. CreationData information cannot be changed after the
-     * disk has been created.
+     * Set the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
      * 
      * @param creationData the creationData value to set.
      * @return the SnapshotInner object itself.
@@ -591,8 +589,8 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @return the dataAccessAuthMode value.
      */
@@ -601,8 +599,8 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @param dataAccessAuthMode the dataAccessAuthMode value to set.
      * @return the SnapshotInner object itself.

@@ -6,60 +6,56 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of a ResourceSku.
  */
 @Immutable
-public final class ResourceSkuProperties {
+public final class ResourceSkuProperties implements JsonSerializable<ResourceSkuProperties> {
     /*
      * The type of resource the SKU applies to.
      */
-    @JsonProperty(value = "resourceType", required = true)
     private String resourceType;
 
     /*
      * The tier of virtual machines in a scale set
      */
-    @JsonProperty(value = "tier", required = true)
     private String tier;
 
     /*
      * The size of the SKU.
      */
-    @JsonProperty(value = "size", required = true)
     private String size;
 
     /*
      * The family of the SKU.
      */
-    @JsonProperty(value = "family", required = true)
     private String family;
 
     /*
      * The set of locations that the SKU is available.
      */
-    @JsonProperty(value = "locations", required = true)
     private List<String> locations;
 
     /*
      * A list of locations and availability zones in those locations where the SKU is available
      */
-    @JsonProperty(value = "locationInfo", required = true)
     private List<ResourceSkuLocationInfo> locationInfo;
 
     /*
      * Name value pairs to describe the capability.
      */
-    @JsonProperty(value = "capabilities", required = true)
     private List<ResourceSkuCapabilities> capabilities;
 
     /*
      * The restrictions of the SKU.
      */
-    @JsonProperty(value = "restrictions", required = true)
     private List<ResourceSkuRestrictions> restrictions;
 
     /**
@@ -193,4 +189,69 @@ public final class ResourceSkuProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceSkuProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("locationInfo", this.locationInfo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("capabilities", this.capabilities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("restrictions", this.restrictions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceSkuProperties.
+     */
+    public static ResourceSkuProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuProperties deserializedResourceSkuProperties = new ResourceSkuProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedResourceSkuProperties.resourceType = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedResourceSkuProperties.tier = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedResourceSkuProperties.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedResourceSkuProperties.family = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceSkuProperties.locations = locations;
+                } else if ("locationInfo".equals(fieldName)) {
+                    List<ResourceSkuLocationInfo> locationInfo
+                        = reader.readArray(reader1 -> ResourceSkuLocationInfo.fromJson(reader1));
+                    deserializedResourceSkuProperties.locationInfo = locationInfo;
+                } else if ("capabilities".equals(fieldName)) {
+                    List<ResourceSkuCapabilities> capabilities
+                        = reader.readArray(reader1 -> ResourceSkuCapabilities.fromJson(reader1));
+                    deserializedResourceSkuProperties.capabilities = capabilities;
+                } else if ("restrictions".equals(fieldName)) {
+                    List<ResourceSkuRestrictions> restrictions
+                        = reader.readArray(reader1 -> ResourceSkuRestrictions.fromJson(reader1));
+                    deserializedResourceSkuProperties.restrictions = restrictions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuProperties;
+        });
+    }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.monitor.ingestion;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -13,6 +14,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
@@ -23,6 +25,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
@@ -59,6 +62,7 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
         streamName = "Custom-MyTableRawData";
 
         LogsIngestionClientBuilder clientBuilder = new LogsIngestionClientBuilder()
+            .credential(getTestTokenCredential(interceptorManager))
             .retryPolicy(new RetryPolicy(new RetryStrategy() {
                 @Override
                 public int getMaxRetries() {
@@ -73,14 +77,10 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
             clientBuilder
-                .credential(new MockTokenCredential())
                 .httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+                .addPolicy(interceptorManager.getRecordPolicy());
         }
         this.clientBuilder = clientBuilder
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -217,5 +217,26 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
             LOGGER.log(LogLevel.VERBOSE, () -> "Failed to unzip data");
         }
         return null;
+    }
+
+    public static TokenCredential getTestTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isLiveMode()) {
+            Configuration config = Configuration.getGlobalConfiguration();
+            String serviceConnectionId  = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            return new AzurePipelinesCredentialBuilder()
+                .systemAccessToken(systemAccessToken)
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .build();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new MockTokenCredential();
+        }
     }
 }

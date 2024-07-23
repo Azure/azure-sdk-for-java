@@ -25,7 +25,7 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"shwcgomgfflyp\",\"description\":\"gzz\",\"runtimeState\":\"Disabled\",\"annotations\":[\"dataqnp\",\"databeplicbohvvkmtx\",\"datacbnmzcbtwofeuih\"],\"\":{\"wgdrwev\":\"datauerxaqhpecnf\"}},\"name\":\"wlhi\",\"type\":\"odogcvadpbajfms\",\"etag\":\"oirdpgm\",\"id\":\"twfb\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"ohjwzynbhltrmbh\",\"runtimeState\":\"Started\",\"annotations\":[\"datafimllradqwpu\",\"datavuphizztklkshdee\",\"datatjmdefkphs\",\"datakivyaf\"],\"\":{\"rkf\":\"datannpjulpwwmxwlwc\"}},\"name\":\"jaz\",\"type\":\"bjukikdcv\",\"etag\":\"xm\",\"id\":\"ugujiwi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,16 +35,16 @@ public final class TriggersCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TriggerResource response = manager.triggers()
-            .define("oapjjmytku")
-            .withExistingFactory("ldtusvnr", "pohpkoalwspq")
-            .withProperties(new Trigger().withDescription("ottjkrlielb")
-                .withAnnotations(Arrays.asList("datavvhp", "datauhfbjuzsp"))
-                .withAdditionalProperties(mapOf("type", "ctnmybainctm", "runtimeState", "Stopped")))
-            .withIfMatch("gbpdpjewof")
+            .define("mmglbxoeghordccp")
+            .withExistingFactory("jpkzmhaxtw", "imlfrkmyn")
+            .withProperties(new Trigger().withDescription("wzc")
+                .withAnnotations(Arrays.asList("dataccaiphsartyiqq", "datadgyshpvva"))
+                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Started")))
+            .withIfMatch("plhfwqdvd")
             .create();
 
-        Assertions.assertEquals("twfb", response.id());
-        Assertions.assertEquals("gzz", response.properties().description());
+        Assertions.assertEquals("ugujiwi", response.id());
+        Assertions.assertEquals("ohjwzynbhltrmbh", response.properties().description());
     }
 
     // Use "Map.of" if available

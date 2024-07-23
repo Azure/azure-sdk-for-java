@@ -143,6 +143,7 @@ function codegen(project, cb) {
         " --java " +
         " --azure-arm " +
         " --modelerfour.additional-checks=false " +
+        " --stream-style-serialization=false " +
         " --generate-samples " +
         generator +
         ` --java.namespace=${mappings[project].package} ` +

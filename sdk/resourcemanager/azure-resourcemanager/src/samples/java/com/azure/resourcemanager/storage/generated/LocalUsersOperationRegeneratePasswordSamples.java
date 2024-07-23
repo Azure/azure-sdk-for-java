@@ -9,7 +9,9 @@ package com.azure.resourcemanager.storage.generated;
  */
 public final class LocalUsersOperationRegeneratePasswordSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/LocalUserRegeneratePassword.json
+     * x-ms-original-file:
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/LocalUserRegeneratePassword.
+     * json
      */
     /**
      * Sample code: RegenerateLocalUserPassword.

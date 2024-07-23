@@ -9,7 +9,8 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class PrivateEndpointConnectionOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: Delete a private endpoint connection for a datafactory.

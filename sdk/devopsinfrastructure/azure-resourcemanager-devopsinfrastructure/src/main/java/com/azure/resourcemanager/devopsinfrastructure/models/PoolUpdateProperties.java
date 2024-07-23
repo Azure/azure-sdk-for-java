@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The updatable properties of the Pool.
  */
 @Fluent
-public final class PoolUpdateProperties {
+public final class PoolUpdateProperties implements JsonSerializable<PoolUpdateProperties> {
     /*
      * The status of the current operation.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * Defines how many resources can there be created at any given time.
      */
-    @JsonProperty(value = "maximumConcurrency")
     private Integer maximumConcurrency;
 
     /*
      * Defines the organization in which the pool will be used.
      */
-    @JsonProperty(value = "organizationProfile")
     private OrganizationProfile organizationProfile;
 
     /*
      * Defines how the machine will be handled once it executed a job.
      */
-    @JsonProperty(value = "agentProfile")
     private AgentProfile agentProfile;
 
     /*
      * Defines the type of fabric the agent will run on.
      */
-    @JsonProperty(value = "fabricProfile")
     private FabricProfile fabricProfile;
 
     /*
      * The resource id of the DevCenter Project the pool belongs to.
      */
-    @JsonProperty(value = "devCenterProjectResourceId")
     private String devCenterProjectResourceId;
 
     /**
@@ -189,5 +187,58 @@ public final class PoolUpdateProperties {
         if (fabricProfile() != null) {
             fabricProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeNumberField("maximumConcurrency", this.maximumConcurrency);
+        jsonWriter.writeJsonField("organizationProfile", this.organizationProfile);
+        jsonWriter.writeJsonField("agentProfile", this.agentProfile);
+        jsonWriter.writeJsonField("fabricProfile", this.fabricProfile);
+        jsonWriter.writeStringField("devCenterProjectResourceId", this.devCenterProjectResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PoolUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PoolUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PoolUpdateProperties.
+     */
+    public static PoolUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PoolUpdateProperties deserializedPoolUpdateProperties = new PoolUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedPoolUpdateProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("maximumConcurrency".equals(fieldName)) {
+                    deserializedPoolUpdateProperties.maximumConcurrency = reader.getNullable(JsonReader::getInt);
+                } else if ("organizationProfile".equals(fieldName)) {
+                    deserializedPoolUpdateProperties.organizationProfile = OrganizationProfile.fromJson(reader);
+                } else if ("agentProfile".equals(fieldName)) {
+                    deserializedPoolUpdateProperties.agentProfile = AgentProfile.fromJson(reader);
+                } else if ("fabricProfile".equals(fieldName)) {
+                    deserializedPoolUpdateProperties.fabricProfile = FabricProfile.fromJson(reader);
+                } else if ("devCenterProjectResourceId".equals(fieldName)) {
+                    deserializedPoolUpdateProperties.devCenterProjectResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPoolUpdateProperties;
+        });
     }
 }

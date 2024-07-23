@@ -5,39 +5,44 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The authentication type to use. */
+/**
+ * The authentication type to use.
+ */
 public final class ServiceNowV2AuthenticationType extends ExpandableStringEnum<ServiceNowV2AuthenticationType> {
-    /** Static value Basic for ServiceNowV2AuthenticationType. */
+    /**
+     * Static value Basic for ServiceNowV2AuthenticationType.
+     */
     public static final ServiceNowV2AuthenticationType BASIC = fromString("Basic");
 
-    /** Static value OAuth2 for ServiceNowV2AuthenticationType. */
+    /**
+     * Static value OAuth2 for ServiceNowV2AuthenticationType.
+     */
     public static final ServiceNowV2AuthenticationType OAUTH2 = fromString("OAuth2");
 
     /**
      * Creates a new instance of ServiceNowV2AuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ServiceNowV2AuthenticationType() {}
+    public ServiceNowV2AuthenticationType() {
+    }
 
     /**
      * Creates or finds a ServiceNowV2AuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceNowV2AuthenticationType.
      */
-    @JsonCreator
     public static ServiceNowV2AuthenticationType fromString(String name) {
         return fromString(name, ServiceNowV2AuthenticationType.class);
     }
 
     /**
      * Gets known ServiceNowV2AuthenticationType values.
-     *
+     * 
      * @return known ServiceNowV2AuthenticationType values.
      */
     public static Collection<ServiceNowV2AuthenticationType> values() {

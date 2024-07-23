@@ -5,36 +5,53 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity source for SAP ECC source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SapEccSource")
+/**
+ * A copy activity source for SAP ECC source.
+ */
 @Fluent
 public final class SapEccSource extends TabularSource {
     /*
+     * Copy source type.
+     */
+    private String type = "SapEccSource";
+
+    /*
      * SAP ECC OData query. For example, "$top=1". Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read
-     * response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
-    /** Creates an instance of SapEccSource class. */
-    public SapEccSource() {}
+    /**
+     * Creates an instance of SapEccSource class.
+     */
+    public SapEccSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the query property: SAP ECC OData query. For example, "$top=1". Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -44,7 +61,7 @@ public final class SapEccSource extends TabularSource {
     /**
      * Set the query property: SAP ECC OData query. For example, "$top=1". Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param query the query value to set.
      * @return the SapEccSource object itself.
      */
@@ -57,7 +74,7 @@ public final class SapEccSource extends TabularSource {
      * Get the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
      * response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the httpRequestTimeout value.
      */
     public Object getHttpRequestTimeout() {
@@ -68,7 +85,7 @@ public final class SapEccSource extends TabularSource {
      * Set the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
      * response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the SapEccSource object itself.
      */
@@ -77,38 +94,116 @@ public final class SapEccSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapEccSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("query", this.query);
+        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapEccSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapEccSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapEccSource.
+     */
+    public static SapEccSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapEccSource deserializedSapEccSource = new SapEccSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedSapEccSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedSapEccSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSapEccSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedSapEccSource.setQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedSapEccSource.setAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapEccSource.type = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedSapEccSource.query = reader.readUntyped();
+                } else if ("httpRequestTimeout".equals(fieldName)) {
+                    deserializedSapEccSource.httpRequestTimeout = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSapEccSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedSapEccSource;
+        });
     }
 }

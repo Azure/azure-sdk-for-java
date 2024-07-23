@@ -33,10 +33,12 @@ public class WebLinkedServiceTypeProperties {
      */
     @JsonTypeId
     @JsonProperty(value = "authenticationType", required = true)
-    private WebAuthenticationType authenticationType;
+    private WebAuthenticationType authenticationType
+        = WebAuthenticationType.fromString("WebLinkedServiceTypeProperties");
 
     /*
-     * The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or Expression with resultType string).
+     * The URL of the web service endpoint, e.g. https://www.microsoft.com . Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -45,7 +47,6 @@ public class WebLinkedServiceTypeProperties {
      * Creates an instance of WebLinkedServiceTypeProperties class.
      */
     public WebLinkedServiceTypeProperties() {
-        this.authenticationType = WebAuthenticationType.fromString("WebLinkedServiceTypeProperties");
     }
 
     /**

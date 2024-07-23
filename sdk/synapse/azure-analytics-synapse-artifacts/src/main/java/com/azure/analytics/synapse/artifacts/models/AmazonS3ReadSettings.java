@@ -5,86 +5,93 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** Azure data lake store read settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AmazonS3ReadSettings")
+/**
+ * Azure data lake store read settings.
+ */
 @Fluent
 public final class AmazonS3ReadSettings extends StoreReadSettings {
     /*
-     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
-     * with resultType boolean).
+     * The read setting type.
      */
-    @JsonProperty(value = "recursive")
+    private String type = "AmazonS3ReadSettings";
+
+    /*
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType boolean).
+     */
     private Object recursive;
 
     /*
      * AmazonS3 wildcardFolderPath. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFolderPath")
     private Object wildcardFolderPath;
 
     /*
      * AmazonS3 wildcardFileName. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFileName")
     private Object wildcardFileName;
 
     /*
      * The prefix filter for the S3 object name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "prefix")
     private Object prefix;
 
     /*
-     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
-     * copy. Type: string (or Expression with resultType string).
+     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileListPath")
     private Object fileListPath;
 
     /*
      * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enablePartitionDiscovery")
     private Object enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
-     * string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
     /*
-     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
-     * Expression with resultType boolean).
+     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
      * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
-    /** Creates an instance of AmazonS3ReadSettings class. */
-    public AmazonS3ReadSettings() {}
+    /**
+     * Creates an instance of AmazonS3ReadSettings class.
+     */
+    public AmazonS3ReadSettings() {
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the recursive value.
      */
     public Object getRecursive() {
@@ -94,7 +101,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param recursive the recursive value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -106,7 +113,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Get the wildcardFolderPath property: AmazonS3 wildcardFolderPath. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the wildcardFolderPath value.
      */
     public Object getWildcardFolderPath() {
@@ -116,7 +123,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the wildcardFolderPath property: AmazonS3 wildcardFolderPath. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param wildcardFolderPath the wildcardFolderPath value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -128,7 +135,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Get the wildcardFileName property: AmazonS3 wildcardFileName. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the wildcardFileName value.
      */
     public Object getWildcardFileName() {
@@ -138,7 +145,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the wildcardFileName property: AmazonS3 wildcardFileName. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param wildcardFileName the wildcardFileName value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -150,7 +157,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Get the prefix property: The prefix filter for the S3 object name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the prefix value.
      */
     public Object getPrefix() {
@@ -160,7 +167,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the prefix property: The prefix filter for the S3 object name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -172,7 +179,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Get the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
      * the dataset) that you want to copy. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the fileListPath value.
      */
     public Object getFileListPath() {
@@ -182,7 +189,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the fileListPath property: Point to a text file that lists each file (relative path to the path configured in
      * the dataset) that you want to copy. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param fileListPath the fileListPath value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -194,7 +201,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the enablePartitionDiscovery value.
      */
     public Object getEnablePartitionDiscovery() {
@@ -204,7 +211,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -216,7 +223,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the partitionRootPath value.
      */
     public Object getPartitionRootPath() {
@@ -226,7 +233,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param partitionRootPath the partitionRootPath value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -238,7 +245,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Get the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
      * completion. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the deleteFilesAfterCompletion value.
      */
     public Object getDeleteFilesAfterCompletion() {
@@ -248,7 +255,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the deleteFilesAfterCompletion property: Indicates whether the source files need to be deleted after copy
      * completion. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -260,7 +267,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Get the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeStart value.
      */
     public Object getModifiedDatetimeStart() {
@@ -270,7 +277,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -282,7 +289,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Get the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeEnd value.
      */
     public Object getModifiedDatetimeEnd() {
@@ -292,7 +299,7 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
     /**
      * Set the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the AmazonS3ReadSettings object itself.
      */
@@ -301,10 +308,92 @@ public final class AmazonS3ReadSettings extends StoreReadSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonS3ReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("recursive", this.recursive);
+        jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
+        jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
+        jsonWriter.writeUntypedField("prefix", this.prefix);
+        jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
+        jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
+        jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
+        jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
+        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonS3ReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonS3ReadSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonS3ReadSettings.
+     */
+    public static AmazonS3ReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonS3ReadSettings deserializedAmazonS3ReadSettings = new AmazonS3ReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.type = reader.getString();
+                } else if ("recursive".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.recursive = reader.readUntyped();
+                } else if ("wildcardFolderPath".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.wildcardFolderPath = reader.readUntyped();
+                } else if ("wildcardFileName".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.wildcardFileName = reader.readUntyped();
+                } else if ("prefix".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.prefix = reader.readUntyped();
+                } else if ("fileListPath".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.fileListPath = reader.readUntyped();
+                } else if ("enablePartitionDiscovery".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.enablePartitionDiscovery = reader.readUntyped();
+                } else if ("partitionRootPath".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.partitionRootPath = reader.readUntyped();
+                } else if ("deleteFilesAfterCompletion".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.deleteFilesAfterCompletion = reader.readUntyped();
+                } else if ("modifiedDatetimeStart".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.modifiedDatetimeStart = reader.readUntyped();
+                } else if ("modifiedDatetimeEnd".equals(fieldName)) {
+                    deserializedAmazonS3ReadSettings.modifiedDatetimeEnd = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonS3ReadSettings.setAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonS3ReadSettings;
+        });
     }
 }

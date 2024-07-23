@@ -12,14 +12,14 @@ import java.util.Map;
 public final class ExportSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportSettings model
-            = BinaryData.fromString("{\"type\":\"o\",\"\":{\"dqv\":\"databs\",\"wajjzxcqnl\":\"dataqcme\"}}")
-                .toObject(ExportSettings.class);
+        ExportSettings model = BinaryData.fromString(
+            "{\"type\":\"ExportSettings\",\"\":{\"tfscoupsfeywbhxh\":\"dataw\",\"wjjotfunsd\":\"datawkwcfkcqexdwecvk\",\"fuobx\":\"dataejxvrwalekqed\"}}")
+            .toObject(ExportSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportSettings model = new ExportSettings().withAdditionalProperties(mapOf("type", "o"));
+        ExportSettings model = new ExportSettings().withAdditionalProperties(mapOf("type", "ExportSettings"));
         model = BinaryData.fromObject(model).toObject(ExportSettings.class);
     }
 

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.oracledatabase.generated;
  */
 public final class OracleSubscriptionsListCloudAccountDetailsSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/oracleSubscriptions_listCloudAccountDetails.json
+     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/
+     * oracleSubscriptions_listCloudAccountDetails.json
      */
     /**
      * Sample code: List Cloud Account details for the Oracle Subscription.

@@ -5,27 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** Parquet read settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ParquetReadSettings")
+/**
+ * Parquet read settings.
+ */
 @Fluent
 public final class ParquetReadSettings extends FormatReadSettings {
     /*
+     * The read setting type.
+     */
+    private String type = "ParquetReadSettings";
+
+    /*
      * Compression settings.
      */
-    @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
 
-    /** Creates an instance of ParquetReadSettings class. */
-    public ParquetReadSettings() {}
+    /**
+     * Creates an instance of ParquetReadSettings class.
+     */
+    public ParquetReadSettings() {
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the compressionProperties property: Compression settings.
-     *
+     * 
      * @return the compressionProperties value.
      */
     public CompressionReadSettings getCompressionProperties() {
@@ -34,12 +54,62 @@ public final class ParquetReadSettings extends FormatReadSettings {
 
     /**
      * Set the compressionProperties property: Compression settings.
-     *
+     * 
      * @param compressionProperties the compressionProperties value to set.
      * @return the ParquetReadSettings object itself.
      */
     public ParquetReadSettings setCompressionProperties(CompressionReadSettings compressionProperties) {
         this.compressionProperties = compressionProperties;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("compressionProperties", this.compressionProperties);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParquetReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParquetReadSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ParquetReadSettings.
+     */
+    public static ParquetReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParquetReadSettings deserializedParquetReadSettings = new ParquetReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedParquetReadSettings.type = reader.getString();
+                } else if ("compressionProperties".equals(fieldName)) {
+                    deserializedParquetReadSettings.compressionProperties = CompressionReadSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedParquetReadSettings.setAdditionalProperties(additionalProperties);
+
+            return deserializedParquetReadSettings;
+        });
     }
 }

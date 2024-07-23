@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * AutonomousDatabaseBackupType enum.
+ * Autonomous database backup type enum.
  */
 public final class AutonomousDatabaseBackupType extends ExpandableStringEnum<AutonomousDatabaseBackupType> {
     /**
@@ -42,7 +41,6 @@ public final class AutonomousDatabaseBackupType extends ExpandableStringEnum<Aut
      * @param name a name to look for.
      * @return the corresponding AutonomousDatabaseBackupType.
      */
-    @JsonCreator
     public static AutonomousDatabaseBackupType fromString(String name) {
         return fromString(name, AutonomousDatabaseBackupType.class);
     }

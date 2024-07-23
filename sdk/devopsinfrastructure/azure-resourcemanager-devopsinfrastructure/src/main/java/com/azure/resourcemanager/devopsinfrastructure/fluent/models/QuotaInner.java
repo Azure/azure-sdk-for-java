@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.devopsinfrastructure.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.devopsinfrastructure.models.QuotaProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes Resource Quota.
  */
 @Immutable
-public final class QuotaInner extends ProxyResource {
+public final class QuotaInner implements JsonSerializable<QuotaInner> {
     /*
-     * The resource-specific properties for this resource.
+     * Fully qualified ARM resource id
      */
-    @JsonProperty(value = "properties")
-    private QuotaProperties properties;
+    private String id;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The unit of usage measurement.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    private String unit;
+
+    /*
+     * The current usage of the resource.
+     */
+    private long currentValue;
+
+    /*
+     * The maximum permitted usage of the resource.
+     */
+    private long limit;
 
     /**
      * Creates an instance of QuotaInner class.
@@ -34,21 +44,39 @@ public final class QuotaInner extends ProxyResource {
     }
 
     /**
-     * Get the properties property: The resource-specific properties for this resource.
+     * Get the id property: Fully qualified ARM resource id.
      * 
-     * @return the properties value.
+     * @return the id value.
      */
-    public QuotaProperties properties() {
-        return this.properties;
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the unit property: The unit of usage measurement.
      * 
-     * @return the systemData value.
+     * @return the unit value.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public String unit() {
+        return this.unit;
+    }
+
+    /**
+     * Get the currentValue property: The current usage of the resource.
+     * 
+     * @return the currentValue value.
+     */
+    public long currentValue() {
+        return this.currentValue;
+    }
+
+    /**
+     * Get the limit property: The maximum permitted usage of the resource.
+     * 
+     * @return the limit value.
+     */
+    public long limit() {
+        return this.limit;
     }
 
     /**
@@ -57,8 +85,61 @@ public final class QuotaInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model QuotaInner"));
         }
+        if (unit() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property unit in model QuotaInner"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QuotaInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeLongField("currentValue", this.currentValue);
+        jsonWriter.writeLongField("limit", this.limit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QuotaInner.
+     */
+    public static QuotaInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaInner deserializedQuotaInner = new QuotaInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedQuotaInner.id = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedQuotaInner.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedQuotaInner.currentValue = reader.getLong();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedQuotaInner.limit = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaInner;
+        });
     }
 }

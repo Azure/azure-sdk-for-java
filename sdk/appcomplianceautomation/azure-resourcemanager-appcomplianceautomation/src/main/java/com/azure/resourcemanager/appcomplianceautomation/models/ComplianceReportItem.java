@@ -5,99 +5,88 @@
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Object that includes all the content for single compliance result. */
+/**
+ * Object that includes all the content for single compliance result.
+ */
 @Immutable
-public final class ComplianceReportItem {
+public final class ComplianceReportItem implements JsonSerializable<ComplianceReportItem> {
     /*
      * The category name.
      */
-    @JsonProperty(value = "categoryName", access = JsonProperty.Access.WRITE_ONLY)
     private String categoryName;
+
+    /*
+     * The control family name.
+     */
+    private String controlFamilyName;
 
     /*
      * The control Id - e.g. "1".
      */
-    @JsonProperty(value = "controlId", access = JsonProperty.Access.WRITE_ONLY)
     private String controlId;
 
     /*
      * The control name.
      */
-    @JsonProperty(value = "controlName", access = JsonProperty.Access.WRITE_ONLY)
     private String controlName;
 
     /*
-     * The control type.
+     * Control status.
      */
-    @JsonProperty(value = "controlType", access = JsonProperty.Access.WRITE_ONLY)
-    private ControlType controlType;
+    private ControlStatus controlStatus;
 
     /*
-     * The compliance result's status.
+     * The title of the customer responsibility.
      */
-    @JsonProperty(value = "complianceState", access = JsonProperty.Access.WRITE_ONLY)
-    private ComplianceState complianceState;
+    private String responsibilityTitle;
 
     /*
-     * The compliance result mapped policy Id.
+     * The description of the customer responsibility.
      */
-    @JsonProperty(value = "policyId", access = JsonProperty.Access.WRITE_ONLY)
-    private String policyId;
+    private String responsibilityDescription;
 
     /*
-     * The policy's display name.
+     * The Id of the resource.
      */
-    @JsonProperty(value = "policyDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String policyDisplayName;
-
-    /*
-     * The policy's detail description.
-     */
-    @JsonProperty(value = "policyDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String policyDescription;
-
-    /*
-     * The compliance result mapped subscription Id.
-     */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscriptionId;
-
-    /*
-     * The compliance result mapped resource group.
-     */
-    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGroup;
-
-    /*
-     * The compliance result mapped resource type.
-     */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceType;
-
-    /*
-     * The compliance result mapped resource Id - e.g.
-     * "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute"
-         + "/virtualMachines/vm1".
-     */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
     /*
-     * The compliance result last changed date - e.g. "2022-10-24T02:55:16.3274379Z". For unavailable date, set it as
-     * "N/A".
+     * The type of the resource. e.g. "Microsoft.SignalRService/SignalR"
      */
-    @JsonProperty(value = "statusChangeDate", access = JsonProperty.Access.WRITE_ONLY)
-    private String statusChangeDate;
+    private String resourceType;
 
-    /** Creates an instance of ComplianceReportItem class. */
-    public ComplianceReportItem() {
+    /*
+     * Resource origin.
+     */
+    private ResourceOrigin resourceOrigin;
+
+    /*
+     * Resource status.
+     */
+    private ResourceStatus resourceStatus;
+
+    /*
+     * The status change date for the resource.
+     */
+    private OffsetDateTime resourceStatusChangeDate;
+
+    /**
+     * Creates an instance of ComplianceReportItem class.
+     */
+    private ComplianceReportItem() {
     }
 
     /**
      * Get the categoryName property: The category name.
-     *
+     * 
      * @return the categoryName value.
      */
     public String categoryName() {
@@ -105,8 +94,17 @@ public final class ComplianceReportItem {
     }
 
     /**
+     * Get the controlFamilyName property: The control family name.
+     * 
+     * @return the controlFamilyName value.
+     */
+    public String controlFamilyName() {
+        return this.controlFamilyName;
+    }
+
+    /**
      * Get the controlId property: The control Id - e.g. "1".
-     *
+     * 
      * @return the controlId value.
      */
     public String controlId() {
@@ -115,7 +113,7 @@ public final class ComplianceReportItem {
 
     /**
      * Get the controlName property: The control name.
-     *
+     * 
      * @return the controlName value.
      */
     public String controlName() {
@@ -123,82 +121,35 @@ public final class ComplianceReportItem {
     }
 
     /**
-     * Get the controlType property: The control type.
-     *
-     * @return the controlType value.
+     * Get the controlStatus property: Control status.
+     * 
+     * @return the controlStatus value.
      */
-    public ControlType controlType() {
-        return this.controlType;
+    public ControlStatus controlStatus() {
+        return this.controlStatus;
     }
 
     /**
-     * Get the complianceState property: The compliance result's status.
-     *
-     * @return the complianceState value.
+     * Get the responsibilityTitle property: The title of the customer responsibility.
+     * 
+     * @return the responsibilityTitle value.
      */
-    public ComplianceState complianceState() {
-        return this.complianceState;
+    public String responsibilityTitle() {
+        return this.responsibilityTitle;
     }
 
     /**
-     * Get the policyId property: The compliance result mapped policy Id.
-     *
-     * @return the policyId value.
+     * Get the responsibilityDescription property: The description of the customer responsibility.
+     * 
+     * @return the responsibilityDescription value.
      */
-    public String policyId() {
-        return this.policyId;
+    public String responsibilityDescription() {
+        return this.responsibilityDescription;
     }
 
     /**
-     * Get the policyDisplayName property: The policy's display name.
-     *
-     * @return the policyDisplayName value.
-     */
-    public String policyDisplayName() {
-        return this.policyDisplayName;
-    }
-
-    /**
-     * Get the policyDescription property: The policy's detail description.
-     *
-     * @return the policyDescription value.
-     */
-    public String policyDescription() {
-        return this.policyDescription;
-    }
-
-    /**
-     * Get the subscriptionId property: The compliance result mapped subscription Id.
-     *
-     * @return the subscriptionId value.
-     */
-    public String subscriptionId() {
-        return this.subscriptionId;
-    }
-
-    /**
-     * Get the resourceGroup property: The compliance result mapped resource group.
-     *
-     * @return the resourceGroup value.
-     */
-    public String resourceGroup() {
-        return this.resourceGroup;
-    }
-
-    /**
-     * Get the resourceType property: The compliance result mapped resource type.
-     *
-     * @return the resourceType value.
-     */
-    public String resourceType() {
-        return this.resourceType;
-    }
-
-    /**
-     * Get the resourceId property: The compliance result mapped resource Id - e.g.
-     * "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute"
-         + "/virtualMachines/vm1".
-     *
+     * Get the resourceId property: The Id of the resource.
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -206,20 +157,104 @@ public final class ComplianceReportItem {
     }
 
     /**
-     * Get the statusChangeDate property: The compliance result last changed date - e.g. "2022-10-24T02:55:16.3274379Z".
-     * For unavailable date, set it as "N/A".
-     *
-     * @return the statusChangeDate value.
+     * Get the resourceType property: The type of the resource. e.g. "Microsoft.SignalRService/SignalR".
+     * 
+     * @return the resourceType value.
      */
-    public String statusChangeDate() {
-        return this.statusChangeDate;
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
+     * Get the resourceOrigin property: Resource origin.
+     * 
+     * @return the resourceOrigin value.
+     */
+    public ResourceOrigin resourceOrigin() {
+        return this.resourceOrigin;
+    }
+
+    /**
+     * Get the resourceStatus property: Resource status.
+     * 
+     * @return the resourceStatus value.
+     */
+    public ResourceStatus resourceStatus() {
+        return this.resourceStatus;
+    }
+
+    /**
+     * Get the resourceStatusChangeDate property: The status change date for the resource.
+     * 
+     * @return the resourceStatusChangeDate value.
+     */
+    public OffsetDateTime resourceStatusChangeDate() {
+        return this.resourceStatusChangeDate;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComplianceReportItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComplianceReportItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComplianceReportItem.
+     */
+    public static ComplianceReportItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComplianceReportItem deserializedComplianceReportItem = new ComplianceReportItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("categoryName".equals(fieldName)) {
+                    deserializedComplianceReportItem.categoryName = reader.getString();
+                } else if ("controlFamilyName".equals(fieldName)) {
+                    deserializedComplianceReportItem.controlFamilyName = reader.getString();
+                } else if ("controlId".equals(fieldName)) {
+                    deserializedComplianceReportItem.controlId = reader.getString();
+                } else if ("controlName".equals(fieldName)) {
+                    deserializedComplianceReportItem.controlName = reader.getString();
+                } else if ("controlStatus".equals(fieldName)) {
+                    deserializedComplianceReportItem.controlStatus = ControlStatus.fromString(reader.getString());
+                } else if ("responsibilityTitle".equals(fieldName)) {
+                    deserializedComplianceReportItem.responsibilityTitle = reader.getString();
+                } else if ("responsibilityDescription".equals(fieldName)) {
+                    deserializedComplianceReportItem.responsibilityDescription = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedComplianceReportItem.resourceId = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedComplianceReportItem.resourceType = reader.getString();
+                } else if ("resourceOrigin".equals(fieldName)) {
+                    deserializedComplianceReportItem.resourceOrigin = ResourceOrigin.fromString(reader.getString());
+                } else if ("resourceStatus".equals(fieldName)) {
+                    deserializedComplianceReportItem.resourceStatus = ResourceStatus.fromString(reader.getString());
+                } else if ("resourceStatusChangeDate".equals(fieldName)) {
+                    deserializedComplianceReportItem.resourceStatusChangeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComplianceReportItem;
+        });
     }
 }

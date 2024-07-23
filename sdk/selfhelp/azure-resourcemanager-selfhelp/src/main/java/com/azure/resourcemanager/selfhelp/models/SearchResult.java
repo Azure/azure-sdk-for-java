@@ -5,59 +5,55 @@
 package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Details of an AzureKB search result.
  */
 @Fluent
-public final class SearchResult {
+public final class SearchResult implements JsonSerializable<SearchResult> {
     /*
      * Unique id of the result.
      */
-    @JsonProperty(value = "solutionId")
     private String solutionId;
 
     /*
      * Content of the search result.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * Title of the search result.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Confidence of the search result.
      */
-    @JsonProperty(value = "confidence")
     private Confidence confidence;
 
     /*
      * Source of the search result.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Result type of the search result.
      */
-    @JsonProperty(value = "resultType")
     private ResultType resultType;
 
     /*
      * rank of the search result
      */
-    @JsonProperty(value = "rank")
     private Integer rank;
 
     /*
      * Link to the document.
      */
-    @JsonProperty(value = "link")
     private String link;
 
     /**
@@ -232,5 +228,62 @@ public final class SearchResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("solutionId", this.solutionId);
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("confidence", this.confidence == null ? null : this.confidence.toString());
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("resultType", this.resultType == null ? null : this.resultType.toString());
+        jsonWriter.writeNumberField("rank", this.rank);
+        jsonWriter.writeStringField("link", this.link);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchResult.
+     */
+    public static SearchResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchResult deserializedSearchResult = new SearchResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("solutionId".equals(fieldName)) {
+                    deserializedSearchResult.solutionId = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedSearchResult.content = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedSearchResult.title = reader.getString();
+                } else if ("confidence".equals(fieldName)) {
+                    deserializedSearchResult.confidence = Confidence.fromString(reader.getString());
+                } else if ("source".equals(fieldName)) {
+                    deserializedSearchResult.source = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedSearchResult.resultType = ResultType.fromString(reader.getString());
+                } else if ("rank".equals(fieldName)) {
+                    deserializedSearchResult.rank = reader.getNullable(JsonReader::getInt);
+                } else if ("link".equals(fieldName)) {
+                    deserializedSearchResult.link = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchResult;
+        });
     }
 }

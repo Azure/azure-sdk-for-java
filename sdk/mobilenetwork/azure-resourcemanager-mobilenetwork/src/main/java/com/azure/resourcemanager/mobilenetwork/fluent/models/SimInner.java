@@ -123,8 +123,7 @@ public final class SimInner extends ProxyResource {
     }
 
     /**
-     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that
-     * site.
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
      * 
      * @return the siteProvisioningState value.
      */
@@ -181,9 +180,9 @@ public final class SimInner extends ProxyResource {
     }
 
     /**
-     * Get the deviceType property: An optional free-form text field that can be used to record the device type this
-     * SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered
-     * based on this value.
+     * Get the deviceType property: An optional free-form text field that can be used to record the device type this SIM
+     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
+     * this value.
      * 
      * @return the deviceType value.
      */
@@ -192,9 +191,9 @@ public final class SimInner extends ProxyResource {
     }
 
     /**
-     * Set the deviceType property: An optional free-form text field that can be used to record the device type this
-     * SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered
-     * based on this value.
+     * Set the deviceType property: An optional free-form text field that can be used to record the device type this SIM
+     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
+     * this value.
      * 
      * @param deviceType the deviceType value to set.
      * @return the SimInner object itself.
@@ -283,8 +282,8 @@ public final class SimInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model SimInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model SimInner"));
         } else {
             innerProperties().validate();
         }

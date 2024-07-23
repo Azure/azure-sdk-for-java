@@ -208,10 +208,6 @@
     <graalvm.disable>true</graalvm.disable>
     <nativeImage.buildArgs></nativeImage.buildArgs>
 
-    <!-- The following properties configure the revapi-maven-plugin. -->
-    <!-- This property configures whether the revapi-maven-plugin should run. -->
-    <revapi.skip>false</revapi.skip>
-
     <!-- This property configures whether the revapi-maven-plugin should fail on errors. -->
     <revapi.failBuildOnProblemsFound>true</revapi.failBuildOnProblemsFound>
 
@@ -1013,7 +1009,7 @@
               </configurationFile>
             </analysisConfigurationFiles>
             <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-            <checkDependencies>true</checkDependencies>
+            <checkDependencies>false</checkDependencies>
             <failBuildOnProblemsFound>${revapi.failBuildOnProblemsFound}</failBuildOnProblemsFound>
             <!-- The following configures reporting to file in addition to CLI reporting. -->
             <analysisConfiguration>

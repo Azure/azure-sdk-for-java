@@ -16,6 +16,19 @@ public final class RenderingSessionSize extends ExpandableStringEnum<RenderingSe
     public static final RenderingSessionSize PREMIUM = fromString("Premium");
 
     /**
+     * Creates a new instance of {@link RenderingSessionSize} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link RenderingSessionSize} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RenderingSessionSize() {
+
+    }
+
+    /**
      * Creates or finds a SessionSize from its string representation.
      *
      * @param name a name to look for.
@@ -25,7 +38,11 @@ public final class RenderingSessionSize extends ExpandableStringEnum<RenderingSe
         return fromString(name, RenderingSessionSize.class);
     }
 
-    /** @return known SessionSize values. */
+    /**
+     * Gets known SessionSize values.
+     *
+     * @return known SessionSize values.
+     */
     public static Collection<RenderingSessionSize> values() {
         return values(RenderingSessionSize.class);
     }

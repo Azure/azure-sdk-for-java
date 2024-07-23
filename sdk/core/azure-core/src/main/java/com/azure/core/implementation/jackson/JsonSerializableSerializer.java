@@ -12,15 +12,13 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.BeanSerializerBuilder;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 
 import java.io.IOException;
 
 @SuppressWarnings("rawtypes")
 final class JsonSerializableSerializer extends JsonSerializer<JsonSerializable> {
-    private static final Module MODULE
-        = new SimpleModule().addSerializer(JsonSerializable.class, new JsonSerializableSerializer());
-
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
      *
@@ -28,6 +26,22 @@ final class JsonSerializableSerializer extends JsonSerializer<JsonSerializable> 
      */
     public static Module getModule() {
         return new SimpleModule().setSerializerModifier(new BeanSerializerModifier() {
+            @Override
+            public BeanSerializerBuilder updateBuilder(SerializationConfig config, BeanDescription beanDesc,
+                BeanSerializerBuilder builder) {
+                if (ReflectionSerializable.supportsJsonSerializable(beanDesc.getBeanClass())) {
+                    // Modify what the BeanSerializerBuilder will build for the bean class.
+                    return new BeanSerializerBuilder(beanDesc) {
+                        @Override
+                        public JsonSerializer<?> build() {
+                            return new JsonSerializableSerializer();
+                        }
+                    };
+                }
+
+                return builder;
+            }
+
             @Override
             public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc,
                 JsonSerializer<?> serializer) {

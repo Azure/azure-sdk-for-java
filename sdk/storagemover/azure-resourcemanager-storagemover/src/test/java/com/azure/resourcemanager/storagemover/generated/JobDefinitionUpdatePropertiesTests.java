@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class JobDefinitionUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobDefinitionUpdateProperties model =
-            BinaryData
-                .fromString("{\"description\":\"ujjugwdkcglh\",\"copyMode\":\"Additive\",\"agentName\":\"jdyggdtji\"}")
+        JobDefinitionUpdateProperties model
+            = BinaryData.fromString("{\"description\":\"vjsllrmvvdfw\",\"copyMode\":\"Mirror\",\"agentName\":\"n\"}")
                 .toObject(JobDefinitionUpdateProperties.class);
-        Assertions.assertEquals("ujjugwdkcglh", model.description());
-        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
-        Assertions.assertEquals("jdyggdtji", model.agentName());
+        Assertions.assertEquals("vjsllrmvvdfw", model.description());
+        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
+        Assertions.assertEquals("n", model.agentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDefinitionUpdateProperties model =
-            new JobDefinitionUpdateProperties()
-                .withDescription("ujjugwdkcglh")
-                .withCopyMode(CopyMode.ADDITIVE)
-                .withAgentName("jdyggdtji");
+        JobDefinitionUpdateProperties model = new JobDefinitionUpdateProperties().withDescription("vjsllrmvvdfw")
+            .withCopyMode(CopyMode.MIRROR)
+            .withAgentName("n");
         model = BinaryData.fromObject(model).toObject(JobDefinitionUpdateProperties.class);
-        Assertions.assertEquals("ujjugwdkcglh", model.description());
-        Assertions.assertEquals(CopyMode.ADDITIVE, model.copyMode());
-        Assertions.assertEquals("jdyggdtji", model.agentName());
+        Assertions.assertEquals("vjsllrmvvdfw", model.description());
+        Assertions.assertEquals(CopyMode.MIRROR, model.copyMode());
+        Assertions.assertEquals("n", model.agentName());
     }
 }

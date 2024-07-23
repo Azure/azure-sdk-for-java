@@ -6,7 +6,6 @@ com.azure:azure-data-sdk-parent;1.3.0;1.3.0
 com.microsoft.azure:azure-batch;11.1.1;11.2.0-beta.1
 com.microsoft.azure:azure-applicationinsights-query-sample;1.0.0-Preview-1;1.0.0-Preview-1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-spellcheck;1.1.0-beta.1;1.1.0-beta.1
-com.microsoft.azure.cognitiveservices:azure-cognitiveservices-textanalytics;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-runtime;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-authoring;1.0.5-beta;1.0.5-beta
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-autosuggest;1.1.0-beta.1;1.1.0-beta.1
@@ -27,18 +26,12 @@ com.microsoft.azure.cognitiveservices:azure-cognitiveservices-qnamaker;1.0.0-bet
 com.microsoft.azure:azure-eventhubs;3.3.0;3.4.0-beta.1
 com.microsoft.azure:azure-eventhubs-eph;3.3.0;3.4.0-beta.1
 com.microsoft.azure:azure-eventhubs-extensions;3.3.2;3.4.0-beta.1
-com.microsoft.azure:azure-keyvault;1.2.6;1.3.0-beta.1
 com.microsoft.azure:azure-keyvault-complete;1.2.4;1.2.6
 com.microsoft.azure:azure-keyvault-core;1.2.6;1.3.0-beta.1
-com.microsoft.azure:azure-keyvault-cryptography;1.2.6;1.3.0-beta.1
 com.microsoft.azure:azure-keyvault-extensions;1.2.6;1.3.0-beta.1
 com.microsoft.azure:azure-keyvault-test;1.2.3;1.2.6
-com.microsoft.azure:azure-keyvault-webkey;1.2.6;1.3.0-beta.1
 com.microsoft.azure:azure-servicebus;3.6.7;3.7.0-beta.1
-com.microsoft.azure:azure-storage-blob;11.0.2;11.0.2
 com.microsoft.azure:azure-eventgrid;1.4.0;1.5.0-beta.1
-com.microsoft.azure:azure-loganalytics;1.0.0-beta-2;1.0.0-beta.2
 com.microsoft.azure:azure-media;1.0.0-beta.1;1.0.0-beta.1
 com.microsoft.azure:azure-loganalytics-sample;1.0.0-Preview-1;1.0.0-Preview-1
 com.microsoft.azure:microsoft-azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.microsoft.azure.msi_auth_token_provider:azure-authentication-msi-token-provider;1.1.0-beta.1;1.1.0-beta.1

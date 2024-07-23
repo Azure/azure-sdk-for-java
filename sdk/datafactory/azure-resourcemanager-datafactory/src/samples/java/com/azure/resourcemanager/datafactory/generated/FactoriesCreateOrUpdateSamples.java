@@ -9,7 +9,8 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class FactoriesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_CreateOrUpdate.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * Factories_CreateOrUpdate.json
      */
     /**
      * Sample code: Factories_CreateOrUpdate.

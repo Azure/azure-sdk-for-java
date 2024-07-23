@@ -96,6 +96,13 @@ public interface MobileNetworkManagementClient {
     PacketCoreControlPlanesClient getPacketCoreControlPlanes();
 
     /**
+     * Gets the RoutingInfoesClient object to access its operations.
+     * 
+     * @return the RoutingInfoesClient object.
+     */
+    RoutingInfoesClient getRoutingInfoes();
+
+    /**
      * Gets the PacketCoreControlPlaneVersionsClient object to access its operations.
      * 
      * @return the PacketCoreControlPlaneVersionsClient object.

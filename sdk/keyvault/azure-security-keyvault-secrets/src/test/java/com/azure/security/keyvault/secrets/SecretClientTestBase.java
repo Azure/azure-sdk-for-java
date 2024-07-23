@@ -16,7 +16,8 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -69,26 +70,12 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         SecretServiceVersion serviceVersion) {
         TokenCredential credential;
 
-        if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
-            String tenantId = testTenantId == null
-                ? Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID")
-                : testTenantId;
-
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-
-            credential = new ClientSecretCredentialBuilder()
-                .clientSecret(clientKey)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .additionallyAllowedTenants("*")
-                .build();
+        if (interceptorManager.isLiveMode()) {
+            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
+        } else if (interceptorManager.isRecordMode()) {
+            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
         } else {
             credential = new MockTokenCredential();
-
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
             customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));

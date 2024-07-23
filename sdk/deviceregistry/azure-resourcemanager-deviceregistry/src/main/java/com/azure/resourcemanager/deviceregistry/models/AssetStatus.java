@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines the asset status properties.
  */
 @Immutable
-public final class AssetStatus {
+public final class AssetStatus implements JsonSerializable<AssetStatus> {
     /*
      * Array object to transfer and persist errors that originate from the Edge.
      */
-    @JsonProperty(value = "errors")
     private List<AssetStatusError> errors;
 
     /*
@@ -24,7 +27,6 @@ public final class AssetStatus {
      * perspective of the current actual (Edge) state of the Asset. Edge would be the only writer of this value and
      * would sync back up to the cloud. In steady state, this should equal version.
      */
-    @JsonProperty(value = "version")
     private Integer version;
 
     /**
@@ -62,5 +64,45 @@ public final class AssetStatus {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssetStatus.
+     */
+    public static AssetStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetStatus deserializedAssetStatus = new AssetStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errors".equals(fieldName)) {
+                    List<AssetStatusError> errors = reader.readArray(reader1 -> AssetStatusError.fromJson(reader1));
+                    deserializedAssetStatus.errors = errors;
+                } else if ("version".equals(fieldName)) {
+                    deserializedAssetStatus.version = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssetStatus;
+        });
     }
 }

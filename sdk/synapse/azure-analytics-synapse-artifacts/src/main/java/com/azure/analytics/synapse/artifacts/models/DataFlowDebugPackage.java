@@ -5,70 +5,69 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Request body structure for starting data flow debug session. */
+/**
+ * Request body structure for starting data flow debug session.
+ */
 @Fluent
-public final class DataFlowDebugPackage {
+public final class DataFlowDebugPackage implements JsonSerializable<DataFlowDebugPackage> {
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * Data flow instance.
      */
-    @JsonProperty(value = "dataFlow")
     private DataFlowDebugResource dataFlow;
 
     /*
      * List of Data flows
      */
-    @JsonProperty(value = "dataFlows")
     private List<DataFlowDebugResource> dataFlows;
 
     /*
      * List of datasets.
      */
-    @JsonProperty(value = "datasets")
     private List<DatasetDebugResource> datasets;
 
     /*
      * List of linked services.
      */
-    @JsonProperty(value = "linkedServices")
     private List<LinkedServiceDebugResource> linkedServices;
 
     /*
      * Staging info for debug session.
      */
-    @JsonProperty(value = "staging")
     private DataFlowStagingInfo staging;
 
     /*
      * Data flow debug settings.
      */
-    @JsonProperty(value = "debugSettings")
     private DataFlowDebugPackageDebugSettings debugSettings;
 
     /*
      * Request body structure for starting data flow debug session.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of DataFlowDebugPackage class. */
-    public DataFlowDebugPackage() {}
+    /**
+     * Creates an instance of DataFlowDebugPackage class.
+     */
+    public DataFlowDebugPackage() {
+    }
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -77,7 +76,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -88,7 +87,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the dataFlow property: Data flow instance.
-     *
+     * 
      * @return the dataFlow value.
      */
     public DataFlowDebugResource getDataFlow() {
@@ -97,7 +96,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the dataFlow property: Data flow instance.
-     *
+     * 
      * @param dataFlow the dataFlow value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -108,7 +107,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the dataFlows property: List of Data flows.
-     *
+     * 
      * @return the dataFlows value.
      */
     public List<DataFlowDebugResource> getDataFlows() {
@@ -117,7 +116,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the dataFlows property: List of Data flows.
-     *
+     * 
      * @param dataFlows the dataFlows value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -128,7 +127,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the datasets property: List of datasets.
-     *
+     * 
      * @return the datasets value.
      */
     public List<DatasetDebugResource> getDatasets() {
@@ -137,7 +136,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the datasets property: List of datasets.
-     *
+     * 
      * @param datasets the datasets value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -148,7 +147,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the linkedServices property: List of linked services.
-     *
+     * 
      * @return the linkedServices value.
      */
     public List<LinkedServiceDebugResource> getLinkedServices() {
@@ -157,7 +156,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the linkedServices property: List of linked services.
-     *
+     * 
      * @param linkedServices the linkedServices value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -168,7 +167,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the staging property: Staging info for debug session.
-     *
+     * 
      * @return the staging value.
      */
     public DataFlowStagingInfo getStaging() {
@@ -177,7 +176,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the staging property: Staging info for debug session.
-     *
+     * 
      * @param staging the staging value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -188,7 +187,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the debugSettings property: Data flow debug settings.
-     *
+     * 
      * @return the debugSettings value.
      */
     public DataFlowDebugPackageDebugSettings getDebugSettings() {
@@ -197,7 +196,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the debugSettings property: Data flow debug settings.
-     *
+     * 
      * @param debugSettings the debugSettings value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -208,17 +207,16 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the additionalProperties property: Request body structure for starting data flow debug session.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Request body structure for starting data flow debug session.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -227,11 +225,75 @@ public final class DataFlowDebugPackage {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeJsonField("dataFlow", this.dataFlow);
+        jsonWriter.writeArrayField("dataFlows", this.dataFlows, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("linkedServices", this.linkedServices,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("staging", this.staging);
+        jsonWriter.writeJsonField("debugSettings", this.debugSettings);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowDebugPackage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowDebugPackage if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataFlowDebugPackage.
+     */
+    public static DataFlowDebugPackage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowDebugPackage deserializedDataFlowDebugPackage = new DataFlowDebugPackage();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedDataFlowDebugPackage.sessionId = reader.getString();
+                } else if ("dataFlow".equals(fieldName)) {
+                    deserializedDataFlowDebugPackage.dataFlow = DataFlowDebugResource.fromJson(reader);
+                } else if ("dataFlows".equals(fieldName)) {
+                    List<DataFlowDebugResource> dataFlows
+                        = reader.readArray(reader1 -> DataFlowDebugResource.fromJson(reader1));
+                    deserializedDataFlowDebugPackage.dataFlows = dataFlows;
+                } else if ("datasets".equals(fieldName)) {
+                    List<DatasetDebugResource> datasets
+                        = reader.readArray(reader1 -> DatasetDebugResource.fromJson(reader1));
+                    deserializedDataFlowDebugPackage.datasets = datasets;
+                } else if ("linkedServices".equals(fieldName)) {
+                    List<LinkedServiceDebugResource> linkedServices
+                        = reader.readArray(reader1 -> LinkedServiceDebugResource.fromJson(reader1));
+                    deserializedDataFlowDebugPackage.linkedServices = linkedServices;
+                } else if ("staging".equals(fieldName)) {
+                    deserializedDataFlowDebugPackage.staging = DataFlowStagingInfo.fromJson(reader);
+                } else if ("debugSettings".equals(fieldName)) {
+                    deserializedDataFlowDebugPackage.debugSettings = DataFlowDebugPackageDebugSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDataFlowDebugPackage.additionalProperties = additionalProperties;
+
+            return deserializedDataFlowDebugPackage;
+        });
     }
 }

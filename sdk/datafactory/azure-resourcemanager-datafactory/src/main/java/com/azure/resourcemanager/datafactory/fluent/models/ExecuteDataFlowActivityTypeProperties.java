@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.datafactory.models.ContinuationSettingsReference;
 import com.azure.resourcemanager.datafactory.models.DataFlowReference;
 import com.azure.resourcemanager.datafactory.models.DataFlowStagingInfo;
 import com.azure.resourcemanager.datafactory.models.ExecuteDataFlowActivityTypePropertiesCompute;
@@ -36,31 +37,41 @@ public class ExecuteDataFlowActivityTypeProperties {
     private IntegrationRuntimeReference integrationRuntime;
 
     /*
+     * Continuation settings for execute data flow activity.
+     */
+    @JsonProperty(value = "continuationSettings")
+    private ContinuationSettingsReference continuationSettings;
+
+    /*
      * Compute properties for data flow activity.
      */
     @JsonProperty(value = "compute")
     private ExecuteDataFlowActivityTypePropertiesCompute compute;
 
     /*
-     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string)
+     * Trace level setting used for data flow monitoring output. Supported values are: 'coarse', 'fine', and 'none'.
+     * Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "traceLevel")
     private Object traceLevel;
 
     /*
-     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type: boolean (or Expression with resultType boolean)
+     * Continue on error setting used for data flow execution. Enables processing to continue if a sink fails. Type:
+     * boolean (or Expression with resultType boolean)
      */
     @JsonProperty(value = "continueOnError")
     private Object continueOnError;
 
     /*
-     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed concurrently. Type: boolean (or Expression with resultType boolean)
+     * Concurrent run setting used for data flow execution. Allows sinks with the same save order to be processed
+     * concurrently. Type: boolean (or Expression with resultType boolean)
      */
     @JsonProperty(value = "runConcurrently")
     private Object runConcurrently;
 
     /*
-     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with resultType integer)
+     * Specify number of parallel staging for sources applicable to the sink. Type: integer (or Expression with
+     * resultType integer)
      */
     @JsonProperty(value = "sourceStagingConcurrency")
     private Object sourceStagingConcurrency;
@@ -129,6 +140,27 @@ public class ExecuteDataFlowActivityTypeProperties {
     public ExecuteDataFlowActivityTypeProperties
         withIntegrationRuntime(IntegrationRuntimeReference integrationRuntime) {
         this.integrationRuntime = integrationRuntime;
+        return this;
+    }
+
+    /**
+     * Get the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @return the continuationSettings value.
+     */
+    public ContinuationSettingsReference continuationSettings() {
+        return this.continuationSettings;
+    }
+
+    /**
+     * Set the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @param continuationSettings the continuationSettings value to set.
+     * @return the ExecuteDataFlowActivityTypeProperties object itself.
+     */
+    public ExecuteDataFlowActivityTypeProperties
+        withContinuationSettings(ContinuationSettingsReference continuationSettings) {
+        this.continuationSettings = continuationSettings;
         return this;
     }
 
@@ -258,6 +290,9 @@ public class ExecuteDataFlowActivityTypeProperties {
         }
         if (integrationRuntime() != null) {
             integrationRuntime().validate();
+        }
+        if (continuationSettings() != null) {
+            continuationSettings().validate();
         }
         if (compute() != null) {
             compute().validate();

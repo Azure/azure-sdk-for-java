@@ -5,24 +5,32 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The EditTablesRequest model. */
+/**
+ * The EditTablesRequest model.
+ */
 @Fluent
-public final class EditTablesRequest {
+public final class EditTablesRequest implements JsonSerializable<EditTablesRequest> {
     /*
      * Edit link tables request
      */
-    @JsonProperty(value = "linkTables")
     private List<LinkTableRequest> linkTables;
 
-    /** Creates an instance of EditTablesRequest class. */
-    public EditTablesRequest() {}
+    /**
+     * Creates an instance of EditTablesRequest class.
+     */
+    public EditTablesRequest() {
+    }
 
     /**
      * Get the linkTables property: Edit link tables request.
-     *
+     * 
      * @return the linkTables value.
      */
     public List<LinkTableRequest> getLinkTables() {
@@ -31,12 +39,49 @@ public final class EditTablesRequest {
 
     /**
      * Set the linkTables property: Edit link tables request.
-     *
+     * 
      * @param linkTables the linkTables value to set.
      * @return the EditTablesRequest object itself.
      */
     public EditTablesRequest setLinkTables(List<LinkTableRequest> linkTables) {
         this.linkTables = linkTables;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("linkTables", this.linkTables, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EditTablesRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EditTablesRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EditTablesRequest.
+     */
+    public static EditTablesRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EditTablesRequest deserializedEditTablesRequest = new EditTablesRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkTables".equals(fieldName)) {
+                    List<LinkTableRequest> linkTables = reader.readArray(reader1 -> LinkTableRequest.fromJson(reader1));
+                    deserializedEditTablesRequest.linkTables = linkTables;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEditTablesRequest;
+        });
     }
 }

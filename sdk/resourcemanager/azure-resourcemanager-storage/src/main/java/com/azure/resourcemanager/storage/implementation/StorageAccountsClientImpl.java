@@ -56,10 +56,9 @@ import com.azure.resourcemanager.storage.models.StorageAccountExpand;
 import com.azure.resourcemanager.storage.models.StorageAccountListResult;
 import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in StorageAccountsClient.
@@ -78,7 +77,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Initializes an instance of StorageAccountsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StorageAccountsClientImpl(StorageManagementClientImpl client) {
@@ -280,7 +279,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Checks that the storage account name is valid and is not already in use.
-     *
+     * 
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,7 +313,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Checks that the storage account name is valid and is not already in use.
-     *
+     * 
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
@@ -348,7 +347,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Checks that the storage account name is valid and is not already in use.
-     *
+     * 
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +363,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Checks that the storage account name is valid and is not already in use.
-     *
+     * 
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
@@ -381,7 +380,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Checks that the storage account name is valid and is not already in use.
-     *
+     * 
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      * must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,7 +399,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -446,7 +445,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -492,7 +491,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -516,7 +515,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -543,7 +542,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -565,7 +564,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -588,7 +587,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -611,7 +610,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -635,7 +634,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -657,7 +656,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * a subsequent create request is issued with different properties, the account properties will be updated. If an
      * account is already created and a subsequent create or update request is issued with the exact same set of
      * properties, the request will succeed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -677,7 +676,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Deletes a storage account in Microsoft Azure.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -712,7 +711,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Deletes a storage account in Microsoft Azure.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -748,7 +747,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Deletes a storage account in Microsoft Azure.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -765,7 +764,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Deletes a storage account in Microsoft Azure.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -783,7 +782,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Deletes a storage account in Microsoft Azure.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -800,7 +799,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Returns the properties for the specified storage account including but not limited to name, SKU name, location,
      * and account status. The ListKeys operation should be used to retrieve storage keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -840,7 +839,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Returns the properties for the specified storage account including but not limited to name, SKU name, location,
      * and account status. The ListKeys operation should be used to retrieve storage keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -880,7 +879,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Returns the properties for the specified storage account including but not limited to name, SKU name, location,
      * and account status. The ListKeys operation should be used to retrieve storage keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -900,7 +899,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Returns the properties for the specified storage account including but not limited to name, SKU name, location,
      * and account status. The ListKeys operation should be used to retrieve storage keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -922,7 +921,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Returns the properties for the specified storage account including but not limited to name, SKU name, location,
      * and account status. The ListKeys operation should be used to retrieve storage keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -945,7 +944,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * must be cleared/unregistered before a new value can be set. The update of multiple properties is supported. This
      * call does not change the storage keys for the account. If you want to change the storage account keys, use the
      * regenerate keys operation. The location and name of the storage account cannot be changed after creation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -993,7 +992,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * must be cleared/unregistered before a new value can be set. The update of multiple properties is supported. This
      * call does not change the storage keys for the account. If you want to change the storage account keys, use the
      * regenerate keys operation. The location and name of the storage account cannot be changed after creation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1041,7 +1040,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * must be cleared/unregistered before a new value can be set. The update of multiple properties is supported. This
      * call does not change the storage keys for the account. If you want to change the storage account keys, use the
      * regenerate keys operation. The location and name of the storage account cannot be changed after creation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1066,7 +1065,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * must be cleared/unregistered before a new value can be set. The update of multiple properties is supported. This
      * call does not change the storage keys for the account. If you want to change the storage account keys, use the
      * regenerate keys operation. The location and name of the storage account cannot be changed after creation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1091,7 +1090,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * must be cleared/unregistered before a new value can be set. The update of multiple properties is supported. This
      * call does not change the storage keys for the account. If you want to change the storage account keys, use the
      * regenerate keys operation. The location and name of the storage account cannot be changed after creation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1111,7 +1110,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the
      * ListKeys operation for this.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Storage Accounts operation along with {@link PagedResponse} on successful
@@ -1139,7 +1138,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the
      * ListKeys operation for this.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1169,7 +1168,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the
      * ListKeys operation for this.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Storage Accounts operation as paginated response with {@link PagedFlux}.
@@ -1182,7 +1181,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the
      * ListKeys operation for this.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1198,7 +1197,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the
      * ListKeys operation for this.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the List Storage Accounts operation as paginated response with {@link PagedIterable}.
@@ -1211,7 +1210,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the subscription. Note that storage keys are not returned; use the
      * ListKeys operation for this.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1226,7 +1225,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned;
      * use the ListKeys operation for this.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1261,7 +1260,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned;
      * use the ListKeys operation for this.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param context The context to associate with this operation.
@@ -1298,7 +1297,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned;
      * use the ListKeys operation for this.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1315,7 +1314,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned;
      * use the ListKeys operation for this.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param context The context to associate with this operation.
@@ -1333,7 +1332,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned;
      * use the ListKeys operation for this.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1349,7 +1348,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
     /**
      * Lists all the storage accounts available under the given resource group. Note that storage keys are not returned;
      * use the ListKeys operation for this.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param context The context to associate with this operation.
@@ -1365,7 +1364,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1404,7 +1403,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1443,7 +1442,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1462,7 +1461,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1482,7 +1481,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1500,7 +1499,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Regenerates one of the access keys or Kerberos keys for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1544,7 +1543,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Regenerates one of the access keys or Kerberos keys for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1588,7 +1587,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Regenerates one of the access keys or Kerberos keys for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1608,7 +1607,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Regenerates one of the access keys or Kerberos keys for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1628,7 +1627,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Regenerates one of the access keys or Kerberos keys for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1647,7 +1646,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List SAS credentials of a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1691,7 +1690,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List SAS credentials of a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1735,7 +1734,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List SAS credentials of a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1755,7 +1754,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List SAS credentials of a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1775,7 +1774,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List SAS credentials of a storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1794,7 +1793,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List service SAS credentials of a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1838,7 +1837,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List service SAS credentials of a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1882,7 +1881,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List service SAS credentials of a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1902,7 +1901,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List service SAS credentials of a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1922,7 +1921,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * List service SAS credentials of a specific resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1949,7 +1948,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -1994,7 +1993,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2039,7 +2038,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2068,7 +2067,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2096,7 +2095,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2128,7 +2127,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2154,7 +2153,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2182,7 +2181,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2209,7 +2208,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2236,7 +2235,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2265,7 +2264,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2290,7 +2289,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
      * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2308,7 +2307,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2352,7 +2351,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2395,7 +2394,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2419,7 +2418,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2445,7 +2444,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2467,7 +2466,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2490,7 +2489,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2512,7 +2511,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2535,7 +2534,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2554,7 +2553,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2575,7 +2574,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2613,7 +2612,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2650,7 +2649,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2671,7 +2670,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2694,7 +2693,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2712,7 +2711,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2732,7 +2731,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2750,7 +2749,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2770,7 +2769,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2786,7 +2785,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Abort live Migration of storage account to enable Hns.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2806,7 +2805,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2852,7 +2851,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2898,7 +2897,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2923,7 +2922,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2950,7 +2949,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2972,7 +2971,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -2996,7 +2995,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3019,7 +3018,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3043,7 +3042,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3064,7 +3063,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
      * updates the non-zonal redundant storage account to a zonal redundant account or vice-versa in order to have
      * better reliability and availability. Zone-redundant storage (ZRS) replicates your storage account synchronously
      * across three Azure availability zones in the primary region.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3083,7 +3082,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Gets the status of the ongoing migration for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3126,7 +3125,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Gets the status of the ongoing migration for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3168,7 +3167,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Gets the status of the ongoing migration for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3189,7 +3188,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Gets the status of the ongoing migration for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3210,7 +3209,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Gets the status of the ongoing migration for the specified storage account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3230,7 +3229,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3273,7 +3272,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3316,7 +3315,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3339,7 +3338,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3363,7 +3362,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3382,7 +3381,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3402,7 +3401,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3422,7 +3421,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3443,7 +3442,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3462,7 +3461,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Restore blobs in the specified blob ranges.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3482,7 +3481,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Revoke user delegation keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3518,7 +3517,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Revoke user delegation keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3554,7 +3553,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Revoke user delegation keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3572,7 +3571,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Revoke user delegation keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3591,7 +3590,7 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Revoke user delegation keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
@@ -3607,10 +3606,8 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3635,10 +3632,8 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3664,10 +3659,8 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3694,10 +3687,8 @@ public final class StorageAccountsClientImpl implements InnerSupportsGet<Storage
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

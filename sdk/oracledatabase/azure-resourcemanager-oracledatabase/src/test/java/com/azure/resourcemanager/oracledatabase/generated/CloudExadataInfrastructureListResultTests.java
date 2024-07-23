@@ -5,188 +5,45 @@
 package com.azure.resourcemanager.oracledatabase.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.oracledatabase.fluent.models.CloudExadataInfrastructureInner;
 import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructureListResult;
-import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructureProperties;
-import com.azure.resourcemanager.oracledatabase.models.CustomerContact;
-import com.azure.resourcemanager.oracledatabase.models.DayOfWeek;
 import com.azure.resourcemanager.oracledatabase.models.DayOfWeekName;
-import com.azure.resourcemanager.oracledatabase.models.MaintenanceWindow;
-import com.azure.resourcemanager.oracledatabase.models.Month;
 import com.azure.resourcemanager.oracledatabase.models.MonthName;
 import com.azure.resourcemanager.oracledatabase.models.PatchingMode;
 import com.azure.resourcemanager.oracledatabase.models.Preference;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class CloudExadataInfrastructureListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudExadataInfrastructureListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"gxg\",\"computeCount\":2093374464,\"storageCount\":408868757,\"totalStorageSizeInGbs\":234245718,\"availableStorageSizeInGbs\":1938175770,\"timeCreated\":\"ufubl\",\"lifecycleDetails\":\"fxqeof\",\"maintenanceWindow\":{\"preference\":\"NoPreference\",\"months\":[{\"name\":\"August\"},{\"name\":\"January\"},{\"name\":\"June\"}],\"weeksOfMonth\":[91789189],\"daysOfWeek\":[{\"name\":\"Monday\"},{\"name\":\"Wednesday\"},{\"name\":\"Monday\"},{\"name\":\"Saturday\"}],\"hoursOfDay\":[1600466611,951964300,186594005],\"leadTimeInWeeks\":1111956418,\"patchingMode\":\"Rolling\",\"customActionTimeoutInMins\":105854038,\"isCustomActionTimeoutEnabled\":false,\"isMonthlyPatchingEnabled\":true},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":306155012,\"estimatedNetworkSwitchesPatchingTime\":967406306,\"estimatedStorageServerPatchingTime\":283393418,\"totalEstimatedPatchingTime\":1729632043},\"customerContacts\":[{\"email\":\"ouskcqvkocrc\"},{\"email\":\"dkwt\"},{\"email\":\"hxbnjbiksqrg\"},{\"email\":\"ssainqpjwnzll\"}],\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Terminating\",\"shape\":\"eebvmgxsab\",\"ociUrl\":\"qduujitcjczdz\",\"cpuCount\":1471497811,\"maxCpuCount\":700767866,\"memorySizeInGbs\":2049933545,\"maxMemoryInGbs\":1632911740,\"dbNodeStorageSizeInGbs\":881924894,\"maxDbNodeStorageSizeInGbs\":176871010,\"dataStorageSizeInTbs\":1872271759,\"maxDataStorageInTbs\":55.1979758723363,\"dbServerVersion\":\"wrwjfeu\",\"storageServerVersion\":\"hutje\",\"activatedStorageCount\":1438650135,\"additionalStorageCount\":1403309762,\"displayName\":\"dhugjzzdatqxhocd\",\"lastMaintenanceRunId\":\"ablgphuticndvk\",\"nextMaintenanceRunId\":\"zwyiftyhxhur\",\"monthlyDbServerVersion\":\"ftyxolniw\",\"monthlyStorageServerVersion\":\"cukjf\"},\"zones\":[\"iawxklry\",\"lwckbasyypnddhs\"],\"location\":\"bacphejko\",\"tags\":{\"i\":\"qgoulznd\",\"dgak\":\"wyqkgfgibm\",\"ytb\":\"qsrxybzqqed\"},\"id\":\"iqfouflmmnkz\",\"name\":\"modmglougpb\",\"type\":\"wtmutduq\"},{\"properties\":{\"ocid\":\"pspwgcuertu\",\"computeCount\":1838728472,\"storageCount\":1475833169,\"totalStorageSizeInGbs\":398629650,\"availableStorageSizeInGbs\":718975577,\"timeCreated\":\"mdgbbjfdd\",\"lifecycleDetails\":\"bmbexppbhtqqro\",\"maintenanceWindow\":{\"preference\":\"CustomPreference\",\"months\":[{\"name\":\"May\"}],\"weeksOfMonth\":[2143599393,746148107],\"daysOfWeek\":[{\"name\":\"Thursday\"},{\"name\":\"Monday\"},{\"name\":\"Saturday\"},{\"name\":\"Sunday\"}],\"hoursOfDay\":[852656000,161079646,2011636323,243879376],\"leadTimeInWeeks\":2040036621,\"patchingMode\":\"Rolling\",\"customActionTimeoutInMins\":2130650587,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":false},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":1846063928,\"estimatedNetworkSwitchesPatchingTime\":8193790,\"estimatedStorageServerPatchingTime\":250590456,\"totalEstimatedPatchingTime\":709635131},\"customerContacts\":[{\"email\":\"vfqawrlyxwjkcpr\"},{\"email\":\"nwbxgjvtbvpyssz\"},{\"email\":\"nruj\"}],\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Terminated\",\"shape\":\"uouq\",\"ociUrl\":\"rwzwbng\",\"cpuCount\":1052592180,\"maxCpuCount\":443488526,\"memorySizeInGbs\":1661646001,\"maxMemoryInGbs\":1403075438,\"dbNodeStorageSizeInGbs\":1608878856,\"maxDbNodeStorageSizeInGbs\":8203543,\"dataStorageSizeInTbs\":2117984998,\"maxDataStorageInTbs\":30.857593323830567,\"dbServerVersion\":\"y\",\"storageServerVersion\":\"hr\",\"activatedStorageCount\":778150976,\"additionalStorageCount\":1323604242,\"displayName\":\"zwdzuh\",\"lastMaintenanceRunId\":\"mwisdkfthwxmnt\",\"nextMaintenanceRunId\":\"waopvkmijcmmxd\",\"monthlyDbServerVersion\":\"fufsrpymzi\",\"monthlyStorageServerVersion\":\"sezcxtb\"},\"zones\":[\"gfycc\",\"newmdwzjeiachbo\",\"sflnrosfqp\"],\"location\":\"ehzzvypyqrim\",\"tags\":{\"dqxhcrmnohjtckwh\":\"pvswjdkirso\",\"gr\":\"soifiyipjxsqw\",\"qabnmoc\":\"bznorcjxvsnby\"},\"id\":\"cyshurzafbljjgp\",\"name\":\"toqcjmklja\",\"type\":\"bqidtqaj\"},{\"properties\":{\"ocid\":\"l\",\"computeCount\":144447336,\"storageCount\":1232172587,\"totalStorageSizeInGbs\":1505424073,\"availableStorageSizeInGbs\":623997191,\"timeCreated\":\"bzhfepgzgqexz\",\"lifecycleDetails\":\"c\",\"maintenanceWindow\":{\"preference\":\"NoPreference\",\"months\":[{\"name\":\"January\"},{\"name\":\"May\"},{\"name\":\"February\"},{\"name\":\"June\"}],\"weeksOfMonth\":[1663181785,539678864],\"daysOfWeek\":[{\"name\":\"Wednesday\"},{\"name\":\"Wednesday\"},{\"name\":\"Wednesday\"}],\"hoursOfDay\":[177005491,1273206758,1703884652],\"leadTimeInWeeks\":1291201271,\"patchingMode\":\"NonRolling\",\"customActionTimeoutInMins\":547031215,\"isCustomActionTimeoutEnabled\":false,\"isMonthlyPatchingEnabled\":false},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":948601207,\"estimatedNetworkSwitchesPatchingTime\":1684749712,\"estimatedStorageServerPatchingTime\":132549399,\"totalEstimatedPatchingTime\":1116116329},\"customerContacts\":[{\"email\":\"mexgstxgcp\"},{\"email\":\"dg\"},{\"email\":\"aajrm\"},{\"email\":\"djwzrlov\"}],\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Available\",\"shape\":\"ijcoejctb\",\"ociUrl\":\"qsqsy\",\"cpuCount\":1302368966,\"maxCpuCount\":1508721218,\"memorySizeInGbs\":544085929,\"maxMemoryInGbs\":1619207085,\"dbNodeStorageSizeInGbs\":2039357898,\"maxDbNodeStorageSizeInGbs\":1707424741,\"dataStorageSizeInTbs\":1856340742,\"maxDataStorageInTbs\":24.355562351171788,\"dbServerVersion\":\"xaxcfjpgddtocjjx\",\"storageServerVersion\":\"pmouexhdz\",\"activatedStorageCount\":738311617,\"additionalStorageCount\":996013729,\"displayName\":\"ojnxqbzvdd\",\"lastMaintenanceRunId\":\"wndeicbtwnp\",\"nextMaintenanceRunId\":\"oqvuhr\",\"monthlyDbServerVersion\":\"f\",\"monthlyStorageServerVersion\":\"yd\"},\"zones\":[\"lmjthjq\",\"wpyeicxmqciwqvh\"],\"location\":\"ixuigdtopbobj\",\"tags\":{\"w\":\"m\"},\"id\":\"a\",\"name\":\"a\",\"type\":\"hrzayvvtpgvdf\"},{\"properties\":{\"ocid\":\"tkftutqxlngx\",\"computeCount\":1542158785,\"storageCount\":719588208,\"totalStorageSizeInGbs\":1113427236,\"availableStorageSizeInGbs\":929487618,\"timeCreated\":\"xdqmidtthzrvqdra\",\"lifecycleDetails\":\"jybige\",\"maintenanceWindow\":{\"preference\":\"CustomPreference\",\"months\":[{\"name\":\"May\"},{\"name\":\"March\"},{\"name\":\"November\"}],\"weeksOfMonth\":[974943815,339779256,1420716073],\"daysOfWeek\":[{\"name\":\"Saturday\"},{\"name\":\"Monday\"},{\"name\":\"Thursday\"},{\"name\":\"Thursday\"}],\"hoursOfDay\":[616844240,1787263849,1328534140],\"leadTimeInWeeks\":23718852,\"patchingMode\":\"NonRolling\",\"customActionTimeoutInMins\":1043685699,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":true},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":539523379,\"estimatedNetworkSwitchesPatchingTime\":680476327,\"estimatedStorageServerPatchingTime\":1709134012,\"totalEstimatedPatchingTime\":2077356843},\"customerContacts\":[{\"email\":\"pec\"},{\"email\":\"vmmcoofs\"},{\"email\":\"lzevgbmqjqab\"},{\"email\":\"y\"}],\"provisioningState\":\"Provisioning\",\"lifecycleState\":\"Provisioning\",\"shape\":\"w\",\"ociUrl\":\"uvcc\",\"cpuCount\":1704525857,\"maxCpuCount\":1351999022,\"memorySizeInGbs\":1015475658,\"maxMemoryInGbs\":1187016173,\"dbNodeStorageSizeInGbs\":2055969856,\"maxDbNodeStorageSizeInGbs\":198217735,\"dataStorageSizeInTbs\":1067067753,\"maxDataStorageInTbs\":68.24949348483848,\"dbServerVersion\":\"gtzxdpn\",\"storageServerVersion\":\"qqwx\",\"activatedStorageCount\":19464895,\"additionalStorageCount\":339622824,\"displayName\":\"llnwsubi\",\"lastMaintenanceRunId\":\"jampmngnzscxaqw\",\"nextMaintenanceRunId\":\"chcbonqvpkvlrxnj\",\"monthlyDbServerVersion\":\"seiphe\",\"monthlyStorageServerVersion\":\"lokeyy\"},\"zones\":[\"nj\",\"dlwtgrhpdj\",\"jumasx\"],\"location\":\"jpqyegu\",\"tags\":{\"xhejjzzvdud\":\"b\"},\"id\":\"wdslfhotwmcy\",\"name\":\"pwlbjnpg\",\"type\":\"cftadeh\"}],\"nextLink\":\"ltyfsop\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"vtz\",\"computeCount\":1277339929,\"storageCount\":77118274,\"totalStorageSizeInGbs\":1861825815,\"availableStorageSizeInGbs\":698311711,\"timeCreated\":\"xqeofjaeqjhqjba\",\"lifecycleDetails\":\"msmjqulngsntn\",\"maintenanceWindow\":{\"preference\":\"CustomPreference\",\"months\":[{\"name\":\"September\"}],\"weeksOfMonth\":[2115498043,306155012,1161449621],\"daysOfWeek\":[{\"name\":\"Tuesday\"},{\"name\":\"Tuesday\"},{\"name\":\"Sunday\"},{\"name\":\"Monday\"}],\"hoursOfDay\":[947497777,890604952,3133273],\"leadTimeInWeeks\":1214814852,\"patchingMode\":\"NonRolling\",\"customActionTimeoutInMins\":422670277,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":false},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":1343054120,\"estimatedNetworkSwitchesPatchingTime\":1034535063,\"estimatedStorageServerPatchingTime\":2077137838,\"totalEstimatedPatchingTime\":1299495603},\"customerContacts\":[{\"email\":\"ksqrglssai\"},{\"email\":\"qpjwnzlljfm\"}],\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Terminated\",\"shape\":\"vmgxsab\",\"ociUrl\":\"qduujitcjczdz\",\"cpuCount\":1471497811,\"maxCpuCount\":700767866,\"memorySizeInGbs\":2049933545,\"maxMemoryInGbs\":1632911740,\"dbNodeStorageSizeInGbs\":881924894,\"maxDbNodeStorageSizeInGbs\":176871010,\"dataStorageSizeInTbs\":43.592224361707366,\"maxDataStorageInTbs\":55.89189866671263,\"dbServerVersion\":\"rwjfe\",\"storageServerVersion\":\"nhutjeltmrldhugj\",\"activatedStorageCount\":1346954674,\"additionalStorageCount\":797371044,\"displayName\":\"qxhocdgeablgphut\",\"lastMaintenanceRunId\":\"ndv\",\"nextMaintenanceRunId\":\"ozwyiftyhxhuro\",\"monthlyDbServerVersion\":\"tyxolniwpwc\",\"monthlyStorageServerVersion\":\"jfkgiawxk\"},\"zones\":[\"ypl\",\"ckbasyypndd\",\"sgcbac\",\"hejkotynqgou\"],\"location\":\"ndlik\",\"tags\":{\"bmadgak\":\"kgfg\",\"ytb\":\"qsrxybzqqed\",\"modmglougpb\":\"iqfouflmmnkz\"},\"id\":\"wtmutduq\",\"name\":\"ta\",\"type\":\"spwgcuertumkdosv\"},{\"properties\":{\"ocid\":\"bmdg\",\"computeCount\":398280406,\"storageCount\":1089342550,\"totalStorageSizeInGbs\":763703494,\"availableStorageSizeInGbs\":1359237516,\"timeCreated\":\"bexppb\",\"lifecycleDetails\":\"q\",\"maintenanceWindow\":{\"preference\":\"NoPreference\",\"months\":[{\"name\":\"October\"}],\"weeksOfMonth\":[1189352281],\"daysOfWeek\":[{\"name\":\"Wednesday\"},{\"name\":\"Wednesday\"}],\"hoursOfDay\":[1529578070,1939362977,596871405,2069230951],\"leadTimeInWeeks\":1739804762,\"patchingMode\":\"NonRolling\",\"customActionTimeoutInMins\":243879376,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":false},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":1951867342,\"estimatedNetworkSwitchesPatchingTime\":239046622,\"estimatedStorageServerPatchingTime\":1167970761,\"totalEstimatedPatchingTime\":1846063928},\"customerContacts\":[{\"email\":\"s\"},{\"email\":\"l\"},{\"email\":\"juvf\"}],\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Updating\",\"shape\":\"yxwjkcp\",\"ociUrl\":\"nwbxgjvtbvpyssz\",\"cpuCount\":1214648475,\"maxCpuCount\":308759192,\"memorySizeInGbs\":718700797,\"maxMemoryInGbs\":1493631585,\"dbNodeStorageSizeInGbs\":931696713,\"maxDbNodeStorageSizeInGbs\":2108357605,\"dataStorageSizeInTbs\":2.3996292155411103,\"maxDataStorageInTbs\":57.60858367831252,\"dbServerVersion\":\"bngui\",\"storageServerVersion\":\"wu\",\"activatedStorageCount\":1403075438,\"additionalStorageCount\":1608878856,\"displayName\":\"x\",\"lastMaintenanceRunId\":\"izuckyfihrfidfvz\",\"nextMaintenanceRunId\":\"zuhtymwisdkfthwx\",\"monthlyDbServerVersion\":\"t\",\"monthlyStorageServerVersion\":\"waopvkmijcmmxd\"},\"zones\":[\"fufsrpymzi\",\"nsez\"],\"location\":\"tbzsgfyccs\",\"tags\":{\"flnrosfqpteehzz\":\"mdwzjeiachboo\",\"swjdkirso\":\"ypyqrimzinp\",\"soifiyipjxsqw\":\"dqxhcrmnohjtckwh\",\"bznorcjxvsnby\":\"gr\"},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"},{\"properties\":{\"ocid\":\"idtqajzyu\",\"computeCount\":331087178,\"storageCount\":377543492,\"totalStorageSizeInGbs\":963090330,\"availableStorageSizeInGbs\":1185115759,\"timeCreated\":\"hbzhfepg\",\"lifecycleDetails\":\"qex\",\"maintenanceWindow\":{\"preference\":\"NoPreference\",\"months\":[{\"name\":\"September\"},{\"name\":\"November\"}],\"weeksOfMonth\":[812550328,1450066184,2010275395,1382197714],\"daysOfWeek\":[{\"name\":\"Sunday\"},{\"name\":\"Wednesday\"}],\"hoursOfDay\":[411376072,1936652093,187934940],\"leadTimeInWeeks\":269185067,\"patchingMode\":\"Rolling\",\"customActionTimeoutInMins\":865429737,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":false},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":1399700283,\"estimatedNetworkSwitchesPatchingTime\":515992017,\"estimatedStorageServerPatchingTime\":397818750,\"totalEstimatedPatchingTime\":54322845},\"customerContacts\":[{\"email\":\"ionpimexg\"},{\"email\":\"txgcpodgmaajr\"},{\"email\":\"vdjwzrlovm\"},{\"email\":\"lwhijcoejctbzaq\"}],\"provisioningState\":\"Failed\",\"lifecycleState\":\"Terminating\",\"shape\":\"bkbfkgukdkex\",\"ociUrl\":\"pofm\",\"cpuCount\":159547648,\"maxCpuCount\":1757077121,\"memorySizeInGbs\":396023335,\"maxMemoryInGbs\":584739156,\"dbNodeStorageSizeInGbs\":681879854,\"maxDbNodeStorageSizeInGbs\":263932996,\"dataStorageSizeInTbs\":5.0590045107127395,\"maxDataStorageInTbs\":80.35546922641568,\"dbServerVersion\":\"o\",\"storageServerVersion\":\"xhdzxibqeojnx\",\"activatedStorageCount\":2010157167,\"additionalStorageCount\":119552386,\"displayName\":\"dntwndeicbtw\",\"lastMaintenanceRunId\":\"zao\",\"nextMaintenanceRunId\":\"uhrhcffcyddgl\",\"monthlyDbServerVersion\":\"t\",\"monthlyStorageServerVersion\":\"qkwpyeicxmqc\"},\"zones\":[\"q\",\"hkh\",\"xuigdtopbobj\",\"ghmewuam\"],\"location\":\"hrzayvvtpgvdf\",\"tags\":{\"efgugnxk\":\"tkftutqxlngx\",\"hjybigehoqfbo\":\"xdqmidtthzrvqdra\",\"zlcuiywgqywgndrv\":\"skanyk\",\"ocpecfvmmco\":\"nhzgpphrcgyn\"},\"id\":\"fsxlzevgbmqjqa\",\"name\":\"c\",\"type\":\"pmivkwlzu\"},{\"properties\":{\"ocid\":\"fwnfnb\",\"computeCount\":1187016173,\"storageCount\":2055969856,\"totalStorageSizeInGbs\":198217735,\"availableStorageSizeInGbs\":1067067753,\"timeCreated\":\"etqgtzxdpnq\",\"lifecycleDetails\":\"qwxrjfeallnw\",\"maintenanceWindow\":{\"preference\":\"CustomPreference\",\"months\":[{\"name\":\"April\"},{\"name\":\"February\"}],\"weeksOfMonth\":[572259851],\"daysOfWeek\":[{\"name\":\"Sunday\"},{\"name\":\"Tuesday\"},{\"name\":\"Sunday\"}],\"hoursOfDay\":[611724458,431293436,903748281,1019249185],\"leadTimeInWeeks\":2024300309,\"patchingMode\":\"Rolling\",\"customActionTimeoutInMins\":804356907,\"isCustomActionTimeoutEnabled\":true,\"isMonthlyPatchingEnabled\":false},\"estimatedPatchingTime\":{\"estimatedDbServerPatchingTime\":1222004699,\"estimatedNetworkSwitchesPatchingTime\":678653750,\"estimatedStorageServerPatchingTime\":1098577091,\"totalEstimatedPatchingTime\":635672501},\"customerContacts\":[{\"email\":\"ipheoflokeyyien\"},{\"email\":\"bdlwtgrhpdjpj\"},{\"email\":\"masxazjpqyegu\"},{\"email\":\"lhbxxhejjzzvdud\"}],\"provisioningState\":\"Canceled\",\"lifecycleState\":\"Provisioning\",\"shape\":\"fhotw\",\"ociUrl\":\"ynpwlbj\",\"cpuCount\":34788734,\"maxCpuCount\":1690822953,\"memorySizeInGbs\":1625524147,\"maxMemoryInGbs\":1405360141,\"dbNodeStorageSizeInGbs\":55863349,\"maxDbNodeStorageSizeInGbs\":2035779275,\"dataStorageSizeInTbs\":77.80900806799353,\"maxDataStorageInTbs\":14.723744499152136,\"dbServerVersion\":\"pusuesn\",\"storageServerVersion\":\"dejbavo\",\"activatedStorageCount\":669466066,\"additionalStorageCount\":1432436623,\"displayName\":\"ohctbqvudwx\",\"lastMaintenanceRunId\":\"dnvowg\",\"nextMaintenanceRunId\":\"jugwdkcglhsl\",\"monthlyDbServerVersion\":\"jdyggdtji\",\"monthlyStorageServerVersion\":\"b\"},\"zones\":[\"ofqweykhmenevfye\",\"fwhybcibvy\"],\"location\":\"c\",\"tags\":{\"ectehf\":\"ynnaam\",\"eypvhezrkg\":\"qsc\",\"sle\":\"hcjrefovgmk\",\"cattpngjcrcczsq\":\"yvxyqjp\"},\"id\":\"jh\",\"name\":\"mdajv\",\"type\":\"ysou\"}],\"nextLink\":\"e\"}")
             .toObject(CloudExadataInfrastructureListResult.class);
-        Assertions.assertEquals("bacphejko", model.value().get(0).location());
-        Assertions.assertEquals("qgoulznd", model.value().get(0).tags().get("i"));
-        Assertions.assertEquals(2093374464, model.value().get(0).properties().computeCount());
-        Assertions.assertEquals(408868757, model.value().get(0).properties().storageCount());
-        Assertions.assertEquals(Preference.NO_PREFERENCE,
+        Assertions.assertEquals("ndlik", model.value().get(0).location());
+        Assertions.assertEquals("kgfg", model.value().get(0).tags().get("bmadgak"));
+        Assertions.assertEquals(1277339929, model.value().get(0).properties().computeCount());
+        Assertions.assertEquals(77118274, model.value().get(0).properties().storageCount());
+        Assertions.assertEquals(Preference.CUSTOM_PREFERENCE,
             model.value().get(0).properties().maintenanceWindow().preference());
-        Assertions.assertEquals(MonthName.AUGUST,
+        Assertions.assertEquals(MonthName.SEPTEMBER,
             model.value().get(0).properties().maintenanceWindow().months().get(0).name());
-        Assertions.assertEquals(91789189, model.value().get(0).properties().maintenanceWindow().weeksOfMonth().get(0));
-        Assertions.assertEquals(DayOfWeekName.MONDAY,
+        Assertions.assertEquals(2115498043,
+            model.value().get(0).properties().maintenanceWindow().weeksOfMonth().get(0));
+        Assertions.assertEquals(DayOfWeekName.TUESDAY,
             model.value().get(0).properties().maintenanceWindow().daysOfWeek().get(0).name());
-        Assertions.assertEquals(1600466611, model.value().get(0).properties().maintenanceWindow().hoursOfDay().get(0));
-        Assertions.assertEquals(1111956418, model.value().get(0).properties().maintenanceWindow().leadTimeInWeeks());
-        Assertions.assertEquals(PatchingMode.ROLLING,
+        Assertions.assertEquals(947497777, model.value().get(0).properties().maintenanceWindow().hoursOfDay().get(0));
+        Assertions.assertEquals(1214814852, model.value().get(0).properties().maintenanceWindow().leadTimeInWeeks());
+        Assertions.assertEquals(PatchingMode.NON_ROLLING,
             model.value().get(0).properties().maintenanceWindow().patchingMode());
-        Assertions.assertEquals(105854038,
+        Assertions.assertEquals(422670277,
             model.value().get(0).properties().maintenanceWindow().customActionTimeoutInMins());
-        Assertions.assertEquals(false,
+        Assertions.assertEquals(true,
             model.value().get(0).properties().maintenanceWindow().isCustomActionTimeoutEnabled());
-        Assertions.assertEquals(true, model.value().get(0).properties().maintenanceWindow().isMonthlyPatchingEnabled());
-        Assertions.assertEquals("ouskcqvkocrc", model.value().get(0).properties().customerContacts().get(0).email());
-        Assertions.assertEquals("eebvmgxsab", model.value().get(0).properties().shape());
-        Assertions.assertEquals("dhugjzzdatqxhocd", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("iawxklry", model.value().get(0).zones().get(0));
-    }
-
-    @org.junit.jupiter.api.Test
-    public void testSerialize() throws Exception {
-        CloudExadataInfrastructureListResult model = new CloudExadataInfrastructureListResult().withValue(Arrays.asList(
-            new CloudExadataInfrastructureInner().withLocation("bacphejko")
-                .withTags(mapOf("i", "qgoulznd", "dgak", "wyqkgfgibm", "ytb", "qsrxybzqqed"))
-                .withProperties(new CloudExadataInfrastructureProperties().withComputeCount(2093374464)
-                    .withStorageCount(408868757)
-                    .withMaintenanceWindow(new MaintenanceWindow().withPreference(Preference.NO_PREFERENCE)
-                        .withMonths(Arrays.asList(new Month().withName(MonthName.AUGUST),
-                            new Month().withName(MonthName.JANUARY), new Month().withName(MonthName.JUNE)))
-                        .withWeeksOfMonth(Arrays.asList(91789189))
-                        .withDaysOfWeek(Arrays.asList(new DayOfWeek().withName(DayOfWeekName.MONDAY),
-                            new DayOfWeek().withName(DayOfWeekName.WEDNESDAY),
-                            new DayOfWeek().withName(DayOfWeekName.MONDAY),
-                            new DayOfWeek().withName(DayOfWeekName.SATURDAY)))
-                        .withHoursOfDay(Arrays.asList(1600466611, 951964300, 186594005))
-                        .withLeadTimeInWeeks(1111956418)
-                        .withPatchingMode(PatchingMode.ROLLING)
-                        .withCustomActionTimeoutInMins(105854038)
-                        .withIsCustomActionTimeoutEnabled(false)
-                        .withIsMonthlyPatchingEnabled(true))
-                    .withCustomerContacts(Arrays.asList(new CustomerContact().withEmail("ouskcqvkocrc"),
-                        new CustomerContact().withEmail("dkwt"), new CustomerContact().withEmail("hxbnjbiksqrg"),
-                        new CustomerContact().withEmail("ssainqpjwnzll")))
-                    .withShape("eebvmgxsab")
-                    .withDisplayName("dhugjzzdatqxhocd"))
-                .withZones(Arrays.asList("iawxklry", "lwckbasyypnddhs")),
-            new CloudExadataInfrastructureInner().withLocation("ehzzvypyqrim")
-                .withTags(mapOf("dqxhcrmnohjtckwh", "pvswjdkirso", "gr", "soifiyipjxsqw", "qabnmoc", "bznorcjxvsnby"))
-                .withProperties(new CloudExadataInfrastructureProperties().withComputeCount(1838728472)
-                    .withStorageCount(1475833169)
-                    .withMaintenanceWindow(new MaintenanceWindow().withPreference(Preference.CUSTOM_PREFERENCE)
-                        .withMonths(Arrays.asList(new Month().withName(MonthName.MAY)))
-                        .withWeeksOfMonth(Arrays.asList(2143599393, 746148107))
-                        .withDaysOfWeek(Arrays.asList(new DayOfWeek().withName(DayOfWeekName.THURSDAY),
-                            new DayOfWeek().withName(DayOfWeekName.MONDAY),
-                            new DayOfWeek().withName(DayOfWeekName.SATURDAY),
-                            new DayOfWeek().withName(DayOfWeekName.SUNDAY)))
-                        .withHoursOfDay(Arrays.asList(852656000, 161079646, 2011636323, 243879376))
-                        .withLeadTimeInWeeks(2040036621)
-                        .withPatchingMode(PatchingMode.ROLLING)
-                        .withCustomActionTimeoutInMins(2130650587)
-                        .withIsCustomActionTimeoutEnabled(true)
-                        .withIsMonthlyPatchingEnabled(false))
-                    .withCustomerContacts(Arrays.asList(new CustomerContact().withEmail("vfqawrlyxwjkcpr"),
-                        new CustomerContact().withEmail("nwbxgjvtbvpyssz"), new CustomerContact().withEmail("nruj")))
-                    .withShape("uouq")
-                    .withDisplayName("zwdzuh"))
-                .withZones(Arrays.asList("gfycc", "newmdwzjeiachbo", "sflnrosfqp")),
-            new CloudExadataInfrastructureInner().withLocation("ixuigdtopbobj")
-                .withTags(mapOf("w", "m"))
-                .withProperties(
-                    new CloudExadataInfrastructureProperties().withComputeCount(144447336)
-                        .withStorageCount(1232172587)
-                        .withMaintenanceWindow(new MaintenanceWindow().withPreference(Preference.NO_PREFERENCE)
-                            .withMonths(Arrays.asList(new Month().withName(MonthName.JANUARY),
-                                new Month().withName(MonthName.MAY), new Month().withName(MonthName.FEBRUARY),
-                                new Month().withName(MonthName.JUNE)))
-                            .withWeeksOfMonth(Arrays.asList(1663181785, 539678864))
-                            .withDaysOfWeek(Arrays.asList(new DayOfWeek().withName(DayOfWeekName.WEDNESDAY),
-                                new DayOfWeek().withName(DayOfWeekName.WEDNESDAY),
-                                new DayOfWeek().withName(DayOfWeekName.WEDNESDAY)))
-                            .withHoursOfDay(Arrays.asList(177005491, 1273206758, 1703884652))
-                            .withLeadTimeInWeeks(1291201271)
-                            .withPatchingMode(PatchingMode.NON_ROLLING)
-                            .withCustomActionTimeoutInMins(547031215)
-                            .withIsCustomActionTimeoutEnabled(false)
-                            .withIsMonthlyPatchingEnabled(false))
-                        .withCustomerContacts(Arrays.asList(new CustomerContact().withEmail("mexgstxgcp"),
-                            new CustomerContact().withEmail("dg"), new CustomerContact().withEmail("aajrm"),
-                            new CustomerContact().withEmail("djwzrlov")))
-                        .withShape("ijcoejctb")
-                        .withDisplayName("ojnxqbzvdd"))
-                .withZones(Arrays.asList("lmjthjq", "wpyeicxmqciwqvh")),
-            new CloudExadataInfrastructureInner().withLocation("jpqyegu")
-                .withTags(mapOf("xhejjzzvdud", "b"))
-                .withProperties(new CloudExadataInfrastructureProperties().withComputeCount(1542158785)
-                    .withStorageCount(719588208)
-                    .withMaintenanceWindow(new MaintenanceWindow().withPreference(Preference.CUSTOM_PREFERENCE)
-                        .withMonths(Arrays.asList(new Month().withName(MonthName.MAY),
-                            new Month().withName(MonthName.MARCH), new Month().withName(MonthName.NOVEMBER)))
-                        .withWeeksOfMonth(Arrays.asList(974943815, 339779256, 1420716073))
-                        .withDaysOfWeek(Arrays.asList(new DayOfWeek().withName(DayOfWeekName.SATURDAY),
-                            new DayOfWeek().withName(DayOfWeekName.MONDAY),
-                            new DayOfWeek().withName(DayOfWeekName.THURSDAY),
-                            new DayOfWeek().withName(DayOfWeekName.THURSDAY)))
-                        .withHoursOfDay(Arrays.asList(616844240, 1787263849, 1328534140))
-                        .withLeadTimeInWeeks(23718852)
-                        .withPatchingMode(PatchingMode.NON_ROLLING)
-                        .withCustomActionTimeoutInMins(1043685699)
-                        .withIsCustomActionTimeoutEnabled(true)
-                        .withIsMonthlyPatchingEnabled(true))
-                    .withCustomerContacts(Arrays.asList(new CustomerContact().withEmail("pec"),
-                        new CustomerContact().withEmail("vmmcoofs"), new CustomerContact().withEmail("lzevgbmqjqab"),
-                        new CustomerContact().withEmail("y")))
-                    .withShape("w")
-                    .withDisplayName("llnwsubi"))
-                .withZones(Arrays.asList("nj", "dlwtgrhpdj", "jumasx"))));
-        model = BinaryData.fromObject(model).toObject(CloudExadataInfrastructureListResult.class);
-        Assertions.assertEquals("bacphejko", model.value().get(0).location());
-        Assertions.assertEquals("qgoulznd", model.value().get(0).tags().get("i"));
-        Assertions.assertEquals(2093374464, model.value().get(0).properties().computeCount());
-        Assertions.assertEquals(408868757, model.value().get(0).properties().storageCount());
-        Assertions.assertEquals(Preference.NO_PREFERENCE,
-            model.value().get(0).properties().maintenanceWindow().preference());
-        Assertions.assertEquals(MonthName.AUGUST,
-            model.value().get(0).properties().maintenanceWindow().months().get(0).name());
-        Assertions.assertEquals(91789189, model.value().get(0).properties().maintenanceWindow().weeksOfMonth().get(0));
-        Assertions.assertEquals(DayOfWeekName.MONDAY,
-            model.value().get(0).properties().maintenanceWindow().daysOfWeek().get(0).name());
-        Assertions.assertEquals(1600466611, model.value().get(0).properties().maintenanceWindow().hoursOfDay().get(0));
-        Assertions.assertEquals(1111956418, model.value().get(0).properties().maintenanceWindow().leadTimeInWeeks());
-        Assertions.assertEquals(PatchingMode.ROLLING,
-            model.value().get(0).properties().maintenanceWindow().patchingMode());
-        Assertions.assertEquals(105854038,
-            model.value().get(0).properties().maintenanceWindow().customActionTimeoutInMins());
         Assertions.assertEquals(false,
-            model.value().get(0).properties().maintenanceWindow().isCustomActionTimeoutEnabled());
-        Assertions.assertEquals(true, model.value().get(0).properties().maintenanceWindow().isMonthlyPatchingEnabled());
-        Assertions.assertEquals("ouskcqvkocrc", model.value().get(0).properties().customerContacts().get(0).email());
-        Assertions.assertEquals("eebvmgxsab", model.value().get(0).properties().shape());
-        Assertions.assertEquals("dhugjzzdatqxhocd", model.value().get(0).properties().displayName());
-        Assertions.assertEquals("iawxklry", model.value().get(0).zones().get(0));
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+            model.value().get(0).properties().maintenanceWindow().isMonthlyPatchingEnabled());
+        Assertions.assertEquals("ksqrglssai", model.value().get(0).properties().customerContacts().get(0).email());
+        Assertions.assertEquals("vmgxsab", model.value().get(0).properties().shape());
+        Assertions.assertEquals("qxhocdgeablgphut", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("ypl", model.value().get(0).zones().get(0));
+        Assertions.assertEquals("e", model.nextLink());
     }
 }

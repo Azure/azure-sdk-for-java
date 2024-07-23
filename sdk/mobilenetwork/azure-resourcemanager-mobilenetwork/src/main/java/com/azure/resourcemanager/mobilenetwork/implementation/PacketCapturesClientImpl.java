@@ -313,8 +313,10 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PacketCaptureInner>, PacketCaptureInner> beginCreateOrUpdate(String resourceGroupName,
         String packetCoreControlPlaneName, String packetCaptureName, PacketCaptureInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCaptureName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, parameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -333,7 +335,8 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
     private Mono<PacketCaptureInner> createOrUpdateAsync(String resourceGroupName, String packetCoreControlPlaneName,
         String packetCaptureName, PacketCaptureInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, packetCoreControlPlaneName, packetCaptureName, parameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

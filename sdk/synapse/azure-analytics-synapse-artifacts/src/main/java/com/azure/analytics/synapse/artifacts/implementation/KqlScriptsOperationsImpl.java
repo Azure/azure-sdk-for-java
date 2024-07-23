@@ -28,22 +28,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KqlScriptsOperations. */
+/**
+ * An instance of this class provides access to all the operations defined in KqlScriptsOperations.
+ */
 public final class KqlScriptsOperationsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KqlScriptsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of KqlScriptsOperationsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KqlScriptsOperationsImpl(ArtifactsClientImpl client) {
-        this.service =
-                RestProxy.create(KqlScriptsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(KqlScriptsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,51 +61,39 @@ public final class KqlScriptsOperationsImpl {
     @ServiceInterface(name = "ArtifactsClientKqlSc")
     public interface KqlScriptsService {
         @Put("/kqlScripts/{kqlScriptName}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<KqlScriptResource>> createOrUpdate(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("kqlScriptName") String kqlScriptName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") KqlScriptResource kqlScript,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<KqlScriptResource>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @PathParam("kqlScriptName") String kqlScriptName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") KqlScriptResource kqlScript, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/kqlScripts/{kqlScriptName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<KqlScriptResource>> getByName(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("kqlScriptName") String kqlScriptName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<KqlScriptResource>> getByName(@HostParam("endpoint") String endpoint,
+            @PathParam("kqlScriptName") String kqlScriptName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/kqlScripts/{kqlScriptName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<Void>> deleteByName(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("kqlScriptName") String kqlScriptName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> deleteByName(@HostParam("endpoint") String endpoint,
+            @PathParam("kqlScriptName") String kqlScriptName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/kqlScripts/{kqlScriptName}/rename")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<Void>> rename(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("kqlScriptName") String kqlScriptName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") ArtifactRenameRequest renameRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> rename(@HostParam("endpoint") String endpoint,
+            @PathParam("kqlScriptName") String kqlScriptName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ArtifactRenameRequest renameRequest, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Creates or updates a KQL Script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,19 +102,17 @@ public final class KqlScriptsOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KqlScriptResource>> createOrUpdateWithResponseAsync(
-            String kqlScriptName, KqlScriptResource kqlScript) {
+    public Mono<Response<KqlScriptResource>> createOrUpdateWithResponseAsync(String kqlScriptName,
+        KqlScriptResource kqlScript) {
         final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getEndpoint(), kqlScriptName, apiVersion, kqlScript, accept, context));
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), kqlScriptName,
+            apiVersion, kqlScript, accept, context));
     }
 
     /**
      * Creates or updates a KQL Script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @param context The context to associate with this operation.
@@ -130,8 +122,8 @@ public final class KqlScriptsOperationsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KqlScriptResource>> createOrUpdateWithResponseAsync(
-            String kqlScriptName, KqlScriptResource kqlScript, Context context) {
+    public Mono<Response<KqlScriptResource>> createOrUpdateWithResponseAsync(String kqlScriptName,
+        KqlScriptResource kqlScript, Context context) {
         final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return service.createOrUpdate(this.client.getEndpoint(), kqlScriptName, apiVersion, kqlScript, accept, context);
@@ -139,7 +131,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Creates or updates a KQL Script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,12 +142,12 @@ public final class KqlScriptsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KqlScriptResource> createOrUpdateAsync(String kqlScriptName, KqlScriptResource kqlScript) {
         return createOrUpdateWithResponseAsync(kqlScriptName, kqlScript)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a KQL Script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @param context The context to associate with this operation.
@@ -165,15 +157,15 @@ public final class KqlScriptsOperationsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KqlScriptResource> createOrUpdateAsync(
-            String kqlScriptName, KqlScriptResource kqlScript, Context context) {
+    public Mono<KqlScriptResource> createOrUpdateAsync(String kqlScriptName, KqlScriptResource kqlScript,
+        Context context) {
         return createOrUpdateWithResponseAsync(kqlScriptName, kqlScript, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a KQL Script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @param context The context to associate with this operation.
@@ -183,14 +175,14 @@ public final class KqlScriptsOperationsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KqlScriptResource> createOrUpdateWithResponse(
-            String kqlScriptName, KqlScriptResource kqlScript, Context context) {
+    public Response<KqlScriptResource> createOrUpdateWithResponse(String kqlScriptName, KqlScriptResource kqlScript,
+        Context context) {
         return createOrUpdateWithResponseAsync(kqlScriptName, kqlScript, context).block();
     }
 
     /**
      * Creates or updates a KQL Script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param kqlScript KQL script.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,7 +197,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Get KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -217,12 +209,12 @@ public final class KqlScriptsOperationsImpl {
         final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getByName(this.client.getEndpoint(), kqlScriptName, apiVersion, accept, context));
+            context -> service.getByName(this.client.getEndpoint(), kqlScriptName, apiVersion, accept, context));
     }
 
     /**
      * Get KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -239,7 +231,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Get KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -253,7 +245,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Get KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,7 +260,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Get KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,7 +275,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Get KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -297,7 +289,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Delete KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -309,12 +301,12 @@ public final class KqlScriptsOperationsImpl {
         final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteByName(this.client.getEndpoint(), kqlScriptName, apiVersion, accept, context));
+            context -> service.deleteByName(this.client.getEndpoint(), kqlScriptName, apiVersion, accept, context));
     }
 
     /**
      * Delete KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,7 +323,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Delete KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -345,7 +337,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Delete KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -360,7 +352,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Delete KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -375,7 +367,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Delete KQL script by name.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -388,7 +380,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Rename KQL script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,15 +392,13 @@ public final class KqlScriptsOperationsImpl {
     public Mono<Response<Void>> renameWithResponseAsync(String kqlScriptName, ArtifactRenameRequest renameRequest) {
         final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.rename(
-                                this.client.getEndpoint(), kqlScriptName, apiVersion, renameRequest, accept, context));
+        return FluxUtil.withContext(context -> service.rename(this.client.getEndpoint(), kqlScriptName, apiVersion,
+            renameRequest, accept, context));
     }
 
     /**
      * Rename KQL script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @param context The context to associate with this operation.
@@ -418,8 +408,8 @@ public final class KqlScriptsOperationsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> renameWithResponseAsync(
-            String kqlScriptName, ArtifactRenameRequest renameRequest, Context context) {
+    public Mono<Response<Void>> renameWithResponseAsync(String kqlScriptName, ArtifactRenameRequest renameRequest,
+        Context context) {
         final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return service.rename(this.client.getEndpoint(), kqlScriptName, apiVersion, renameRequest, accept, context);
@@ -427,7 +417,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Rename KQL script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -442,7 +432,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Rename KQL script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @param context The context to associate with this operation.
@@ -458,7 +448,7 @@ public final class KqlScriptsOperationsImpl {
 
     /**
      * Rename KQL script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @param context The context to associate with this operation.
@@ -468,14 +458,14 @@ public final class KqlScriptsOperationsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameWithResponse(
-            String kqlScriptName, ArtifactRenameRequest renameRequest, Context context) {
+    public Response<Void> renameWithResponse(String kqlScriptName, ArtifactRenameRequest renameRequest,
+        Context context) {
         return renameWithResponseAsync(kqlScriptName, renameRequest, context).block();
     }
 
     /**
      * Rename KQL script.
-     *
+     * 
      * @param kqlScriptName KQL script name.
      * @param renameRequest Rename request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

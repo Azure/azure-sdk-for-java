@@ -28,7 +28,7 @@
 
 ## SubscriptionUsages
 
-- [ListByLocation](#subscriptionusages_listbylocation)
+- [Usages](#subscriptionusages_usages)
 ### ImageVersions_ListByImage
 
 ```java
@@ -36,6 +36,11 @@
  * Samples for ImageVersions ListByImage.
  */
 public final class ImageVersionsListByImageSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * ImageVersions_ListByImage.json
+     */
     /**
      * Sample code: ImageVersions_ListByImage.
      * 
@@ -55,6 +60,11 @@ public final class ImageVersionsListByImageSamples {
  * Samples for Operations List.
  */
 public final class OperationsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * ListOperations.json
+     */
     /**
      * Sample code: Operations_List.
      * 
@@ -84,6 +94,11 @@ import java.util.Arrays;
  * Samples for Pools CreateOrUpdate.
  */
 public final class PoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * CreateOrUpdatePool.json
+     */
     /**
      * Sample code: Pools_CreateOrUpdate.
      * 
@@ -117,6 +132,11 @@ public final class PoolsCreateOrUpdateSamples {
  * Samples for Pools Delete.
  */
 public final class PoolsDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * DeletePool.json
+     */
     /**
      * Sample code: Pools_Delete.
      * 
@@ -135,6 +155,11 @@ public final class PoolsDeleteSamples {
  * Samples for Pools GetByResourceGroup.
  */
 public final class PoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/GetPool.
+     * json
+     */
     /**
      * Sample code: Pools_Get.
      * 
@@ -153,6 +178,11 @@ public final class PoolsGetByResourceGroupSamples {
  * Samples for Pools List.
  */
 public final class PoolsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * ListPoolsBySubscription.json
+     */
     /**
      * Sample code: Pools_ListBySubscription.
      * 
@@ -172,6 +202,11 @@ public final class PoolsListSamples {
  * Samples for Pools ListByResourceGroup.
  */
 public final class PoolsListByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * ListPoolsBySubscriptionAndResourceGroup.json
+     */
     /**
      * Sample code: Pools_ListByResourceGroup.
      * 
@@ -193,6 +228,11 @@ import com.azure.resourcemanager.devopsinfrastructure.models.Pool;
  * Samples for Pools Update.
  */
 public final class PoolsUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * UpdatePool.json
+     */
     /**
      * Sample code: Pools_Update.
      * 
@@ -213,6 +253,11 @@ public final class PoolsUpdateSamples {
  * Samples for ResourceDetails ListByPool.
  */
 public final class ResourceDetailsListByPoolSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * ResourceDetails_ListByPool.json
+     */
     /**
      * Sample code: ResourceDetails_ListByPool.
      * 
@@ -232,6 +277,11 @@ public final class ResourceDetailsListByPoolSamples {
  * Samples for Sku ListByLocation.
  */
 public final class SkuListByLocationSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * Sku_ListByLocation.json
+     */
     /**
      * Sample code: Sku_ListByLocation.
      * 
@@ -244,21 +294,26 @@ public final class SkuListByLocationSamples {
 }
 ```
 
-### SubscriptionUsages_ListByLocation
+### SubscriptionUsages_Usages
 
 ```java
 /**
- * Samples for SubscriptionUsages ListByLocation.
+ * Samples for SubscriptionUsages Usages.
  */
-public final class SubscriptionUsagesListByLocationSamples {
+public final class SubscriptionUsagesUsagesSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure.Management/examples/2024-04-04-preview/
+     * SubscriptionUsages_Usages.json
+     */
     /**
-     * Sample code: SubscriptionUsages_ListByLocation.
+     * Sample code: SubscriptionUsages_Usages.
      * 
      * @param manager Entry point to DevOpsInfrastructureManager.
      */
-    public static void subscriptionUsagesListByLocation(
-        com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager manager) {
-        manager.subscriptionUsages().listByLocation("eastus", com.azure.core.util.Context.NONE);
+    public static void
+        subscriptionUsagesUsages(com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager manager) {
+        manager.subscriptionUsages().usages("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```

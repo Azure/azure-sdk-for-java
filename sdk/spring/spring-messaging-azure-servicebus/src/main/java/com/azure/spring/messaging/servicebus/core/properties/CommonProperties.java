@@ -13,6 +13,12 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
  */
 public class CommonProperties extends AzureAmqpSdkProperties implements ServiceBusClientCommonProperties {
 
+    /**
+     * Create an instance of {@link CommonProperties}.
+     */
+    public CommonProperties() {
+    }
+
     private String domainName;
 
     /**

@@ -29,8 +29,8 @@ public final class DiagnosticsPackagesImpl implements DiagnosticsPackages {
 
     public DiagnosticsPackage createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
         String diagnosticsPackageName) {
-        DiagnosticsPackageInner inner = this.serviceClient().createOrUpdate(resourceGroupName,
-            packetCoreControlPlaneName, diagnosticsPackageName);
+        DiagnosticsPackageInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, diagnosticsPackageName);
         if (inner != null) {
             return new DiagnosticsPackageImpl(inner, this.manager());
         } else {
@@ -40,8 +40,8 @@ public final class DiagnosticsPackagesImpl implements DiagnosticsPackages {
 
     public DiagnosticsPackage createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
         String diagnosticsPackageName, Context context) {
-        DiagnosticsPackageInner inner = this.serviceClient().createOrUpdate(resourceGroupName,
-            packetCoreControlPlaneName, diagnosticsPackageName, context);
+        DiagnosticsPackageInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, packetCoreControlPlaneName, diagnosticsPackageName, context);
         if (inner != null) {
             return new DiagnosticsPackageImpl(inner, this.manager());
         } else {
@@ -51,8 +51,8 @@ public final class DiagnosticsPackagesImpl implements DiagnosticsPackages {
 
     public Response<DiagnosticsPackage> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
         String diagnosticsPackageName, Context context) {
-        Response<DiagnosticsPackageInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            packetCoreControlPlaneName, diagnosticsPackageName, context);
+        Response<DiagnosticsPackageInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, packetCoreControlPlaneName, diagnosticsPackageName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiagnosticsPackageImpl(inner.getValue(), this.manager()));

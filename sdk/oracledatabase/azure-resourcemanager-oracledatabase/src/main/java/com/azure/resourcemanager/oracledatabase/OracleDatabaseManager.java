@@ -40,6 +40,7 @@ import com.azure.resourcemanager.oracledatabase.implementation.GiVersionsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.OperationsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.OracleDatabaseResourceManagerBuilder;
 import com.azure.resourcemanager.oracledatabase.implementation.OracleSubscriptionsImpl;
+import com.azure.resourcemanager.oracledatabase.implementation.SystemVersionsImpl;
 import com.azure.resourcemanager.oracledatabase.implementation.VirtualNetworkAddressesImpl;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseBackups;
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseCharacterSets;
@@ -56,6 +57,7 @@ import com.azure.resourcemanager.oracledatabase.models.DnsPrivateZones;
 import com.azure.resourcemanager.oracledatabase.models.GiVersions;
 import com.azure.resourcemanager.oracledatabase.models.Operations;
 import com.azure.resourcemanager.oracledatabase.models.OracleSubscriptions;
+import com.azure.resourcemanager.oracledatabase.models.SystemVersions;
 import com.azure.resourcemanager.oracledatabase.models.VirtualNetworkAddresses;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -89,6 +91,8 @@ public final class OracleDatabaseManager {
     private DnsPrivateZones dnsPrivateZones;
 
     private GiVersions giVersions;
+
+    private SystemVersions systemVersions;
 
     private OracleSubscriptions oracleSubscriptions;
 
@@ -264,7 +268,7 @@ public final class OracleDatabaseManager {
                 .append("-")
                 .append("com.azure.resourcemanager.oracledatabase")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -444,6 +448,18 @@ public final class OracleDatabaseManager {
             this.giVersions = new GiVersionsImpl(clientObject.getGiVersions(), this);
         }
         return giVersions;
+    }
+
+    /**
+     * Gets the resource collection API of SystemVersions.
+     * 
+     * @return Resource collection API of SystemVersions.
+     */
+    public SystemVersions systemVersions() {
+        if (this.systemVersions == null) {
+            this.systemVersions = new SystemVersionsImpl(clientObject.getSystemVersions(), this);
+        }
+        return systemVersions;
     }
 
     /**

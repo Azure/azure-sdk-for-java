@@ -5,23 +5,30 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** RerunTrigger resource type. */
+/**
+ * RerunTrigger resource type.
+ */
 @Fluent
 public final class RerunTriggerResource extends SubResource {
     /*
      * Properties of the rerun trigger.
      */
-    @JsonProperty(value = "properties", required = true)
     private RerunTumblingWindowTrigger properties;
 
-    /** Creates an instance of RerunTriggerResource class. */
-    public RerunTriggerResource() {}
+    /**
+     * Creates an instance of RerunTriggerResource class.
+     */
+    public RerunTriggerResource() {
+    }
 
     /**
      * Get the properties property: Properties of the rerun trigger.
-     *
+     * 
      * @return the properties value.
      */
     public RerunTumblingWindowTrigger getProperties() {
@@ -30,12 +37,57 @@ public final class RerunTriggerResource extends SubResource {
 
     /**
      * Set the properties property: Properties of the rerun trigger.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RerunTriggerResource object itself.
      */
     public RerunTriggerResource setProperties(RerunTumblingWindowTrigger properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RerunTriggerResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RerunTriggerResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RerunTriggerResource.
+     */
+    public static RerunTriggerResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RerunTriggerResource deserializedRerunTriggerResource = new RerunTriggerResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRerunTriggerResource.setId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedRerunTriggerResource.setName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedRerunTriggerResource.setType(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRerunTriggerResource.setEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRerunTriggerResource.properties = RerunTumblingWindowTrigger.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRerunTriggerResource;
+        });
     }
 }

@@ -5,44 +5,47 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The settings that will be leveraged for AmazonRdsForOracle source partitioning. */
+/**
+ * The settings that will be leveraged for AmazonRdsForOracle source partitioning.
+ */
 @Fluent
-public final class AmazonRdsForOraclePartitionSettings {
+public final class AmazonRdsForOraclePartitionSettings
+    implements JsonSerializable<AmazonRdsForOraclePartitionSettings> {
     /*
-     * Names of the physical partitions of AmazonRdsForOracle table.
+     * Names of the physical partitions of AmazonRdsForOracle table. 
      */
-    @JsonProperty(value = "partitionNames")
     private Object partitionNames;
 
     /*
-     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or
-     * Expression with resultType string).
+     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionUpperBound")
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
 
-    /** Creates an instance of AmazonRdsForOraclePartitionSettings class. */
-    public AmazonRdsForOraclePartitionSettings() {}
+    /**
+     * Creates an instance of AmazonRdsForOraclePartitionSettings class.
+     */
+    public AmazonRdsForOraclePartitionSettings() {
+    }
 
     /**
      * Get the partitionNames property: Names of the physical partitions of AmazonRdsForOracle table.
-     *
+     * 
      * @return the partitionNames value.
      */
     public Object getPartitionNames() {
@@ -51,7 +54,7 @@ public final class AmazonRdsForOraclePartitionSettings {
 
     /**
      * Set the partitionNames property: Names of the physical partitions of AmazonRdsForOracle table.
-     *
+     * 
      * @param partitionNames the partitionNames value to set.
      * @return the AmazonRdsForOraclePartitionSettings object itself.
      */
@@ -63,7 +66,7 @@ public final class AmazonRdsForOraclePartitionSettings {
     /**
      * Get the partitionColumnName property: The name of the column in integer type that will be used for proceeding
      * range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionColumnName value.
      */
     public Object getPartitionColumnName() {
@@ -73,7 +76,7 @@ public final class AmazonRdsForOraclePartitionSettings {
     /**
      * Set the partitionColumnName property: The name of the column in integer type that will be used for proceeding
      * range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the AmazonRdsForOraclePartitionSettings object itself.
      */
@@ -85,7 +88,7 @@ public final class AmazonRdsForOraclePartitionSettings {
     /**
      * Get the partitionUpperBound property: The maximum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionUpperBound value.
      */
     public Object getPartitionUpperBound() {
@@ -95,7 +98,7 @@ public final class AmazonRdsForOraclePartitionSettings {
     /**
      * Set the partitionUpperBound property: The maximum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionUpperBound the partitionUpperBound value to set.
      * @return the AmazonRdsForOraclePartitionSettings object itself.
      */
@@ -107,7 +110,7 @@ public final class AmazonRdsForOraclePartitionSettings {
     /**
      * Get the partitionLowerBound property: The minimum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionLowerBound value.
      */
     public Object getPartitionLowerBound() {
@@ -117,12 +120,58 @@ public final class AmazonRdsForOraclePartitionSettings {
     /**
      * Set the partitionLowerBound property: The minimum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionLowerBound the partitionLowerBound value to set.
      * @return the AmazonRdsForOraclePartitionSettings object itself.
      */
     public AmazonRdsForOraclePartitionSettings setPartitionLowerBound(Object partitionLowerBound) {
         this.partitionLowerBound = partitionLowerBound;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("partitionNames", this.partitionNames);
+        jsonWriter.writeUntypedField("partitionColumnName", this.partitionColumnName);
+        jsonWriter.writeUntypedField("partitionUpperBound", this.partitionUpperBound);
+        jsonWriter.writeUntypedField("partitionLowerBound", this.partitionLowerBound);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRdsForOraclePartitionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRdsForOraclePartitionSettings if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonRdsForOraclePartitionSettings.
+     */
+    public static AmazonRdsForOraclePartitionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRdsForOraclePartitionSettings deserializedAmazonRdsForOraclePartitionSettings
+                = new AmazonRdsForOraclePartitionSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partitionNames".equals(fieldName)) {
+                    deserializedAmazonRdsForOraclePartitionSettings.partitionNames = reader.readUntyped();
+                } else if ("partitionColumnName".equals(fieldName)) {
+                    deserializedAmazonRdsForOraclePartitionSettings.partitionColumnName = reader.readUntyped();
+                } else if ("partitionUpperBound".equals(fieldName)) {
+                    deserializedAmazonRdsForOraclePartitionSettings.partitionUpperBound = reader.readUntyped();
+                } else if ("partitionLowerBound".equals(fieldName)) {
+                    deserializedAmazonRdsForOraclePartitionSettings.partitionLowerBound = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmazonRdsForOraclePartitionSettings;
+        });
     }
 }

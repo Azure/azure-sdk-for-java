@@ -31,7 +31,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: recoveryservicesbackup
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-recoveryservicesbackup
         groupId: com.azure.resourcemanager

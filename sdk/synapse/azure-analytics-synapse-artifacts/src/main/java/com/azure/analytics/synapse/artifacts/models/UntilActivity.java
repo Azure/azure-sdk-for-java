@@ -5,49 +5,60 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This activity executes inner activities until the specified boolean expression results to true or timeout is reached,
  * whichever is earlier.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Until")
-@JsonFlatten
 @Fluent
 public class UntilActivity extends ControlActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "Until";
+
+    /*
      * An expression that would evaluate to Boolean. The loop will continue until this expression evaluates to true
      */
-    @JsonProperty(value = "typeProperties.expression", required = true)
     private Expression expression;
 
     /*
-     * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of
-     * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with resultType string),
-     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "typeProperties.timeout")
     private Object timeout;
 
     /*
      * List of activities to execute.
      */
-    @JsonProperty(value = "typeProperties.activities", required = true)
     private List<Activity> activities;
 
-    /** Creates an instance of UntilActivity class. */
-    public UntilActivity() {}
+    /**
+     * Creates an instance of UntilActivity class.
+     */
+    public UntilActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the expression property: An expression that would evaluate to Boolean. The loop will continue until this
      * expression evaluates to true.
-     *
+     * 
      * @return the expression value.
      */
     public Expression getExpression() {
@@ -57,7 +68,7 @@ public class UntilActivity extends ControlActivity {
     /**
      * Set the expression property: An expression that would evaluate to Boolean. The loop will continue until this
      * expression evaluates to true.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the UntilActivity object itself.
      */
@@ -71,7 +82,7 @@ public class UntilActivity extends ControlActivity {
      * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the timeout value.
      */
     public Object getTimeout() {
@@ -83,7 +94,7 @@ public class UntilActivity extends ControlActivity {
      * the value of TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType
      * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the UntilActivity object itself.
      */
@@ -94,7 +105,7 @@ public class UntilActivity extends ControlActivity {
 
     /**
      * Get the activities property: List of activities to execute.
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> getActivities() {
@@ -103,7 +114,7 @@ public class UntilActivity extends ControlActivity {
 
     /**
      * Set the activities property: List of activities to execute.
-     *
+     * 
      * @param activities the activities value to set.
      * @return the UntilActivity object itself.
      */
@@ -112,45 +123,152 @@ public class UntilActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UntilActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            getOnInactiveMarkAs() == null ? null : getOnInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", getDependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", getUserProperties(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (expression != null || timeout != null || activities != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("expression", this.expression);
+            jsonWriter.writeUntypedField("timeout", this.timeout);
+            jsonWriter.writeArrayField("activities", this.activities, (writer, element) -> writer.writeJson(element));
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UntilActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UntilActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UntilActivity.
+     */
+    public static UntilActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UntilActivity deserializedUntilActivity = new UntilActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUntilActivity.setName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedUntilActivity.setDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedUntilActivity.setState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedUntilActivity
+                        .setOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedUntilActivity.setDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedUntilActivity.setUserProperties(userProperties);
+                } else if ("type".equals(fieldName)) {
+                    deserializedUntilActivity.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("expression".equals(fieldName)) {
+                            deserializedUntilActivity.expression = Expression.fromJson(reader);
+                        } else if ("timeout".equals(fieldName)) {
+                            deserializedUntilActivity.timeout = reader.readUntyped();
+                        } else if ("activities".equals(fieldName)) {
+                            List<Activity> activities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                            deserializedUntilActivity.activities = activities;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedUntilActivity.setAdditionalProperties(additionalProperties);
+
+            return deserializedUntilActivity;
+        });
     }
 }

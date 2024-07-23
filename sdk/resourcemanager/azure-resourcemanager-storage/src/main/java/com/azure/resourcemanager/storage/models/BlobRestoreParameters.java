@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Get the timeToRestore property: Restore blob to the specified time.
-     *
+     * 
      * @return the timeToRestore value.
      */
     public OffsetDateTime timeToRestore() {
@@ -45,7 +44,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Set the timeToRestore property: Restore blob to the specified time.
-     *
+     * 
      * @param timeToRestore the timeToRestore value to set.
      * @return the BlobRestoreParameters object itself.
      */
@@ -56,7 +55,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Get the blobRanges property: Blob ranges to restore.
-     *
+     * 
      * @return the blobRanges value.
      */
     public List<BlobRestoreRange> blobRanges() {
@@ -65,7 +64,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Set the blobRanges property: Blob ranges to restore.
-     *
+     * 
      * @param blobRanges the blobRanges value to set.
      * @return the BlobRestoreParameters object itself.
      */
@@ -76,7 +75,7 @@ public final class BlobRestoreParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

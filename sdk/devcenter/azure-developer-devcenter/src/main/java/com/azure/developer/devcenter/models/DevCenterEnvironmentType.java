@@ -21,7 +21,7 @@ public final class DevCenterEnvironmentType implements JsonSerializable<DevCente
      * Name of the environment type.
      */
     @Generated
-    private final String name;
+    private String name;
 
     /*
      * Id of a subscription or management group that the environment type will be
@@ -36,20 +36,6 @@ public final class DevCenterEnvironmentType implements JsonSerializable<DevCente
      */
     @Generated
     private final EnvironmentTypeStatus status;
-
-    /**
-     * Creates an instance of DevCenterEnvironmentType class.
-     *
-     * @param name the name value to set.
-     * @param deploymentTargetId the deploymentTargetId value to set.
-     * @param status the status value to set.
-     */
-    @Generated
-    private DevCenterEnvironmentType(String name, String deploymentTargetId, EnvironmentTypeStatus status) {
-        this.name = name;
-        this.deploymentTargetId = deploymentTargetId;
-        this.status = status;
-    }
 
     /**
      * Get the name property: Name of the environment type.
@@ -90,7 +76,6 @@ public final class DevCenterEnvironmentType implements JsonSerializable<DevCente
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("deploymentTargetId", this.deploymentTargetId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         return jsonWriter.writeEndObject();
@@ -124,7 +109,22 @@ public final class DevCenterEnvironmentType implements JsonSerializable<DevCente
                     reader.skipChildren();
                 }
             }
-            return new DevCenterEnvironmentType(name, deploymentTargetId, status);
+            DevCenterEnvironmentType deserializedDevCenterEnvironmentType
+                = new DevCenterEnvironmentType(deploymentTargetId, status);
+            deserializedDevCenterEnvironmentType.name = name;
+            return deserializedDevCenterEnvironmentType;
         });
+    }
+
+    /**
+     * Creates an instance of DevCenterEnvironmentType class.
+     *
+     * @param deploymentTargetId the deploymentTargetId value to set.
+     * @param status the status value to set.
+     */
+    @Generated
+    private DevCenterEnvironmentType(String deploymentTargetId, EnvironmentTypeStatus status) {
+        this.deploymentTargetId = deploymentTargetId;
+        this.status = status;
     }
 }

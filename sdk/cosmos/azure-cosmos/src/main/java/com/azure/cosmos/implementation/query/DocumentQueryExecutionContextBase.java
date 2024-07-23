@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
@@ -131,13 +130,15 @@ implements IDocumentQueryExecutionContext<T> {
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig = qryOptAccessor
             .getImpl(cosmosQueryRequestOptions)
-            .getEndToEndOperationLatencyConfig();
+            .getCosmosEndToEndLatencyPolicyConfig();
 
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
         request.requestContext.setExcludeRegions(
             qryOptAccessor.getImpl(cosmosQueryRequestOptions).getExcludedRegions());
+        request.requestContext.setKeywordIdentifiers(
+            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getKeywordIdentifiers());
 
         request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
         return request;
@@ -329,10 +330,11 @@ implements IDocumentQueryExecutionContext<T> {
                 requestHeaders);
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig = qryOptAccessor
                 .getImpl(cosmosQueryRequestOptions)
-                .getEndToEndOperationLatencyConfig();
+                .getCosmosEndToEndLatencyPolicyConfig();
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }
+            executeQueryRequest.requestContext.setKeywordIdentifiers(qryOptAccessor.getImpl(cosmosQueryRequestOptions).getKeywordIdentifiers());
 
             executeQueryRequest.setPartitionKeyDefinition(qryOptAccessor.getPartitionKeyDefinition(this.cosmosQueryRequestOptions));
 

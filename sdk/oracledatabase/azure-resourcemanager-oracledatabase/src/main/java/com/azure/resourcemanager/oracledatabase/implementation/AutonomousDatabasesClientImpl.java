@@ -40,6 +40,7 @@ import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseListRes
 import com.azure.resourcemanager.oracledatabase.models.AutonomousDatabaseUpdate;
 import com.azure.resourcemanager.oracledatabase.models.GenerateAutonomousDatabaseWalletDetails;
 import com.azure.resourcemanager.oracledatabase.models.PeerDbDetails;
+import com.azure.resourcemanager.oracledatabase.models.RestoreAutonomousDatabaseDetails;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -155,6 +156,27 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
             @PathParam("autonomousdatabasename") String autonomousdatabasename,
             @BodyParam("application/json") GenerateAutonomousDatabaseWalletDetails body,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/restore")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> restore(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("autonomousdatabasename") String autonomousdatabasename,
+            @BodyParam("application/json") RestoreAutonomousDatabaseDetails body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/shrink")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> shrink(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("autonomousdatabasename") String autonomousdatabasename, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/switchover")
@@ -1589,6 +1611,452 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     }
 
     /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(String resourceGroupName,
+        String autonomousdatabasename, RestoreAutonomousDatabaseDetails body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autonomousdatabasename == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.restore(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(String resourceGroupName,
+        String autonomousdatabasename, RestoreAutonomousDatabaseDetails body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autonomousdatabasename == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.restore(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, autonomousdatabasename, body, accept, context);
+    }
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestoreAsync(
+        String resourceGroupName, String autonomousdatabasename, RestoreAutonomousDatabaseDetails body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restoreWithResponseAsync(resourceGroupName, autonomousdatabasename, body);
+        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AutonomousDatabaseInner.class, AutonomousDatabaseInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestoreAsync(
+        String resourceGroupName, String autonomousdatabasename, RestoreAutonomousDatabaseDetails body,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restoreWithResponseAsync(resourceGroupName, autonomousdatabasename, body, context);
+        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, context);
+    }
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
+        beginRestore(String resourceGroupName, String autonomousdatabasename, RestoreAutonomousDatabaseDetails body) {
+        return this.beginRestoreAsync(resourceGroupName, autonomousdatabasename, body).getSyncPoller();
+    }
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner> beginRestore(
+        String resourceGroupName, String autonomousdatabasename, RestoreAutonomousDatabaseDetails body,
+        Context context) {
+        return this.beginRestoreAsync(resourceGroupName, autonomousdatabasename, body, context).getSyncPoller();
+    }
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AutonomousDatabaseInner> restoreAsync(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body) {
+        return beginRestoreAsync(resourceGroupName, autonomousdatabasename, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AutonomousDatabaseInner> restoreAsync(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body, Context context) {
+        return beginRestoreAsync(resourceGroupName, autonomousdatabasename, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body) {
+        return restoreAsync(resourceGroupName, autonomousdatabasename, body).block();
+    }
+
+    /**
+     * Restores an Autonomous Database based on the provided request parameters.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutonomousDatabaseInner restore(String resourceGroupName, String autonomousdatabasename,
+        RestoreAutonomousDatabaseDetails body, Context context) {
+        return restoreAsync(resourceGroupName, autonomousdatabasename, body, context).block();
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> shrinkWithResponseAsync(String resourceGroupName,
+        String autonomousdatabasename) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autonomousdatabasename == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.shrink(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, autonomousdatabasename, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> shrinkWithResponseAsync(String resourceGroupName,
+        String autonomousdatabasename, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (autonomousdatabasename == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter autonomousdatabasename is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.shrink(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, autonomousdatabasename, accept, context);
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
+        beginShrinkAsync(String resourceGroupName, String autonomousdatabasename) {
+        Mono<Response<Flux<ByteBuffer>>> mono = shrinkWithResponseAsync(resourceGroupName, autonomousdatabasename);
+        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AutonomousDatabaseInner.class, AutonomousDatabaseInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
+        beginShrinkAsync(String resourceGroupName, String autonomousdatabasename, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = shrinkWithResponseAsync(resourceGroupName, autonomousdatabasename, context);
+        return this.client.<AutonomousDatabaseInner, AutonomousDatabaseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AutonomousDatabaseInner.class, AutonomousDatabaseInner.class, context);
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
+        beginShrink(String resourceGroupName, String autonomousdatabasename) {
+        return this.beginShrinkAsync(resourceGroupName, autonomousdatabasename).getSyncPoller();
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<AutonomousDatabaseInner>, AutonomousDatabaseInner>
+        beginShrink(String resourceGroupName, String autonomousdatabasename, Context context) {
+        return this.beginShrinkAsync(resourceGroupName, autonomousdatabasename, context).getSyncPoller();
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AutonomousDatabaseInner> shrinkAsync(String resourceGroupName, String autonomousdatabasename) {
+        return beginShrinkAsync(resourceGroupName, autonomousdatabasename).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AutonomousDatabaseInner> shrinkAsync(String resourceGroupName, String autonomousdatabasename,
+        Context context) {
+        return beginShrinkAsync(resourceGroupName, autonomousdatabasename, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename) {
+        return shrinkAsync(resourceGroupName, autonomousdatabasename).block();
+    }
+
+    /**
+     * This operation shrinks the current allocated storage down to the current actual used data storage.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param autonomousdatabasename The database name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return autonomous Database resource model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AutonomousDatabaseInner shrink(String resourceGroupName, String autonomousdatabasename, Context context) {
+        return shrinkAsync(resourceGroupName, autonomousdatabasename, context).block();
+    }
+
+    /**
      * Perform switchover action on Autonomous Database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1825,9 +2293,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1855,9 +2321,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1885,9 +2349,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1915,9 +2377,7 @@ public final class AutonomousDatabasesClientImpl implements AutonomousDatabasesC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

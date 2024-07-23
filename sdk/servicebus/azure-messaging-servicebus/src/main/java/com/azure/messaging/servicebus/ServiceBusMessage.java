@@ -179,12 +179,13 @@ public class ServiceBusMessage {
         final Map<String, Object> newAnnotations = this.amqpAnnotatedMessage.getMessageAnnotations();
 
         for (Map.Entry<String, Object> entry : receivedAnnotations.entrySet()) {
-            if (AmqpMessageConstant.fromString(entry.getKey()) == LOCKED_UNTIL_KEY_ANNOTATION_NAME
-                || AmqpMessageConstant.fromString(entry.getKey()) == SEQUENCE_NUMBER_ANNOTATION_NAME
-                || AmqpMessageConstant.fromString(entry.getKey()) == DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME
-                || AmqpMessageConstant.fromString(entry.getKey()) == ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME
-                || AmqpMessageConstant.fromString(entry.getKey()) == ENQUEUED_TIME_UTC_ANNOTATION_NAME) {
-
+            AmqpMessageConstant key = AmqpMessageConstant.fromString(entry.getKey());
+            if (key == LOCKED_UNTIL_KEY_ANNOTATION_NAME
+                || key == SEQUENCE_NUMBER_ANNOTATION_NAME
+                || key == DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME
+                || key == ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME
+                || key == ENQUEUED_TIME_UTC_ANNOTATION_NAME
+                || key == SCHEDULED_ENQUEUE_UTC_TIME_NAME) {
                 continue;
             }
             newAnnotations.put(entry.getKey(), entry.getValue());
@@ -255,7 +256,7 @@ public class ServiceBusMessage {
                 return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getFirstData());
             case SEQUENCE:
             case VALUE:
-                throw LOGGER.logExceptionAsError(new IllegalStateException("Message  body type is not DATA, instead "
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Message body type is not DATA, instead "
                     + "it is: " + type));
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown AmqpBodyType: "
@@ -566,9 +567,15 @@ public class ServiceBusMessage {
      */
     public OffsetDateTime getScheduledEnqueueTime() {
         Object value = amqpAnnotatedMessage.getMessageAnnotations().get(SCHEDULED_ENQUEUE_UTC_TIME_NAME.getValue());
-        return value != null
-            ? ((OffsetDateTime) value).toInstant().atOffset(ZoneOffset.UTC)
-            : null;
+        if (value instanceof OffsetDateTime) {
+            return ((OffsetDateTime) value).toInstant().atOffset(ZoneOffset.UTC);
+        } else if (value != null) {
+            LOGGER.atWarning()
+                .addKeyValue("expectedType", OffsetDateTime.class.getName())
+                .addKeyValue("actualType", value.getClass().getName())
+                .log("Unexpected type for scheduled enqueue time.");
+        }
+        return null;
     }
 
     /**

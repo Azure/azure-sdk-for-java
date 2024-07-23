@@ -39,7 +39,7 @@ public interface OperationStatusResult {
      * 
      * @return the percentComplete value.
      */
-    Integer percentComplete();
+    Double percentComplete();
 
     /**
      * Gets the startTime property: The start time of the operation.

@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class IntegrationRuntimeNodesGetIpAddressWithResponseMockTests {
     @Test
     public void testGetIpAddressWithResponse() throws Exception {
-        String responseStr = "{\"ipAddress\":\"vfl\"}";
+        String responseStr = "{\"ipAddress\":\"zrjsbw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class IntegrationRuntimeNodesGetIpAddressWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeNodeIpAddress response = manager.integrationRuntimeNodes()
-            .getIpAddressWithResponse("peyyzmxuelplbbs", "inldmflngjtltxfo", "yqqleylvyhxlp", "ock",
+            .getIpAddressWithResponse("nglfcrtkpfsjwtq", "o", "eofjoqjmlzlki", "jssfwojfng",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

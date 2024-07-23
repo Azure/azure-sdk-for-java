@@ -5,41 +5,46 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LinkConnection model. */
+/**
+ * The LinkConnection model.
+ */
 @Fluent
-public final class LinkConnection {
+public final class LinkConnection implements JsonSerializable<LinkConnection> {
     /*
      * Properties of link connection's source database
      */
-    @JsonProperty(value = "sourceDatabase")
     private LinkConnectionSourceDatabase sourceDatabase;
 
     /*
      * Properties of link connection's target database
      */
-    @JsonProperty(value = "targetDatabase")
     private LinkConnectionTargetDatabase targetDatabase;
 
     /*
      * Properties of link connection's landing zone
      */
-    @JsonProperty(value = "landingZone")
     private LinkConnectionLandingZone landingZone;
 
     /*
      * Properties of link connection's compute
      */
-    @JsonProperty(value = "compute")
     private LinkConnectionCompute compute;
 
-    /** Creates an instance of LinkConnection class. */
-    public LinkConnection() {}
+    /**
+     * Creates an instance of LinkConnection class.
+     */
+    public LinkConnection() {
+    }
 
     /**
      * Get the sourceDatabase property: Properties of link connection's source database.
-     *
+     * 
      * @return the sourceDatabase value.
      */
     public LinkConnectionSourceDatabase getSourceDatabase() {
@@ -48,7 +53,7 @@ public final class LinkConnection {
 
     /**
      * Set the sourceDatabase property: Properties of link connection's source database.
-     *
+     * 
      * @param sourceDatabase the sourceDatabase value to set.
      * @return the LinkConnection object itself.
      */
@@ -59,7 +64,7 @@ public final class LinkConnection {
 
     /**
      * Get the targetDatabase property: Properties of link connection's target database.
-     *
+     * 
      * @return the targetDatabase value.
      */
     public LinkConnectionTargetDatabase getTargetDatabase() {
@@ -68,7 +73,7 @@ public final class LinkConnection {
 
     /**
      * Set the targetDatabase property: Properties of link connection's target database.
-     *
+     * 
      * @param targetDatabase the targetDatabase value to set.
      * @return the LinkConnection object itself.
      */
@@ -79,7 +84,7 @@ public final class LinkConnection {
 
     /**
      * Get the landingZone property: Properties of link connection's landing zone.
-     *
+     * 
      * @return the landingZone value.
      */
     public LinkConnectionLandingZone getLandingZone() {
@@ -88,7 +93,7 @@ public final class LinkConnection {
 
     /**
      * Set the landingZone property: Properties of link connection's landing zone.
-     *
+     * 
      * @param landingZone the landingZone value to set.
      * @return the LinkConnection object itself.
      */
@@ -99,7 +104,7 @@ public final class LinkConnection {
 
     /**
      * Get the compute property: Properties of link connection's compute.
-     *
+     * 
      * @return the compute value.
      */
     public LinkConnectionCompute getCompute() {
@@ -108,12 +113,57 @@ public final class LinkConnection {
 
     /**
      * Set the compute property: Properties of link connection's compute.
-     *
+     * 
      * @param compute the compute value to set.
      * @return the LinkConnection object itself.
      */
     public LinkConnection setCompute(LinkConnectionCompute compute) {
         this.compute = compute;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceDatabase", this.sourceDatabase);
+        jsonWriter.writeJsonField("targetDatabase", this.targetDatabase);
+        jsonWriter.writeJsonField("landingZone", this.landingZone);
+        jsonWriter.writeJsonField("compute", this.compute);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkConnection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkConnection.
+     */
+    public static LinkConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkConnection deserializedLinkConnection = new LinkConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceDatabase".equals(fieldName)) {
+                    deserializedLinkConnection.sourceDatabase = LinkConnectionSourceDatabase.fromJson(reader);
+                } else if ("targetDatabase".equals(fieldName)) {
+                    deserializedLinkConnection.targetDatabase = LinkConnectionTargetDatabase.fromJson(reader);
+                } else if ("landingZone".equals(fieldName)) {
+                    deserializedLinkConnection.landingZone = LinkConnectionLandingZone.fromJson(reader);
+                } else if ("compute".equals(fieldName)) {
+                    deserializedLinkConnection.compute = LinkConnectionCompute.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkConnection;
+        });
     }
 }

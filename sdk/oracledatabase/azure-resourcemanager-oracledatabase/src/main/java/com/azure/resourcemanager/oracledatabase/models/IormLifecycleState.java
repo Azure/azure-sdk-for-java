@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * IORMLifecycleState enum.
+ * ORM lifecycle state enum.
  */
 public final class IormLifecycleState extends ExpandableStringEnum<IormLifecycleState> {
     /**
@@ -52,7 +51,6 @@ public final class IormLifecycleState extends ExpandableStringEnum<IormLifecycle
      * @param name a name to look for.
      * @return the corresponding IormLifecycleState.
      */
-    @JsonCreator
     public static IormLifecycleState fromString(String name) {
         return fromString(name, IormLifecycleState.class);
     }

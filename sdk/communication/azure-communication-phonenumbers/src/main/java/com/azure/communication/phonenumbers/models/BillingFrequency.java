@@ -5,28 +5,39 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BillingFrequency. */
+/**
+ * The frequency with which the cost gets billed.
+ */
 public final class BillingFrequency extends ExpandableStringEnum<BillingFrequency> {
-    /** Static value monthly for BillingFrequency. */
+    /**
+     * Static value monthly for BillingFrequency.
+     */
     public static final BillingFrequency MONTHLY = fromString("monthly");
 
     /**
+     * Creates a new instance of BillingFrequency value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BillingFrequency() {
+    }
+
+    /**
      * Creates or finds a BillingFrequency from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingFrequency.
      */
-    @JsonCreator
     public static BillingFrequency fromString(String name) {
         return fromString(name, BillingFrequency.class);
     }
 
     /**
      * Gets known BillingFrequency values.
-     *
+     * 
      * @return known BillingFrequency values.
      */
     public static Collection<BillingFrequency> values() {

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storage.models.PrivateLinkResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public final class PrivateLinkResourceListResultInner {
 
     /**
      * Get the value property: Array of private link resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResource> value() {
@@ -38,7 +37,7 @@ public final class PrivateLinkResourceListResultInner {
 
     /**
      * Set the value property: Array of private link resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourceListResultInner object itself.
      */
@@ -49,7 +48,7 @@ public final class PrivateLinkResourceListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

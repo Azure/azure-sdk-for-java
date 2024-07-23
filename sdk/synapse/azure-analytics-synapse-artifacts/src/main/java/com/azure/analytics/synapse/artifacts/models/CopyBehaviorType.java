@@ -5,42 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** All available types of copy behavior. */
+/**
+ * All available types of copy behavior.
+ */
 public final class CopyBehaviorType extends ExpandableStringEnum<CopyBehaviorType> {
-    /** Static value PreserveHierarchy for CopyBehaviorType. */
+    /**
+     * Static value PreserveHierarchy for CopyBehaviorType.
+     */
     public static final CopyBehaviorType PRESERVE_HIERARCHY = fromString("PreserveHierarchy");
 
-    /** Static value FlattenHierarchy for CopyBehaviorType. */
+    /**
+     * Static value FlattenHierarchy for CopyBehaviorType.
+     */
     public static final CopyBehaviorType FLATTEN_HIERARCHY = fromString("FlattenHierarchy");
 
-    /** Static value MergeFiles for CopyBehaviorType. */
+    /**
+     * Static value MergeFiles for CopyBehaviorType.
+     */
     public static final CopyBehaviorType MERGE_FILES = fromString("MergeFiles");
 
     /**
      * Creates a new instance of CopyBehaviorType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CopyBehaviorType() {}
+    public CopyBehaviorType() {
+    }
 
     /**
      * Creates or finds a CopyBehaviorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CopyBehaviorType.
      */
-    @JsonCreator
     public static CopyBehaviorType fromString(String name) {
         return fromString(name, CopyBehaviorType.class);
     }
 
     /**
      * Gets known CopyBehaviorType values.
-     *
+     * 
      * @return known CopyBehaviorType values.
      */
     public static Collection<CopyBehaviorType> values() {

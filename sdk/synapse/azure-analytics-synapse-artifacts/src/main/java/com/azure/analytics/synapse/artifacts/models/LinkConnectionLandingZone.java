@@ -5,41 +5,46 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LinkConnectionLandingZone model. */
+/**
+ * The LinkConnectionLandingZone model.
+ */
 @Fluent
-public final class LinkConnectionLandingZone {
+public final class LinkConnectionLandingZone implements JsonSerializable<LinkConnectionLandingZone> {
     /*
      * Linked service reference
      */
-    @JsonProperty(value = "linkedService")
     private LinkedServiceReference linkedService;
 
     /*
      * Landing zone's file system name
      */
-    @JsonProperty(value = "fileSystem")
     private String fileSystem;
 
     /*
      * Landing zone's folder path name
      */
-    @JsonProperty(value = "folderPath")
     private String folderPath;
 
     /*
      * Landing zone's sas token
      */
-    @JsonProperty(value = "sasToken")
     private SecureString sasToken;
 
-    /** Creates an instance of LinkConnectionLandingZone class. */
-    public LinkConnectionLandingZone() {}
+    /**
+     * Creates an instance of LinkConnectionLandingZone class.
+     */
+    public LinkConnectionLandingZone() {
+    }
 
     /**
      * Get the linkedService property: Linked service reference.
-     *
+     * 
      * @return the linkedService value.
      */
     public LinkedServiceReference getLinkedService() {
@@ -48,7 +53,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Set the linkedService property: Linked service reference.
-     *
+     * 
      * @param linkedService the linkedService value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
@@ -59,7 +64,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Get the fileSystem property: Landing zone's file system name.
-     *
+     * 
      * @return the fileSystem value.
      */
     public String getFileSystem() {
@@ -68,7 +73,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Set the fileSystem property: Landing zone's file system name.
-     *
+     * 
      * @param fileSystem the fileSystem value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
@@ -79,7 +84,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Get the folderPath property: Landing zone's folder path name.
-     *
+     * 
      * @return the folderPath value.
      */
     public String getFolderPath() {
@@ -88,7 +93,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Set the folderPath property: Landing zone's folder path name.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
@@ -99,7 +104,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Get the sasToken property: Landing zone's sas token.
-     *
+     * 
      * @return the sasToken value.
      */
     public SecureString getSasToken() {
@@ -108,12 +113,57 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Set the sasToken property: Landing zone's sas token.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
     public LinkConnectionLandingZone setSasToken(SecureString sasToken) {
         this.sasToken = sasToken;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedService", this.linkedService);
+        jsonWriter.writeStringField("fileSystem", this.fileSystem);
+        jsonWriter.writeStringField("folderPath", this.folderPath);
+        jsonWriter.writeJsonField("sasToken", this.sasToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkConnectionLandingZone from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkConnectionLandingZone if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinkConnectionLandingZone.
+     */
+    public static LinkConnectionLandingZone fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkConnectionLandingZone deserializedLinkConnectionLandingZone = new LinkConnectionLandingZone();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedService".equals(fieldName)) {
+                    deserializedLinkConnectionLandingZone.linkedService = LinkedServiceReference.fromJson(reader);
+                } else if ("fileSystem".equals(fieldName)) {
+                    deserializedLinkConnectionLandingZone.fileSystem = reader.getString();
+                } else if ("folderPath".equals(fieldName)) {
+                    deserializedLinkConnectionLandingZone.folderPath = reader.getString();
+                } else if ("sasToken".equals(fieldName)) {
+                    deserializedLinkConnectionLandingZone.sasToken = SecureString.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkConnectionLandingZone;
+        });
     }
 }

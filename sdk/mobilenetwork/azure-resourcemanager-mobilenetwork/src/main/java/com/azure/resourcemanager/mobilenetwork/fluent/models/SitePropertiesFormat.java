@@ -22,8 +22,7 @@ public final class SitePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * An array of IDs of the network functions deployed in the site. Deleting the site will delete any network
-     * functions that are deployed in the site.
+     * An array of IDs of the network functions deployed in the site. Deleting the site will delete any network functions that are deployed in the site.
      */
     @JsonProperty(value = "networkFunctions", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> networkFunctions;

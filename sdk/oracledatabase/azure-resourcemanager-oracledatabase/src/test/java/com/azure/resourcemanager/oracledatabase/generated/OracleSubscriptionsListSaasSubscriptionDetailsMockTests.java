@@ -20,7 +20,7 @@ public final class OracleSubscriptionsListSaasSubscriptionDetailsMockTests {
     @Test
     public void testListSaasSubscriptionDetails() throws Exception {
         String responseStr
-            = "{\"id\":\"wqqxeysko\",\"subscriptionName\":\"zinkfkbgbzbowxeq\",\"timeCreated\":\"2021-11-27T16:03:54Z\",\"offerId\":\"mygvkzqkj\",\"planId\":\"okbzef\",\"saasSubscriptionStatus\":\"rx\",\"publisherId\":\"zurtleipqxbkwvz\",\"purchaserEmailId\":\"zvd\",\"purchaserTenantId\":\"zdix\",\"termUnit\":\"q\",\"isAutoRenew\":true,\"isFreeTrial\":false}";
+            = "{\"id\":\"jqhden\",\"subscriptionName\":\"ulkpakd\",\"timeCreated\":\"2021-06-10T21:14:50Z\",\"offerId\":\"jnnawtqa\",\"planId\":\"xuckpggqoweyir\",\"saasSubscriptionStatus\":\"lisn\",\"publisherId\":\"fl\",\"purchaserEmailId\":\"mpizru\",\"purchaserTenantId\":\"pqxpx\",\"termUnit\":\"fcngjsa\",\"isAutoRenew\":false,\"isFreeTrial\":true}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

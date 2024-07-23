@@ -5,23 +5,31 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body structure for rename artifact. */
+/**
+ * Request body structure for rename artifact.
+ */
 @Fluent
-public final class ArtifactRenameRequest {
+public final class ArtifactRenameRequest implements JsonSerializable<ArtifactRenameRequest> {
     /*
      * New name of the artifact.
      */
-    @JsonProperty(value = "newName")
     private String newName;
 
-    /** Creates an instance of ArtifactRenameRequest class. */
-    public ArtifactRenameRequest() {}
+    /**
+     * Creates an instance of ArtifactRenameRequest class.
+     */
+    public ArtifactRenameRequest() {
+    }
 
     /**
      * Get the newName property: New name of the artifact.
-     *
+     * 
      * @return the newName value.
      */
     public String getNewName() {
@@ -30,12 +38,48 @@ public final class ArtifactRenameRequest {
 
     /**
      * Set the newName property: New name of the artifact.
-     *
+     * 
      * @param newName the newName value to set.
      * @return the ArtifactRenameRequest object itself.
      */
     public ArtifactRenameRequest setNewName(String newName) {
         this.newName = newName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("newName", this.newName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArtifactRenameRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArtifactRenameRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArtifactRenameRequest.
+     */
+    public static ArtifactRenameRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArtifactRenameRequest deserializedArtifactRenameRequest = new ArtifactRenameRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("newName".equals(fieldName)) {
+                    deserializedArtifactRenameRequest.newName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArtifactRenameRequest;
+        });
     }
 }

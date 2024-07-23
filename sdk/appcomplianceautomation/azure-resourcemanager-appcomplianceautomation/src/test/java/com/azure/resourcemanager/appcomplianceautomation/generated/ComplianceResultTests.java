@@ -6,20 +6,17 @@ package com.azure.resourcemanager.appcomplianceautomation.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcomplianceautomation.models.ComplianceResult;
-import org.junit.jupiter.api.Test;
 
 public final class ComplianceResultTests {
-    @Test
-    public void testDeserialize() {
-        ComplianceResult model =
-            BinaryData
-                .fromString(
-                    "{\"complianceName\":\"qwoochcbon\",\"categories\":[{\"categoryName\":\"vlrxnjeaseiph\",\"categoryType\":\"FullyAutomated\",\"categoryStatus\":\"Unhealthy\",\"controlFamilies\":[]},{\"categoryName\":\"y\",\"categoryType\":\"Manual\",\"categoryStatus\":\"Unhealthy\",\"controlFamilies\":[]}]}")
-                .toObject(ComplianceResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ComplianceResult model = BinaryData.fromString(
+            "{\"complianceName\":\"xiy\",\"categories\":[{\"categoryName\":\"zynkedya\",\"categoryStatus\":\"PendingApproval\",\"controlFamilies\":[{\"controlFamilyName\":\"mibzyhwitsmypyyn\",\"controlFamilyStatus\":\"NotApplicable\",\"controls\":[{},{},{},{}]},{\"controlFamilyName\":\"nzgmwznmabik\",\"controlFamilyStatus\":\"NotApplicable\",\"controls\":[{}]},{\"controlFamilyName\":\"hxbld\",\"controlFamilyStatus\":\"NotApplicable\",\"controls\":[{},{},{},{}]}]},{\"categoryName\":\"kdmtncvokotll\",\"categoryStatus\":\"Failed\",\"controlFamilies\":[{\"controlFamilyName\":\"y\",\"controlFamilyStatus\":\"PendingApproval\",\"controls\":[{}]},{\"controlFamilyName\":\"tdtbnnhadooc\",\"controlFamilyStatus\":\"PendingApproval\",\"controls\":[{},{},{},{}]}]},{\"categoryName\":\"hnvpamqgxq\",\"categoryStatus\":\"NotApplicable\",\"controlFamilies\":[{\"controlFamilyName\":\"ywggx\",\"controlFamilyStatus\":\"Passed\",\"controls\":[{},{}]}]},{\"categoryName\":\"melwuipiccjz\",\"categoryStatus\":\"Failed\",\"controlFamilies\":[{\"controlFamilyName\":\"vc\",\"controlFamilyStatus\":\"Passed\",\"controls\":[{},{}]},{\"controlFamilyName\":\"rnxxmueed\",\"controlFamilyStatus\":\"NotApplicable\",\"controls\":[{}]},{\"controlFamilyName\":\"tkwqqtchealm\",\"controlFamilyStatus\":\"NotApplicable\",\"controls\":[{}]}]}]}")
+            .toObject(ComplianceResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComplianceResult model = new ComplianceResult();
         model = BinaryData.fromObject(model).toObject(ComplianceResult.class);
     }

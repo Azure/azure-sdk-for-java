@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class AzureResourceProvisioningState extends ExpandableStringEnum<A
      * @param name a name to look for.
      * @return the corresponding AzureResourceProvisioningState.
      */
-    @JsonCreator
     public static AzureResourceProvisioningState fromString(String name) {
         return fromString(name, AzureResourceProvisioningState.class);
     }

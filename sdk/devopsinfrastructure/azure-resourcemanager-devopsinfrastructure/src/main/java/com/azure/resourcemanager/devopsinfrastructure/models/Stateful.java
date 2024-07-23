@@ -5,36 +5,30 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Stateful profile meaning that the machines will be returned to the pool after running a job.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = Stateful.class, visible = true)
-@JsonTypeName("Stateful")
 @Fluent
 public final class Stateful extends AgentProfile {
     /*
-     * The kind property.
+     * Discriminator property for AgentProfile.
      */
-    @JsonTypeId
-    @JsonProperty(value = "kind", required = true)
     private String kind = "Stateful";
 
     /*
      * How long should stateful machines be kept around. The maximum is one week.
      */
-    @JsonProperty(value = "maxAgentLifetime")
     private String maxAgentLifetime;
 
     /*
      * How long should the machine be kept around after it ran a workload when there are no stand-by agents. The maximum
      * is one week.
      */
-    @JsonProperty(value = "gracePeriodTimeSpan")
     private String gracePeriodTimeSpan;
 
     /**
@@ -44,7 +38,7 @@ public final class Stateful extends AgentProfile {
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: Discriminator property for AgentProfile.
      * 
      * @return the kind value.
      */
@@ -99,7 +93,7 @@ public final class Stateful extends AgentProfile {
      * {@inheritDoc}
      */
     @Override
-    public Stateful withResourcePredictions(Object resourcePredictions) {
+    public Stateful withResourcePredictions(ResourcePredictions resourcePredictions) {
         super.withResourcePredictions(resourcePredictions);
         return this;
     }
@@ -121,5 +115,53 @@ public final class Stateful extends AgentProfile {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourcePredictions", resourcePredictions());
+        jsonWriter.writeJsonField("resourcePredictionsProfile", resourcePredictionsProfile());
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("maxAgentLifetime", this.maxAgentLifetime);
+        jsonWriter.writeStringField("gracePeriodTimeSpan", this.gracePeriodTimeSpan);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Stateful from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Stateful if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Stateful.
+     */
+    public static Stateful fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Stateful deserializedStateful = new Stateful();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourcePredictions".equals(fieldName)) {
+                    deserializedStateful.withResourcePredictions(ResourcePredictions.fromJson(reader));
+                } else if ("resourcePredictionsProfile".equals(fieldName)) {
+                    deserializedStateful.withResourcePredictionsProfile(ResourcePredictionsProfile.fromJson(reader));
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStateful.kind = reader.getString();
+                } else if ("maxAgentLifetime".equals(fieldName)) {
+                    deserializedStateful.maxAgentLifetime = reader.getString();
+                } else if ("gracePeriodTimeSpan".equals(fieldName)) {
+                    deserializedStateful.gracePeriodTimeSpan = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStateful;
+        });
     }
 }

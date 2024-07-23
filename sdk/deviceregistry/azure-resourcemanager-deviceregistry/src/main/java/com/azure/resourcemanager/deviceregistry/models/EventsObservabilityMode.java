@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class EventsObservabilityMode extends ExpandableStringEnum<EventsOb
      * @param name a name to look for.
      * @return the corresponding EventsObservabilityMode.
      */
-    @JsonCreator
     public static EventsObservabilityMode fromString(String name) {
         return fromString(name, EventsObservabilityMode.class);
     }

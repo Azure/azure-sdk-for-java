@@ -5,6 +5,7 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -74,8 +75,8 @@ public final class DevBoxNextAction implements JsonSerializable<DevBoxNextAction
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("scheduledTime".equals(fieldName)) {
-                    scheduledTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    scheduledTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

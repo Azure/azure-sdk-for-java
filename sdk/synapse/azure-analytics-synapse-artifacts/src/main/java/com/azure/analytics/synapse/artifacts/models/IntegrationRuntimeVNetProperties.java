@@ -5,46 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** VNet properties for managed integration runtime. */
+/**
+ * VNet properties for managed integration runtime.
+ */
 @Fluent
-public final class IntegrationRuntimeVNetProperties {
+public final class IntegrationRuntimeVNetProperties implements JsonSerializable<IntegrationRuntimeVNetProperties> {
     /*
      * The ID of the VNet that this integration runtime will join.
      */
-    @JsonProperty(value = "vNetId")
     private String vNetId;
 
     /*
      * The name of the subnet this integration runtime will join.
      */
-    @JsonProperty(value = "subnet")
     private String subnet;
 
     /*
      * Resource IDs of the public IP addresses that this integration runtime will use.
      */
-    @JsonProperty(value = "publicIPs")
     private List<String> publicIPs;
 
     /*
      * VNet properties for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of IntegrationRuntimeVNetProperties class. */
-    public IntegrationRuntimeVNetProperties() {}
+    /**
+     * Creates an instance of IntegrationRuntimeVNetProperties class.
+     */
+    public IntegrationRuntimeVNetProperties() {
+    }
 
     /**
      * Get the vNetId property: The ID of the VNet that this integration runtime will join.
-     *
+     * 
      * @return the vNetId value.
      */
     public String getVNetId() {
@@ -53,7 +56,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Set the vNetId property: The ID of the VNet that this integration runtime will join.
-     *
+     * 
      * @param vNetId the vNetId value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
@@ -64,7 +67,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Get the subnet property: The name of the subnet this integration runtime will join.
-     *
+     * 
      * @return the subnet value.
      */
     public String getSubnet() {
@@ -73,7 +76,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Set the subnet property: The name of the subnet this integration runtime will join.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
@@ -84,7 +87,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Get the publicIPs property: Resource IDs of the public IP addresses that this integration runtime will use.
-     *
+     * 
      * @return the publicIPs value.
      */
     public List<String> getPublicIPs() {
@@ -93,7 +96,7 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Set the publicIPs property: Resource IDs of the public IP addresses that this integration runtime will use.
-     *
+     * 
      * @param publicIPs the publicIPs value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
@@ -104,17 +107,16 @@ public final class IntegrationRuntimeVNetProperties {
 
     /**
      * Get the additionalProperties property: VNet properties for managed integration runtime.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: VNet properties for managed integration runtime.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeVNetProperties object itself.
      */
@@ -123,11 +125,58 @@ public final class IntegrationRuntimeVNetProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vNetId", this.vNetId);
+        jsonWriter.writeStringField("subnet", this.subnet);
+        jsonWriter.writeArrayField("publicIPs", this.publicIPs, (writer, element) -> writer.writeString(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeVNetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeVNetProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeVNetProperties.
+     */
+    public static IntegrationRuntimeVNetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeVNetProperties deserializedIntegrationRuntimeVNetProperties
+                = new IntegrationRuntimeVNetProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vNetId".equals(fieldName)) {
+                    deserializedIntegrationRuntimeVNetProperties.vNetId = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedIntegrationRuntimeVNetProperties.subnet = reader.getString();
+                } else if ("publicIPs".equals(fieldName)) {
+                    List<String> publicIPs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIntegrationRuntimeVNetProperties.publicIPs = publicIPs;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedIntegrationRuntimeVNetProperties.additionalProperties = additionalProperties;
+
+            return deserializedIntegrationRuntimeVNetProperties;
+        });
     }
 }

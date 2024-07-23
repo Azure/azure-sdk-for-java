@@ -13,6 +13,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.OrganizationProfile
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdate;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdateProperties;
 import com.azure.resourcemanager.devopsinfrastructure.models.ProvisioningState;
+import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictions;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictionsProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.UserAssignedIdentity;
 import java.util.HashMap;
@@ -23,42 +24,39 @@ public final class PoolUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"tenantId\":\"fqpte\",\"principalId\":\"zzvypyqrimzinp\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"kwh\":{\"clientId\":\"kirsoodqxhc\",\"principalId\":\"nohjt\"},\"vsnb\":{\"clientId\":\"oifiyipjxsqwpgr\",\"principalId\":\"znorcj\"},\"rzafbljjgpbtoqcj\":{\"clientId\":\"qabnmoc\",\"principalId\":\"ysh\"}}},\"tags\":{\"ulpkudjkrl\":\"javbqidtqajz\",\"gqexzlocxs\":\"hbzhfepg\"},\"properties\":{\"provisioningState\":\"Provisioning\",\"maximumConcurrency\":1450066184,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datacsglum\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"j\"}}")
+            "{\"identity\":{\"principalId\":\"yip\",\"tenantId\":\"sqwpgrjb\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"shurzafbljjgpbto\":{\"principalId\":\"jxvsnbyxqabn\",\"clientId\":\"cpc\"},\"kudjkrlkhb\":{\"principalId\":\"jmkljavbqidtqajz\",\"clientId\":\"l\"},\"scpai\":{\"principalId\":\"fepgzgq\",\"clientId\":\"zloc\"},\"onpimexgstxg\":{\"principalId\":\"hhbcsglummajtjao\",\"clientId\":\"obnbdxkqpxokaj\"}}},\"tags\":{\"aajrm\":\"dg\",\"clwhijcoejctbz\":\"djwzrlov\",\"bkbfkgukdkex\":\"qsqsy\",\"ocjjxhvpmouexh\":\"ppofmxaxcfjpgdd\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"maximumConcurrency\":1730783579,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"bzv\"}}")
             .toObject(PoolUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("kirsoodqxhc", model.identity().userAssignedIdentities().get("kwh").clientId());
-        Assertions.assertEquals("nohjt", model.identity().userAssignedIdentities().get("kwh").principalId());
-        Assertions.assertEquals("javbqidtqajz", model.tags().get("ulpkudjkrl"));
-        Assertions.assertEquals(ProvisioningState.PROVISIONING, model.properties().provisioningState());
-        Assertions.assertEquals(1450066184, model.properties().maximumConcurrency());
-        Assertions.assertEquals("j", model.properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("dg", model.tags().get("aajrm"));
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
+        Assertions.assertEquals(1730783579, model.properties().maximumConcurrency());
+        Assertions.assertEquals("bzv", model.properties().devCenterProjectResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PoolUpdate model
             = new PoolUpdate()
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("kwh",
-                        new UserAssignedIdentity().withClientId("kirsoodqxhc").withPrincipalId("nohjt"), "vsnb",
-                        new UserAssignedIdentity().withClientId("oifiyipjxsqwpgr").withPrincipalId("znorcj"),
-                        "rzafbljjgpbtoqcj", new UserAssignedIdentity().withClientId("qabnmoc").withPrincipalId("ysh"))))
-                .withTags(mapOf("ulpkudjkrl", "javbqidtqajz", "gqexzlocxs", "hbzhfepg"))
-                .withProperties(new PoolUpdateProperties().withProvisioningState(ProvisioningState.PROVISIONING)
-                    .withMaximumConcurrency(1450066184)
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("shurzafbljjgpbto", new UserAssignedIdentity(), "kudjkrlkhb",
+                            new UserAssignedIdentity(), "scpai", new UserAssignedIdentity(), "onpimexgstxg",
+                            new UserAssignedIdentity())))
+                .withTags(mapOf("aajrm", "dg", "clwhijcoejctbz", "djwzrlov", "bkbfkgukdkex", "qsqsy", "ocjjxhvpmouexh",
+                    "ppofmxaxcfjpgdd"))
+                .withProperties(new PoolUpdateProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
+                    .withMaximumConcurrency(1730783579)
                     .withOrganizationProfile(new OrganizationProfile())
-                    .withAgentProfile(new AgentProfile().withResourcePredictions("datacsglum")
+                    .withAgentProfile(new AgentProfile().withResourcePredictions(new ResourcePredictions())
                         .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
                     .withFabricProfile(new FabricProfile())
-                    .withDevCenterProjectResourceId("j"));
+                    .withDevCenterProjectResourceId("bzv"));
         model = BinaryData.fromObject(model).toObject(PoolUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("kirsoodqxhc", model.identity().userAssignedIdentities().get("kwh").clientId());
-        Assertions.assertEquals("nohjt", model.identity().userAssignedIdentities().get("kwh").principalId());
-        Assertions.assertEquals("javbqidtqajz", model.tags().get("ulpkudjkrl"));
-        Assertions.assertEquals(ProvisioningState.PROVISIONING, model.properties().provisioningState());
-        Assertions.assertEquals(1450066184, model.properties().maximumConcurrency());
-        Assertions.assertEquals("j", model.properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("dg", model.tags().get("aajrm"));
+        Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
+        Assertions.assertEquals(1730783579, model.properties().maximumConcurrency());
+        Assertions.assertEquals("bzv", model.properties().devCenterProjectResourceId());
     }
 
     // Use "Map.of" if available

@@ -18,6 +18,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatchBuilder;
+import com.azure.monitor.query.models.MetricsAudience;
 
 /**
  * Fluent builder for creating instances of {@link MetricsClient} and {@link MetricsAsyncClient}.
@@ -41,6 +42,16 @@ public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBu
     @Override
     public MetricsClientBuilder endpoint(String endpoint) {
         innerMetricsBatchBuilder.endpoint(endpoint);
+        return this;
+    }
+
+    /**
+     * Sets the metrics audience.
+     * @param audience the audience.
+     * @return the {@link MetricsClientBuilder}.
+     */
+    public MetricsClientBuilder audience(MetricsAudience audience) {
+        innerMetricsBatchBuilder.audience(audience);
         return this;
     }
 

@@ -11,7 +11,8 @@ import com.azure.resourcemanager.oracledatabase.models.CloudExadataInfrastructur
  */
 public final class CloudExadataInfrastructuresUpdateSamples {
     /*
-     * x-ms-original-file: specification/oracle/resource-manager/Oracle.Database/preview/2023-09-01-preview/examples/exaInfra_patch.json
+     * x-ms-original-file:
+     * specification/oracle/resource-manager/Oracle.Database/stable/2023-09-01/examples/exaInfra_patch.json
      */
     /**
      * Sample code: Patch Exadata Infrastructure.

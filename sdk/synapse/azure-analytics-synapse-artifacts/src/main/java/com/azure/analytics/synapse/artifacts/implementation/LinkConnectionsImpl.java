@@ -38,22 +38,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LinkConnections. */
+/**
+ * An instance of this class provides access to all the operations defined in LinkConnections.
+ */
 public final class LinkConnectionsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LinkConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of LinkConnectionsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LinkConnectionsImpl(ArtifactsClientImpl client) {
-        this.service =
-                RestProxy.create(LinkConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LinkConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,151 +71,110 @@ public final class LinkConnectionsImpl {
     @ServiceInterface(name = "ArtifactsClientLinkC")
     public interface LinkConnectionsService {
         @Get("/linkconnections")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LinkConnectionListResponse>> listByWorkspace(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<LinkConnectionListResponse>> listByWorkspace(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/linkconnections/{linkConnectionName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LinkConnectionResource>> createOrUpdate(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") LinkConnectionResource linkConnection,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<LinkConnectionResource>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") LinkConnectionResource linkConnection, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/linkconnections/{linkConnectionName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LinkConnectionResource>> get(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<LinkConnectionResource>> get(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/linkconnections/{linkConnectionName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/linkconnections/{linkConnectionName}/edittables")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> editTables(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") EditTablesRequest editTablesRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> editTables(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") EditTablesRequest editTablesRequest, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/linkconnections/{linkConnectionName}/start")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> start(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> start(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/linkconnections/{linkConnectionName}/stop")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> stop(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> stop(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/linkconnections/{linkConnectionName}/detailedstatus")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LinkConnectionDetailedStatus>> getDetailedStatus(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<LinkConnectionDetailedStatus>> getDetailedStatus(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/linkconnections/{linkConnectionName}/linktables")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LinkTableListResponse>> listLinkTables(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<LinkTableListResponse>> listLinkTables(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/linkconnections/{linkConnectionName}/querytablestatus")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatus(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") QueryTableStatusRequest queryTableStatusRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatus(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") QueryTableStatusRequest queryTableStatusRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/linkconnections/{linkConnectionName}/updateLandingZoneCredential")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> updateLandingZoneCredential(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> updateLandingZoneCredential(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/linkconnections/{linkConnectionName}/pause")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> pause(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> pause(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/linkconnections/{linkConnectionName}/resume")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<Void>> resume(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("linkConnectionName") String linkConnectionName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> resume(@HostParam("endpoint") String endpoint,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<LinkConnectionListResponse>> listByWorkspaceNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List link connections.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -218,22 +183,15 @@ public final class LinkConnectionsImpl {
     public Mono<PagedResponse<LinkConnectionResource>> listByWorkspaceSinglePageAsync() {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context -> service.listByWorkspace(this.client.getEndpoint(), apiVersion, accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), apiVersion, accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * List link connections.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -245,33 +203,26 @@ public final class LinkConnectionsImpl {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.listByWorkspace(this.client.getEndpoint(), apiVersion, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * List link connections.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LinkConnectionResource> listByWorkspaceAsync() {
-        return new PagedFlux<>(
-                () -> listByWorkspaceSinglePageAsync(), nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(),
+            nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
     /**
      * List link connections.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -280,14 +231,13 @@ public final class LinkConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LinkConnectionResource> listByWorkspaceAsync(Context context) {
-        return new PagedFlux<>(
-                () -> listByWorkspaceSinglePageAsync(context),
-                nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(context),
+            nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List link connections.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link PagedResponse}.
@@ -299,7 +249,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * List link connections.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -313,7 +263,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * List link connections.
-     *
+     * 
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -325,7 +275,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * List link connections.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -339,7 +289,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Creates or updates a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,24 +298,17 @@ public final class LinkConnectionsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkConnectionResource>> createOrUpdateWithResponseAsync(
-            String linkConnectionName, LinkConnectionResource linkConnection) {
+    public Mono<Response<LinkConnectionResource>> createOrUpdateWithResponseAsync(String linkConnectionName,
+        LinkConnectionResource linkConnection) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getEndpoint(),
-                                linkConnectionName,
-                                apiVersion,
-                                linkConnection,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), linkConnectionName,
+            apiVersion, linkConnection, accept, context));
     }
 
     /**
      * Creates or updates a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @param context The context to associate with this operation.
@@ -375,17 +318,17 @@ public final class LinkConnectionsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkConnectionResource>> createOrUpdateWithResponseAsync(
-            String linkConnectionName, LinkConnectionResource linkConnection, Context context) {
+    public Mono<Response<LinkConnectionResource>> createOrUpdateWithResponseAsync(String linkConnectionName,
+        LinkConnectionResource linkConnection, Context context) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return service.createOrUpdate(
-                this.client.getEndpoint(), linkConnectionName, apiVersion, linkConnection, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), linkConnectionName, apiVersion, linkConnection, accept,
+            context);
     }
 
     /**
      * Creates or updates a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,15 +337,15 @@ public final class LinkConnectionsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionResource> createOrUpdateAsync(
-            String linkConnectionName, LinkConnectionResource linkConnection) {
+    public Mono<LinkConnectionResource> createOrUpdateAsync(String linkConnectionName,
+        LinkConnectionResource linkConnection) {
         return createOrUpdateWithResponseAsync(linkConnectionName, linkConnection)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @param context The context to associate with this operation.
@@ -412,15 +355,15 @@ public final class LinkConnectionsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionResource> createOrUpdateAsync(
-            String linkConnectionName, LinkConnectionResource linkConnection, Context context) {
+    public Mono<LinkConnectionResource> createOrUpdateAsync(String linkConnectionName,
+        LinkConnectionResource linkConnection, Context context) {
         return createOrUpdateWithResponseAsync(linkConnectionName, linkConnection, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @param context The context to associate with this operation.
@@ -430,14 +373,14 @@ public final class LinkConnectionsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionResource> createOrUpdateWithResponse(
-            String linkConnectionName, LinkConnectionResource linkConnection, Context context) {
+    public Response<LinkConnectionResource> createOrUpdateWithResponse(String linkConnectionName,
+        LinkConnectionResource linkConnection, Context context) {
         return createOrUpdateWithResponseAsync(linkConnectionName, linkConnection, context).block();
     }
 
     /**
      * Creates or updates a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param linkConnection Link connection resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -452,7 +395,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -464,12 +407,12 @@ public final class LinkConnectionsImpl {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.get(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
+            context -> service.get(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
     }
 
     /**
      * Get a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -486,7 +429,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -500,7 +443,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -515,7 +458,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -530,7 +473,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -544,7 +487,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Delete a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -556,12 +499,12 @@ public final class LinkConnectionsImpl {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.delete(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
+            context -> service.delete(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
     }
 
     /**
      * Delete a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -578,7 +521,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Delete a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -592,7 +535,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Delete a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -607,7 +550,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Delete a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -622,7 +565,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Delete a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -635,7 +578,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Edit tables for a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -644,24 +587,17 @@ public final class LinkConnectionsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> editTablesWithResponseAsync(
-            String linkConnectionName, EditTablesRequest editTablesRequest) {
+    public Mono<Response<Void>> editTablesWithResponseAsync(String linkConnectionName,
+        EditTablesRequest editTablesRequest) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.editTables(
-                                this.client.getEndpoint(),
-                                linkConnectionName,
-                                apiVersion,
-                                editTablesRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.editTables(this.client.getEndpoint(), linkConnectionName,
+            apiVersion, editTablesRequest, accept, context));
     }
 
     /**
      * Edit tables for a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @param context The context to associate with this operation.
@@ -671,17 +607,17 @@ public final class LinkConnectionsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> editTablesWithResponseAsync(
-            String linkConnectionName, EditTablesRequest editTablesRequest, Context context) {
+    public Mono<Response<Void>> editTablesWithResponseAsync(String linkConnectionName,
+        EditTablesRequest editTablesRequest, Context context) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return service.editTables(
-                this.client.getEndpoint(), linkConnectionName, apiVersion, editTablesRequest, accept, context);
+        return service.editTables(this.client.getEndpoint(), linkConnectionName, apiVersion, editTablesRequest, accept,
+            context);
     }
 
     /**
      * Edit tables for a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,7 +632,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Edit tables for a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @param context The context to associate with this operation.
@@ -708,12 +644,12 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> editTablesAsync(String linkConnectionName, EditTablesRequest editTablesRequest, Context context) {
         return editTablesWithResponseAsync(linkConnectionName, editTablesRequest, context)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Edit tables for a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @param context The context to associate with this operation.
@@ -723,14 +659,14 @@ public final class LinkConnectionsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> editTablesWithResponse(
-            String linkConnectionName, EditTablesRequest editTablesRequest, Context context) {
+    public Response<Void> editTablesWithResponse(String linkConnectionName, EditTablesRequest editTablesRequest,
+        Context context) {
         return editTablesWithResponseAsync(linkConnectionName, editTablesRequest, context).block();
     }
 
     /**
      * Edit tables for a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param editTablesRequest Edit tables request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -745,7 +681,7 @@ public final class LinkConnectionsImpl {
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -757,13 +693,13 @@ public final class LinkConnectionsImpl {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.start(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
+            context -> service.start(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
     }
 
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -781,7 +717,7 @@ public final class LinkConnectionsImpl {
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -796,7 +732,7 @@ public final class LinkConnectionsImpl {
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -812,7 +748,7 @@ public final class LinkConnectionsImpl {
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -828,7 +764,7 @@ public final class LinkConnectionsImpl {
     /**
      * Start a link connection. It may take a few minutes from Starting to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -842,7 +778,7 @@ public final class LinkConnectionsImpl {
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -854,13 +790,13 @@ public final class LinkConnectionsImpl {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.stop(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
+            context -> service.stop(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
     }
 
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -878,7 +814,7 @@ public final class LinkConnectionsImpl {
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -893,7 +829,7 @@ public final class LinkConnectionsImpl {
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -909,7 +845,7 @@ public final class LinkConnectionsImpl {
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -925,7 +861,7 @@ public final class LinkConnectionsImpl {
     /**
      * Stop a link connection. It may take a few minutes from Stopping to stopped, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -938,38 +874,36 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get the detailed status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed status of a link connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the detailed status of a link connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LinkConnectionDetailedStatus>> getDetailedStatusWithResponseAsync(String linkConnectionName) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDetailedStatus(
-                                this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> service.getDetailedStatus(this.client.getEndpoint(), linkConnectionName,
+            apiVersion, accept, context));
     }
 
     /**
      * Get the detailed status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the detailed status of a link connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the detailed status of a link connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkConnectionDetailedStatus>> getDetailedStatusWithResponseAsync(
-            String linkConnectionName, Context context) {
+    public Mono<Response<LinkConnectionDetailedStatus>> getDetailedStatusWithResponseAsync(String linkConnectionName,
+        Context context) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.getDetailedStatus(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
@@ -977,7 +911,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get the detailed status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -991,7 +925,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get the detailed status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1002,12 +936,12 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkConnectionDetailedStatus> getDetailedStatusAsync(String linkConnectionName, Context context) {
         return getDetailedStatusWithResponseAsync(linkConnectionName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the detailed status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1016,14 +950,14 @@ public final class LinkConnectionsImpl {
      * @return the detailed status of a link connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionDetailedStatus> getDetailedStatusWithResponse(
-            String linkConnectionName, Context context) {
+    public Response<LinkConnectionDetailedStatus> getDetailedStatusWithResponse(String linkConnectionName,
+        Context context) {
         return getDetailedStatusWithResponseAsync(linkConnectionName, context).block();
     }
 
     /**
      * Get the detailed status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1037,7 +971,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * List the link tables of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1048,15 +982,13 @@ public final class LinkConnectionsImpl {
     public Mono<Response<LinkTableListResponse>> listLinkTablesWithResponseAsync(String linkConnectionName) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.listLinkTables(
-                                this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> service.listLinkTables(this.client.getEndpoint(), linkConnectionName,
+            apiVersion, accept, context));
     }
 
     /**
      * List the link tables of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1065,8 +997,8 @@ public final class LinkConnectionsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkTableListResponse>> listLinkTablesWithResponseAsync(
-            String linkConnectionName, Context context) {
+    public Mono<Response<LinkTableListResponse>> listLinkTablesWithResponseAsync(String linkConnectionName,
+        Context context) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return service.listLinkTables(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context);
@@ -1074,7 +1006,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * List the link tables of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1088,7 +1020,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * List the link tables of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1099,12 +1031,12 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkTableListResponse> listLinkTablesAsync(String linkConnectionName, Context context) {
         return listLinkTablesWithResponseAsync(linkConnectionName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * List the link tables of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1119,7 +1051,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * List the link tables of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1133,7 +1065,7 @@ public final class LinkConnectionsImpl {
 
     /**
      * Query the link table status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1142,24 +1074,17 @@ public final class LinkConnectionsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatusWithResponseAsync(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest) {
+    public Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatusWithResponseAsync(String linkConnectionName,
+        QueryTableStatusRequest queryTableStatusRequest) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.queryTableStatus(
-                                this.client.getEndpoint(),
-                                linkConnectionName,
-                                apiVersion,
-                                queryTableStatusRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.queryTableStatus(this.client.getEndpoint(), linkConnectionName,
+            apiVersion, queryTableStatusRequest, accept, context));
     }
 
     /**
      * Query the link table status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @param context The context to associate with this operation.
@@ -1169,17 +1094,17 @@ public final class LinkConnectionsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatusWithResponseAsync(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest, Context context) {
+    public Mono<Response<LinkConnectionQueryTableStatus>> queryTableStatusWithResponseAsync(String linkConnectionName,
+        QueryTableStatusRequest queryTableStatusRequest, Context context) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return service.queryTableStatus(
-                this.client.getEndpoint(), linkConnectionName, apiVersion, queryTableStatusRequest, accept, context);
+        return service.queryTableStatus(this.client.getEndpoint(), linkConnectionName, apiVersion,
+            queryTableStatusRequest, accept, context);
     }
 
     /**
      * Query the link table status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1188,15 +1113,15 @@ public final class LinkConnectionsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionQueryTableStatus> queryTableStatusAsync(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest) {
+    public Mono<LinkConnectionQueryTableStatus> queryTableStatusAsync(String linkConnectionName,
+        QueryTableStatusRequest queryTableStatusRequest) {
         return queryTableStatusWithResponseAsync(linkConnectionName, queryTableStatusRequest)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Query the link table status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @param context The context to associate with this operation.
@@ -1206,15 +1131,15 @@ public final class LinkConnectionsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LinkConnectionQueryTableStatus> queryTableStatusAsync(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest, Context context) {
+    public Mono<LinkConnectionQueryTableStatus> queryTableStatusAsync(String linkConnectionName,
+        QueryTableStatusRequest queryTableStatusRequest, Context context) {
         return queryTableStatusWithResponseAsync(linkConnectionName, queryTableStatusRequest, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Query the link table status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @param context The context to associate with this operation.
@@ -1224,14 +1149,14 @@ public final class LinkConnectionsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LinkConnectionQueryTableStatus> queryTableStatusWithResponse(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest, Context context) {
+    public Response<LinkConnectionQueryTableStatus> queryTableStatusWithResponse(String linkConnectionName,
+        QueryTableStatusRequest queryTableStatusRequest, Context context) {
         return queryTableStatusWithResponseAsync(linkConnectionName, queryTableStatusRequest, context).block();
     }
 
     /**
      * Query the link table status of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param queryTableStatusRequest Query table status request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1240,14 +1165,14 @@ public final class LinkConnectionsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LinkConnectionQueryTableStatus queryTableStatus(
-            String linkConnectionName, QueryTableStatusRequest queryTableStatusRequest) {
+    public LinkConnectionQueryTableStatus queryTableStatus(String linkConnectionName,
+        QueryTableStatusRequest queryTableStatusRequest) {
         return queryTableStatusWithResponse(linkConnectionName, queryTableStatusRequest, Context.NONE).getValue();
     }
 
     /**
      * Update landing zone credential of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1256,24 +1181,17 @@ public final class LinkConnectionsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateLandingZoneCredentialWithResponseAsync(
-            String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
+    public Mono<Response<Void>> updateLandingZoneCredentialWithResponseAsync(String linkConnectionName,
+        UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.updateLandingZoneCredential(
-                                this.client.getEndpoint(),
-                                linkConnectionName,
-                                apiVersion,
-                                updateLandingZoneCredentialRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.updateLandingZoneCredential(this.client.getEndpoint(),
+            linkConnectionName, apiVersion, updateLandingZoneCredentialRequest, accept, context));
     }
 
     /**
      * Update landing zone credential of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @param context The context to associate with this operation.
@@ -1283,24 +1201,17 @@ public final class LinkConnectionsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateLandingZoneCredentialWithResponseAsync(
-            String linkConnectionName,
-            UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
-            Context context) {
+    public Mono<Response<Void>> updateLandingZoneCredentialWithResponseAsync(String linkConnectionName,
+        UpdateLandingZoneCredential updateLandingZoneCredentialRequest, Context context) {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
-        return service.updateLandingZoneCredential(
-                this.client.getEndpoint(),
-                linkConnectionName,
-                apiVersion,
-                updateLandingZoneCredentialRequest,
-                accept,
-                context);
+        return service.updateLandingZoneCredential(this.client.getEndpoint(), linkConnectionName, apiVersion,
+            updateLandingZoneCredentialRequest, accept, context);
     }
 
     /**
      * Update landing zone credential of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1309,15 +1220,15 @@ public final class LinkConnectionsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateLandingZoneCredentialAsync(
-            String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
+    public Mono<Void> updateLandingZoneCredentialAsync(String linkConnectionName,
+        UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
         return updateLandingZoneCredentialWithResponseAsync(linkConnectionName, updateLandingZoneCredentialRequest)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Update landing zone credential of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @param context The context to associate with this operation.
@@ -1327,18 +1238,15 @@ public final class LinkConnectionsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateLandingZoneCredentialAsync(
-            String linkConnectionName,
-            UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
-            Context context) {
-        return updateLandingZoneCredentialWithResponseAsync(
-                        linkConnectionName, updateLandingZoneCredentialRequest, context)
-                .flatMap(ignored -> Mono.empty());
+    public Mono<Void> updateLandingZoneCredentialAsync(String linkConnectionName,
+        UpdateLandingZoneCredential updateLandingZoneCredentialRequest, Context context) {
+        return updateLandingZoneCredentialWithResponseAsync(linkConnectionName, updateLandingZoneCredentialRequest,
+            context).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Update landing zone credential of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @param context The context to associate with this operation.
@@ -1348,18 +1256,15 @@ public final class LinkConnectionsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateLandingZoneCredentialWithResponse(
-            String linkConnectionName,
-            UpdateLandingZoneCredential updateLandingZoneCredentialRequest,
-            Context context) {
-        return updateLandingZoneCredentialWithResponseAsync(
-                        linkConnectionName, updateLandingZoneCredentialRequest, context)
-                .block();
+    public Response<Void> updateLandingZoneCredentialWithResponse(String linkConnectionName,
+        UpdateLandingZoneCredential updateLandingZoneCredentialRequest, Context context) {
+        return updateLandingZoneCredentialWithResponseAsync(linkConnectionName, updateLandingZoneCredentialRequest,
+            context).block();
     }
 
     /**
      * Update landing zone credential of a link connection.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param updateLandingZoneCredentialRequest update landing zone credential request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1367,15 +1272,15 @@ public final class LinkConnectionsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateLandingZoneCredential(
-            String linkConnectionName, UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
+    public void updateLandingZoneCredential(String linkConnectionName,
+        UpdateLandingZoneCredential updateLandingZoneCredentialRequest) {
         updateLandingZoneCredentialWithResponse(linkConnectionName, updateLandingZoneCredentialRequest, Context.NONE);
     }
 
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1387,13 +1292,13 @@ public final class LinkConnectionsImpl {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.pause(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
+            context -> service.pause(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
     }
 
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1411,7 +1316,7 @@ public final class LinkConnectionsImpl {
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1426,7 +1331,7 @@ public final class LinkConnectionsImpl {
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1442,7 +1347,7 @@ public final class LinkConnectionsImpl {
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1458,7 +1363,7 @@ public final class LinkConnectionsImpl {
     /**
      * Pause a link connection. It may take a few minutes from Pausing to Paused, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1472,7 +1377,7 @@ public final class LinkConnectionsImpl {
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1484,13 +1389,13 @@ public final class LinkConnectionsImpl {
         final String apiVersion = "2023-04-18-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.resume(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
+            context -> service.resume(this.client.getEndpoint(), linkConnectionName, apiVersion, accept, context));
     }
 
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1508,7 +1413,7 @@ public final class LinkConnectionsImpl {
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1523,7 +1428,7 @@ public final class LinkConnectionsImpl {
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1539,7 +1444,7 @@ public final class LinkConnectionsImpl {
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1555,7 +1460,7 @@ public final class LinkConnectionsImpl {
     /**
      * Resume a link connection. It may take a few minutes from Resuming to Running, monitor the status with
      * LinkConnection_GetDetailedStatus.
-     *
+     * 
      * @param linkConnectionName The link connection name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1568,9 +1473,10 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1579,24 +1485,18 @@ public final class LinkConnectionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LinkConnectionResource>> listByWorkspaceNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -1604,26 +1504,20 @@ public final class LinkConnectionsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<LinkConnectionResource>> listByWorkspaceNextSinglePageAsync(
-            String nextLink, Context context) {
+    public Mono<PagedResponse<LinkConnectionResource>> listByWorkspaceNextSinglePageAsync(String nextLink,
+        Context context) {
         final String accept = "application/json";
         return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1636,9 +1530,10 @@ public final class LinkConnectionsImpl {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

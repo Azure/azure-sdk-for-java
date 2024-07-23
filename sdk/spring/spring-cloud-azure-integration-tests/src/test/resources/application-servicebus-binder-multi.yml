@@ -1,8 +1,8 @@
 spring:
   cloud:
+    function:
+      definition: queueConsume;queueSupply;topicConsume;topicSupply;
     stream:
-      function:
-        definition: queueConsume;queueSupply;topicConsume;topicSupply;
       bindings:
         topicConsume-in-0:
           destination: topic1

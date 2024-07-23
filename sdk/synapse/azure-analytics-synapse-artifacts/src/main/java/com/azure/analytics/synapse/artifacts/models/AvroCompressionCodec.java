@@ -5,48 +5,59 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AvroCompressionCodec. */
+/**
+ * Defines values for AvroCompressionCodec.
+ */
 public final class AvroCompressionCodec extends ExpandableStringEnum<AvroCompressionCodec> {
-    /** Static value none for AvroCompressionCodec. */
+    /**
+     * Static value none for AvroCompressionCodec.
+     */
     public static final AvroCompressionCodec NONE = fromString("none");
 
-    /** Static value deflate for AvroCompressionCodec. */
+    /**
+     * Static value deflate for AvroCompressionCodec.
+     */
     public static final AvroCompressionCodec DEFLATE = fromString("deflate");
 
-    /** Static value snappy for AvroCompressionCodec. */
+    /**
+     * Static value snappy for AvroCompressionCodec.
+     */
     public static final AvroCompressionCodec SNAPPY = fromString("snappy");
 
-    /** Static value xz for AvroCompressionCodec. */
+    /**
+     * Static value xz for AvroCompressionCodec.
+     */
     public static final AvroCompressionCodec XZ = fromString("xz");
 
-    /** Static value bzip2 for AvroCompressionCodec. */
+    /**
+     * Static value bzip2 for AvroCompressionCodec.
+     */
     public static final AvroCompressionCodec BZIP2 = fromString("bzip2");
 
     /**
      * Creates a new instance of AvroCompressionCodec value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AvroCompressionCodec() {}
+    public AvroCompressionCodec() {
+    }
 
     /**
      * Creates or finds a AvroCompressionCodec from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AvroCompressionCodec.
      */
-    @JsonCreator
     public static AvroCompressionCodec fromString(String name) {
         return fromString(name, AvroCompressionCodec.class);
     }
 
     /**
      * Gets known AvroCompressionCodec values.
-     *
+     * 
      * @return known AvroCompressionCodec values.
      */
     public static Collection<AvroCompressionCodec> values() {

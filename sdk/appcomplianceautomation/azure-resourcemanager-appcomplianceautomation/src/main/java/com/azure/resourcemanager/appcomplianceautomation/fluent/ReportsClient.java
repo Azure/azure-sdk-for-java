@@ -7,14 +7,27 @@ package com.azure.resourcemanager.appcomplianceautomation.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.appcomplianceautomation.fluent.models.CheckNameAvailabilityResponseInner;
+import com.azure.resourcemanager.appcomplianceautomation.fluent.models.ReportFixResultInner;
 import com.azure.resourcemanager.appcomplianceautomation.fluent.models.ReportResourceInner;
+import com.azure.resourcemanager.appcomplianceautomation.fluent.models.ReportVerificationResultInner;
+import com.azure.resourcemanager.appcomplianceautomation.fluent.models.ScopingQuestionsInner;
+import com.azure.resourcemanager.appcomplianceautomation.fluent.models.SyncCertRecordResponseInner;
+import com.azure.resourcemanager.appcomplianceautomation.models.CheckNameAvailabilityRequest;
+import com.azure.resourcemanager.appcomplianceautomation.models.ReportResourcePatch;
+import com.azure.resourcemanager.appcomplianceautomation.models.SyncCertRecordRequest;
 
-/** An instance of this class provides access to all the operations defined in ReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReportsClient.
+ */
 public interface ReportsClient {
     /**
      * Get the AppComplianceAutomation report list for the tenant.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the AppComplianceAutomation report list for the tenant as paginated response with {@link PagedIterable}.
@@ -24,11 +37,13 @@ public interface ReportsClient {
 
     /**
      * Get the AppComplianceAutomation report list for the tenant.
-     *
+     * 
      * @param skipToken Skip over when retrieving results.
      * @param top Number of elements to return when retrieving results.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     ?$select=reportName,id.
+     * ?$select=reportName,id.
+     * @param filter The filter to apply on the operation.
+     * @param orderby OData order by query option.
      * @param offerGuid The offerGuid which mapping to the reports.
      * @param reportCreatorTenantId The tenant id of the report creator.
      * @param context The context to associate with this operation.
@@ -38,6 +53,408 @@ public interface ReportsClient {
      * @return the AppComplianceAutomation report list for the tenant as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportResourceInner> list(
-        String skipToken, Integer top, String select, String offerGuid, String reportCreatorTenantId, Context context);
+    PagedIterable<ReportResourceInner> list(String skipToken, Integer top, String select, String filter, String orderby,
+        String offerGuid, String reportCreatorTenantId, Context context);
+
+    /**
+     * Get the AppComplianceAutomation report and its properties.
+     * 
+     * @param reportName Report Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AppComplianceAutomation report and its properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ReportResourceInner> getWithResponse(String reportName, Context context);
+
+    /**
+     * Get the AppComplianceAutomation report and its properties.
+     * 
+     * @param reportName Report Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the AppComplianceAutomation report and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReportResourceInner get(String reportName);
+
+    /**
+     * Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param properties Parameters for the create or update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a class represent an AppComplianceAutomation report resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReportResourceInner>, ReportResourceInner> beginCreateOrUpdate(String reportName,
+        ReportResourceInner properties);
+
+    /**
+     * Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param properties Parameters for the create or update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a class represent an AppComplianceAutomation report resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReportResourceInner>, ReportResourceInner> beginCreateOrUpdate(String reportName,
+        ReportResourceInner properties, Context context);
+
+    /**
+     * Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param properties Parameters for the create or update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class represent an AppComplianceAutomation report resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReportResourceInner createOrUpdate(String reportName, ReportResourceInner properties);
+
+    /**
+     * Create a new AppComplianceAutomation report or update an exiting AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param properties Parameters for the create or update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class represent an AppComplianceAutomation report resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReportResourceInner createOrUpdate(String reportName, ReportResourceInner properties, Context context);
+
+    /**
+     * Update an exiting AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param properties Parameters for the create or update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a class represent an AppComplianceAutomation report resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReportResourceInner>, ReportResourceInner> beginUpdate(String reportName,
+        ReportResourcePatch properties);
+
+    /**
+     * Update an exiting AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param properties Parameters for the create or update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a class represent an AppComplianceAutomation report resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReportResourceInner>, ReportResourceInner> beginUpdate(String reportName,
+        ReportResourcePatch properties, Context context);
+
+    /**
+     * Update an exiting AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param properties Parameters for the create or update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class represent an AppComplianceAutomation report resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReportResourceInner update(String reportName, ReportResourcePatch properties);
+
+    /**
+     * Update an exiting AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param properties Parameters for the create or update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a class represent an AppComplianceAutomation report resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReportResourceInner update(String reportName, ReportResourcePatch properties, Context context);
+
+    /**
+     * Delete an AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String reportName);
+
+    /**
+     * Delete an AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String reportName, Context context);
+
+    /**
+     * Delete an AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String reportName);
+
+    /**
+     * Delete an AppComplianceAutomation report.
+     * 
+     * @param reportName Report Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String reportName, Context context);
+
+    /**
+     * Checks the report's nested resource name availability, e.g: Webhooks, Evidences, Snapshots.
+     * 
+     * @param reportName Report Name.
+     * @param body NameAvailabilityRequest object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CheckNameAvailabilityResponseInner> nestedResourceCheckNameAvailabilityWithResponse(String reportName,
+        CheckNameAvailabilityRequest body, Context context);
+
+    /**
+     * Checks the report's nested resource name availability, e.g: Webhooks, Evidences, Snapshots.
+     * 
+     * @param reportName Report Name.
+     * @param body NameAvailabilityRequest object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameAvailabilityResponseInner nestedResourceCheckNameAvailability(String reportName,
+        CheckNameAvailabilityRequest body);
+
+    /**
+     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
+     * automation removed.
+     * 
+     * @param reportName Report Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of report fix result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReportFixResultInner>, ReportFixResultInner> beginFix(String reportName);
+
+    /**
+     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
+     * automation removed.
+     * 
+     * @param reportName Report Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of report fix result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReportFixResultInner>, ReportFixResultInner> beginFix(String reportName, Context context);
+
+    /**
+     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
+     * automation removed.
+     * 
+     * @param reportName Report Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return report fix result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReportFixResultInner fix(String reportName);
+
+    /**
+     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
+     * automation removed.
+     * 
+     * @param reportName Report Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return report fix result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReportFixResultInner fix(String reportName, Context context);
+
+    /**
+     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
+     * automation removed.
+     * 
+     * @param reportName Report Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scoping question list along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ScopingQuestionsInner> getScopingQuestionsWithResponse(String reportName, Context context);
+
+    /**
+     * Fix the AppComplianceAutomation report error. e.g: App Compliance Automation Tool service unregistered,
+     * automation removed.
+     * 
+     * @param reportName Report Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scoping question list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScopingQuestionsInner getScopingQuestions(String reportName);
+
+    /**
+     * Synchronize attestation record from app compliance.
+     * 
+     * @param reportName Report Name.
+     * @param body Parameters for synchronize certification record operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of synchronize certification record response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SyncCertRecordResponseInner>, SyncCertRecordResponseInner>
+        beginSyncCertRecord(String reportName, SyncCertRecordRequest body);
+
+    /**
+     * Synchronize attestation record from app compliance.
+     * 
+     * @param reportName Report Name.
+     * @param body Parameters for synchronize certification record operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of synchronize certification record response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SyncCertRecordResponseInner>, SyncCertRecordResponseInner>
+        beginSyncCertRecord(String reportName, SyncCertRecordRequest body, Context context);
+
+    /**
+     * Synchronize attestation record from app compliance.
+     * 
+     * @param reportName Report Name.
+     * @param body Parameters for synchronize certification record operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return synchronize certification record response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncCertRecordResponseInner syncCertRecord(String reportName, SyncCertRecordRequest body);
+
+    /**
+     * Synchronize attestation record from app compliance.
+     * 
+     * @param reportName Report Name.
+     * @param body Parameters for synchronize certification record operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return synchronize certification record response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncCertRecordResponseInner syncCertRecord(String reportName, SyncCertRecordRequest body, Context context);
+
+    /**
+     * Verify the AppComplianceAutomation report health status.
+     * 
+     * @param reportName Report Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of report health status verification result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReportVerificationResultInner>, ReportVerificationResultInner> beginVerify(String reportName);
+
+    /**
+     * Verify the AppComplianceAutomation report health status.
+     * 
+     * @param reportName Report Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of report health status verification result.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReportVerificationResultInner>, ReportVerificationResultInner> beginVerify(String reportName,
+        Context context);
+
+    /**
+     * Verify the AppComplianceAutomation report health status.
+     * 
+     * @param reportName Report Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return report health status verification result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReportVerificationResultInner verify(String reportName);
+
+    /**
+     * Verify the AppComplianceAutomation report health status.
+     * 
+     * @param reportName Report Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return report health status verification result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReportVerificationResultInner verify(String reportName, Context context);
 }

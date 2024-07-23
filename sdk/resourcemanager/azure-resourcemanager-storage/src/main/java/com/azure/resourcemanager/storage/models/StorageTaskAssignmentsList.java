@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.fluent.models.StorageTaskAssignmentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -22,7 +21,8 @@ public final class StorageTaskAssignmentsList {
     private List<StorageTaskAssignmentInner> value;
 
     /*
-     * Request URL that can be used to query next page of storage task assignments. Returned when total number of requested storage task assignments exceed maximum page size.
+     * Request URL that can be used to query next page of storage task assignments. Returned when total number of
+     * requested storage task assignments exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
@@ -35,7 +35,7 @@ public final class StorageTaskAssignmentsList {
 
     /**
      * Get the value property: Gets the list of storage task assignments and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<StorageTaskAssignmentInner> value() {
@@ -45,7 +45,7 @@ public final class StorageTaskAssignmentsList {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of storage task assignments. Returned
      * when total number of requested storage task assignments exceed maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -54,7 +54,7 @@ public final class StorageTaskAssignmentsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

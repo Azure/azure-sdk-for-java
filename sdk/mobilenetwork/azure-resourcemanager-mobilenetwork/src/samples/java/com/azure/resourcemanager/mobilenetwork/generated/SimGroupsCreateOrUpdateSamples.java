@@ -17,9 +17,7 @@ import java.util.Map;
  */
 public final class SimGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/SimGroupCreate.
-     * json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/SimGroupCreate.json
      */
     /**
      * Sample code: Create SIM group.
@@ -27,7 +25,10 @@ public final class SimGroupsCreateOrUpdateSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createSIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.simGroups().define("testSimGroup").withRegion("eastus").withExistingResourceGroup("rg1")
+        manager.simGroups()
+            .define("testSimGroup")
+            .withRegion("eastus")
+            .withExistingResourceGroup("rg1")
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",

@@ -5,31 +5,49 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity source for an HTTP file. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HttpSource")
+/**
+ * A copy activity source for an HTTP file.
+ */
 @Fluent
 public final class HttpSource extends CopySource {
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent
-     * to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Copy source type.
      */
-    @JsonProperty(value = "httpRequestTimeout")
+    private String type = "HttpSource";
+
+    /*
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     */
     private Object httpRequestTimeout;
 
-    /** Creates an instance of HttpSource class. */
-    public HttpSource() {}
+    /**
+     * Creates an instance of HttpSource class.
+     */
+    public HttpSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the httpRequestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP
      * server. The default value is equivalent to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the httpRequestTimeout value.
      */
     public Object getHttpRequestTimeout() {
@@ -40,7 +58,7 @@ public final class HttpSource extends CopySource {
      * Set the httpRequestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP
      * server. The default value is equivalent to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the HttpSource object itself.
      */
@@ -49,24 +67,89 @@ public final class HttpSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpSource if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the HttpSource.
+     */
+    public static HttpSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpSource deserializedHttpSource = new HttpSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedHttpSource.setSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedHttpSource.setSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedHttpSource.setMaxConcurrentConnections(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedHttpSource.type = reader.getString();
+                } else if ("httpRequestTimeout".equals(fieldName)) {
+                    deserializedHttpSource.httpRequestTimeout = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHttpSource.setAdditionalProperties(additionalProperties);
+
+            return deserializedHttpSource;
+        });
     }
 }

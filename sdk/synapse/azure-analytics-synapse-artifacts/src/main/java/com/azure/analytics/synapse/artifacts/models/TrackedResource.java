@@ -5,13 +5,16 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Tracked Resource
- *
- * <p>The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a
+ * 
+ * The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a
  * 'location'.
  */
 @Fluent
@@ -19,21 +22,22 @@ public class TrackedResource extends Resource {
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
-    /** Creates an instance of TrackedResource class. */
-    public TrackedResource() {}
+    /**
+     * Creates an instance of TrackedResource class.
+     */
+    public TrackedResource() {
+    }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -42,7 +46,7 @@ public class TrackedResource extends Resource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TrackedResource object itself.
      */
@@ -53,7 +57,7 @@ public class TrackedResource extends Resource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -62,12 +66,59 @@ public class TrackedResource extends Resource {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the TrackedResource object itself.
      */
     public TrackedResource setLocation(String location) {
         this.location = location;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrackedResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrackedResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrackedResource.
+     */
+    public static TrackedResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrackedResource deserializedTrackedResource = new TrackedResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTrackedResource.setId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedTrackedResource.setName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedTrackedResource.setType(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedTrackedResource.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTrackedResource.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrackedResource;
+        });
     }
 }

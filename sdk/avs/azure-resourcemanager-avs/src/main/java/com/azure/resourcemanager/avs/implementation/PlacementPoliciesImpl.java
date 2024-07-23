@@ -21,50 +21,41 @@ public final class PlacementPoliciesImpl implements PlacementPolicies {
 
     private final com.azure.resourcemanager.avs.AvsManager serviceManager;
 
-    public PlacementPoliciesImpl(
-        PlacementPoliciesClient innerClient, com.azure.resourcemanager.avs.AvsManager serviceManager) {
+    public PlacementPoliciesImpl(PlacementPoliciesClient innerClient,
+        com.azure.resourcemanager.avs.AvsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PlacementPolicy> list(String resourceGroupName, String privateCloudName, String clusterName) {
-        PagedIterable<PlacementPolicyInner> inner =
-            this.serviceClient().list(resourceGroupName, privateCloudName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new PlacementPolicyImpl(inner1, this.manager()));
+        PagedIterable<PlacementPolicyInner> inner
+            = this.serviceClient().list(resourceGroupName, privateCloudName, clusterName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PlacementPolicyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PlacementPolicy> list(
-        String resourceGroupName, String privateCloudName, String clusterName, Context context) {
-        PagedIterable<PlacementPolicyInner> inner =
-            this.serviceClient().list(resourceGroupName, privateCloudName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new PlacementPolicyImpl(inner1, this.manager()));
-    }
-
-    public Response<PlacementPolicy> getWithResponse(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String placementPolicyName,
+    public PagedIterable<PlacementPolicy> list(String resourceGroupName, String privateCloudName, String clusterName,
         Context context) {
-        Response<PlacementPolicyInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context);
+        PagedIterable<PlacementPolicyInner> inner
+            = this.serviceClient().list(resourceGroupName, privateCloudName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PlacementPolicyImpl(inner1, this.manager()));
+    }
+
+    public Response<PlacementPolicy> getWithResponse(String resourceGroupName, String privateCloudName,
+        String clusterName, String placementPolicyName, Context context) {
+        Response<PlacementPolicyInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PlacementPolicyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PlacementPolicy get(
-        String resourceGroupName, String privateCloudName, String clusterName, String placementPolicyName) {
-        PlacementPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, placementPolicyName);
+    public PlacementPolicy get(String resourceGroupName, String privateCloudName, String clusterName,
+        String placementPolicyName) {
+        PlacementPolicyInner inner
+            = this.serviceClient().get(resourceGroupName, privateCloudName, clusterName, placementPolicyName);
         if (inner != null) {
             return new PlacementPolicyImpl(inner, this.manager());
         } else {
@@ -72,158 +63,109 @@ public final class PlacementPoliciesImpl implements PlacementPolicies {
         }
     }
 
-    public void delete(
-        String resourceGroupName, String privateCloudName, String clusterName, String placementPolicyName) {
+    public void delete(String resourceGroupName, String privateCloudName, String clusterName,
+        String placementPolicyName) {
         this.serviceClient().delete(resourceGroupName, privateCloudName, clusterName, placementPolicyName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String placementPolicyName,
-        Context context) {
+    public void delete(String resourceGroupName, String privateCloudName, String clusterName,
+        String placementPolicyName, Context context) {
         this.serviceClient().delete(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context);
     }
 
     public PlacementPolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String placementPolicyName = Utils.getValueFromIdByName(id, "placementPolicies");
+        String placementPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "placementPolicies");
         if (placementPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'placementPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'placementPolicies'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, privateCloudName, clusterName, placementPolicyName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, privateCloudName, clusterName, placementPolicyName, Context.NONE)
             .getValue();
     }
 
     public Response<PlacementPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String placementPolicyName = Utils.getValueFromIdByName(id, "placementPolicies");
+        String placementPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "placementPolicies");
         if (placementPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'placementPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'placementPolicies'.", id)));
         }
         return this.getWithResponse(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String placementPolicyName = Utils.getValueFromIdByName(id, "placementPolicies");
+        String placementPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "placementPolicies");
         if (placementPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'placementPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'placementPolicies'.", id)));
         }
         this.delete(resourceGroupName, privateCloudName, clusterName, placementPolicyName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateCloudName = Utils.getValueFromIdByName(id, "privateClouds");
+        String privateCloudName = ResourceManagerUtils.getValueFromIdByName(id, "privateClouds");
         if (privateCloudName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateClouds'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String placementPolicyName = Utils.getValueFromIdByName(id, "placementPolicies");
+        String placementPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "placementPolicies");
         if (placementPolicyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'placementPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'placementPolicies'.", id)));
         }
         this.delete(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context);
     }

@@ -2000,9 +2000,7 @@ public final class TypeDefinitionAsyncClient {
     }
 
     /**
-     * Create all atlas type definitions in bulk, only new definitions will be
-     * created.
-     * Any changes to the existing definitions will be discarded.
+     * Create all atlas type definitions in bulk. Please avoid recreating existing types.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -2569,7 +2567,7 @@ public final class TypeDefinitionAsyncClient {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2579,8 +2577,8 @@ public final class TypeDefinitionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchCreateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
-        return this.serviceClient.batchCreateWithResponseAsync(atlasTypesDef, requestOptions);
+    public Mono<Response<BinaryData>> batchCreateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchCreateWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -3152,7 +3150,7 @@ public final class TypeDefinitionAsyncClient {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3162,8 +3160,8 @@ public final class TypeDefinitionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> batchUpdateWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
-        return this.serviceClient.batchUpdateWithResponseAsync(atlasTypesDef, requestOptions);
+    public Mono<Response<BinaryData>> batchUpdateWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchUpdateWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -3451,7 +3449,7 @@ public final class TypeDefinitionAsyncClient {
      * }
      * }</pre>
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3461,8 +3459,8 @@ public final class TypeDefinitionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> batchDeleteWithResponse(BinaryData atlasTypesDef, RequestOptions requestOptions) {
-        return this.serviceClient.batchDeleteWithResponseAsync(atlasTypesDef, requestOptions);
+    public Mono<Response<Void>> batchDeleteWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.batchDeleteWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -4077,11 +4075,9 @@ public final class TypeDefinitionAsyncClient {
     }
 
     /**
-     * Create all atlas type definitions in bulk, only new definitions will be
-     * created.
-     * Any changes to the existing definitions will be discarded.
+     * Create all atlas type definitions in bulk. Please avoid recreating existing types.
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4092,10 +4088,10 @@ public final class TypeDefinitionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasTypesDef> batchCreate(AtlasTypesDef atlasTypesDef) {
+    public Mono<AtlasTypesDef> batchCreate(AtlasTypesDef body) {
         // Generated convenience method for batchCreateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return batchCreateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).flatMap(FluxUtil::toMono)
+        return batchCreateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasTypesDef.class));
     }
 
@@ -4103,7 +4099,7 @@ public final class TypeDefinitionAsyncClient {
      * Update all types in bulk, changes detected in the type definitions would be
      * persisted.
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4114,17 +4110,17 @@ public final class TypeDefinitionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AtlasTypesDef> batchUpdate(AtlasTypesDef atlasTypesDef) {
+    public Mono<AtlasTypesDef> batchUpdate(AtlasTypesDef body) {
         // Generated convenience method for batchUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return batchUpdateWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).flatMap(FluxUtil::toMono)
+        return batchUpdateWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AtlasTypesDef.class));
     }
 
     /**
      * Delete API for all types in bulk.
      * 
-     * @param atlasTypesDef The definitions of types.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4135,10 +4131,10 @@ public final class TypeDefinitionAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> batchDelete(AtlasTypesDef atlasTypesDef) {
+    public Mono<Void> batchDelete(AtlasTypesDef body) {
         // Generated convenience method for batchDeleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return batchDeleteWithResponse(BinaryData.fromObject(atlasTypesDef), requestOptions).flatMap(FluxUtil::toMono);
+        return batchDeleteWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**

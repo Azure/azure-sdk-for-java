@@ -5,63 +5,84 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of integration runtime. */
+/**
+ * The state of integration runtime.
+ */
 public final class IntegrationRuntimeState extends ExpandableStringEnum<IntegrationRuntimeState> {
-    /** Static value Initial for IntegrationRuntimeState. */
+    /**
+     * Static value Initial for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState INITIAL = fromString("Initial");
 
-    /** Static value Stopped for IntegrationRuntimeState. */
+    /**
+     * Static value Stopped for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState STOPPED = fromString("Stopped");
 
-    /** Static value Started for IntegrationRuntimeState. */
+    /**
+     * Static value Started for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState STARTED = fromString("Started");
 
-    /** Static value Starting for IntegrationRuntimeState. */
+    /**
+     * Static value Starting for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState STARTING = fromString("Starting");
 
-    /** Static value Stopping for IntegrationRuntimeState. */
+    /**
+     * Static value Stopping for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState STOPPING = fromString("Stopping");
 
-    /** Static value NeedRegistration for IntegrationRuntimeState. */
+    /**
+     * Static value NeedRegistration for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState NEED_REGISTRATION = fromString("NeedRegistration");
 
-    /** Static value Online for IntegrationRuntimeState. */
+    /**
+     * Static value Online for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState ONLINE = fromString("Online");
 
-    /** Static value Limited for IntegrationRuntimeState. */
+    /**
+     * Static value Limited for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState LIMITED = fromString("Limited");
 
-    /** Static value Offline for IntegrationRuntimeState. */
+    /**
+     * Static value Offline for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState OFFLINE = fromString("Offline");
 
-    /** Static value AccessDenied for IntegrationRuntimeState. */
+    /**
+     * Static value AccessDenied for IntegrationRuntimeState.
+     */
     public static final IntegrationRuntimeState ACCESS_DENIED = fromString("AccessDenied");
 
     /**
      * Creates a new instance of IntegrationRuntimeState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public IntegrationRuntimeState() {}
+    public IntegrationRuntimeState() {
+    }
 
     /**
      * Creates or finds a IntegrationRuntimeState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeState.
      */
-    @JsonCreator
     public static IntegrationRuntimeState fromString(String name) {
         return fromString(name, IntegrationRuntimeState.class);
     }
 
     /**
      * Gets known IntegrationRuntimeState values.
-     *
+     * 
      * @return known IntegrationRuntimeState values.
      */
     public static Collection<IntegrationRuntimeState> values() {

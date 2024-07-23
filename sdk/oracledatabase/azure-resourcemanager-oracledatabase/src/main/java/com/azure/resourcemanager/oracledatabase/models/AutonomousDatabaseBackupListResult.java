@@ -4,33 +4,35 @@
 
 package com.azure.resourcemanager.oracledatabase.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.oracledatabase.fluent.models.AutonomousDatabaseBackupInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a AutonomousDatabaseBackup list operation.
  */
-@Fluent
-public final class AutonomousDatabaseBackupListResult {
+@Immutable
+public final class AutonomousDatabaseBackupListResult implements JsonSerializable<AutonomousDatabaseBackupListResult> {
     /*
      * The AutonomousDatabaseBackup items on this page
      */
-    @JsonProperty(value = "value", required = true)
     private List<AutonomousDatabaseBackupInner> value;
 
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
      * Creates an instance of AutonomousDatabaseBackupListResult class.
      */
-    public AutonomousDatabaseBackupListResult() {
+    private AutonomousDatabaseBackupListResult() {
     }
 
     /**
@@ -40,17 +42,6 @@ public final class AutonomousDatabaseBackupListResult {
      */
     public List<AutonomousDatabaseBackupInner> value() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The AutonomousDatabaseBackup items on this page.
-     * 
-     * @param value the value value to set.
-     * @return the AutonomousDatabaseBackupListResult object itself.
-     */
-    public AutonomousDatabaseBackupListResult withValue(List<AutonomousDatabaseBackupInner> value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -78,4 +69,47 @@ public final class AutonomousDatabaseBackupListResult {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutonomousDatabaseBackupListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutonomousDatabaseBackupListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutonomousDatabaseBackupListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutonomousDatabaseBackupListResult.
+     */
+    public static AutonomousDatabaseBackupListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutonomousDatabaseBackupListResult deserializedAutonomousDatabaseBackupListResult
+                = new AutonomousDatabaseBackupListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AutonomousDatabaseBackupInner> value
+                        = reader.readArray(reader1 -> AutonomousDatabaseBackupInner.fromJson(reader1));
+                    deserializedAutonomousDatabaseBackupListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAutonomousDatabaseBackupListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutonomousDatabaseBackupListResult;
+        });
+    }
 }

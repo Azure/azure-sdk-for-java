@@ -24,17 +24,13 @@ public final class ServicePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * A precedence value that is used to decide between services when identifying the QoS values to use for a
-     * particular SIM. A lower value means a higher priority. This value should be unique among all services configured
-     * in the mobile network.
+     * A precedence value that is used to decide between services when identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique among all services configured in the mobile network.
      */
     @JsonProperty(value = "servicePrecedence", required = true)
     private int servicePrecedence;
 
     /*
-     * The QoS policy to use for packets matching this service. This can be overridden for particular flows using the
-     * ruleQosPolicy field in a PccRuleConfiguration. If this field is null then the UE's SIM policy will define the
-     * QoS settings.
+     * The QoS policy to use for packets matching this service. This can be overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null then the UE's SIM policy will define the QoS settings.
      */
     @JsonProperty(value = "serviceQosPolicy")
     private QosPolicy serviceQosPolicy;
@@ -138,8 +134,9 @@ public final class ServicePropertiesFormat {
             serviceQosPolicy().validate();
         }
         if (pccRules() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property pccRules in model ServicePropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pccRules in model ServicePropertiesFormat"));
         } else {
             pccRules().forEach(e -> e.validate());
         }

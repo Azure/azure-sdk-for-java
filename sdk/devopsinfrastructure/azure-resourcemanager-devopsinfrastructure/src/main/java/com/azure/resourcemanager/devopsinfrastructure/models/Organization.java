@@ -6,30 +6,31 @@ package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines an Azure DevOps organization.
  */
 @Fluent
-public final class Organization {
+public final class Organization implements JsonSerializable<Organization> {
     /*
      * The Azure DevOps organization URL in which the pool should be created.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
      * Optional list of projects in which the pool should be created.
      */
-    @JsonProperty(value = "projects")
     private List<String> projects;
 
     /*
      * How many machines can be created at maximum in this organization out of the maximumConcurrency of the pool.
      */
-    @JsonProperty(value = "parallelism")
     private Integer parallelism;
 
     /**
@@ -113,4 +114,48 @@ public final class Organization {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Organization.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeArrayField("projects", this.projects, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("parallelism", this.parallelism);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Organization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Organization if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Organization.
+     */
+    public static Organization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Organization deserializedOrganization = new Organization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedOrganization.url = reader.getString();
+                } else if ("projects".equals(fieldName)) {
+                    List<String> projects = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOrganization.projects = projects;
+                } else if ("parallelism".equals(fieldName)) {
+                    deserializedOrganization.parallelism = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrganization;
+        });
+    }
 }

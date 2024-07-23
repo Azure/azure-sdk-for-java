@@ -8,12 +8,12 @@ import com.azure.core.test.TestMode;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeAnalyticsLogging;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
@@ -55,7 +55,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -709,17 +708,20 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
         DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
             .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
             .buildAsyncClient();
 
         StepVerifier.create(aadServiceClient.getProperties())
-            .verifyErrorSatisfies(r -> {
-                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
-                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
-            });
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
     }
 
     @Test

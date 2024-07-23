@@ -11,9 +11,7 @@ import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
  */
 public final class PacketCoreDataPlanesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/examples/
-     * PacketCoreDataPlaneCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-04-01/examples/PacketCoreDataPlaneCreate.json
      */
     /**
      * Sample code: Create packet core data plane.
@@ -21,8 +19,11 @@ public final class PacketCoreDataPlanesCreateOrUpdateSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void createPacketCoreDataPlane(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreDataPlanes().define("testPacketCoreDP").withRegion("eastus")
+        manager.packetCoreDataPlanes()
+            .define("testPacketCoreDP")
+            .withRegion("eastus")
             .withExistingPacketCoreControlPlane("rg1", "testPacketCoreCP")
-            .withUserPlaneAccessInterface(new InterfaceProperties().withName("N3")).create();
+            .withUserPlaneAccessInterface(new InterfaceProperties().withName("N3"))
+            .create();
     }
 }

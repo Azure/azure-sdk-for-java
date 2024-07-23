@@ -5,23 +5,30 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data flow resource type. */
+/**
+ * Data flow resource type.
+ */
 @Fluent
 public final class DataFlowResource extends SubResource {
     /*
      * Data flow properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private DataFlow properties;
 
-    /** Creates an instance of DataFlowResource class. */
-    public DataFlowResource() {}
+    /**
+     * Creates an instance of DataFlowResource class.
+     */
+    public DataFlowResource() {
+    }
 
     /**
      * Get the properties property: Data flow properties.
-     *
+     * 
      * @return the properties value.
      */
     public DataFlow getProperties() {
@@ -30,12 +37,57 @@ public final class DataFlowResource extends SubResource {
 
     /**
      * Set the properties property: Data flow properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DataFlowResource object itself.
      */
     public DataFlowResource setProperties(DataFlow properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataFlowResource.
+     */
+    public static DataFlowResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowResource deserializedDataFlowResource = new DataFlowResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataFlowResource.setId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataFlowResource.setName(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataFlowResource.setType(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDataFlowResource.setEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataFlowResource.properties = DataFlow.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlowResource;
+        });
     }
 }

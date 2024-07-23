@@ -14,20 +14,17 @@ public final class DatabricksNotebookActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksNotebookActivityTypeProperties model = BinaryData.fromString(
-            "{\"notebookPath\":\"datazjryppv\",\"baseParameters\":{\"bftafrbuvw\":\"datalcczgflogzstcf\",\"dxmmtyumejp\":\"datagwwrclxhveso\",\"b\":\"dataxuiod\",\"dvceuyw\":\"dataaujhox\"},\"libraries\":[{\"jbjdyoccnlvyhiet\":\"datazlcvokvo\"},{\"ihhgpek\":\"datannlsqym\",\"sani\":\"dataulkkhyfiuxdadcdr\",\"ewepoantsr\":\"datacfrtijzsumgzebqb\",\"unedsozjfigi\":\"datapdeewjgjdqla\"},{\"tjjqz\":\"dataswxcvwh\",\"srisfccf\":\"dataixsvoob\",\"mihifrkyvut\":\"datau\"}]}")
+            "{\"notebookPath\":\"datazsxjrafhdf\",\"baseParameters\":{\"huvflgwgqhe\":\"dataaawwnqijp\",\"guodoujpwqbot\":\"dataeasmk\",\"xxpyrtajlydefqfv\":\"datavcp\",\"xbqdwbjhgjzvceyx\":\"dataqruympov\"},\"libraries\":[{\"dggyhpuhcc\":\"datauyk\",\"abdkbkblop\":\"dataehndbutpt\"}]}")
             .toObject(DatabricksNotebookActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabricksNotebookActivityTypeProperties model
-            = new DatabricksNotebookActivityTypeProperties().withNotebookPath("datazjryppv")
-                .withBaseParameters(mapOf("bftafrbuvw", "datalcczgflogzstcf", "dxmmtyumejp", "datagwwrclxhveso", "b",
-                    "dataxuiod", "dvceuyw", "dataaujhox"))
-                .withLibraries(Arrays.asList(mapOf("jbjdyoccnlvyhiet", "datazlcvokvo"),
-                    mapOf("ihhgpek", "datannlsqym", "sani", "dataulkkhyfiuxdadcdr", "ewepoantsr",
-                        "datacfrtijzsumgzebqb", "unedsozjfigi", "datapdeewjgjdqla"),
-                    mapOf("tjjqz", "dataswxcvwh", "srisfccf", "dataixsvoob", "mihifrkyvut", "datau")));
+            = new DatabricksNotebookActivityTypeProperties().withNotebookPath("datazsxjrafhdf")
+                .withBaseParameters(mapOf("huvflgwgqhe", "dataaawwnqijp", "guodoujpwqbot", "dataeasmk",
+                    "xxpyrtajlydefqfv", "datavcp", "xbqdwbjhgjzvceyx", "dataqruympov"))
+                .withLibraries(Arrays.asList(mapOf("dggyhpuhcc", "datauyk", "abdkbkblop", "dataehndbutpt")));
         model = BinaryData.fromObject(model).toObject(DatabricksNotebookActivityTypeProperties.class);
     }
 

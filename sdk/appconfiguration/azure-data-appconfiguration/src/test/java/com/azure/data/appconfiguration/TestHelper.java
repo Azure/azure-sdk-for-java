@@ -2,9 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.ArrayList;
@@ -63,5 +68,15 @@ class TestHelper {
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+    }
+
+    static TokenCredential getTokenCredential(InterceptorManager interceptorManager) {
+        if (interceptorManager.isPlaybackMode()) {
+            return new MockTokenCredential();
+        } else if (interceptorManager.isRecordMode()) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else {
+            return new AzurePowerShellCredentialBuilder().build();
+        }
     }
 }

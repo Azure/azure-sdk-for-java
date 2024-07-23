@@ -504,6 +504,24 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * new active IterableStream appears (due to a new {@code receiveMessages} call) then client will stop further release,
      * so application may receive some messages from the buffer or already in transit followed by previously released
      * messages when broker redeliver them, which can appear as out of order delivery.
+     * </p>
+     * <p>
+     * To keep the lock on each message received from a non-session resource (queue, topic subscription), the client will
+     * run a background task that will continuously renew the lock before it expires. By default, the lock renew task will
+     * run for a duration of 5 minutes, this duration can be adjusted using
+     * the {@link ServiceBusReceiverClientBuilder#maxAutoLockRenewDuration(Duration)} API or can be turned off by
+     * setting it {@link Duration#ZERO}. A higher {@code maxMessages} value means an equivalent number of lock renewal
+     * tasks running in the client, which may put more stress on low CPU environments. Given each lock renewal is a network
+     * call to the broker, a high number of lock renewal tasks making multiple lock renew calls also may have an adverse
+     * effect in namespace throttling. Additionally, if certain lock renewal tasks fail to renew the lock on time because
+     * of low CPU, service throttling or overloaded network, then client may lose the lock on the messages, which will
+     * cause the application's attempts to settle (e.g., complete, abandon) those messages to fail. The broker will
+     * redeliver those messages, but if the settling attempts fail repeatedly beyond the max delivery count, then the message
+     * will be transferred to dead letter queue. Keep this in mind when choosing {@code maxMessages}. You may consider
+     * disabling the client-side lock renewal using {@code maxAutoLockRenewDuration(Duration.ZERO)} if you can configure
+     * a lock duration at the resource (queue,topic subscription) level that at least exceeds the cumulative expected
+     * processing time for {@code maxMessages} messages.
+     * </p>
      * <p>
      * The client uses an AMQP link underneath to receive the messages; the client will transparently transition
      * to a new AMQP link if the current one encounters a retriable error. When the client experiences a non-retriable
@@ -551,6 +569,23 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * network calls to the broker that might have adverse effect in namespace throttling and increases the chances of
      * out of order deliveries. Also, frequent receiveMessages with low timeout means frequent scheduling of timer tasks,
      * which may put more stress on low CPU environments.
+     * </p>
+     * <p>
+     * To keep the lock on each message received from a non-session resource (queue, topic subscription), the client will
+     * run a background task that will continuously renew the lock before it expires. By default, the lock renew task will
+     * run for a duration of 5 minutes, this duration can be adjusted using
+     * the {@link ServiceBusReceiverClientBuilder#maxAutoLockRenewDuration(Duration)} API or can be turned off by
+     * setting it {@link Duration#ZERO}. A higher {@code maxMessages} value means an equivalent number of lock renewal
+     * tasks running in the client, which may put more stress on low CPU environments. Given each lock renewal is a network
+     * call to the broker, a high number of lock renewal tasks making multiple lock renew calls also may have an adverse
+     * effect in namespace throttling. Additionally, if certain lock renewal tasks fail to renew the lock on time because
+     * of low CPU, service throttling or overloaded network, then client may lose the lock on the messages, which will
+     * cause the application's attempts to settle (e.g., complete, abandon) those messages to fail. The broker will
+     * redeliver those messages, but if the settling attempts fail repeatedly beyond the max delivery count, then the message
+     * will be transferred to dead letter queue. Keep this in mind when choosing {@code maxMessages}. You may consider
+     * disabling the client-side lock renewal using {@code maxAutoLockRenewDuration(Duration.ZERO)} if you can configure
+     * a lock duration at the resource (queue,topic subscription) level that at least exceeds the cumulative expected
+     * processing time for {@code maxMessages} messages.
      * </p>
      * <p>
      * The client uses an AMQP link underneath to receive the messages; the client will transparently transition

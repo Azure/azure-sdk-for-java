@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -32,6 +32,7 @@ import com.azure.resourcemanager.avs.implementation.ClustersImpl;
 import com.azure.resourcemanager.avs.implementation.DatastoresImpl;
 import com.azure.resourcemanager.avs.implementation.GlobalReachConnectionsImpl;
 import com.azure.resourcemanager.avs.implementation.HcxEnterpriseSitesImpl;
+import com.azure.resourcemanager.avs.implementation.IscsiPathsImpl;
 import com.azure.resourcemanager.avs.implementation.LocationsImpl;
 import com.azure.resourcemanager.avs.implementation.OperationsImpl;
 import com.azure.resourcemanager.avs.implementation.PlacementPoliciesImpl;
@@ -48,6 +49,7 @@ import com.azure.resourcemanager.avs.models.Clusters;
 import com.azure.resourcemanager.avs.models.Datastores;
 import com.azure.resourcemanager.avs.models.GlobalReachConnections;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSites;
+import com.azure.resourcemanager.avs.models.IscsiPaths;
 import com.azure.resourcemanager.avs.models.Locations;
 import com.azure.resourcemanager.avs.models.Operations;
 import com.azure.resourcemanager.avs.models.PlacementPolicies;
@@ -64,7 +66,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to AvsManager. Azure VMware Solution API. */
+/**
+ * Entry point to AvsManager.
+ * Azure VMware Solution API.
+ */
 public final class AvsManager {
     private Operations operations;
 
@@ -72,49 +77,49 @@ public final class AvsManager {
 
     private PrivateClouds privateClouds;
 
+    private Addons addons;
+
+    private Authorizations authorizations;
+
+    private CloudLinks cloudLinks;
+
     private Clusters clusters;
 
     private Datastores datastores;
 
-    private HcxEnterpriseSites hcxEnterpriseSites;
-
-    private Authorizations authorizations;
-
-    private GlobalReachConnections globalReachConnections;
-
-    private WorkloadNetworks workloadNetworks;
-
-    private CloudLinks cloudLinks;
-
-    private Addons addons;
+    private PlacementPolicies placementPolicies;
 
     private VirtualMachines virtualMachines;
 
-    private PlacementPolicies placementPolicies;
+    private GlobalReachConnections globalReachConnections;
+
+    private HcxEnterpriseSites hcxEnterpriseSites;
+
+    private IscsiPaths iscsiPaths;
+
+    private ScriptExecutions scriptExecutions;
 
     private ScriptPackages scriptPackages;
 
     private ScriptCmdlets scriptCmdlets;
 
-    private ScriptExecutions scriptExecutions;
+    private WorkloadNetworks workloadNetworks;
 
     private final AvsClient clientObject;
 
     private AvsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AvsClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AvsClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of Avs service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Avs service API instance.
@@ -127,7 +132,7 @@ public final class AvsManager {
 
     /**
      * Creates an instance of Avs service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Avs service API instance.
@@ -140,14 +145,16 @@ public final class AvsManager {
 
     /**
      * Gets a Configurable instance that can be used to create AvsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new AvsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -219,8 +226,8 @@ public final class AvsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -237,8 +244,8 @@ public final class AvsManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -258,15 +265,13 @@ public final class AvsManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.avs")
                 .append("/")
-                .append("1.1.0");
+                .append("1.2.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -291,38 +296,28 @@ public final class AvsManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new AvsManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -334,7 +329,7 @@ public final class AvsManager {
 
     /**
      * Gets the resource collection API of Locations.
-     *
+     * 
      * @return Resource collection API of Locations.
      */
     public Locations locations() {
@@ -346,7 +341,7 @@ public final class AvsManager {
 
     /**
      * Gets the resource collection API of PrivateClouds. It manages PrivateCloud.
-     *
+     * 
      * @return Resource collection API of PrivateClouds.
      */
     public PrivateClouds privateClouds() {
@@ -357,8 +352,44 @@ public final class AvsManager {
     }
 
     /**
+     * Gets the resource collection API of Addons. It manages Addon.
+     * 
+     * @return Resource collection API of Addons.
+     */
+    public Addons addons() {
+        if (this.addons == null) {
+            this.addons = new AddonsImpl(clientObject.getAddons(), this);
+        }
+        return addons;
+    }
+
+    /**
+     * Gets the resource collection API of Authorizations. It manages ExpressRouteAuthorization.
+     * 
+     * @return Resource collection API of Authorizations.
+     */
+    public Authorizations authorizations() {
+        if (this.authorizations == null) {
+            this.authorizations = new AuthorizationsImpl(clientObject.getAuthorizations(), this);
+        }
+        return authorizations;
+    }
+
+    /**
+     * Gets the resource collection API of CloudLinks. It manages CloudLink.
+     * 
+     * @return Resource collection API of CloudLinks.
+     */
+    public CloudLinks cloudLinks() {
+        if (this.cloudLinks == null) {
+            this.cloudLinks = new CloudLinksImpl(clientObject.getCloudLinks(), this);
+        }
+        return cloudLinks;
+    }
+
+    /**
      * Gets the resource collection API of Clusters. It manages Cluster.
-     *
+     * 
      * @return Resource collection API of Clusters.
      */
     public Clusters clusters() {
@@ -370,7 +401,7 @@ public final class AvsManager {
 
     /**
      * Gets the resource collection API of Datastores. It manages Datastore.
-     *
+     * 
      * @return Resource collection API of Datastores.
      */
     public Datastores datastores() {
@@ -381,95 +412,8 @@ public final class AvsManager {
     }
 
     /**
-     * Gets the resource collection API of HcxEnterpriseSites. It manages HcxEnterpriseSite.
-     *
-     * @return Resource collection API of HcxEnterpriseSites.
-     */
-    public HcxEnterpriseSites hcxEnterpriseSites() {
-        if (this.hcxEnterpriseSites == null) {
-            this.hcxEnterpriseSites = new HcxEnterpriseSitesImpl(clientObject.getHcxEnterpriseSites(), this);
-        }
-        return hcxEnterpriseSites;
-    }
-
-    /**
-     * Gets the resource collection API of Authorizations. It manages ExpressRouteAuthorization.
-     *
-     * @return Resource collection API of Authorizations.
-     */
-    public Authorizations authorizations() {
-        if (this.authorizations == null) {
-            this.authorizations = new AuthorizationsImpl(clientObject.getAuthorizations(), this);
-        }
-        return authorizations;
-    }
-
-    /**
-     * Gets the resource collection API of GlobalReachConnections. It manages GlobalReachConnection.
-     *
-     * @return Resource collection API of GlobalReachConnections.
-     */
-    public GlobalReachConnections globalReachConnections() {
-        if (this.globalReachConnections == null) {
-            this.globalReachConnections =
-                new GlobalReachConnectionsImpl(clientObject.getGlobalReachConnections(), this);
-        }
-        return globalReachConnections;
-    }
-
-    /**
-     * Gets the resource collection API of WorkloadNetworks. It manages WorkloadNetworkSegment, WorkloadNetworkDhcp,
-     * WorkloadNetworkPortMirroring, WorkloadNetworkVMGroup, WorkloadNetworkDnsService, WorkloadNetworkDnsZone,
-     * WorkloadNetworkPublicIp.
-     *
-     * @return Resource collection API of WorkloadNetworks.
-     */
-    public WorkloadNetworks workloadNetworks() {
-        if (this.workloadNetworks == null) {
-            this.workloadNetworks = new WorkloadNetworksImpl(clientObject.getWorkloadNetworks(), this);
-        }
-        return workloadNetworks;
-    }
-
-    /**
-     * Gets the resource collection API of CloudLinks. It manages CloudLink.
-     *
-     * @return Resource collection API of CloudLinks.
-     */
-    public CloudLinks cloudLinks() {
-        if (this.cloudLinks == null) {
-            this.cloudLinks = new CloudLinksImpl(clientObject.getCloudLinks(), this);
-        }
-        return cloudLinks;
-    }
-
-    /**
-     * Gets the resource collection API of Addons. It manages Addon.
-     *
-     * @return Resource collection API of Addons.
-     */
-    public Addons addons() {
-        if (this.addons == null) {
-            this.addons = new AddonsImpl(clientObject.getAddons(), this);
-        }
-        return addons;
-    }
-
-    /**
-     * Gets the resource collection API of VirtualMachines.
-     *
-     * @return Resource collection API of VirtualMachines.
-     */
-    public VirtualMachines virtualMachines() {
-        if (this.virtualMachines == null) {
-            this.virtualMachines = new VirtualMachinesImpl(clientObject.getVirtualMachines(), this);
-        }
-        return virtualMachines;
-    }
-
-    /**
      * Gets the resource collection API of PlacementPolicies. It manages PlacementPolicy.
-     *
+     * 
      * @return Resource collection API of PlacementPolicies.
      */
     public PlacementPolicies placementPolicies() {
@@ -480,8 +424,69 @@ public final class AvsManager {
     }
 
     /**
+     * Gets the resource collection API of VirtualMachines.
+     * 
+     * @return Resource collection API of VirtualMachines.
+     */
+    public VirtualMachines virtualMachines() {
+        if (this.virtualMachines == null) {
+            this.virtualMachines = new VirtualMachinesImpl(clientObject.getVirtualMachines(), this);
+        }
+        return virtualMachines;
+    }
+
+    /**
+     * Gets the resource collection API of GlobalReachConnections. It manages GlobalReachConnection.
+     * 
+     * @return Resource collection API of GlobalReachConnections.
+     */
+    public GlobalReachConnections globalReachConnections() {
+        if (this.globalReachConnections == null) {
+            this.globalReachConnections
+                = new GlobalReachConnectionsImpl(clientObject.getGlobalReachConnections(), this);
+        }
+        return globalReachConnections;
+    }
+
+    /**
+     * Gets the resource collection API of HcxEnterpriseSites. It manages HcxEnterpriseSite.
+     * 
+     * @return Resource collection API of HcxEnterpriseSites.
+     */
+    public HcxEnterpriseSites hcxEnterpriseSites() {
+        if (this.hcxEnterpriseSites == null) {
+            this.hcxEnterpriseSites = new HcxEnterpriseSitesImpl(clientObject.getHcxEnterpriseSites(), this);
+        }
+        return hcxEnterpriseSites;
+    }
+
+    /**
+     * Gets the resource collection API of IscsiPaths.
+     * 
+     * @return Resource collection API of IscsiPaths.
+     */
+    public IscsiPaths iscsiPaths() {
+        if (this.iscsiPaths == null) {
+            this.iscsiPaths = new IscsiPathsImpl(clientObject.getIscsiPaths(), this);
+        }
+        return iscsiPaths;
+    }
+
+    /**
+     * Gets the resource collection API of ScriptExecutions. It manages ScriptExecution.
+     * 
+     * @return Resource collection API of ScriptExecutions.
+     */
+    public ScriptExecutions scriptExecutions() {
+        if (this.scriptExecutions == null) {
+            this.scriptExecutions = new ScriptExecutionsImpl(clientObject.getScriptExecutions(), this);
+        }
+        return scriptExecutions;
+    }
+
+    /**
      * Gets the resource collection API of ScriptPackages.
-     *
+     * 
      * @return Resource collection API of ScriptPackages.
      */
     public ScriptPackages scriptPackages() {
@@ -493,7 +498,7 @@ public final class AvsManager {
 
     /**
      * Gets the resource collection API of ScriptCmdlets.
-     *
+     * 
      * @return Resource collection API of ScriptCmdlets.
      */
     public ScriptCmdlets scriptCmdlets() {
@@ -504,21 +509,23 @@ public final class AvsManager {
     }
 
     /**
-     * Gets the resource collection API of ScriptExecutions. It manages ScriptExecution.
-     *
-     * @return Resource collection API of ScriptExecutions.
+     * Gets the resource collection API of WorkloadNetworks. It manages WorkloadNetworkDhcp, WorkloadNetworkDnsService,
+     * WorkloadNetworkDnsZone, WorkloadNetworkPortMirroring, WorkloadNetworkPublicIp, WorkloadNetworkSegment,
+     * WorkloadNetworkVMGroup.
+     * 
+     * @return Resource collection API of WorkloadNetworks.
      */
-    public ScriptExecutions scriptExecutions() {
-        if (this.scriptExecutions == null) {
-            this.scriptExecutions = new ScriptExecutionsImpl(clientObject.getScriptExecutions(), this);
+    public WorkloadNetworks workloadNetworks() {
+        if (this.workloadNetworks == null) {
+            this.workloadNetworks = new WorkloadNetworksImpl(clientObject.getWorkloadNetworks(), this);
         }
-        return scriptExecutions;
+        return workloadNetworks;
     }
 
     /**
      * Gets wrapped service client AvsClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client AvsClient.
      */
     public AvsClient serviceClient() {

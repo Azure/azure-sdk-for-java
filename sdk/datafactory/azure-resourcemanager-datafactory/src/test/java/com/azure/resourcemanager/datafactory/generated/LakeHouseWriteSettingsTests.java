@@ -13,19 +13,16 @@ public final class LakeHouseWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"kwwdkkvdevdvkey\",\"maxConcurrentConnections\":\"datajchd\",\"disableMetricsCollection\":\"dataxeiluexvmlg\",\"copyBehavior\":\"datapsqpfxjwta\",\"metadata\":[{\"name\":\"datagu\",\"value\":\"datadyxrjjdjiki\"},{\"name\":\"datazubgddk\",\"value\":\"datavq\"},{\"name\":\"datauq\",\"value\":\"datalwnxryyqtjcrpax\"},{\"name\":\"datalfxse\",\"value\":\"datad\"}],\"\":{\"zhdciuxotb\":\"dataldmxfqftywbba\"}}")
+            "{\"type\":\"LakeHouseWriteSettings\",\"maxConcurrentConnections\":\"datasgpdbhbdxsjsox\",\"disableMetricsCollection\":\"datawuungdvvddr\",\"copyBehavior\":\"dataquyin\",\"metadata\":[{\"name\":\"datavonwrpel\",\"value\":\"datamitmtkcqixgqxs\"}],\"\":{\"wqumecqyianjmv\":\"datavthuvupdsafqag\"}}")
             .toObject(LakeHouseWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("datajchd")
-            .withDisableMetricsCollection("dataxeiluexvmlg")
-            .withCopyBehavior("datapsqpfxjwta")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datagu").withValue("datadyxrjjdjiki"),
-                new MetadataItem().withName("datazubgddk").withValue("datavq"),
-                new MetadataItem().withName("datauq").withValue("datalwnxryyqtjcrpax"),
-                new MetadataItem().withName("datalfxse").withValue("datad")));
+        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("datasgpdbhbdxsjsox")
+            .withDisableMetricsCollection("datawuungdvvddr")
+            .withCopyBehavior("dataquyin")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datavonwrpel").withValue("datamitmtkcqixgqxs")));
         model = BinaryData.fromObject(model).toObject(LakeHouseWriteSettings.class);
     }
 }

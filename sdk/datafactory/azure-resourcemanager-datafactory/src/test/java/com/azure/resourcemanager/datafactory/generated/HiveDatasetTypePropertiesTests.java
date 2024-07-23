@@ -11,15 +11,15 @@ public final class HiveDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HiveDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"dataphceeivk\",\"table\":\"dataxlepghcnu\",\"schema\":\"dataqpvtwttf\"}")
+            .fromString("{\"tableName\":\"datawzhxzuxerxhywl\",\"table\":\"dataqsqvvdkfpfj\",\"schema\":\"datajd\"}")
             .toObject(HiveDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HiveDatasetTypeProperties model = new HiveDatasetTypeProperties().withTableName("dataphceeivk")
-            .withTable("dataxlepghcnu")
-            .withSchema("dataqpvtwttf");
+        HiveDatasetTypeProperties model = new HiveDatasetTypeProperties().withTableName("datawzhxzuxerxhywl")
+            .withTable("dataqsqvvdkfpfj")
+            .withSchema("datajd");
         model = BinaryData.fromObject(model).toObject(HiveDatasetTypeProperties.class);
     }
 }

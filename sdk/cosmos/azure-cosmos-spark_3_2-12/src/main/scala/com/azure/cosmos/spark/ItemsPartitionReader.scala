@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializer, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosEndToEndOperationLatencyPolicyConfigBuilder, CosmosItemSerializerNoExceptionWrapping, SparkBridgeInternal}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ObjectNodeMap, SparkBridgeImplementationInternal, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
@@ -151,7 +151,7 @@ private case class ItemsPartitionReader
 
   queryOptions
     .setCustomItemSerializer(
-      new CosmosItemSerializer {
+      new CosmosItemSerializerNoExceptionWrapping {
         override def serialize[T](item: T): util.Map[String, AnyRef] = ???
 
         override def deserialize[T](jsonNodeMap: util.Map[String, AnyRef], classType: Class[T]): T = {

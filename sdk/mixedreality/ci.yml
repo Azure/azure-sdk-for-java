@@ -47,7 +47,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: mixedreality
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-mixedreality-authentication
         groupId: com.azure

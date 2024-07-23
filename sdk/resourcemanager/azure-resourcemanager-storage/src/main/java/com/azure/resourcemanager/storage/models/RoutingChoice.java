@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +24,7 @@ public final class RoutingChoice extends ExpandableStringEnum<RoutingChoice> {
 
     /**
      * Creates a new instance of RoutingChoice value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +33,7 @@ public final class RoutingChoice extends ExpandableStringEnum<RoutingChoice> {
 
     /**
      * Creates or finds a RoutingChoice from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RoutingChoice.
      */
@@ -45,7 +44,7 @@ public final class RoutingChoice extends ExpandableStringEnum<RoutingChoice> {
 
     /**
      * Gets known RoutingChoice values.
-     *
+     * 
      * @return known RoutingChoice values.
      */
     public static Collection<RoutingChoice> values() {

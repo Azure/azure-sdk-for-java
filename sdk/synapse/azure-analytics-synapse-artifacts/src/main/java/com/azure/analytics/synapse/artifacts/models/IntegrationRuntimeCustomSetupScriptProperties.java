@@ -5,29 +5,37 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Custom setup script properties for a managed dedicated integration runtime. */
+/**
+ * Custom setup script properties for a managed dedicated integration runtime.
+ */
 @Fluent
-public final class IntegrationRuntimeCustomSetupScriptProperties {
+public final class IntegrationRuntimeCustomSetupScriptProperties
+    implements JsonSerializable<IntegrationRuntimeCustomSetupScriptProperties> {
     /*
      * The URI of the Azure blob container that contains the custom setup script.
      */
-    @JsonProperty(value = "blobContainerUri")
     private String blobContainerUri;
 
     /*
      * The SAS token of the Azure blob container.
      */
-    @JsonProperty(value = "sasToken")
     private SecureString sasToken;
 
-    /** Creates an instance of IntegrationRuntimeCustomSetupScriptProperties class. */
-    public IntegrationRuntimeCustomSetupScriptProperties() {}
+    /**
+     * Creates an instance of IntegrationRuntimeCustomSetupScriptProperties class.
+     */
+    public IntegrationRuntimeCustomSetupScriptProperties() {
+    }
 
     /**
      * Get the blobContainerUri property: The URI of the Azure blob container that contains the custom setup script.
-     *
+     * 
      * @return the blobContainerUri value.
      */
     public String getBlobContainerUri() {
@@ -36,7 +44,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
 
     /**
      * Set the blobContainerUri property: The URI of the Azure blob container that contains the custom setup script.
-     *
+     * 
      * @param blobContainerUri the blobContainerUri value to set.
      * @return the IntegrationRuntimeCustomSetupScriptProperties object itself.
      */
@@ -47,7 +55,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
 
     /**
      * Get the sasToken property: The SAS token of the Azure blob container.
-     *
+     * 
      * @return the sasToken value.
      */
     public SecureString getSasToken() {
@@ -56,12 +64,52 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
 
     /**
      * Set the sasToken property: The SAS token of the Azure blob container.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the IntegrationRuntimeCustomSetupScriptProperties object itself.
      */
     public IntegrationRuntimeCustomSetupScriptProperties setSasToken(SecureString sasToken) {
         this.sasToken = sasToken;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("blobContainerUri", this.blobContainerUri);
+        jsonWriter.writeJsonField("sasToken", this.sasToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeCustomSetupScriptProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeCustomSetupScriptProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeCustomSetupScriptProperties.
+     */
+    public static IntegrationRuntimeCustomSetupScriptProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeCustomSetupScriptProperties deserializedIntegrationRuntimeCustomSetupScriptProperties
+                = new IntegrationRuntimeCustomSetupScriptProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("blobContainerUri".equals(fieldName)) {
+                    deserializedIntegrationRuntimeCustomSetupScriptProperties.blobContainerUri = reader.getString();
+                } else if ("sasToken".equals(fieldName)) {
+                    deserializedIntegrationRuntimeCustomSetupScriptProperties.sasToken = SecureString.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationRuntimeCustomSetupScriptProperties;
+        });
     }
 }

@@ -5,29 +5,36 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Synapse spark job reference type. */
+/**
+ * Synapse spark job reference type.
+ */
 @Fluent
-public final class SynapseSparkJobReference {
+public final class SynapseSparkJobReference implements JsonSerializable<SynapseSparkJobReference> {
     /*
      * Synapse spark job reference type.
      */
-    @JsonProperty(value = "type", required = true)
     private SparkJobReferenceType type;
 
     /*
      * Reference spark job name.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /** Creates an instance of SynapseSparkJobReference class. */
-    public SynapseSparkJobReference() {}
+    /**
+     * Creates an instance of SynapseSparkJobReference class.
+     */
+    public SynapseSparkJobReference() {
+    }
 
     /**
      * Get the type property: Synapse spark job reference type.
-     *
+     * 
      * @return the type value.
      */
     public SparkJobReferenceType getType() {
@@ -36,7 +43,7 @@ public final class SynapseSparkJobReference {
 
     /**
      * Set the type property: Synapse spark job reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SynapseSparkJobReference object itself.
      */
@@ -47,7 +54,7 @@ public final class SynapseSparkJobReference {
 
     /**
      * Get the referenceName property: Reference spark job name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -56,12 +63,52 @@ public final class SynapseSparkJobReference {
 
     /**
      * Set the referenceName property: Reference spark job name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the SynapseSparkJobReference object itself.
      */
     public SynapseSparkJobReference setReferenceName(String referenceName) {
         this.referenceName = referenceName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SynapseSparkJobReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SynapseSparkJobReference if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SynapseSparkJobReference.
+     */
+    public static SynapseSparkJobReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SynapseSparkJobReference deserializedSynapseSparkJobReference = new SynapseSparkJobReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedSynapseSparkJobReference.type = SparkJobReferenceType.fromString(reader.getString());
+                } else if ("referenceName".equals(fieldName)) {
+                    deserializedSynapseSparkJobReference.referenceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSynapseSparkJobReference;
+        });
     }
 }

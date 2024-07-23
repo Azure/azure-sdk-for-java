@@ -78,12 +78,11 @@ public final class Ambr {
      */
     public void validate() {
         if (uplink() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property uplink in model Ambr"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property uplink in model Ambr"));
         }
         if (downlink() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property downlink in model Ambr"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property downlink in model Ambr"));
         }
     }
 

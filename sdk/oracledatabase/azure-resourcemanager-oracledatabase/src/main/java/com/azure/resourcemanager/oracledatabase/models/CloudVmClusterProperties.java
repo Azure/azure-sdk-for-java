@@ -5,8 +5,13 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -14,293 +19,261 @@ import java.util.List;
  * CloudVmCluster resource model.
  */
 @Fluent
-public final class CloudVmClusterProperties {
+public final class CloudVmClusterProperties implements JsonSerializable<CloudVmClusterProperties> {
     /*
      * Cloud VM Cluster ocid
      */
-    @JsonProperty(value = "ocid", access = JsonProperty.Access.WRITE_ONLY)
     private String ocid;
 
     /*
      * The port number configured for the listener on the cloud VM cluster.
      */
-    @JsonProperty(value = "listenerPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long listenerPort;
 
     /*
-     * The number of nodes in the cloud VM cluster. 
+     * The number of nodes in the cloud VM cluster.
      */
-    @JsonProperty(value = "nodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer nodeCount;
 
     /*
      * The data disk group size to be allocated in GBs per VM.
      */
-    @JsonProperty(value = "storageSizeInGbs")
     private Integer storageSizeInGbs;
 
     /*
      * The data disk group size to be allocated in TBs.
      */
-    @JsonProperty(value = "dataStorageSizeInTbs")
     private Double dataStorageSizeInTbs;
 
     /*
      * The local node storage to be allocated in GBs.
      */
-    @JsonProperty(value = "dbNodeStorageSizeInGbs")
     private Integer dbNodeStorageSizeInGbs;
 
     /*
      * The memory to be allocated in GBs.
      */
-    @JsonProperty(value = "memorySizeInGbs")
     private Integer memorySizeInGbs;
 
     /*
      * The date and time that the cloud VM cluster was created.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
     /*
      * Additional information about the current lifecycle state.
      */
-    @JsonProperty(value = "lifecycleDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String lifecycleDetails;
 
     /*
-     * The time zone of the cloud VM cluster. For details, see [Exadata Infrastructure Time Zones](/Content/Database/References/timezones.htm).
+     * The time zone of the cloud VM cluster. For details, see [Exadata Infrastructure Time
+     * Zones](/Content/Database/References/timezones.htm).
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * The OCID of the zone the cloud VM cluster is associated with.
      */
-    @JsonProperty(value = "zoneId")
     private String zoneId;
 
     /*
      * The hostname for the cloud VM cluster.
      */
-    @JsonProperty(value = "hostname", required = true)
     private String hostname;
 
     /*
      * The domain name for the cloud VM cluster.
      */
-    @JsonProperty(value = "domain")
     private String domain;
 
     /*
      * The number of CPU cores enabled on the cloud VM cluster.
      */
-    @JsonProperty(value = "cpuCoreCount", required = true)
     private int cpuCoreCount;
 
     /*
-     * The number of OCPU cores to enable on the cloud VM cluster. Only 1 decimal place is allowed for the fractional part.
+     * The number of OCPU cores to enable on the cloud VM cluster. Only 1 decimal place is allowed for the fractional
+     * part.
      */
-    @JsonProperty(value = "ocpuCount")
     private Float ocpuCount;
 
     /*
-     * The cluster name for cloud VM cluster. The cluster name must begin with an alphabetic character, and may contain hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters and is not case sensitive. 
+     * The cluster name for cloud VM cluster. The cluster name must begin with an alphabetic character, and may contain
+     * hyphens (-). Underscores (_) are not permitted. The cluster name can be no longer than 11 characters and is not
+     * case sensitive.
      */
-    @JsonProperty(value = "clusterName")
     private String clusterName;
 
     /*
-     * The percentage assigned to DATA storage (user data and database files). The remaining percentage is assigned to RECO storage (database redo logs, archive logs, and recovery manager backups). Accepted values are 35, 40, 60 and 80. The default is 80 percent assigned to DATA storage. See [Storage Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for details on the impact of the configuration settings on storage. 
+     * The percentage assigned to DATA storage (user data and database files). The remaining percentage is assigned to
+     * RECO storage (database redo logs, archive logs, and recovery manager backups). Accepted values are 35, 40, 60 and
+     * 80. The default is 80 percent assigned to DATA storage. See [Storage
+     * Configuration](/Content/Database/Concepts/exaoverview.htm#Exadata) in the Exadata documentation for details on
+     * the impact of the configuration settings on storage.
      */
-    @JsonProperty(value = "dataStoragePercentage")
     private Integer dataStoragePercentage;
 
     /*
-     * If true, database backup on local Exadata storage is configured for the cloud VM cluster. If false, database backup on local Exadata storage is not available in the cloud VM cluster. 
+     * If true, database backup on local Exadata storage is configured for the cloud VM cluster. If false, database
+     * backup on local Exadata storage is not available in the cloud VM cluster.
      */
-    @JsonProperty(value = "isLocalBackupEnabled")
     private Boolean isLocalBackupEnabled;
 
     /*
      * Cloud Exadata Infrastructure ID
      */
-    @JsonProperty(value = "cloudExadataInfrastructureId", required = true)
     private String cloudExadataInfrastructureId;
 
     /*
-     * If true, sparse disk group is configured for the cloud VM cluster. If false, sparse disk group is not created. 
+     * If true, sparse disk group is configured for the cloud VM cluster. If false, sparse disk group is not created.
      */
-    @JsonProperty(value = "isSparseDiskgroupEnabled")
     private Boolean isSparseDiskgroupEnabled;
 
     /*
      * Operating system version of the image.
      */
-    @JsonProperty(value = "systemVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String systemVersion;
 
     /*
      * The public key portion of one or more key pairs used for SSH access to the cloud VM cluster.
      */
-    @JsonProperty(value = "sshPublicKeys", required = true)
     private List<String> sshPublicKeys;
 
     /*
-     * The Oracle license model that applies to the cloud VM cluster. The default is LICENSE_INCLUDED. 
+     * The Oracle license model that applies to the cloud VM cluster. The default is LICENSE_INCLUDED.
      */
-    @JsonProperty(value = "licenseModel")
     private LicenseModel licenseModel;
 
     /*
-     * The type of redundancy configured for the cloud Vm cluster. NORMAL is 2-way redundancy. HIGH is 3-way redundancy. 
+     * The type of redundancy configured for the cloud Vm cluster. NORMAL is 2-way redundancy. HIGH is 3-way redundancy.
      */
-    @JsonProperty(value = "diskRedundancy", access = JsonProperty.Access.WRITE_ONLY)
     private DiskRedundancy diskRedundancy;
 
     /*
-     * The Single Client Access Name (SCAN) IP addresses associated with the cloud VM cluster. SCAN IP addresses are typically used for load balancing and are not assigned to any interface. Oracle Clusterware directs the requests to the appropriate nodes in the cluster. **Note:** For a single-node DB system, this list is empty.
+     * The Single Client Access Name (SCAN) IP addresses associated with the cloud VM cluster. SCAN IP addresses are
+     * typically used for load balancing and are not assigned to any interface. Oracle Clusterware directs the requests
+     * to the appropriate nodes in the cluster. **Note:** For a single-node DB system, this list is empty.
      */
-    @JsonProperty(value = "scanIpIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> scanIpIds;
 
     /*
-     * The virtual IP (VIP) addresses associated with the cloud VM cluster. The Cluster Ready Services (CRS) creates and maintains one VIP address for each node in the Exadata Cloud Service instance to enable failover. If one node fails, the VIP is reassigned to another active node in the cluster. **Note:** For a single-node DB system, this list is empty.
+     * The virtual IP (VIP) addresses associated with the cloud VM cluster. The Cluster Ready Services (CRS) creates and
+     * maintains one VIP address for each node in the Exadata Cloud Service instance to enable failover. If one node
+     * fails, the VIP is reassigned to another active node in the cluster. **Note:** For a single-node DB system, this
+     * list is empty.
      */
-    @JsonProperty(value = "vipIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> vipIds;
 
     /*
-     * The FQDN of the DNS record for the SCAN IP addresses that are associated with the cloud VM cluster. 
+     * The FQDN of the DNS record for the SCAN IP addresses that are associated with the cloud VM cluster.
      */
-    @JsonProperty(value = "scanDnsName", access = JsonProperty.Access.WRITE_ONLY)
     private String scanDnsName;
 
     /*
      * The TCP Single Client Access Name (SCAN) port. The default port is 1521.
      */
-    @JsonProperty(value = "scanListenerPortTcp")
     private Integer scanListenerPortTcp;
 
     /*
      * The TCPS Single Client Access Name (SCAN) port. The default port is 2484.
      */
-    @JsonProperty(value = "scanListenerPortTcpSsl")
     private Integer scanListenerPortTcpSsl;
 
     /*
      * The OCID of the DNS record for the SCAN IP addresses that are associated with the cloud VM cluster.
      */
-    @JsonProperty(value = "scanDnsRecordId", access = JsonProperty.Access.WRITE_ONLY)
     private String scanDnsRecordId;
 
     /*
      * The model name of the Exadata hardware running the cloud VM cluster.
      */
-    @JsonProperty(value = "shape", access = JsonProperty.Access.WRITE_ONLY)
     private String shape;
 
     /*
      * CloudVmCluster provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AzureResourceProvisioningState provisioningState;
 
     /*
      * CloudVmCluster lifecycle state
      */
-    @JsonProperty(value = "lifecycleState", access = JsonProperty.Access.WRITE_ONLY)
     private CloudVmClusterLifecycleState lifecycleState;
 
     /*
      * VNET for network connectivity
      */
-    @JsonProperty(value = "vnetId", required = true)
     private String vnetId;
 
     /*
      * Oracle Grid Infrastructure (GI) software version
      */
-    @JsonProperty(value = "giVersion", required = true)
     private String giVersion;
 
     /*
      * HTTPS link to OCI resources exposed to Azure Customer via Azure Interface.
      */
-    @JsonProperty(value = "ociUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String ociUrl;
 
     /*
      * HTTPS link to OCI Network Security Group exposed to Azure Customer via the Azure Interface.
      */
-    @JsonProperty(value = "nsgUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String nsgUrl;
 
     /*
      * Client subnet
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
      * Client OCI backup subnet CIDR, default is 192.168.252.0/22
      */
-    @JsonProperty(value = "backupSubnetCidr")
     private String backupSubnetCidr;
 
     /*
-     * CIDR blocks for additional NSG ingress rules. The VNET CIDRs used to provision the VM Cluster will be added by default.
+     * CIDR blocks for additional NSG ingress rules. The VNET CIDRs used to provision the VM Cluster will be added by
+     * default.
      */
-    @JsonProperty(value = "nsgCidrs")
     private List<NsgCidr> nsgCidrs;
 
     /*
-     * Indicates user preferences for the various diagnostic collection options for the VM cluster/Cloud VM cluster/VMBM DBCS.
+     * Indicates user preferences for the various diagnostic collection options for the VM cluster/Cloud VM cluster/VMBM
+     * DBCS.
      */
-    @JsonProperty(value = "dataCollectionOptions")
     private DataCollectionOptions dataCollectionOptions;
 
     /*
      * Display Name
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * The list of compute servers to be added to the cloud VM cluster.
      */
-    @JsonProperty(value = "computeNodes")
     private List<String> computeNodes;
 
     /*
      * iormConfigCache details for cloud VM cluster.
      */
-    @JsonProperty(value = "iormConfigCache", access = JsonProperty.Access.WRITE_ONLY)
     private ExadataIormConfig iormConfigCache;
 
     /*
      * The OCID of the last maintenance update history entry.
      */
-    @JsonProperty(value = "lastUpdateHistoryEntryId", access = JsonProperty.Access.WRITE_ONLY)
     private String lastUpdateHistoryEntryId;
 
     /*
      * The list of DB servers.
      */
-    @JsonProperty(value = "dbServers")
     private List<String> dbServers;
 
     /*
      * Cluster compartmentId
      */
-    @JsonProperty(value = "compartmentId", access = JsonProperty.Access.WRITE_ONLY)
     private String compartmentId;
 
     /*
      * Cluster subnet ocid
      */
-    @JsonProperty(value = "subnetOcid", access = JsonProperty.Access.WRITE_ONLY)
     private String subnetOcid;
 
     /**
@@ -681,6 +654,17 @@ public final class CloudVmClusterProperties {
      */
     public String systemVersion() {
         return this.systemVersion;
+    }
+
+    /**
+     * Set the systemVersion property: Operating system version of the image.
+     * 
+     * @param systemVersion the systemVersion value to set.
+     * @return the CloudVmClusterProperties object itself.
+     */
+    public CloudVmClusterProperties withSystemVersion(String systemVersion) {
+        this.systemVersion = systemVersion;
+        return this;
     }
 
     /**
@@ -1142,4 +1126,178 @@ public final class CloudVmClusterProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CloudVmClusterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostname", this.hostname);
+        jsonWriter.writeIntField("cpuCoreCount", this.cpuCoreCount);
+        jsonWriter.writeStringField("cloudExadataInfrastructureId", this.cloudExadataInfrastructureId);
+        jsonWriter.writeArrayField("sshPublicKeys", this.sshPublicKeys,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("vnetId", this.vnetId);
+        jsonWriter.writeStringField("giVersion", this.giVersion);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeNumberField("storageSizeInGbs", this.storageSizeInGbs);
+        jsonWriter.writeNumberField("dataStorageSizeInTbs", this.dataStorageSizeInTbs);
+        jsonWriter.writeNumberField("dbNodeStorageSizeInGbs", this.dbNodeStorageSizeInGbs);
+        jsonWriter.writeNumberField("memorySizeInGbs", this.memorySizeInGbs);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("zoneId", this.zoneId);
+        jsonWriter.writeStringField("domain", this.domain);
+        jsonWriter.writeNumberField("ocpuCount", this.ocpuCount);
+        jsonWriter.writeStringField("clusterName", this.clusterName);
+        jsonWriter.writeNumberField("dataStoragePercentage", this.dataStoragePercentage);
+        jsonWriter.writeBooleanField("isLocalBackupEnabled", this.isLocalBackupEnabled);
+        jsonWriter.writeBooleanField("isSparseDiskgroupEnabled", this.isSparseDiskgroupEnabled);
+        jsonWriter.writeStringField("systemVersion", this.systemVersion);
+        jsonWriter.writeStringField("licenseModel", this.licenseModel == null ? null : this.licenseModel.toString());
+        jsonWriter.writeNumberField("scanListenerPortTcp", this.scanListenerPortTcp);
+        jsonWriter.writeNumberField("scanListenerPortTcpSsl", this.scanListenerPortTcpSsl);
+        jsonWriter.writeStringField("backupSubnetCidr", this.backupSubnetCidr);
+        jsonWriter.writeArrayField("nsgCidrs", this.nsgCidrs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("dataCollectionOptions", this.dataCollectionOptions);
+        jsonWriter.writeArrayField("computeNodes", this.computeNodes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("dbServers", this.dbServers, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudVmClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudVmClusterProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloudVmClusterProperties.
+     */
+    public static CloudVmClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudVmClusterProperties deserializedCloudVmClusterProperties = new CloudVmClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostname".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.hostname = reader.getString();
+                } else if ("cpuCoreCount".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.cpuCoreCount = reader.getInt();
+                } else if ("cloudExadataInfrastructureId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.cloudExadataInfrastructureId = reader.getString();
+                } else if ("sshPublicKeys".equals(fieldName)) {
+                    List<String> sshPublicKeys = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCloudVmClusterProperties.sshPublicKeys = sshPublicKeys;
+                } else if ("vnetId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.vnetId = reader.getString();
+                } else if ("giVersion".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.giVersion = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.subnetId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.displayName = reader.getString();
+                } else if ("ocid".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.ocid = reader.getString();
+                } else if ("listenerPort".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.listenerPort = reader.getNullable(JsonReader::getLong);
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("storageSizeInGbs".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.storageSizeInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("dataStorageSizeInTbs".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.dataStorageSizeInTbs
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("dbNodeStorageSizeInGbs".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.dbNodeStorageSizeInGbs
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("memorySizeInGbs".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.memorySizeInGbs = reader.getNullable(JsonReader::getInt);
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lifecycleDetails".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.lifecycleDetails = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.timeZone = reader.getString();
+                } else if ("zoneId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.zoneId = reader.getString();
+                } else if ("domain".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.domain = reader.getString();
+                } else if ("ocpuCount".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.ocpuCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("clusterName".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.clusterName = reader.getString();
+                } else if ("dataStoragePercentage".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.dataStoragePercentage = reader.getNullable(JsonReader::getInt);
+                } else if ("isLocalBackupEnabled".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.isLocalBackupEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSparseDiskgroupEnabled".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.isSparseDiskgroupEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("systemVersion".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.systemVersion = reader.getString();
+                } else if ("licenseModel".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.licenseModel = LicenseModel.fromString(reader.getString());
+                } else if ("diskRedundancy".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.diskRedundancy = DiskRedundancy.fromString(reader.getString());
+                } else if ("scanIpIds".equals(fieldName)) {
+                    List<String> scanIpIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCloudVmClusterProperties.scanIpIds = scanIpIds;
+                } else if ("vipIds".equals(fieldName)) {
+                    List<String> vipIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCloudVmClusterProperties.vipIds = vipIds;
+                } else if ("scanDnsName".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.scanDnsName = reader.getString();
+                } else if ("scanListenerPortTcp".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.scanListenerPortTcp = reader.getNullable(JsonReader::getInt);
+                } else if ("scanListenerPortTcpSsl".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.scanListenerPortTcpSsl
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("scanDnsRecordId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.scanDnsRecordId = reader.getString();
+                } else if ("shape".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.shape = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.provisioningState
+                        = AzureResourceProvisioningState.fromString(reader.getString());
+                } else if ("lifecycleState".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.lifecycleState
+                        = CloudVmClusterLifecycleState.fromString(reader.getString());
+                } else if ("ociUrl".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.ociUrl = reader.getString();
+                } else if ("nsgUrl".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.nsgUrl = reader.getString();
+                } else if ("backupSubnetCidr".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.backupSubnetCidr = reader.getString();
+                } else if ("nsgCidrs".equals(fieldName)) {
+                    List<NsgCidr> nsgCidrs = reader.readArray(reader1 -> NsgCidr.fromJson(reader1));
+                    deserializedCloudVmClusterProperties.nsgCidrs = nsgCidrs;
+                } else if ("dataCollectionOptions".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.dataCollectionOptions = DataCollectionOptions.fromJson(reader);
+                } else if ("computeNodes".equals(fieldName)) {
+                    List<String> computeNodes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCloudVmClusterProperties.computeNodes = computeNodes;
+                } else if ("iormConfigCache".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.iormConfigCache = ExadataIormConfig.fromJson(reader);
+                } else if ("lastUpdateHistoryEntryId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.lastUpdateHistoryEntryId = reader.getString();
+                } else if ("dbServers".equals(fieldName)) {
+                    List<String> dbServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCloudVmClusterProperties.dbServers = dbServers;
+                } else if ("compartmentId".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.compartmentId = reader.getString();
+                } else if ("subnetOcid".equals(fieldName)) {
+                    deserializedCloudVmClusterProperties.subnetOcid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudVmClusterProperties;
+        });
+    }
 }

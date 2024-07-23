@@ -6,17 +6,20 @@ package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * CustomerContact resource properties.
  */
 @Fluent
-public final class CustomerContact {
+public final class CustomerContact implements JsonSerializable<CustomerContact> {
     /*
      * The email address used by Oracle to send notifications regarding databases and infrastructure.
      */
-    @JsonProperty(value = "email", required = true)
     private String email;
 
     /**
@@ -60,4 +63,41 @@ public final class CustomerContact {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomerContact.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("email", this.email);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerContact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerContact if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomerContact.
+     */
+    public static CustomerContact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerContact deserializedCustomerContact = new CustomerContact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("email".equals(fieldName)) {
+                    deserializedCustomerContact.email = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerContact;
+        });
+    }
 }

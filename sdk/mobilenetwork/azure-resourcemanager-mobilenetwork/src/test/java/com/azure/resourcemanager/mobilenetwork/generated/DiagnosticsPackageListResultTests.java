@@ -13,14 +13,14 @@ public final class DiagnosticsPackageListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticsPackageListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"NotStarted\",\"reason\":\"bkbfkgukdkex\"},\"id\":\"pofm\",\"name\":\"axcfjpgddtocjjx\",\"type\":\"vpmouexhdzxib\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"status\":\"Collected\",\"reason\":\"qbzvddntwnd\"},\"id\":\"cbtwnpzaoqvuh\",\"name\":\"hcffcyddglmjthjq\",\"type\":\"wpyeicxmqciwqvh\"}],\"nextLink\":\"ixuigdtopbobj\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"status\":\"NotStarted\",\"reason\":\"bacfionlebxetq\"},\"id\":\"zxdpnqbqqw\",\"name\":\"rjfeallnwsubisnj\",\"type\":\"mpmngnzscxaqwoo\"}],\"nextLink\":\"cbonqvpk\"}")
             .toObject(DiagnosticsPackageListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticsPackageListResult model = new DiagnosticsPackageListResult()
-            .withValue(Arrays.asList(new DiagnosticsPackageInner(), new DiagnosticsPackageInner()));
+        DiagnosticsPackageListResult model
+            = new DiagnosticsPackageListResult().withValue(Arrays.asList(new DiagnosticsPackageInner()));
         model = BinaryData.fromObject(model).toObject(DiagnosticsPackageListResult.class);
     }
 }

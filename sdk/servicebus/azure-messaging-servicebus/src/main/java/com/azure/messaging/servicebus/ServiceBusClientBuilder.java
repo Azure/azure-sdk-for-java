@@ -1577,6 +1577,9 @@ public final class ServiceBusClientBuilder implements
          * the background renewal task runs. So, it is possible that the previous renewed lock can be valid after
          * the renewal task is disposed.
          * </p>
+         * <p>
+         * By default, the session lock renewal task will run for 5 minutes.
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.
@@ -1855,6 +1858,9 @@ public final class ServiceBusClientBuilder implements
          * renew the session lock before its expiration. {@code maxAutoLockRenewDuration} controls how long
          * the background renewal task runs. So, it is possible that the previous renewed lock can be valid after
          * the renewal task is disposed
+         * </p>
+         * <p>
+         * By default, the session lock renewal task will run for 5 minutes.
          * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the session lock.
@@ -2418,6 +2424,9 @@ public final class ServiceBusClientBuilder implements
          * lock before its expiration. {@code maxAutoLockRenewDuration} controls how long the background renewal task
          * runs. So, it is possible that the previous renewed lock can be valid after the renewal task is disposed.
          * </p>
+         * <p>
+         * By default, the message lock renewal task will run for 5 minutes.
+         * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.
@@ -2551,6 +2560,9 @@ public final class ServiceBusClientBuilder implements
          * set at the resource level. To keep the message locked, the client will have to continuously renew the message
          * lock before its expiration. {@code maxAutoLockRenewDuration} controls how long the background renewal task
          * runs. So, it is possible that the previous renewed lock can be valid after the renewal task is disposed.
+         * </p>
+         * <p>
+         * By default, the message lock renewal task will run for 5 minutes.
          * </p>
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}

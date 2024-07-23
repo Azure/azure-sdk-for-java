@@ -19,33 +19,34 @@ public final class AmazonRdsForOracleTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRdsForOracleTableDataset model = BinaryData.fromString(
-            "{\"type\":\"gmkokqoikx\",\"typeProperties\":{\"schema\":\"datawxcevdspt\",\"table\":\"dataffmwt\"},\"description\":\"fwlnmlkff\",\"structure\":\"datau\",\"schema\":\"datatbsliejdnccot\",\"linkedServiceName\":{\"referenceName\":\"likjiytehhxt\",\"parameters\":{\"rctysecpekhxdb\":\"datadwbymuqlngncrd\",\"zcvimmwcko\":\"datahq\"}},\"parameters\":{\"upqtzckj\":{\"type\":\"Int\",\"defaultValue\":\"datamtrtsv\"},\"nc\":{\"type\":\"Array\",\"defaultValue\":\"datakgnrfrjschj\"}},\"annotations\":[\"datahgt\",\"databgd\"],\"folder\":{\"name\":\"morzolxosg\"},\"\":{\"gvznjq\":\"datarxueqbmxq\",\"cxlngoufpi\":\"datawshesgcsqos\",\"mfxzspf\":\"datap\",\"zipplxg\":\"datavsl\"}}")
+            "{\"type\":\"AmazonRdsForOracleTable\",\"typeProperties\":{\"schema\":\"dataotygnbknhjg\",\"table\":\"dataxaxw\"},\"description\":\"faspsdzkucszghd\",\"structure\":\"dataqip\",\"schema\":\"dataxclfrs\",\"linkedServiceName\":{\"referenceName\":\"zrn\",\"parameters\":{\"fddtbfmekjcng\":\"datawvpu\",\"dv\":\"datan\",\"xf\":\"dataaoy\",\"txoqxtdn\":\"datagyxzmxynofxl\"}},\"parameters\":{\"pskcjhmm\":{\"type\":\"SecureString\",\"defaultValue\":\"datairk\"}},\"annotations\":[\"datanivdqtkyk\",\"dataaxnlsfgnysca\",\"datacptbzetxygxxicee\"],\"folder\":{\"name\":\"wyuveoxmp\"},\"\":{\"vhaztkxbivz\":\"dataahdr\",\"ykqfdqwdrtx\":\"datagxmbrygmwibiosiq\",\"ounzsiywh\":\"datafdaglmrcokzzert\",\"popikzeb\":\"databym\"}}")
             .toObject(AmazonRdsForOracleTableDataset.class);
-        Assertions.assertEquals("fwlnmlkff", model.description());
-        Assertions.assertEquals("likjiytehhxt", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("upqtzckj").type());
-        Assertions.assertEquals("morzolxosg", model.folder().name());
+        Assertions.assertEquals("faspsdzkucszghd", model.description());
+        Assertions.assertEquals("zrn", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("pskcjhmm").type());
+        Assertions.assertEquals("wyuveoxmp", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRdsForOracleTableDataset model = new AmazonRdsForOracleTableDataset().withDescription("fwlnmlkff")
-            .withStructure("datau")
-            .withSchema("datatbsliejdnccot")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("likjiytehhxt")
-                .withParameters(mapOf("rctysecpekhxdb", "datadwbymuqlngncrd", "zcvimmwcko", "datahq")))
-            .withParameters(mapOf("upqtzckj",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datamtrtsv"), "nc",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datakgnrfrjschj")))
-            .withAnnotations(Arrays.asList("datahgt", "databgd"))
-            .withFolder(new DatasetFolder().withName("morzolxosg"))
-            .withSchemaTypePropertiesSchema("datawxcevdspt")
-            .withTable("dataffmwt");
+        AmazonRdsForOracleTableDataset model
+            = new AmazonRdsForOracleTableDataset().withDescription("faspsdzkucszghd")
+                .withStructure("dataqip")
+                .withSchema("dataxclfrs")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("zrn")
+                    .withParameters(mapOf("fddtbfmekjcng", "datawvpu", "dv", "datan", "xf", "dataaoy", "txoqxtdn",
+                        "datagyxzmxynofxl")))
+                .withParameters(mapOf("pskcjhmm",
+                    new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datairk")))
+                .withAnnotations(Arrays.asList("datanivdqtkyk", "dataaxnlsfgnysca", "datacptbzetxygxxicee"))
+                .withFolder(new DatasetFolder().withName("wyuveoxmp"))
+                .withSchemaTypePropertiesSchema("dataotygnbknhjg")
+                .withTable("dataxaxw");
         model = BinaryData.fromObject(model).toObject(AmazonRdsForOracleTableDataset.class);
-        Assertions.assertEquals("fwlnmlkff", model.description());
-        Assertions.assertEquals("likjiytehhxt", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("upqtzckj").type());
-        Assertions.assertEquals("morzolxosg", model.folder().name());
+        Assertions.assertEquals("faspsdzkucszghd", model.description());
+        Assertions.assertEquals("zrn", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("pskcjhmm").type());
+        Assertions.assertEquals("wyuveoxmp", model.folder().name());
     }
 
     // Use "Map.of" if available

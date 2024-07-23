@@ -5,38 +5,54 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Google BigQuery service dataset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("GoogleBigQueryV2Object")
-@JsonFlatten
+/**
+ * Google BigQuery service dataset.
+ */
 @Fluent
 public class GoogleBigQueryV2ObjectDataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "GoogleBigQueryV2Object";
+
+    /*
      * The table name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /*
      * The database name of the Google BigQuery. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.dataset")
     private Object dataset;
 
-    /** Creates an instance of GoogleBigQueryV2ObjectDataset class. */
-    public GoogleBigQueryV2ObjectDataset() {}
+    /**
+     * Creates an instance of GoogleBigQueryV2ObjectDataset class.
+     */
+    public GoogleBigQueryV2ObjectDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the table property: The table name of the Google BigQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -46,7 +62,7 @@ public class GoogleBigQueryV2ObjectDataset extends Dataset {
     /**
      * Set the table property: The table name of the Google BigQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the GoogleBigQueryV2ObjectDataset object itself.
      */
@@ -58,7 +74,7 @@ public class GoogleBigQueryV2ObjectDataset extends Dataset {
     /**
      * Get the dataset property: The database name of the Google BigQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the dataset value.
      */
     public Object getDataset() {
@@ -68,7 +84,7 @@ public class GoogleBigQueryV2ObjectDataset extends Dataset {
     /**
      * Set the dataset property: The database name of the Google BigQuery. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the GoogleBigQueryV2ObjectDataset object itself.
      */
@@ -77,52 +93,159 @@ public class GoogleBigQueryV2ObjectDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2ObjectDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2ObjectDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2ObjectDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2ObjectDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2ObjectDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2ObjectDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryV2ObjectDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeUntypedField("structure", getStructure());
+        jsonWriter.writeUntypedField("schema", getSchema());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", getFolder());
+        jsonWriter.writeStringField("type", this.type);
+        if (table != null || dataset != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("table", this.table);
+            jsonWriter.writeUntypedField("dataset", this.dataset);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GoogleBigQueryV2ObjectDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GoogleBigQueryV2ObjectDataset if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GoogleBigQueryV2ObjectDataset.
+     */
+    public static GoogleBigQueryV2ObjectDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GoogleBigQueryV2ObjectDataset deserializedGoogleBigQueryV2ObjectDataset
+                = new GoogleBigQueryV2ObjectDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2ObjectDataset
+                        .setLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2ObjectDataset.setDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2ObjectDataset.setStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2ObjectDataset.setSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedGoogleBigQueryV2ObjectDataset.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedGoogleBigQueryV2ObjectDataset.setAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2ObjectDataset.setFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedGoogleBigQueryV2ObjectDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("table".equals(fieldName)) {
+                            deserializedGoogleBigQueryV2ObjectDataset.table = reader.readUntyped();
+                        } else if ("dataset".equals(fieldName)) {
+                            deserializedGoogleBigQueryV2ObjectDataset.dataset = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedGoogleBigQueryV2ObjectDataset.setAdditionalProperties(additionalProperties);
+
+            return deserializedGoogleBigQueryV2ObjectDataset;
+        });
     }
 }

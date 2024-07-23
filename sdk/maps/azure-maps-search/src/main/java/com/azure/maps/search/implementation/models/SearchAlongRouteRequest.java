@@ -5,25 +5,32 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This type represents the request body for the Search Along Route service. */
+/**
+ * This type represents the request body for the Search Along Route service.
+ */
 @Fluent
-public final class SearchAlongRouteRequest {
+public final class SearchAlongRouteRequest implements JsonSerializable<SearchAlongRouteRequest> {
     /*
-     * A valid `GeoJSON LineString` geometry type. Please refer to [RFC
-     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.4) for details.
+     * A valid `GeoJSON LineString` geometry type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.4) for details.
      */
-    @JsonProperty(value = "route")
     private GeoJsonLineString route;
 
-    /** Creates an instance of SearchAlongRouteRequest class. */
-    public SearchAlongRouteRequest() {}
+    /**
+     * Creates an instance of SearchAlongRouteRequest class.
+     */
+    public SearchAlongRouteRequest() {
+    }
 
     /**
      * Get the route property: A valid `GeoJSON LineString` geometry type. Please refer to [RFC
      * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.4) for details.
-     *
+     * 
      * @return the route value.
      */
     public GeoJsonLineString getRoute() {
@@ -33,12 +40,48 @@ public final class SearchAlongRouteRequest {
     /**
      * Set the route property: A valid `GeoJSON LineString` geometry type. Please refer to [RFC
      * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.4) for details.
-     *
+     * 
      * @param route the route value to set.
      * @return the SearchAlongRouteRequest object itself.
      */
     public SearchAlongRouteRequest setRoute(GeoJsonLineString route) {
         this.route = route;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("route", this.route);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchAlongRouteRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchAlongRouteRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchAlongRouteRequest.
+     */
+    public static SearchAlongRouteRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchAlongRouteRequest deserializedSearchAlongRouteRequest = new SearchAlongRouteRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("route".equals(fieldName)) {
+                    deserializedSearchAlongRouteRequest.route = GeoJsonLineString.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchAlongRouteRequest;
+        });
     }
 }

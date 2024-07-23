@@ -41,6 +41,7 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.TestHttpClientType;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -142,6 +143,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
         ccAsync.createWithResponse(null, publicAccess).block();
@@ -247,6 +249,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
@@ -449,6 +452,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType publicAccess) {
         StepVerifier.create(ccAsync.setAccessPolicyWithResponse(publicAccess, null, null))
             .assertNext(r -> assertTrue(validateBasicHeaders(r.getHeaders())))
@@ -2012,6 +2016,35 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    public void getAccountInfoBase() {
+        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        StepVerifier.create(ccAsync.getAccountInfo())
+            .assertNext(r -> {
+                assertNotNull(r.getAccountKind());
+                assertNotNull(r.getSkuName());
+                assertFalse(r.isHierarchicalNamespaceEnabled());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void getAccountInfoBaseFail() {
+        BlobServiceAsyncClient serviceClient = instrument(new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .credential(new MockTokenCredential()))
+            .buildAsyncClient();
+
+        BlobContainerAsyncClient containerClient = serviceClient.getBlobContainerAsyncClient(generateContainerName());
+
+        StepVerifier.create(containerClient.getAccountInfo())
+            .verifyErrorSatisfies(r -> {
+                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+            });
+    }
+
+    @Test
     public void getContainerName() {
         String containerName = generateContainerName();
         BlobContainerAsyncClient newcc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
@@ -2072,18 +2105,20 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .expectNext(true);
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlobContainerAsyncClient aadContainer = getContainerClientBuilder(ccAsync.getBlobContainerUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
-            .buildAsyncClient();
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        BlobContainerAsyncClient aadContainer = getContainerClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl())
+                .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+                .buildAsyncClient();
 
         StepVerifier.create(aadContainer.exists())
-            .verifyErrorSatisfies(r -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
-            });
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 
     @Test

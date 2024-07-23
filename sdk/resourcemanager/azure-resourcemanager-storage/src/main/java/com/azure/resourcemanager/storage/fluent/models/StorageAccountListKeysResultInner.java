@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -30,7 +29,7 @@ public final class StorageAccountListKeysResultInner {
     /**
      * Get the keys property: Gets the list of storage account keys and their properties for the specified storage
      * account.
-     *
+     * 
      * @return the keys value.
      */
     public List<StorageAccountKey> keys() {
@@ -39,7 +38,7 @@ public final class StorageAccountListKeysResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

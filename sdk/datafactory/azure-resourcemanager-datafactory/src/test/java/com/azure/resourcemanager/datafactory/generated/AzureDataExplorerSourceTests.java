@@ -11,20 +11,20 @@ public final class AzureDataExplorerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataExplorerSource model = BinaryData.fromString(
-            "{\"type\":\"mbnfvygtt\",\"query\":\"dataf\",\"noTruncation\":\"datambxf\",\"queryTimeout\":\"dataweiqvhfyvkxgo\",\"additionalColumns\":\"dataveiucuxwnojvcr\",\"sourceRetryCount\":\"datafjalpsycvcksz\",\"sourceRetryWait\":\"datagguucpytsxnuj\",\"maxConcurrentConnections\":\"datafth\",\"disableMetricsCollection\":\"dataiieoxlbcccc\",\"\":{\"eksbksvvyvoi\":\"dataabdevjrbgcdxqgst\",\"wljmz\":\"datavvu\"}}")
+            "{\"type\":\"AzureDataExplorerSource\",\"query\":\"datagvtzdxtwyxpkwwdk\",\"noTruncation\":\"datadevdvke\",\"queryTimeout\":\"dataxjchd\",\"additionalColumns\":\"dataxeiluexvmlg\",\"sourceRetryCount\":\"datapsqpfxjwta\",\"sourceRetryWait\":\"dataqkguchdyxrjjdj\",\"maxConcurrentConnections\":\"dataiqtz\",\"disableMetricsCollection\":\"datagddkujvqzcuqculw\",\"\":{\"e\":\"datayyqtjcrpaxwxlfx\"}}")
             .toObject(AzureDataExplorerSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataExplorerSource model = new AzureDataExplorerSource().withSourceRetryCount("datafjalpsycvcksz")
-            .withSourceRetryWait("datagguucpytsxnuj")
-            .withMaxConcurrentConnections("datafth")
-            .withDisableMetricsCollection("dataiieoxlbcccc")
-            .withQuery("dataf")
-            .withNoTruncation("datambxf")
-            .withQueryTimeout("dataweiqvhfyvkxgo")
-            .withAdditionalColumns("dataveiucuxwnojvcr");
+        AzureDataExplorerSource model = new AzureDataExplorerSource().withSourceRetryCount("datapsqpfxjwta")
+            .withSourceRetryWait("dataqkguchdyxrjjdj")
+            .withMaxConcurrentConnections("dataiqtz")
+            .withDisableMetricsCollection("datagddkujvqzcuqculw")
+            .withQuery("datagvtzdxtwyxpkwwdk")
+            .withNoTruncation("datadevdvke")
+            .withQueryTimeout("dataxjchd")
+            .withAdditionalColumns("dataxeiluexvmlg");
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerSource.class);
     }
 }

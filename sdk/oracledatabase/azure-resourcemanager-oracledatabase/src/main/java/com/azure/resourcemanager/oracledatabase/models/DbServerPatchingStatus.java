@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.oracledatabase.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Db Server patching status enum.
+ * DB Server patching status enum.
  */
 public final class DbServerPatchingStatus extends ExpandableStringEnum<DbServerPatchingStatus> {
     /**
@@ -47,7 +46,6 @@ public final class DbServerPatchingStatus extends ExpandableStringEnum<DbServerP
      * @param name a name to look for.
      * @return the corresponding DbServerPatchingStatus.
      */
-    @JsonCreator
     public static DbServerPatchingStatus fromString(String name) {
         return fromString(name, DbServerPatchingStatus.class);
     }

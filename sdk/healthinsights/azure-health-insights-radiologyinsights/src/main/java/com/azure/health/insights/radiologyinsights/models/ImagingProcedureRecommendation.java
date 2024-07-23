@@ -25,7 +25,7 @@ import java.util.List;
 public final class ImagingProcedureRecommendation extends ProcedureRecommendation {
 
     /*
-     * The kind property.
+     * Discriminator property for ProcedureRecommendation.
      */
     @Generated
     @JsonTypeId
@@ -59,7 +59,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Get the kind property: The kind property.
+     * Get the kind property: Discriminator property for ProcedureRecommendation.
      *
      * @return the kind value.
      */

@@ -5,52 +5,66 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Trigger that schedules pipeline reruns for all fixed time interval windows from a requested start time to requested
  * end time.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("RerunTumblingWindowTrigger")
-@JsonFlatten
 @Fluent
 public class RerunTumblingWindowTrigger extends Trigger {
     /*
+     * Trigger type.
+     */
+    private String type = "RerunTumblingWindowTrigger";
+
+    /*
      * The parent trigger reference.
      */
-    @JsonProperty(value = "typeProperties.parentTrigger", required = true)
     private Object parentTrigger;
 
     /*
      * The start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
-    @JsonProperty(value = "typeProperties.requestedStartTime", required = true)
     private OffsetDateTime requestedStartTime;
 
     /*
      * The end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
-    @JsonProperty(value = "typeProperties.requestedEndTime", required = true)
     private OffsetDateTime requestedEndTime;
 
     /*
      * The max number of parallel time windows (ready for execution) for which a rerun is triggered.
      */
-    @JsonProperty(value = "typeProperties.rerunConcurrency", required = true)
     private int rerunConcurrency;
 
-    /** Creates an instance of RerunTumblingWindowTrigger class. */
-    public RerunTumblingWindowTrigger() {}
+    /**
+     * Creates an instance of RerunTumblingWindowTrigger class.
+     */
+    public RerunTumblingWindowTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the parentTrigger property: The parent trigger reference.
-     *
+     * 
      * @return the parentTrigger value.
      */
     public Object getParentTrigger() {
@@ -59,7 +73,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
 
     /**
      * Set the parentTrigger property: The parent trigger reference.
-     *
+     * 
      * @param parentTrigger the parentTrigger value to set.
      * @return the RerunTumblingWindowTrigger object itself.
      */
@@ -71,7 +85,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Get the requestedStartTime property: The start time for the time period for which restatement is initiated. Only
      * UTC time is currently supported.
-     *
+     * 
      * @return the requestedStartTime value.
      */
     public OffsetDateTime getRequestedStartTime() {
@@ -81,7 +95,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Set the requestedStartTime property: The start time for the time period for which restatement is initiated. Only
      * UTC time is currently supported.
-     *
+     * 
      * @param requestedStartTime the requestedStartTime value to set.
      * @return the RerunTumblingWindowTrigger object itself.
      */
@@ -93,7 +107,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Get the requestedEndTime property: The end time for the time period for which restatement is initiated. Only UTC
      * time is currently supported.
-     *
+     * 
      * @return the requestedEndTime value.
      */
     public OffsetDateTime getRequestedEndTime() {
@@ -103,7 +117,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Set the requestedEndTime property: The end time for the time period for which restatement is initiated. Only UTC
      * time is currently supported.
-     *
+     * 
      * @param requestedEndTime the requestedEndTime value to set.
      * @return the RerunTumblingWindowTrigger object itself.
      */
@@ -115,7 +129,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Get the rerunConcurrency property: The max number of parallel time windows (ready for execution) for which a
      * rerun is triggered.
-     *
+     * 
      * @return the rerunConcurrency value.
      */
     public int getRerunConcurrency() {
@@ -125,7 +139,7 @@ public class RerunTumblingWindowTrigger extends Trigger {
     /**
      * Set the rerunConcurrency property: The max number of parallel time windows (ready for execution) for which a
      * rerun is triggered.
-     *
+     * 
      * @param rerunConcurrency the rerunConcurrency value to set.
      * @return the RerunTumblingWindowTrigger object itself.
      */
@@ -134,17 +148,110 @@ public class RerunTumblingWindowTrigger extends Trigger {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RerunTumblingWindowTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RerunTumblingWindowTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStartObject("typeProperties");
+        jsonWriter.writeUntypedField("parentTrigger", this.parentTrigger);
+        jsonWriter.writeStringField("requestedStartTime",
+            this.requestedStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestedStartTime));
+        jsonWriter.writeStringField("requestedEndTime",
+            this.requestedEndTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestedEndTime));
+        jsonWriter.writeIntField("rerunConcurrency", this.rerunConcurrency);
+        jsonWriter.writeEndObject();
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RerunTumblingWindowTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RerunTumblingWindowTrigger if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RerunTumblingWindowTrigger.
+     */
+    public static RerunTumblingWindowTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RerunTumblingWindowTrigger deserializedRerunTumblingWindowTrigger = new RerunTumblingWindowTrigger();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedRerunTumblingWindowTrigger.setDescription(reader.getString());
+                } else if ("runtimeState".equals(fieldName)) {
+                    deserializedRerunTumblingWindowTrigger
+                        .setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedRerunTumblingWindowTrigger.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedRerunTumblingWindowTrigger.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("parentTrigger".equals(fieldName)) {
+                            deserializedRerunTumblingWindowTrigger.parentTrigger = reader.readUntyped();
+                        } else if ("requestedStartTime".equals(fieldName)) {
+                            deserializedRerunTumblingWindowTrigger.requestedStartTime
+                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("requestedEndTime".equals(fieldName)) {
+                            deserializedRerunTumblingWindowTrigger.requestedEndTime
+                                = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("rerunConcurrency".equals(fieldName)) {
+                            deserializedRerunTumblingWindowTrigger.rerunConcurrency = reader.getInt();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedRerunTumblingWindowTrigger.setAdditionalProperties(additionalProperties);
+
+            return deserializedRerunTumblingWindowTrigger;
+        });
     }
 }

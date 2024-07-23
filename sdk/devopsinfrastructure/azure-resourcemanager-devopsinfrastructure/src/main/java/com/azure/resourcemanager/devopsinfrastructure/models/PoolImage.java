@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.devopsinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The VM image of the machines in the pool.
  */
 @Fluent
-public final class PoolImage {
+public final class PoolImage implements JsonSerializable<PoolImage> {
     /*
      * The resource id of the image.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The image to use from a well-known set of images made available to customers.
      */
-    @JsonProperty(value = "wellKnownImageName")
     private String wellKnownImageName;
 
     /*
      * List of aliases to reference the image by.
      */
-    @JsonProperty(value = "aliases")
     private List<String> aliases;
 
     /*
      * The percentage of the buffer to be allocated to this image.
      */
-    @JsonProperty(value = "buffer")
     private String buffer;
 
     /**
@@ -131,5 +131,51 @@ public final class PoolImage {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("wellKnownImageName", this.wellKnownImageName);
+        jsonWriter.writeArrayField("aliases", this.aliases, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("buffer", this.buffer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PoolImage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PoolImage if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the PoolImage.
+     */
+    public static PoolImage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PoolImage deserializedPoolImage = new PoolImage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedPoolImage.resourceId = reader.getString();
+                } else if ("wellKnownImageName".equals(fieldName)) {
+                    deserializedPoolImage.wellKnownImageName = reader.getString();
+                } else if ("aliases".equals(fieldName)) {
+                    List<String> aliases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPoolImage.aliases = aliases;
+                } else if ("buffer".equals(fieldName)) {
+                    deserializedPoolImage.buffer = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPoolImage;
+        });
     }
 }

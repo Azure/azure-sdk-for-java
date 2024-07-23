@@ -4,37 +4,52 @@
 
 package com.azure.resourcemanager.appcomplianceautomation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The overview of the compliance result for one report. */
-@Fluent
-public final class OverviewStatus {
+/**
+ * The overview of the compliance result for one report.
+ */
+@Immutable
+public final class OverviewStatus implements JsonSerializable<OverviewStatus> {
     /*
-     * The count of all passed full automation control.
+     * The count of all passed control.
      */
-    @JsonProperty(value = "passedCount")
     private Integer passedCount;
 
     /*
-     * The count of all failed full automation control.
+     * The count of all failed control.
      */
-    @JsonProperty(value = "failedCount")
     private Integer failedCount;
 
     /*
      * The count of all manual control.
      */
-    @JsonProperty(value = "manualCount")
     private Integer manualCount;
 
-    /** Creates an instance of OverviewStatus class. */
+    /*
+     * The count of all not applicable control.
+     */
+    private Integer notApplicableCount;
+
+    /*
+     * The count of all pending for approval control.
+     */
+    private Integer pendingCount;
+
+    /**
+     * Creates an instance of OverviewStatus class.
+     */
     public OverviewStatus() {
     }
 
     /**
-     * Get the passedCount property: The count of all passed full automation control.
-     *
+     * Get the passedCount property: The count of all passed control.
+     * 
      * @return the passedCount value.
      */
     public Integer passedCount() {
@@ -42,19 +57,8 @@ public final class OverviewStatus {
     }
 
     /**
-     * Set the passedCount property: The count of all passed full automation control.
-     *
-     * @param passedCount the passedCount value to set.
-     * @return the OverviewStatus object itself.
-     */
-    public OverviewStatus withPassedCount(Integer passedCount) {
-        this.passedCount = passedCount;
-        return this;
-    }
-
-    /**
-     * Get the failedCount property: The count of all failed full automation control.
-     *
+     * Get the failedCount property: The count of all failed control.
+     * 
      * @return the failedCount value.
      */
     public Integer failedCount() {
@@ -62,19 +66,8 @@ public final class OverviewStatus {
     }
 
     /**
-     * Set the failedCount property: The count of all failed full automation control.
-     *
-     * @param failedCount the failedCount value to set.
-     * @return the OverviewStatus object itself.
-     */
-    public OverviewStatus withFailedCount(Integer failedCount) {
-        this.failedCount = failedCount;
-        return this;
-    }
-
-    /**
      * Get the manualCount property: The count of all manual control.
-     *
+     * 
      * @return the manualCount value.
      */
     public Integer manualCount() {
@@ -82,21 +75,71 @@ public final class OverviewStatus {
     }
 
     /**
-     * Set the manualCount property: The count of all manual control.
-     *
-     * @param manualCount the manualCount value to set.
-     * @return the OverviewStatus object itself.
+     * Get the notApplicableCount property: The count of all not applicable control.
+     * 
+     * @return the notApplicableCount value.
      */
-    public OverviewStatus withManualCount(Integer manualCount) {
-        this.manualCount = manualCount;
-        return this;
+    public Integer notApplicableCount() {
+        return this.notApplicableCount;
+    }
+
+    /**
+     * Get the pendingCount property: The count of all pending for approval control.
+     * 
+     * @return the pendingCount value.
+     */
+    public Integer pendingCount() {
+        return this.pendingCount;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OverviewStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OverviewStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OverviewStatus.
+     */
+    public static OverviewStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OverviewStatus deserializedOverviewStatus = new OverviewStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("passedCount".equals(fieldName)) {
+                    deserializedOverviewStatus.passedCount = reader.getNullable(JsonReader::getInt);
+                } else if ("failedCount".equals(fieldName)) {
+                    deserializedOverviewStatus.failedCount = reader.getNullable(JsonReader::getInt);
+                } else if ("manualCount".equals(fieldName)) {
+                    deserializedOverviewStatus.manualCount = reader.getNullable(JsonReader::getInt);
+                } else if ("notApplicableCount".equals(fieldName)) {
+                    deserializedOverviewStatus.notApplicableCount = reader.getNullable(JsonReader::getInt);
+                } else if ("pendingCount".equals(fieldName)) {
+                    deserializedOverviewStatus.pendingCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOverviewStatus;
+        });
     }
 }
