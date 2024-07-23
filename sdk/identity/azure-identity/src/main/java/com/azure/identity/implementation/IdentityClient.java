@@ -500,7 +500,7 @@ public class IdentityClient extends IdentityClientBase {
             throw LOGGER.logExceptionAsError(ex);
         }
         return Mono.defer(() -> {
-            String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru";
+            String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru | Out-String";
             return powershellManager.runCommand(azAccountsCommand).flatMap(output -> {
                 if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
                                     + "because no valid module file")) {
