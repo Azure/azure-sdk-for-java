@@ -51,8 +51,6 @@ public final class CosmosSinkConnector extends SinkConnector {
             containersConfig.getDatabaseName());
     }
 
-
-
     @Override
     public Class<? extends Task> taskClass() {
         return CosmosSinkTask.class;

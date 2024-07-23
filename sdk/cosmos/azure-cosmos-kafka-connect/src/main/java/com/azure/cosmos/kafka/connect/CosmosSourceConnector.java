@@ -93,6 +93,7 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             this.metadataReader,
             this.cosmosClient
         );
+
         this.monitorThread.start();
     }
 

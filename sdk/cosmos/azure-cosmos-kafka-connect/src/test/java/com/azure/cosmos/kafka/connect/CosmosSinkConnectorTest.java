@@ -114,7 +114,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    @Test(groups = "kafka-emulator")
+    @Test(groups = "unit")
     public void misFormattedConfig() {
         CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
         Map<String, String> sinkConfigMap = this.getValidSinkConfig();
