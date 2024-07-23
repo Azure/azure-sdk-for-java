@@ -3,15 +3,13 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
-import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
 import com.fasterxml.jackson.databind.cfg.PackageVersion;
-
-import java.lang.reflect.Array;
 
 /**
  * Constructs and configures {@link ObjectMapper} instances that handle XML.
