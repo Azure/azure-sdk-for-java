@@ -53,6 +53,8 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
 
     private final String contentType;
 
+    private final Integer directoryDepth;
+
     /**
      * Creates a new {@link BlobServiceSasQueryParameters} object.
      *
@@ -90,6 +92,9 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
             removeSasParametersFromMap);
         this.contentType = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_CONTENT_TYPE,
             removeSasParametersFromMap);
+        String directoryDepthParam = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_DIRECTORY_DEPTH,
+            removeSasParametersFromMap);
+        this.directoryDepth = directoryDepthParam != null ? Integer.parseInt(directoryDepthParam) : null;
     }
 
     /**
@@ -112,7 +117,7 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
     BlobServiceSasQueryParameters(String version, SasProtocol protocol, OffsetDateTime startTime,
         OffsetDateTime expiryTime, SasIpRange sasIpRange, String identifier, String resource, String permissions,
         String signature, String cacheControl, String contentDisposition, String contentEncoding,
-        String contentLanguage, String contentType, UserDelegationKey key) {
+        String contentLanguage, String contentType, UserDelegationKey key, Integer directoryDepth) {
         super(version, protocol, startTime, expiryTime, sasIpRange, permissions, signature);
 
         this.identifier = identifier;
@@ -122,6 +127,7 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
         this.contentEncoding = contentEncoding;
         this.contentLanguage = contentLanguage;
         this.contentType = contentType;
+        this.directoryDepth = directoryDepth;
 
         if (key != null) {
             this.keyObjectId = key.getSignedObjectId();
@@ -307,6 +313,9 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_LANGUAGE, this.contentLanguage);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_TYPE, this.contentType);
+        if (this.directoryDepth != null) {
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);
+        }
 
         return sb.toString();
     }
