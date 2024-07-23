@@ -5,6 +5,7 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
@@ -72,7 +73,7 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
 
         int initialPosition = dst.position();
 
-        try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(dst)) {
+        try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(dst)) {
             BlobDownloadResponse response =  client.downloadStreamWithResponse(dstStream,
                 new BlobRange(sourceOffset, (long) dst.remaining()), null /*downloadRetryOptions*/, requestConditions,
                 false, null, null);
@@ -113,28 +114,5 @@ class StorageSeekableByteChannelBlobReadBehavior implements StorageSeekableByteC
     @Override
     public long getResourceLength() {
         return resourceLength;
-    }
-
-    private static final class ByteBufferBackedOutputStream extends OutputStream {
-        private final ByteBuffer dst;
-
-        ByteBufferBackedOutputStream(ByteBuffer dst) {
-            this.dst = dst;
-        }
-
-        @Override
-        public void write(int b) {
-            dst.put((byte) b);
-        }
-
-        @Override
-        public void write(byte[] b) {
-            dst.put(b);
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) {
-            dst.put(b, off, len);
-        }
     }
 }

@@ -18,6 +18,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
@@ -412,7 +413,7 @@ public class BlobClientBase {
         ByteBuffer initialRange = ByteBuffer.allocate(chunkSize);
         BlobProperties properties;
         BlobDownloadResponse response;
-        try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(initialRange)) {
+        try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(initialRange)) {
             response = this.downloadStreamWithResponse(dstStream,
                 new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
                 options.getRequestConditions(), false, null, context);
@@ -2326,28 +2327,5 @@ public class BlobClientBase {
         Mono<Response<BlobLegalHoldResult>> response = client.setLegalHoldWithResponse(legalHold, context);
 
         return blockWithOptionalTimeout(response, timeout);
-    }
-
-    private static final class ByteBufferBackedOutputStream extends OutputStream {
-        private final ByteBuffer dst;
-
-        ByteBufferBackedOutputStream(ByteBuffer dst) {
-            this.dst = dst;
-        }
-
-        @Override
-        public void write(int b) {
-            dst.put((byte) b);
-        }
-
-        @Override
-        public void write(byte[] b) {
-            dst.put(b);
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) {
-            dst.put(b, off, len);
-        }
     }
 }
