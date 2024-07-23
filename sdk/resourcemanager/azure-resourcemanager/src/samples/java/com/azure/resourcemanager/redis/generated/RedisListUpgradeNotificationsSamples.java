@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-/** Samples for Redis ListUpgradeNotifications. */
+/**
+ * Samples for Redis ListUpgradeNotifications.
+ */
 public final class RedisListUpgradeNotificationsSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheListUpgradeNotifications.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/
+     * RedisCacheListUpgradeNotifications.json
      */
     /**
      * Sample code: RedisCacheListUpgradeNotifications.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCacheListUpgradeNotifications(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getRedis()

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class VMGuestPatchClassificationWindows extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding VMGuestPatchClassificationWindows.
      */
-    @JsonCreator
     public static VMGuestPatchClassificationWindows fromString(String name) {
         return fromString(name, VMGuestPatchClassificationWindows.class);
     }

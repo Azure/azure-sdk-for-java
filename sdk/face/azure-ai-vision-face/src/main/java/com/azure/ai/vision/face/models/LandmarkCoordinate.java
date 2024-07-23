@@ -5,27 +5,28 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Landmark coordinates within an image.
  */
 @Immutable
-public final class LandmarkCoordinate {
+public final class LandmarkCoordinate implements JsonSerializable<LandmarkCoordinate> {
 
     /*
      * The horizontal component, in pixels.
      */
     @Generated
-    @JsonProperty(value = "x")
     private final double x;
 
     /*
      * The vertical component, in pixels.
      */
     @Generated
-    @JsonProperty(value = "y")
     private final double y;
 
     /**
@@ -35,8 +36,7 @@ public final class LandmarkCoordinate {
      * @param y the y value to set.
      */
     @Generated
-    @JsonCreator
-    private LandmarkCoordinate(@JsonProperty(value = "x") double x, @JsonProperty(value = "y") double y) {
+    private LandmarkCoordinate(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -59,5 +59,46 @@ public final class LandmarkCoordinate {
     @Generated
     public double getY() {
         return this.y;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeDoubleField("x", this.x);
+        jsonWriter.writeDoubleField("y", this.y);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LandmarkCoordinate from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LandmarkCoordinate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LandmarkCoordinate.
+     */
+    @Generated
+    public static LandmarkCoordinate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            double x = 0.0;
+            double y = 0.0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("x".equals(fieldName)) {
+                    x = reader.getDouble();
+                } else if ("y".equals(fieldName)) {
+                    y = reader.getDouble();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new LandmarkCoordinate(x, y);
+        });
     }
 }

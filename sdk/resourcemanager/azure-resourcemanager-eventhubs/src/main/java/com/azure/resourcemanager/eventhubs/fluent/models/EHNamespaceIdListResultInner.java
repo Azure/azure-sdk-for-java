@@ -5,22 +5,27 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.EHNamespaceIdContainer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The response of the List Namespace IDs operation. */
+/**
+ * The response of the List Namespace IDs operation.
+ */
 @Fluent
 public final class EHNamespaceIdListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceIdListResultInner.class);
-
     /*
      * Result of the List Namespace IDs operation
      */
     @JsonProperty(value = "value")
     private List<EHNamespaceIdContainer> value;
+
+    /**
+     * Creates an instance of EHNamespaceIdListResultInner class.
+     */
+    public EHNamespaceIdListResultInner() {
+    }
 
     /**
      * Get the value property: Result of the List Namespace IDs operation.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class RecoveryPointCompletionState extends ExpandableStringEnum<Rec
      * @param name a name to look for.
      * @return the corresponding RecoveryPointCompletionState.
      */
-    @JsonCreator
     public static RecoveryPointCompletionState fromString(String name) {
         return fromString(name, RecoveryPointCompletionState.class);
     }

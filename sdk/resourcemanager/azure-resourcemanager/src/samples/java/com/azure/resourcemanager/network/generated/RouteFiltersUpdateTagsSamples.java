@@ -13,7 +13,8 @@ import java.util.Map;
  */
 public final class RouteFiltersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RouteFilterUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteFilterUpdateTags.json
      */
     /**
      * Sample code: Update route filter tags.

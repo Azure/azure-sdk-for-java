@@ -68,19 +68,22 @@ public final class VpnClientConfiguration {
     private List<RadiusServer> radiusServers;
 
     /*
-     * The AADTenant property of the VirtualNetworkGateway resource for vpn client connection used for AAD authentication.
+     * The AADTenant property of the VirtualNetworkGateway resource for vpn client connection used for AAD
+     * authentication.
      */
     @JsonProperty(value = "aadTenant")
     private String aadTenant;
 
     /*
-     * The AADAudience property of the VirtualNetworkGateway resource for vpn client connection used for AAD authentication.
+     * The AADAudience property of the VirtualNetworkGateway resource for vpn client connection used for AAD
+     * authentication.
      */
     @JsonProperty(value = "aadAudience")
     private String aadAudience;
 
     /*
-     * The AADIssuer property of the VirtualNetworkGateway resource for vpn client connection used for AAD authentication.
+     * The AADIssuer property of the VirtualNetworkGateway resource for vpn client connection used for AAD
+     * authentication.
      */
     @JsonProperty(value = "aadIssuer")
     private String aadIssuer;

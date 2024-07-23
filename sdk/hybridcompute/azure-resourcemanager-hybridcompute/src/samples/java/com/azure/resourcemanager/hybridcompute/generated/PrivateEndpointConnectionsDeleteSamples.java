@@ -9,7 +9,9 @@ package com.azure.resourcemanager.hybridcompute.generated;
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/privateEndpoint/PrivateEndpointConnection_Delete.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * privateEndpoint/PrivateEndpointConnection_Delete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.

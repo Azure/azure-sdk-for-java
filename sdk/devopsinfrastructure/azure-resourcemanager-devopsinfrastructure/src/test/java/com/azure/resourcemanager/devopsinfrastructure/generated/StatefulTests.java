@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictions;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictionsProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.Stateful;
 import org.junit.jupiter.api.Assertions;
@@ -13,20 +14,20 @@ public final class StatefulTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Stateful model = BinaryData.fromString(
-            "{\"kind\":\"Stateful\",\"maxAgentLifetime\":\"czdzev\",\"gracePeriodTimeSpan\":\"hkr\",\"resourcePredictions\":\"datad\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}}")
+            "{\"kind\":\"Stateful\",\"maxAgentLifetime\":\"mgxsab\",\"gracePeriodTimeSpan\":\"qduujitcjczdz\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}}")
             .toObject(Stateful.class);
-        Assertions.assertEquals("czdzev", model.maxAgentLifetime());
-        Assertions.assertEquals("hkr", model.gracePeriodTimeSpan());
+        Assertions.assertEquals("mgxsab", model.maxAgentLifetime());
+        Assertions.assertEquals("qduujitcjczdz", model.gracePeriodTimeSpan());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Stateful model = new Stateful().withResourcePredictions("datad")
+        Stateful model = new Stateful().withResourcePredictions(new ResourcePredictions())
             .withResourcePredictionsProfile(new ResourcePredictionsProfile())
-            .withMaxAgentLifetime("czdzev")
-            .withGracePeriodTimeSpan("hkr");
+            .withMaxAgentLifetime("mgxsab")
+            .withGracePeriodTimeSpan("qduujitcjczdz");
         model = BinaryData.fromObject(model).toObject(Stateful.class);
-        Assertions.assertEquals("czdzev", model.maxAgentLifetime());
-        Assertions.assertEquals("hkr", model.gracePeriodTimeSpan());
+        Assertions.assertEquals("mgxsab", model.maxAgentLifetime());
+        Assertions.assertEquals("qduujitcjczdz", model.gracePeriodTimeSpan());
     }
 }

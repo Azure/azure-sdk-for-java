@@ -164,8 +164,8 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Get the userData property: UserData associated with the source VM for which restore point is captured, which is
-     * a base-64 encoded value.
+     * Get the userData property: UserData associated with the source VM for which restore point is captured, which is a
+     * base-64 encoded value.
      * 
      * @return the userData value.
      */

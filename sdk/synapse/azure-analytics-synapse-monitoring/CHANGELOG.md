@@ -1,14 +1,22 @@
 # Release History
 
 ## 1.0.0-beta.4 (2021-08-10)
+
+### Features Added
+
 - Update to 2020-12-01 API version
 
 ## 1.0.0-beta.3 (2021-04-06)
 
-### Dependency Updates
+### Other Changes
+
+#### Dependency Updates
+
 - Update azure-core to 1.15.0
 
 ## 1.0.0-beta.2 (2021-02-09)
+
+### Bugs Fixed
 
 - Support specifying the service API version. (AutoRest update)
 - Send missing "Accept" request headers
@@ -20,7 +28,7 @@ the Java ecosystem, and as consistent across different languages and platforms a
 our efforts can be found in the
 [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java_introduction.html).
 
-### New Features
+### Features Added
 
 - It uses Azure Synapse 2019-11-01-preview API
 - One client design:

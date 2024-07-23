@@ -104,12 +104,13 @@ public final class LoadBalancerConfiguration {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model LoadBalancerConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model LoadBalancerConfiguration"));
         }
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property properties in model LoadBalancerConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model LoadBalancerConfiguration"));
         } else {
             properties().validate();
         }

@@ -5,6 +5,7 @@ package com.azure.resourcemanager.eventhubs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.eventhubs.EventHubsManager;
 import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -12,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.eventhubs.EventHubsManager;
 
 import java.time.OffsetDateTime;
 
@@ -88,6 +88,21 @@ public interface EventHubNamespace extends
      * @return list of authorization rules for the event hub namespace
      */
     PagedIterable<EventHubNamespaceAuthorizationRule> listAuthorizationRules();
+
+    /**
+     * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    TlsVersion minimumTlsVersion();
+
+    /**
+     * Get the zoneRedundant property: Enabling this property creates a Standard Event Hubs Namespace in regions
+     * supported availability zones.
+     *
+     * @return the zoneRedundant value.
+     */
+    boolean zoneRedundant();
 
     /**
      * The entirety of the event hub namespace definition.
@@ -221,6 +236,32 @@ public interface EventHubNamespace extends
         }
 
         /**
+         * The stage of the event hub namespace definition
+         * allowing to specify minimumTlsVersion.
+         */
+        interface WithMinimumTlsVersion {
+            /**
+             * Sets the minimum TLS version
+             *
+             * @param minimumTlsVersion the minimumTlsVersion value to set.
+             * @return next stage of the event hub namespace definition
+             */
+            WithCreate withMinimumTlsVersion(TlsVersion minimumTlsVersion);
+        }
+
+        /**
+         * The stage of the event hub namespace definition allowing to enable Zone Redundant.
+         */
+        interface WithZoneRedundant {
+            /**
+             * Enables the zone redundant
+             *
+             * @return next stage of the event hub namespace definition
+             */
+            WithCreate enableZoneRedundant();
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
@@ -231,7 +272,9 @@ public interface EventHubNamespace extends
             EventHubNamespace.DefinitionStages.WithSku,
             EventHubNamespace.DefinitionStages.WithEventHub,
             EventHubNamespace.DefinitionStages.WithAuthorizationRule,
-            EventHubNamespace.DefinitionStages.WithThroughputConfiguration {
+            EventHubNamespace.DefinitionStages.WithThroughputConfiguration,
+            EventHubNamespace.DefinitionStages.WithMinimumTlsVersion,
+            EventHubNamespace.DefinitionStages.WithZoneRedundant {
         }
     }
 
@@ -244,7 +287,8 @@ public interface EventHubNamespace extends
         EventHubNamespace.UpdateStages.WithSku,
         EventHubNamespace.UpdateStages.WithEventHub,
         EventHubNamespace.UpdateStages.WithAuthorizationRule,
-        EventHubNamespace.UpdateStages.WithThroughputConfiguration {
+        EventHubNamespace.UpdateStages.WithThroughputConfiguration,
+        EventHubNamespace.UpdateStages.WithMinimumTlsVersion {
     }
 
     /**
@@ -371,6 +415,19 @@ public interface EventHubNamespace extends
              * @return next stage of the event hub namespace update
              */
             Update withThroughputUnitsUpperLimit(int units);
+        }
+
+        /**
+         * The stage of the event hub namespace update allowing to change minimum tls version.
+         */
+        interface WithMinimumTlsVersion {
+            /**
+             * Sets the minimum TLS version
+             *
+             * @param minimumTlsVersion the minimumTlsVersion value to set.
+             * @return next stage of the event hub namespace update
+             */
+            Update withMinimumTlsVersion(TlsVersion minimumTlsVersion);
         }
     }
 }

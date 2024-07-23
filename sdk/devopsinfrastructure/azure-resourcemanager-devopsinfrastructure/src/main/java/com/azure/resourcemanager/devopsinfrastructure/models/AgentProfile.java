@@ -24,7 +24,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
     /*
      * Defines pool buffer/stand-by agents.
      */
-    private Object resourcePredictions;
+    private ResourcePredictions resourcePredictions;
 
     /*
      * Defines how the pool buffer/stand-by agents is provided.
@@ -51,7 +51,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
      * 
      * @return the resourcePredictions value.
      */
-    public Object resourcePredictions() {
+    public ResourcePredictions resourcePredictions() {
         return this.resourcePredictions;
     }
 
@@ -61,7 +61,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
      * @param resourcePredictions the resourcePredictions value to set.
      * @return the AgentProfile object itself.
      */
-    public AgentProfile withResourcePredictions(Object resourcePredictions) {
+    public AgentProfile withResourcePredictions(ResourcePredictions resourcePredictions) {
         this.resourcePredictions = resourcePredictions;
         return this;
     }
@@ -92,6 +92,9 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (resourcePredictions() != null) {
+            resourcePredictions().validate();
+        }
         if (resourcePredictionsProfile() != null) {
             resourcePredictionsProfile().validate();
         }
@@ -104,7 +107,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kind", this.kind);
-        jsonWriter.writeUntypedField("resourcePredictions", this.resourcePredictions);
+        jsonWriter.writeJsonField("resourcePredictions", this.resourcePredictions);
         jsonWriter.writeJsonField("resourcePredictionsProfile", this.resourcePredictionsProfile);
         return jsonWriter.writeEndObject();
     }
@@ -154,7 +157,7 @@ public class AgentProfile implements JsonSerializable<AgentProfile> {
                 if ("kind".equals(fieldName)) {
                     deserializedAgentProfile.kind = reader.getString();
                 } else if ("resourcePredictions".equals(fieldName)) {
-                    deserializedAgentProfile.resourcePredictions = reader.readUntyped();
+                    deserializedAgentProfile.resourcePredictions = ResourcePredictions.fromJson(reader);
                 } else if ("resourcePredictionsProfile".equals(fieldName)) {
                     deserializedAgentProfile.resourcePredictionsProfile = ResourcePredictionsProfile.fromJson(reader);
                 } else {

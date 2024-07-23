@@ -20,7 +20,10 @@ public final class VirtualMachineScaleSetsGetInstanceViewSamples {
      */
     public static void
         virtualMachineScaleSetGetInstanceViewMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .getInstanceViewWithResponse("rgcompute", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
@@ -36,7 +39,10 @@ public final class VirtualMachineScaleSetsGetInstanceViewSamples {
      */
     public static void
         virtualMachineScaleSetGetInstanceViewMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .getInstanceViewWithResponse("rgcompute", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }
