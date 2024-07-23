@@ -25,7 +25,7 @@ stages:
                 python -m pip install termcolor
               displayName: 'Install python module'
             - script: |
-                python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py
+                python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py --target-version-prefix 3. --non-target-version-prefix-list 3.0.
               displayName: 'Update supported Spring versions'
           MatrixFilters:
             - JavaTestVersion=^(?!1.8|1.11).*
