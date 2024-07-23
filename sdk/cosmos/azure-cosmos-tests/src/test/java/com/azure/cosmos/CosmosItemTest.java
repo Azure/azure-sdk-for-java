@@ -6,10 +6,13 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ConsistencyTestsBase;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
@@ -663,6 +666,159 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(readManyRequestCharge).isLessThan(queryRequestCharge.get());
     }
 
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readManyWithIncorrectUserSpecifiedSessionTokenWithSolelyPointReads() throws Exception {
+
+        ConsistencyLevel effectiveConsistencyLevel = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getEffectiveConsistencyLevel(client.asyncClient(), OperationType.Query, null);
+
+        if (effectiveConsistencyLevel != ConsistencyLevel.SESSION) {
+            throw new SkipException("Test only targeting session consistency.");
+        }
+
+        String partitionKeyValue = UUID.randomUUID().toString();
+        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+
+        int numDocuments = 1;
+        AtomicReference<String> lastRecordedSessionToken = new AtomicReference<>();
+
+        for (int i = 0; i < numDocuments; i++) {
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
+
+            CosmosItemResponse<ObjectNode> response = container.createItem(document);
+            lastRecordedSessionToken.set(response.getSessionToken());
+
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+
+            cosmosItemIdentities.add(cosmosItemIdentity);
+        }
+
+        String bumpedUpSessionToken = bumpUpLsnInSessionToken(lastRecordedSessionToken.get());
+
+        for (int i = 0; i < numDocuments; i++) {
+
+            try {
+
+                container.readMany(
+                    Arrays.asList(cosmosItemIdentities.get(i)),
+                    bumpedUpSessionToken,
+                    InternalObjectNode.class);
+
+            } catch (Exception ex) {
+                assertThat(ex instanceof CosmosException).isTrue();
+                CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+
+                assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+            }
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readManyWithIncorrectUserSpecifiedSessionTokenWithSolelyQueries() throws Exception {
+        ConsistencyLevel effectiveConsistencyLevel = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getEffectiveConsistencyLevel(client.asyncClient(), OperationType.Query, null);
+
+        if (effectiveConsistencyLevel != ConsistencyLevel.SESSION) {
+            throw new SkipException("Test only targeting session consistency.");
+        }
+
+        String partitionKeyValue = UUID.randomUUID().toString();
+        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+
+        int numDocuments = 1;
+        AtomicReference<String> lastRecordedSessionToken = new AtomicReference<>();
+
+        for (int i = 0; i < numDocuments; i++) {
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
+
+            CosmosItemResponse<ObjectNode> response = container.createItem(document);
+            lastRecordedSessionToken.set(response.getSessionToken());
+
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+
+            cosmosItemIdentities.add(cosmosItemIdentity);
+        }
+
+        String bumpedUpSessionToken = bumpUpLsnInSessionToken(lastRecordedSessionToken.get());
+
+        for (int i = 0; i < numDocuments; i++) {
+
+            try {
+
+                container.readMany(
+                    Arrays.asList(cosmosItemIdentities.get(i)),
+                    bumpedUpSessionToken,
+                    InternalObjectNode.class);
+
+            } catch (Exception ex) {
+                assertThat(ex instanceof CosmosException).isTrue();
+                CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+
+                assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+            }
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readManyWithIncorrectUserSpecifiedSessionTokenWithQueriesAndPointReads() throws Exception {
+        ConsistencyLevel effectiveConsistencyLevel = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getEffectiveConsistencyLevel(client.asyncClient(), OperationType.Query, null);
+
+        if (effectiveConsistencyLevel != ConsistencyLevel.SESSION) {
+            throw new SkipException("Test only targeting session consistency.");
+        }
+
+        String partitionKeyValue = UUID.randomUUID().toString();
+        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+
+        int numDocuments = 1;
+        AtomicReference<String> lastRecordedSessionToken = new AtomicReference<>();
+
+        for (int i = 0; i < numDocuments; i++) {
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
+
+            CosmosItemResponse<ObjectNode> response = container.createItem(document);
+            lastRecordedSessionToken.set(response.getSessionToken());
+
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+
+            cosmosItemIdentities.add(cosmosItemIdentity);
+        }
+
+        String bumpedUpSessionToken = bumpUpLsnInSessionToken(lastRecordedSessionToken.get());
+
+        for (int i = 0; i < numDocuments; i++) {
+
+            try {
+
+                container.readMany(
+                    Arrays.asList(cosmosItemIdentities.get(i)),
+                    bumpedUpSessionToken,
+                    InternalObjectNode.class);
+
+            } catch (Exception ex) {
+                assertThat(ex instanceof CosmosException).isTrue();
+                CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+
+                assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE);
+            }
+        }
+    }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItemWithDuplicateJsonProperties() throws Exception {
@@ -1124,6 +1280,23 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(expectedId);
+    }
+
+    // todo: very brittle method since session token format can change
+    // todo: but since it is a test - session token format changes
+    // todo: failing the test will ensure visibility
+    private static String bumpUpLsnInSessionToken(String originalSessionToken) throws Exception {
+        try {
+            ISessionToken sessionToken = SessionTokenHelper.parse(originalSessionToken);
+            ISessionToken modifiedSessionToken
+                = ConsistencyTestsBase.createSessionToken(sessionToken, 100000000);
+
+            return modifiedSessionToken.convertToString();
+        } catch (Exception ex) {
+            fail("Session token parsing should have passed");
+        }
+
+        return originalSessionToken;
     }
 
     private static class PartitionKeyWrapper {
