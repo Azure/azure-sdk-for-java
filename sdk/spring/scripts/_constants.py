@@ -16,3 +16,19 @@ def get_spring_boot_version_tag_prefix(spring_boot_version):
         return SPRING_BOOT_MAJOR_VERSION_PREFIX_DICT[SPRING_BOOT_MAJOR_2_VERSION_NAME]
     else:
         return ''
+
+
+# Since Spring Cloud Azure uses multiple versions of external dependencies managed by Spring Boot,
+# the modules that use Spring Boot 2 to manage dependencies are skipped.
+SKIP_ADDING_DEPENDENCY_MANAGEMENT_ARTIFACT_IDS = [
+    'spring-cloud-azure-starter-monitor-test',
+    'spring-cloud-azure-starter-monitor'
+]
+
+
+def should_skip_adding_dependency_management(file_path):
+    for skip in SKIP_ADDING_DEPENDENCY_MANAGEMENT_ARTIFACT_IDS:
+        if skip in file_path:
+            return True
+    else:
+        return False
