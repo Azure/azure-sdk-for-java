@@ -23,7 +23,7 @@ public final class WorkloadNetworksCreateSegmentMockTests {
     @Test
     public void testCreateSegment() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"agy\",\"connectedGateway\":\"qfby\",\"subnet\":{\"dhcpRanges\":[\"giagtcojo\",\"qwogfnzjvus\",\"zldmozuxy\",\"fsbtkad\"],\"gatewayAddress\":\"s\"},\"portVif\":[{\"portName\":\"tgkbugrjqctojc\"},{\"portName\":\"sofieypefojyqd\"},{\"portName\":\"u\"},{\"portName\":\"cp\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":4772372481641988855},\"id\":\"lhzdsqtzb\",\"name\":\"rgnowcjhfgm\",\"type\":\"ecactx\"}";
+            = "{\"properties\":{\"displayName\":\"akchzyvlixqnrk\",\"connectedGateway\":\"kjibnxmysuxswqrn\",\"subnet\":{\"dhcpRanges\":[\"ijpstte\",\"oqq\",\"wcyyufmhruncu\",\"mqspkcdqzhlctdd\"],\"gatewayAddress\":\"qn\"},\"portVif\":[{\"portName\":\"chrqb\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":3423454128709861544},\"id\":\"dcwboxjum\",\"name\":\"qqoli\",\"type\":\"r\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,19 +33,19 @@ public final class WorkloadNetworksCreateSegmentMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkSegment response = manager.workloadNetworks()
-            .defineSegment("xg")
-            .withExistingWorkloadNetwork("spave", "hrv", "bunzozudh")
-            .withDisplayName("yxcdyuibhmfdnbzy")
-            .withConnectedGateway("f")
-            .withSubnet(new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList("naeo", "srvhmgorffuki"))
-                .withGatewayAddress("vwmzhwplefaxvxil"))
-            .withRevision(8809168943963914641L)
+            .defineSegment("ypuuwwltvuqjctze")
+            .withExistingWorkloadNetwork("lvidizozs", "bccxjmonfdgn", "n")
+            .withDisplayName("if")
+            .withConnectedGateway("hmkdasvfl")
+            .withSubnet(new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList("cu", "chxgs", "boldforobwj"))
+                .withGatewayAddress("izbfhfovvacq"))
+            .withRevision(8492119421545831935L)
             .create();
 
-        Assertions.assertEquals("agy", response.displayName());
-        Assertions.assertEquals("qfby", response.connectedGateway());
-        Assertions.assertEquals("giagtcojo", response.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("s", response.subnet().gatewayAddress());
-        Assertions.assertEquals(4772372481641988855L, response.revision());
+        Assertions.assertEquals("akchzyvlixqnrk", response.displayName());
+        Assertions.assertEquals("kjibnxmysuxswqrn", response.connectedGateway());
+        Assertions.assertEquals("ijpstte", response.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("qn", response.subnet().gatewayAddress());
+        Assertions.assertEquals(3423454128709861544L, response.revision());
     }
 }

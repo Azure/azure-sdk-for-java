@@ -27,7 +27,8 @@ public final class WorkloadNetworksDeleteDnsZoneMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workloadNetworks().deleteDnsZone("iykhy", "wf", "jlb", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks()
+            .deleteDnsZone("f", "xnmwmqtibxyijddt", "qcttadijaeukmrsi", com.azure.core.util.Context.NONE);
 
     }
 }

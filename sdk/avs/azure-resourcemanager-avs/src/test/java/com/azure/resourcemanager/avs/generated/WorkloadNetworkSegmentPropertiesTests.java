@@ -14,27 +14,28 @@ public final class WorkloadNetworkSegmentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkSegmentProperties model = BinaryData.fromString(
-            "{\"displayName\":\"v\",\"connectedGateway\":\"vc\",\"subnet\":{\"dhcpRanges\":[\"hyrnxxmu\",\"edndr\",\"v\"],\"gatewayAddress\":\"kwqqtchealmf\"},\"portVif\":[{\"portName\":\"aygdvwvgpioh\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":4267712994723917741}")
+            "{\"displayName\":\"gofel\",\"connectedGateway\":\"grqmqhldvrii\",\"subnet\":{\"dhcpRanges\":[\"al\",\"hfkvtvsexsowuel\",\"qhhahhxvrhmzkwpj\",\"wws\"],\"gatewayAddress\":\"ghftqsxhqxujxuk\"},\"portVif\":[{\"portName\":\"igrjguufzdm\"},{\"portName\":\"qtfihwhbotzinga\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":3853655697248732253}")
             .toObject(WorkloadNetworkSegmentProperties.class);
-        Assertions.assertEquals("v", model.displayName());
-        Assertions.assertEquals("vc", model.connectedGateway());
-        Assertions.assertEquals("hyrnxxmu", model.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("kwqqtchealmf", model.subnet().gatewayAddress());
-        Assertions.assertEquals(4267712994723917741L, model.revision());
+        Assertions.assertEquals("gofel", model.displayName());
+        Assertions.assertEquals("grqmqhldvrii", model.connectedGateway());
+        Assertions.assertEquals("al", model.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("ghftqsxhqxujxuk", model.subnet().gatewayAddress());
+        Assertions.assertEquals(3853655697248732253L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkSegmentProperties model = new WorkloadNetworkSegmentProperties().withDisplayName("v")
-            .withConnectedGateway("vc")
-            .withSubnet(new WorkloadNetworkSegmentSubnet().withDhcpRanges(Arrays.asList("hyrnxxmu", "edndr", "v"))
-                .withGatewayAddress("kwqqtchealmf"))
-            .withRevision(4267712994723917741L);
+        WorkloadNetworkSegmentProperties model = new WorkloadNetworkSegmentProperties().withDisplayName("gofel")
+            .withConnectedGateway("grqmqhldvrii")
+            .withSubnet(new WorkloadNetworkSegmentSubnet()
+                .withDhcpRanges(Arrays.asList("al", "hfkvtvsexsowuel", "qhhahhxvrhmzkwpj", "wws"))
+                .withGatewayAddress("ghftqsxhqxujxuk"))
+            .withRevision(3853655697248732253L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkSegmentProperties.class);
-        Assertions.assertEquals("v", model.displayName());
-        Assertions.assertEquals("vc", model.connectedGateway());
-        Assertions.assertEquals("hyrnxxmu", model.subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("kwqqtchealmf", model.subnet().gatewayAddress());
-        Assertions.assertEquals(4267712994723917741L, model.revision());
+        Assertions.assertEquals("gofel", model.displayName());
+        Assertions.assertEquals("grqmqhldvrii", model.connectedGateway());
+        Assertions.assertEquals("al", model.subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("ghftqsxhqxujxuk", model.subnet().gatewayAddress());
+        Assertions.assertEquals(3853655697248732253L, model.revision());
     }
 }

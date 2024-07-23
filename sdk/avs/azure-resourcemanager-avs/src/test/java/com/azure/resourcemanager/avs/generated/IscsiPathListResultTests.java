@@ -12,9 +12,9 @@ public final class IscsiPathListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IscsiPathListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"networkBlock\":\"pxebmnzbt\"},\"id\":\"jpglkfgohdne\",\"name\":\"el\",\"type\":\"phsdyhto\"},{\"properties\":{\"provisioningState\":\"Updating\",\"networkBlock\":\"dowwquuvxzxclvit\"},\"id\":\"qzonosggbhcohf\",\"name\":\"dsjnka\",\"type\":\"jutiiswacff\"},{\"properties\":{\"provisioningState\":\"Pending\",\"networkBlock\":\"zewk\"},\"id\":\"hqcrailvpnpp\",\"name\":\"uflrwd\",\"type\":\"hdlxyjrxsagafcn\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"networkBlock\":\"qapnedgfbcv\"},\"id\":\"vq\",\"name\":\"pkeqdcvdrhvoo\",\"type\":\"sotbob\"}],\"nextLink\":\"opcjwvnhd\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Pending\",\"networkBlock\":\"n\"},\"id\":\"rudsg\",\"name\":\"a\",\"type\":\"mkycgra\"},{\"properties\":{\"provisioningState\":\"Building\",\"networkBlock\":\"etaebu\"},\"id\":\"vdmovsmzlxwabm\",\"name\":\"oefki\",\"type\":\"rvtp\"},{\"properties\":{\"provisioningState\":\"Building\",\"networkBlock\":\"mqlgk\"},\"id\":\"tndoaongbjc\",\"name\":\"tujitcjedft\",\"type\":\"waezkojvd\"}],\"nextLink\":\"zfoqouicybxar\"}")
             .toObject(IscsiPathListResult.class);
-        Assertions.assertEquals("pxebmnzbt", model.value().get(0).networkBlock());
-        Assertions.assertEquals("opcjwvnhd", model.nextLink());
+        Assertions.assertEquals("n", model.value().get(0).networkBlock());
+        Assertions.assertEquals("zfoqouicybxar", model.nextLink());
     }
 }

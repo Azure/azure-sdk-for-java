@@ -12,8 +12,8 @@ public final class WorkloadNetworkVirtualMachineInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkVirtualMachineInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"displayName\":\"sfgytguslfead\",\"vmType\":\"EDGE\"},\"id\":\"ukyhejhzis\",\"name\":\"gfpelolppvksrpqv\",\"type\":\"jzraehtwdwrf\"}")
+            "{\"properties\":{\"provisioningState\":\"Building\",\"displayName\":\"txhwgfws\",\"vmType\":\"EDGE\"},\"id\":\"coezbrhubskh\",\"name\":\"dyg\",\"type\":\"ookk\"}")
             .toObject(WorkloadNetworkVirtualMachineInner.class);
-        Assertions.assertEquals("sfgytguslfead", model.displayName());
+        Assertions.assertEquals("txhwgfws", model.displayName());
     }
 }

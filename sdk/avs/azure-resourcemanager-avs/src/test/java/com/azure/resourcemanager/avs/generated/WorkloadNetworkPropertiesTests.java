@@ -11,6 +11,6 @@ public final class WorkloadNetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Failed\"}").toObject(WorkloadNetworkProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"Canceled\"}").toObject(WorkloadNetworkProperties.class);
     }
 }

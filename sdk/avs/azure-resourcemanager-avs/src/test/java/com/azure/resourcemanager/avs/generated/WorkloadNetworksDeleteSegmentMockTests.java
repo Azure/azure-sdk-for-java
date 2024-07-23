@@ -28,8 +28,7 @@ public final class WorkloadNetworksDeleteSegmentMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.workloadNetworks()
-            .deleteSegment("yuspskas", "vlmfwdgzxulucv", "amrsreuzv", "urisjnhnytxifqj",
-                com.azure.core.util.Context.NONE);
+            .deleteSegment("g", "khocxvdfffwaf", "roud", "spave", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -27,8 +27,7 @@ public final class WorkloadNetworksDeletePortMirroringMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workloadNetworks()
-            .deletePortMirroring("hminyflnorwmduv", "pklvxw", "ygdxpgpqchis", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().deletePortMirroring("jcivmmg", "f", "fiwrxgkn", com.azure.core.util.Context.NONE);
 
     }
 }

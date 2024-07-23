@@ -22,7 +22,7 @@ public final class WorkloadNetworksListSegmentsMockTests {
     @Test
     public void testListSegments() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"yzhftwesgogczh\",\"connectedGateway\":\"nxkrlgnyhmossxkk\",\"subnet\":{\"dhcpRanges\":[\"rghxjb\",\"hqxvcxgfrpdsofbs\",\"rnsvbuswd\",\"z\"],\"gatewayAddress\":\"bycnunvjsrtkf\"},\"portVif\":[{\"portName\":\"pqgik\"},{\"portName\":\"irtx\"},{\"portName\":\"uxzejntpsew\"},{\"portName\":\"oi\"}],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":1902366482512122706},\"id\":\"qmi\",\"name\":\"ox\",\"type\":\"rgguf\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"tpzdmovzvfvaawzq\",\"connectedGateway\":\"f\",\"subnet\":{\"dhcpRanges\":[\"riglaec\"],\"gatewayAddress\":\"dticokpvzml\"},\"portVif\":[{\"portName\":\"dgxobfircl\"},{\"portName\":\"kciayzri\"},{\"portName\":\"hya\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":8892395873525165573},\"id\":\"vkjlmxhom\",\"name\":\"ynhdwdigum\",\"type\":\"nraauzz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,13 +31,13 @@ public final class WorkloadNetworksListSegmentsMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadNetworkSegment> response = manager.workloadNetworks()
-            .listSegments("rxfrddhc", "atiz", "ronasxift", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkSegment> response
+            = manager.workloadNetworks().listSegments("ev", "oepry", "t", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yzhftwesgogczh", response.iterator().next().displayName());
-        Assertions.assertEquals("nxkrlgnyhmossxkk", response.iterator().next().connectedGateway());
-        Assertions.assertEquals("rghxjb", response.iterator().next().subnet().dhcpRanges().get(0));
-        Assertions.assertEquals("bycnunvjsrtkf", response.iterator().next().subnet().gatewayAddress());
-        Assertions.assertEquals(1902366482512122706L, response.iterator().next().revision());
+        Assertions.assertEquals("tpzdmovzvfvaawzq", response.iterator().next().displayName());
+        Assertions.assertEquals("f", response.iterator().next().connectedGateway());
+        Assertions.assertEquals("riglaec", response.iterator().next().subnet().dhcpRanges().get(0));
+        Assertions.assertEquals("dticokpvzml", response.iterator().next().subnet().gatewayAddress());
+        Assertions.assertEquals(8892395873525165573L, response.iterator().next().revision());
     }
 }

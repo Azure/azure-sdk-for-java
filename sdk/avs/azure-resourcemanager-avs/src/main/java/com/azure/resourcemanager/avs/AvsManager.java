@@ -38,6 +38,7 @@ import com.azure.resourcemanager.avs.implementation.OperationsImpl;
 import com.azure.resourcemanager.avs.implementation.PlacementPoliciesImpl;
 import com.azure.resourcemanager.avs.implementation.PrivateCloudsImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptCmdletsImpl;
+import com.azure.resourcemanager.avs.implementation.ScriptExecutionsImpl;
 import com.azure.resourcemanager.avs.implementation.ScriptPackagesImpl;
 import com.azure.resourcemanager.avs.implementation.VirtualMachinesImpl;
 import com.azure.resourcemanager.avs.implementation.WorkloadNetworksImpl;
@@ -54,6 +55,7 @@ import com.azure.resourcemanager.avs.models.Operations;
 import com.azure.resourcemanager.avs.models.PlacementPolicies;
 import com.azure.resourcemanager.avs.models.PrivateClouds;
 import com.azure.resourcemanager.avs.models.ScriptCmdlets;
+import com.azure.resourcemanager.avs.models.ScriptExecutions;
 import com.azure.resourcemanager.avs.models.ScriptPackages;
 import com.azure.resourcemanager.avs.models.VirtualMachines;
 import com.azure.resourcemanager.avs.models.WorkloadNetworks;
@@ -96,6 +98,8 @@ public final class AvsManager {
     private ScriptPackages scriptPackages;
 
     private ScriptCmdlets scriptCmdlets;
+
+    private ScriptExecutions scriptExecutions;
 
     private IscsiPaths iscsiPaths;
 
@@ -478,6 +482,18 @@ public final class AvsManager {
             this.scriptCmdlets = new ScriptCmdletsImpl(clientObject.getScriptCmdlets(), this);
         }
         return scriptCmdlets;
+    }
+
+    /**
+     * Gets the resource collection API of ScriptExecutions. It manages ScriptExecution.
+     * 
+     * @return Resource collection API of ScriptExecutions.
+     */
+    public ScriptExecutions scriptExecutions() {
+        if (this.scriptExecutions == null) {
+            this.scriptExecutions = new ScriptExecutionsImpl(clientObject.getScriptExecutions(), this);
+        }
+        return scriptExecutions;
     }
 
     /**

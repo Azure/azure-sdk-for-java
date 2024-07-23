@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreateDhcpMockTests {
     @Test
     public void testCreateDhcp() throws Exception {
         String responseStr
-            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"petogebjox\",\"segments\":[\"vnh\"],\"provisioningState\":\"Succeeded\",\"revision\":463304728293019081},\"id\":\"kzjcjbtrgae\",\"name\":\"vvib\",\"type\":\"xjjs\"}";
+            = "{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"leohibetnluankr\",\"segments\":[\"eeebtijvacv\",\"mq\",\"bqqxlaj\",\"nw\"],\"provisioningState\":\"Succeeded\",\"revision\":2784430533313824675},\"id\":\"jkuyxoafgaoq\",\"name\":\"tfaeyl\",\"type\":\"nm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class WorkloadNetworksCreateDhcpMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkDhcp response = manager.workloadNetworks()
-            .defineDhcp("ikf")
-            .withExistingWorkloadNetwork("wotey", "wcluqovekqvgq", "uwifzmpjwyiv")
+            .defineDhcp("rzpasccbiuimzdly")
+            .withExistingWorkloadNetwork("aiouaubrjt", "oq", "fuojrngif")
             .withProperties(
-                new WorkloadNetworkDhcpEntity().withDisplayName("hrfsphuagrtti").withRevision(7883022690716225158L))
+                new WorkloadNetworkDhcpEntity().withDisplayName("qwmkyoquf").withRevision(4194786245193898311L))
             .create();
 
-        Assertions.assertEquals("petogebjox", response.properties().displayName());
-        Assertions.assertEquals(463304728293019081L, response.properties().revision());
+        Assertions.assertEquals("leohibetnluankr", response.properties().displayName());
+        Assertions.assertEquals(2784430533313824675L, response.properties().revision());
     }
 }

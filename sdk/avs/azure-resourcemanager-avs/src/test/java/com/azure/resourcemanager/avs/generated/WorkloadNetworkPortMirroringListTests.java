@@ -13,13 +13,13 @@ public final class WorkloadNetworkPortMirroringListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPortMirroringList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"dszue\",\"direction\":\"EGRESS\",\"source\":\"zkfzbeyv\",\"destination\":\"qi\",\"status\":\"FAILURE\",\"provisioningState\":\"Failed\",\"revision\":3810630755643539146},\"id\":\"dxrbuukzcle\",\"name\":\"yhmlwpaztzp\",\"type\":\"fn\"},{\"properties\":{\"displayName\":\"wyfzqwhxxbuyqa\",\"direction\":\"EGRESS\",\"source\":\"qztpp\",\"destination\":\"o\",\"status\":\"SUCCESS\",\"provisioningState\":\"Updating\",\"revision\":1269488169933236475},\"id\":\"lmncw\",\"name\":\"obqwcsdbnwdcfh\",\"type\":\"cqdpfuv\"}],\"nextLink\":\"sbjjc\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"dntwjchrdgo\",\"direction\":\"BIDIRECTIONAL\",\"source\":\"mwctondzjluudfd\",\"destination\":\"gg\",\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":5516945390083190100},\"id\":\"tgseinqfiufxqkn\",\"name\":\"irgne\",\"type\":\"ttwqmsni\"}],\"nextLink\":\"cdm\"}")
             .toObject(WorkloadNetworkPortMirroringList.class);
-        Assertions.assertEquals("dszue", model.value().get(0).displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, model.value().get(0).direction());
-        Assertions.assertEquals("zkfzbeyv", model.value().get(0).source());
-        Assertions.assertEquals("qi", model.value().get(0).destination());
-        Assertions.assertEquals(3810630755643539146L, model.value().get(0).revision());
-        Assertions.assertEquals("sbjjc", model.nextLink());
+        Assertions.assertEquals("dntwjchrdgo", model.value().get(0).displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.BIDIRECTIONAL, model.value().get(0).direction());
+        Assertions.assertEquals("mwctondzjluudfd", model.value().get(0).source());
+        Assertions.assertEquals("gg", model.value().get(0).destination());
+        Assertions.assertEquals(5516945390083190100L, model.value().get(0).revision());
+        Assertions.assertEquals("cdm", model.nextLink());
     }
 }

@@ -28,7 +28,8 @@ public final class WorkloadNetworksDeleteDhcpMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.workloadNetworks()
-            .deleteDhcp("jdftuljltd", "ceamtm", "zuo", "ejwcwwqiok", com.azure.core.util.Context.NONE);
+            .deleteDhcp("tgkbugrjqctojc", "isofieypefojyqd", "cuplcplcwkhih", "hlhzdsqtzbsrgno",
+                com.azure.core.util.Context.NONE);
 
     }
 }

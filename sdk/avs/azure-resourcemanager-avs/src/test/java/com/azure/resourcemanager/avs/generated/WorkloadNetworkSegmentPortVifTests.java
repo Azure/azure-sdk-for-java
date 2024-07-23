@@ -12,7 +12,7 @@ public final class WorkloadNetworkSegmentPortVifTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkSegmentPortVif model
-            = BinaryData.fromString("{\"portName\":\"njhf\"}").toObject(WorkloadNetworkSegmentPortVif.class);
-        Assertions.assertEquals("njhf", model.portName());
+            = BinaryData.fromString("{\"portName\":\"yajguqfhwygzlv\"}").toObject(WorkloadNetworkSegmentPortVif.class);
+        Assertions.assertEquals("yajguqfhwygzlv", model.portName());
     }
 }

@@ -21,7 +21,7 @@ public final class WorkloadNetworksGetVirtualMachineWithResponseMockTests {
     @Test
     public void testGetVirtualMachineWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"pjui\",\"vmType\":\"REGULAR\"},\"id\":\"k\",\"name\":\"dzf\",\"type\":\"azivjlfrqttbajl\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"vblbjednljlageua\",\"vmType\":\"EDGE\"},\"id\":\"nsmjbnkppxynen\",\"name\":\"svxeizzgwklnsr\",\"type\":\"ffeycx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class WorkloadNetworksGetVirtualMachineWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkVirtualMachine response = manager.workloadNetworks()
-            .getVirtualMachineWithResponse("minsgowzf", "tsttktlahbq", "ctxtgzukxi", "mmqtgqqqxhr",
+            .getVirtualMachineWithResponse("pqg", "tjeaahhvjhh", "akz", "bbjjidjksyxk",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pjui", response.displayName());
+        Assertions.assertEquals("vblbjednljlageua", response.displayName());
     }
 }

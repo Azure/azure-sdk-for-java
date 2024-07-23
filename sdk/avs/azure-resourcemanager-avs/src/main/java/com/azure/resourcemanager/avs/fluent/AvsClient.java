@@ -145,6 +145,13 @@ public interface AvsClient {
     ScriptCmdletsClient getScriptCmdlets();
 
     /**
+     * Gets the ScriptExecutionsClient object to access its operations.
+     * 
+     * @return the ScriptExecutionsClient object.
+     */
+    ScriptExecutionsClient getScriptExecutions();
+
+    /**
      * Gets the IscsiPathsClient object to access its operations.
      * 
      * @return the IscsiPathsClient object.

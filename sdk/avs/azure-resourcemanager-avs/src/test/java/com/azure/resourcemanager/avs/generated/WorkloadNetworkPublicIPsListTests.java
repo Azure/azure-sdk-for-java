@@ -12,10 +12,10 @@ public final class WorkloadNetworkPublicIPsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPublicIPsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"pwjxezn\",\"numberOfPublicIPs\":3866044551927129985,\"publicIPBlock\":\"njwmwkpnbsazejj\",\"provisioningState\":\"Succeeded\"},\"id\":\"gfhsxttaugzxn\",\"name\":\"aa\",\"type\":\"pxdtnkdmkq\"},{\"properties\":{\"displayName\":\"wuenvr\",\"numberOfPublicIPs\":1643740308818465085,\"publicIPBlock\":\"aibrebqaaysjkixq\",\"provisioningState\":\"Updating\"},\"id\":\"tezlwff\",\"name\":\"iakp\",\"type\":\"pqqmted\"}],\"nextLink\":\"mmji\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"myst\",\"numberOfPublicIPs\":885610274962208064,\"publicIPBlock\":\"pfcvlerchpqbmfp\",\"provisioningState\":\"Updating\"},\"id\":\"widf\",\"name\":\"xsspuunnoxyhk\",\"type\":\"g\"},{\"properties\":{\"displayName\":\"rihpfhoq\",\"numberOfPublicIPs\":1011085759791678741,\"publicIPBlock\":\"dao\",\"provisioningState\":\"Updating\"},\"id\":\"l\",\"name\":\"jxxkzbrmsgei\",\"type\":\"siykzkdncjdxonbz\"}],\"nextLink\":\"gculap\"}")
             .toObject(WorkloadNetworkPublicIPsList.class);
-        Assertions.assertEquals("pwjxezn", model.value().get(0).displayName());
-        Assertions.assertEquals(3866044551927129985L, model.value().get(0).numberOfPublicIPs());
-        Assertions.assertEquals("mmji", model.nextLink());
+        Assertions.assertEquals("myst", model.value().get(0).displayName());
+        Assertions.assertEquals(885610274962208064L, model.value().get(0).numberOfPublicIPs());
+        Assertions.assertEquals("gculap", model.nextLink());
     }
 }

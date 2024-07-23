@@ -12,8 +12,8 @@ public final class WorkloadNetworkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"sbpfvmwyhr\",\"name\":\"ouyftaakc\",\"type\":\"wiyzvqtmnubexkp\"},{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"ndjmquxvyp\",\"name\":\"mg\",\"type\":\"opkwhojv\"},{\"properties\":{\"provisioningState\":\"Building\"},\"id\":\"xysmoc\",\"name\":\"bq\",\"type\":\"qvmkcxo\"},{\"properties\":{\"provisioningState\":\"Building\"},\"id\":\"elxprglyatddck\",\"name\":\"bcuejrjxgci\",\"type\":\"ibrhosxsdqr\"}],\"nextLink\":\"o\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"bt\",\"name\":\"gsfraoyzkoow\",\"type\":\"lmnguxaw\"},{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"yuuximerqfobwyzn\",\"name\":\"bykutw\",\"type\":\"fhpagmhrskdsnf\"}],\"nextLink\":\"doakgtdlmkkzevdl\"}")
             .toObject(WorkloadNetworkList.class);
-        Assertions.assertEquals("o", model.nextLink());
+        Assertions.assertEquals("doakgtdlmkkzevdl", model.nextLink());
     }
 }

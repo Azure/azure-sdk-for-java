@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
     @Test
     public void testCreateVMGroup() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"hzjhf\",\"members\":[\"vvmu\",\"gpmuneqsxvmhfbuz\",\"yihsasbhudypohyu\"],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":3075885746767216016},\"id\":\"rpfoobr\",\"name\":\"ttymsjny\",\"type\":\"qdnfwqzdz\"}";
+            = "{\"properties\":{\"displayName\":\"xbkwv\",\"members\":[\"zvd\",\"bzdixzmq\",\"noda\",\"opqhewjptmc\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":7127280864515771015},\"id\":\"ndlatutmzlbi\",\"name\":\"jlvfhrbbpneqv\",\"type\":\"wwyyurmoch\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class WorkloadNetworksCreateVMGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkVMGroup response = manager.workloadNetworks()
-            .defineVMGroup("uvyinzqodfvpgs")
-            .withExistingWorkloadNetwork("jcivmmg", "f", "fiwrxgkn")
-            .withDisplayName("gsgbpfgzdjt")
-            .withMembers(Arrays.asList("flbqvgaq", "lgafcqusrdve"))
-            .withRevision(4392924030472678320L)
+            .defineVMGroup("sufco")
+            .withExistingWorkloadNetwork("cysihs", "qcwdhoh", "dtmcd")
+            .withDisplayName("bzlmcm")
+            .withMembers(Arrays.asList("cvhd", "evwqqxeyskonq", "inkfkbgbz", "owxeqocljmy"))
+            .withRevision(7238686048723622110L)
             .create();
 
-        Assertions.assertEquals("hzjhf", response.displayName());
-        Assertions.assertEquals("vvmu", response.members().get(0));
-        Assertions.assertEquals(3075885746767216016L, response.revision());
+        Assertions.assertEquals("xbkwv", response.displayName());
+        Assertions.assertEquals("zvd", response.members().get(0));
+        Assertions.assertEquals(7127280864515771015L, response.revision());
     }
 }

@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreatePortMirroringMockTests {
     @Test
     public void testCreatePortMirroring() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"snfepgfewetwlyx\",\"direction\":\"EGRESS\",\"source\":\"ykxhdjh\",\"destination\":\"mmbcxfhbcp\",\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":2736440248619026147},\"id\":\"qizxfpxtgqscjavf\",\"name\":\"juhdqazkmtgguwpi\",\"type\":\"r\"}";
+            = "{\"properties\":{\"displayName\":\"ugcmjkavlgorb\",\"direction\":\"INGRESS\",\"source\":\"mdtzfjltfvnzc\",\"destination\":\"t\",\"status\":\"SUCCESS\",\"provisioningState\":\"Succeeded\",\"revision\":175217187647549026},\"id\":\"dbzqgqqihed\",\"name\":\"vqwt\",\"type\":\"mkyi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,19 +32,19 @@ public final class WorkloadNetworksCreatePortMirroringMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPortMirroring response = manager.workloadNetworks()
-            .definePortMirroring("hujswtwkozzwcul")
-            .withExistingWorkloadNetwork("oqbeitpkxzt", "oobklftidgfcwq", "pimaqxzhemjyh")
-            .withDisplayName("wpfaj")
-            .withDirection(PortMirroringDirectionEnum.EGRESS)
-            .withSource("tlwtjjguktalhsn")
-            .withDestination("cdmxzrpoaiml")
-            .withRevision(1869665425773313749L)
+            .definePortMirroring("ciqdsme")
+            .withExistingWorkloadNetwork("gv", "irpghriypoqeyh", "qhykprlpyzn")
+            .withDisplayName("tdfuxt")
+            .withDirection(PortMirroringDirectionEnum.INGRESS)
+            .withSource("ibmi")
+            .withDestination("nnust")
+            .withRevision(5871871887515703016L)
             .create();
 
-        Assertions.assertEquals("snfepgfewetwlyx", response.displayName());
-        Assertions.assertEquals(PortMirroringDirectionEnum.EGRESS, response.direction());
-        Assertions.assertEquals("ykxhdjh", response.source());
-        Assertions.assertEquals("mmbcxfhbcp", response.destination());
-        Assertions.assertEquals(2736440248619026147L, response.revision());
+        Assertions.assertEquals("ugcmjkavlgorb", response.displayName());
+        Assertions.assertEquals(PortMirroringDirectionEnum.INGRESS, response.direction());
+        Assertions.assertEquals("mdtzfjltfvnzc", response.source());
+        Assertions.assertEquals("t", response.destination());
+        Assertions.assertEquals(175217187647549026L, response.revision());
     }
 }

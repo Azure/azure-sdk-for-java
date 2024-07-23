@@ -12,18 +12,18 @@ public final class WorkloadNetworkPublicIpInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadNetworkPublicIpInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"ozphvwauyqncygu\",\"numberOfPublicIPs\":9207382017369514266,\"publicIPBlock\":\"mdscwxqupev\",\"provisioningState\":\"Updating\"},\"id\":\"totxhojujb\",\"name\":\"pelmcuvhixbjxyf\",\"type\":\"n\"}")
+            "{\"properties\":{\"displayName\":\"rpgogtqxep\",\"numberOfPublicIPs\":4258812781218679511,\"publicIPBlock\":\"uajlyj\",\"provisioningState\":\"Building\"},\"id\":\"fqzhv\",\"name\":\"cib\",\"type\":\"fmo\"}")
             .toObject(WorkloadNetworkPublicIpInner.class);
-        Assertions.assertEquals("ozphvwauyqncygu", model.displayName());
-        Assertions.assertEquals(9207382017369514266L, model.numberOfPublicIPs());
+        Assertions.assertEquals("rpgogtqxep", model.displayName());
+        Assertions.assertEquals(4258812781218679511L, model.numberOfPublicIPs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkPublicIpInner model = new WorkloadNetworkPublicIpInner().withDisplayName("ozphvwauyqncygu")
-            .withNumberOfPublicIPs(9207382017369514266L);
+        WorkloadNetworkPublicIpInner model = new WorkloadNetworkPublicIpInner().withDisplayName("rpgogtqxep")
+            .withNumberOfPublicIPs(4258812781218679511L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkPublicIpInner.class);
-        Assertions.assertEquals("ozphvwauyqncygu", model.displayName());
-        Assertions.assertEquals(9207382017369514266L, model.numberOfPublicIPs());
+        Assertions.assertEquals("rpgogtqxep", model.displayName());
+        Assertions.assertEquals(4258812781218679511L, model.numberOfPublicIPs());
     }
 }

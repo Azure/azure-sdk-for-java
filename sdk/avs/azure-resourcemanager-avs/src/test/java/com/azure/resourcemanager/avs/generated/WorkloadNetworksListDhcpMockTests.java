@@ -22,7 +22,7 @@ public final class WorkloadNetworksListDhcpMockTests {
     @Test
     public void testListDhcp() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"g\",\"segments\":[\"nfqn\",\"cypsxjv\",\"oimwkslirc\"],\"provisioningState\":\"Failed\",\"revision\":8449348931909561214},\"id\":\"fceacvlhvygd\",\"name\":\"ftumrtwnawjslbiw\",\"type\":\"ojgcyzt\"}]}";
+            = "{\"value\":[{\"properties\":{\"dhcpType\":\"WorkloadNetworkDhcpEntity\",\"displayName\":\"yxcdyuibhmfdnbzy\",\"segments\":[\"vfcjnaeoisrvhmg\"],\"provisioningState\":\"Failed\",\"revision\":2822407997617521552},\"id\":\"scvwmzhwplef\",\"name\":\"xvxilcbtg\",\"type\":\"hnze\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class WorkloadNetworksListDhcpMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadNetworkDhcp> response = manager.workloadNetworks()
-            .listDhcp("gxmrhublwp", "esutrgjupauutpw", "qhih", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetworkDhcp> response
+            = manager.workloadNetworks().listDhcp("hrv", "bunzozudh", "xg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("g", response.iterator().next().properties().displayName());
-        Assertions.assertEquals(8449348931909561214L, response.iterator().next().properties().revision());
+        Assertions.assertEquals("yxcdyuibhmfdnbzy", response.iterator().next().properties().displayName());
+        Assertions.assertEquals(2822407997617521552L, response.iterator().next().properties().revision());
     }
 }

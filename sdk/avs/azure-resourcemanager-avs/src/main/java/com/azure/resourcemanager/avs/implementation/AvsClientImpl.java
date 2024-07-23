@@ -37,6 +37,7 @@ import com.azure.resourcemanager.avs.fluent.OperationsClient;
 import com.azure.resourcemanager.avs.fluent.PlacementPoliciesClient;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
 import com.azure.resourcemanager.avs.fluent.ScriptCmdletsClient;
+import com.azure.resourcemanager.avs.fluent.ScriptExecutionsClient;
 import com.azure.resourcemanager.avs.fluent.ScriptPackagesClient;
 import com.azure.resourcemanager.avs.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworksClient;
@@ -335,6 +336,20 @@ public final class AvsClientImpl implements AvsClient {
     }
 
     /**
+     * The ScriptExecutionsClient object to access its operations.
+     */
+    private final ScriptExecutionsClient scriptExecutions;
+
+    /**
+     * Gets the ScriptExecutionsClient object to access its operations.
+     * 
+     * @return the ScriptExecutionsClient object.
+     */
+    public ScriptExecutionsClient getScriptExecutions() {
+        return this.scriptExecutions;
+    }
+
+    /**
      * The IscsiPathsClient object to access its operations.
      */
     private final IscsiPathsClient iscsiPaths;
@@ -394,6 +409,7 @@ public final class AvsClientImpl implements AvsClient {
         this.placementPolicies = new PlacementPoliciesClientImpl(this);
         this.scriptPackages = new ScriptPackagesClientImpl(this);
         this.scriptCmdlets = new ScriptCmdletsClientImpl(this);
+        this.scriptExecutions = new ScriptExecutionsClientImpl(this);
         this.iscsiPaths = new IscsiPathsClientImpl(this);
         this.workloadNetworks = new WorkloadNetworksClientImpl(this);
     }
