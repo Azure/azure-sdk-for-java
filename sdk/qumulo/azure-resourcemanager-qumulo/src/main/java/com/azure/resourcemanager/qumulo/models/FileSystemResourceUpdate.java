@@ -5,39 +5,42 @@
 package com.azure.resourcemanager.qumulo.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The type used for update operations of the FileSystemResource. */
+/**
+ * The type used for update operations of the FileSystemResource.
+ */
 @Fluent
-public final class FileSystemResourceUpdate {
+public final class FileSystemResourceUpdate implements JsonSerializable<FileSystemResourceUpdate> {
     /*
      * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The updatable properties of the FileSystemResource.
      */
-    @JsonProperty(value = "properties")
     private FileSystemResourceUpdateProperties properties;
 
-    /** Creates an instance of FileSystemResourceUpdate class. */
+    /**
+     * Creates an instance of FileSystemResourceUpdate class.
+     */
     public FileSystemResourceUpdate() {
     }
 
     /**
      * Get the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -46,7 +49,7 @@ public final class FileSystemResourceUpdate {
 
     /**
      * Set the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FileSystemResourceUpdate object itself.
      */
@@ -57,7 +60,7 @@ public final class FileSystemResourceUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -66,7 +69,7 @@ public final class FileSystemResourceUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FileSystemResourceUpdate object itself.
      */
@@ -77,7 +80,7 @@ public final class FileSystemResourceUpdate {
 
     /**
      * Get the properties property: The updatable properties of the FileSystemResource.
-     *
+     * 
      * @return the properties value.
      */
     public FileSystemResourceUpdateProperties properties() {
@@ -86,7 +89,7 @@ public final class FileSystemResourceUpdate {
 
     /**
      * Set the properties property: The updatable properties of the FileSystemResource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FileSystemResourceUpdate object itself.
      */
@@ -97,7 +100,7 @@ public final class FileSystemResourceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +110,49 @@ public final class FileSystemResourceUpdate {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileSystemResourceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileSystemResourceUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileSystemResourceUpdate.
+     */
+    public static FileSystemResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileSystemResourceUpdate deserializedFileSystemResourceUpdate = new FileSystemResourceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedFileSystemResourceUpdate.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFileSystemResourceUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFileSystemResourceUpdate.properties
+                        = FileSystemResourceUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileSystemResourceUpdate;
+        });
     }
 }

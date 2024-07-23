@@ -10,11 +10,9 @@ import com.azure.resourcemanager.qumulo.models.UserAssignedIdentity;
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"6dbca6bf-fbf6-4798-8cb1-c993babbc390\",\"clientId\":\"d87b0074-0153-4740-bcc6-4e284905d0a3\"}")
-                .toObject(UserAssignedIdentity.class);
+        UserAssignedIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"c38b66a3-aae2-423f-88b0-fac81eb68db8\",\"clientId\":\"e2f3f04e-133e-48f1-8674-6a541ade15fd\"}")
+            .toObject(UserAssignedIdentity.class);
     }
 
     @org.junit.jupiter.api.Test
