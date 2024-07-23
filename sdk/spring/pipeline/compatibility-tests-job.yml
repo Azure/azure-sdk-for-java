@@ -13,7 +13,7 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
     variables:
       - template: ../../../eng/pipelines/templates/variables/globals.yml
-      - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION: ${{ parameters.DependsOn.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION }}
+      - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION: '3.0.13'
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
