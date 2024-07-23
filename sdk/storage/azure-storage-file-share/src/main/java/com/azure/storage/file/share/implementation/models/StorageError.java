@@ -51,7 +51,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Get the message property: The Message property.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
