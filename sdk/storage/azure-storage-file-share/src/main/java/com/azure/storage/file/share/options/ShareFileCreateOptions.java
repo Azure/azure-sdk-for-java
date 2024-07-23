@@ -5,8 +5,8 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
-import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import java.util.Map;
 
@@ -19,7 +19,8 @@ public class ShareFileCreateOptions {
     private final long size;
     private ShareFileHttpHeaders httpHeaders;
     private FileSmbProperties smbProperties;
-    private ShareFilePermission filePermissions;
+    private String filePermission;
+    private FilePermissionFormat filePermissionFormat;
     private Map<String, String> metadata;
     private ShareRequestConditions requestConditions;
 
@@ -112,22 +113,42 @@ public class ShareFileCreateOptions {
     }
 
     /**
-     * Gets the {@link ShareFilePermission}.
+     * Gets the file permission.
      *
-     * @return {@link ShareFilePermission}
+     * @return file permission.
      */
-    public ShareFilePermission getFilePermissions() {
-        return filePermissions;
+    public String getFilePermission() {
+        return filePermission;
     }
 
     /**
-     * Sets the {@link ShareFilePermission}.
+     * Sets the file permission.
      *
-     * @param filePermissions {@link ShareFilePermission}
+     * @param filePermission the file permission.
      * @return The updated options.
      */
-    public ShareFileCreateOptions setFilePermissions(ShareFilePermission filePermissions) {
-        this.filePermissions = filePermissions;
+    public ShareFileCreateOptions setFilePermission(String filePermission) {
+        this.filePermission = filePermission;
+        return this;
+    }
+
+    /**
+     * Gets the file permission format.
+     *
+     * @return file permission format.
+     */
+    public FilePermissionFormat getFilePermissionFormat() {
+        return filePermissionFormat;
+    }
+
+    /**
+     * Sets the file permission format.
+     *
+     * @param filePermissionFormat the file permission format.
+     * @return The updated options.
+     */
+    public ShareFileCreateOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        this.filePermissionFormat = filePermissionFormat;
         return this;
     }
 }
