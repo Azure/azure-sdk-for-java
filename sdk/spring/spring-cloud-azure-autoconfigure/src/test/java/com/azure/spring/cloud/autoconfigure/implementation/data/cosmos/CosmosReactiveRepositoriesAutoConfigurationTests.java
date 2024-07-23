@@ -18,6 +18,7 @@ import com.azure.spring.data.cosmos.repository.support.ReactiveCosmosRepositoryF
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -29,6 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@DisabledIfEnvironmentVariable(named = "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION", matches = "3.0.")
 public class CosmosReactiveRepositoriesAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()

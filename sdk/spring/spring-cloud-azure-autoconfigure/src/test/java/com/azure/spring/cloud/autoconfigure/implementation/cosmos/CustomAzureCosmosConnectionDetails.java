@@ -5,7 +5,9 @@ package com.azure.spring.cloud.autoconfigure.implementation.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
+@DisabledIfEnvironmentVariable(named = "SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION", matches = "3.0.")
 public class CustomAzureCosmosConnectionDetails implements AzureCosmosConnectionDetails {
 
     @Override
