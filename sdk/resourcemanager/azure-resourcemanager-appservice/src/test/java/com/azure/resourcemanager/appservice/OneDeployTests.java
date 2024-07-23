@@ -34,6 +34,7 @@ import com.azure.resourcemanager.appservice.models.SupportsOneDeploy;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.PublicAccess;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.apache.commons.io.IOUtils;
@@ -135,6 +136,7 @@ public class OneDeployTests extends AppServiceTest {
         waitForRuntimeSuccess(slot2, slotDeploymentId);
     }
 
+    // test uses storage account key and connection string to configure the function app
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canDeployFlexConsumptionFunctionApp() {
@@ -160,7 +162,7 @@ public class OneDeployTests extends AppServiceTest {
             .withExistingResourceGroup(rgName)
             .create();
 
-        appServiceManager.storageManager().blobContainers()
+        BlobContainer blobContainer = appServiceManager.storageManager().blobContainers()
             .defineContainer(containerName)
             .withExistingStorageAccount(storageAccount)
             .withPublicAccess(PublicAccess.NONE)
@@ -189,7 +191,7 @@ public class OneDeployTests extends AppServiceTest {
                 .withDeployment(new FunctionsDeployment().withStorage(
                     new FunctionsDeploymentStorage()
                         .withType(FunctionsDeploymentStorageType.BLOB_CONTAINER)
-                        .withValue(storageAccountName + "/default/" + containerName)
+                        .withValue(storageAccount.endPoints().primary().blob() + containerName)
                         .withAuthentication(new FunctionsDeploymentStorageAuthentication()
                             .withType(AuthenticationType.STORAGE_ACCOUNT_CONNECTION_STRING)
                             .withStorageAccountConnectionStringName("DEPLOYMENT_STORAGE_CONNECTION_STRING"))))
@@ -200,14 +202,14 @@ public class OneDeployTests extends AppServiceTest {
                 com.azure.core.util.Context.NONE);
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName, functionAppName);
-        File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
-        functionApp.deploy(zipFile);
 
-        // wait a bit
-        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+        // test one deploy
+        if (!isPlaybackMode()) {
+            File zipFile = new File(OneDeployTests.class.getResource("/java-functions.zip").getPath());
+            functionApp.deploy(zipFile);
 
-//        String response = curl("https://" + webAppName1 + ".azurewebsites.net/" + "helloworld/").getValue();
-//        Assertions.assertTrue(response.contains("Hello"));
+            assertFunctionAppRunning(functionApp);
+        }
     }
 
     private void waitForRuntimeSuccess(SupportsOneDeploy webapp, String deploymentId) {
