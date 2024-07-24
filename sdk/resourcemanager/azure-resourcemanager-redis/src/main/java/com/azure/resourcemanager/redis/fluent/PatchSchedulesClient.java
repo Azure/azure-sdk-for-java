@@ -14,55 +14,57 @@ import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
 import com.azure.resourcemanager.redis.models.DefaultName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PatchSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PatchSchedulesClient.
+ */
 public interface PatchSchedulesClient {
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
-     *     PagedFlux}.
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RedisPatchScheduleInner> listByRedisResourceAsync(String resourceGroupName, String cacheName);
 
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
-     *     PagedIterable}.
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RedisPatchScheduleInner> listByRedisResource(String resourceGroupName, String cacheName);
 
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName The name of the Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with {@link
-     *     PagedIterable}.
+     * @return all patch schedules in the specified redis cache (there is only one) as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RedisPatchScheduleInner> listByRedisResource(
-        String resourceGroupName, String cacheName, Context context);
+    PagedIterable<RedisPatchScheduleInner> listByRedisResource(String resourceGroupName, String cacheName,
+        Context context);
 
     /**
      * Create or replace the patching schedule for Redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -71,15 +73,15 @@ public interface PatchSchedulesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to put/get patch schedules for Redis cache along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RedisPatchScheduleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters);
+    Mono<Response<RedisPatchScheduleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        DefaultName defaultParameter, RedisPatchScheduleInner parameters);
 
     /**
      * Create or replace the patching schedule for Redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -90,12 +92,12 @@ public interface PatchSchedulesClient {
      * @return response to put/get patch schedules for Redis cache on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RedisPatchScheduleInner> createOrUpdateAsync(
-        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters);
+    Mono<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name,
+        DefaultName defaultParameter, RedisPatchScheduleInner parameters);
 
     /**
      * Create or replace the patching schedule for Redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -107,16 +109,12 @@ public interface PatchSchedulesClient {
      * @return response to put/get patch schedules for Redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RedisPatchScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String name,
-        DefaultName defaultParameter,
-        RedisPatchScheduleInner parameters,
-        Context context);
+    Response<RedisPatchScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String name,
+        DefaultName defaultParameter, RedisPatchScheduleInner parameters, Context context);
 
     /**
      * Create or replace the patching schedule for Redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -127,12 +125,12 @@ public interface PatchSchedulesClient {
      * @return response to put/get patch schedules for Redis cache.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RedisPatchScheduleInner createOrUpdate(
-        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters);
+    RedisPatchScheduleInner createOrUpdate(String resourceGroupName, String name, DefaultName defaultParameter,
+        RedisPatchScheduleInner parameters);
 
     /**
      * Deletes the patching schedule of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -146,7 +144,7 @@ public interface PatchSchedulesClient {
 
     /**
      * Deletes the patching schedule of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -160,7 +158,7 @@ public interface PatchSchedulesClient {
 
     /**
      * Deletes the patching schedule of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -171,12 +169,12 @@ public interface PatchSchedulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String name, DefaultName defaultParameter, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String name, DefaultName defaultParameter,
+        Context context);
 
     /**
      * Deletes the patching schedule of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -189,23 +187,23 @@ public interface PatchSchedulesClient {
 
     /**
      * Gets the patching schedule of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the patching schedule of a redis cache along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the patching schedule of a redis cache along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RedisPatchScheduleInner>> getWithResponseAsync(
-        String resourceGroupName, String name, DefaultName defaultParameter);
+    Mono<Response<RedisPatchScheduleInner>> getWithResponseAsync(String resourceGroupName, String name,
+        DefaultName defaultParameter);
 
     /**
      * Gets the patching schedule of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -219,7 +217,7 @@ public interface PatchSchedulesClient {
 
     /**
      * Gets the patching schedule of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
@@ -230,12 +228,12 @@ public interface PatchSchedulesClient {
      * @return the patching schedule of a redis cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RedisPatchScheduleInner> getWithResponse(
-        String resourceGroupName, String name, DefaultName defaultParameter, Context context);
+    Response<RedisPatchScheduleInner> getWithResponse(String resourceGroupName, String name,
+        DefaultName defaultParameter, Context context);
 
     /**
      * Gets the patching schedule of a redis cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.

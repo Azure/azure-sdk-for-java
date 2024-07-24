@@ -19,78 +19,64 @@ public final class DaprSubscriptionsCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprSubscriptionsCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"pubsubName\":\"rmoucsofl\",\"topic\":\"uviyfcaabeo\",\"deadLetterTopic\":\"bh\",\"routes\":{\"rules\":[{}],\"default\":\"uqibsxtkcu\"},\"scopes\":[\"sfar\"],\"metadata\":{\"gf\":\"owlkjxnqpv\"},\"bulkSubscribe\":{\"enabled\":true,\"maxMessagesCount\":889840232,\"maxAwaitDurationMs\":1864942425}},\"id\":\"mdksaoa\",\"name\":\"cluqvo\",\"type\":\"mycjimryvwgcwwp\"},{\"properties\":{\"pubsubName\":\"gwe\",\"topic\":\"dsxwefoh\",\"deadLetterTopic\":\"bvopwndyqle\",\"routes\":{\"rules\":[{},{},{}],\"default\":\"mtkhlowkxxpvbr\"},\"scopes\":[\"mzsyzfhotl\",\"ikcyyc\"],\"metadata\":{\"uic\":\"sjlpjrtwszhv\",\"ubhvj\":\"hvtrrmhwrbfdpyf\",\"memhooclutnpq\":\"lrocuyzlwh\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":339637531,\"maxAwaitDurationMs\":1132519096}},\"id\":\"ykyujxsg\",\"name\":\"hsrrryejylmbkz\",\"type\":\"dnigrfihot\"},{\"properties\":{\"pubsubName\":\"lpxuzzjgnrefq\",\"topic\":\"qotoihiqakydiwfb\",\"deadLetterTopic\":\"wpzdqtvhcspo\",\"routes\":{\"rules\":[{},{},{}],\"default\":\"sipi\"},\"scopes\":[\"bebjfu\",\"bmoichd\"],\"metadata\":{\"iqsowsaaelc\":\"fpubntnbatz\",\"mjvlgfgg\":\"ttcjuhplrvkmjc\",\"sfuztlvtmv\":\"vkyylizrzbjpsf\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":891535208,\"maxAwaitDurationMs\":563395516}},\"id\":\"hukoveofizrv\",\"name\":\"f\",\"type\":\"mjm\"},{\"properties\":{\"pubsubName\":\"yzgib\",\"topic\":\"ujr\",\"deadLetterTopic\":\"fojuidjpuuyj\",\"routes\":{\"rules\":[{},{},{},{}],\"default\":\"kzoeovvtzejetj\"},\"scopes\":[\"tikyj\"],\"metadata\":{\"rhtgvgzpcrrkol\":\"dbqzolxrzvhqjw\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":817860491,\"maxAwaitDurationMs\":660756224}},\"id\":\"okcdxfzzzwyjaf\",\"name\":\"tlhguynuchl\",\"type\":\"mltx\"}],\"nextLink\":\"hmoz\"}")
+            "{\"value\":[{\"properties\":{\"pubsubName\":\"kjztjiuazjcgmxi\",\"topic\":\"f\",\"deadLetterTopic\":\"zc\",\"routes\":{\"rules\":[{},{},{}],\"default\":\"rlgjm\"},\"scopes\":[\"rvcqguefzhomphe\",\"durelyujl\",\"youmpc\"],\"metadata\":{\"ucycijo\":\"clcdigptajbrzmq\",\"jb\":\"lxiutgjcyzyzjdnr\",\"w\":\"xjeaoqaqbzgyh\",\"atbwbqam\":\"v\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":235713184,\"maxAwaitDurationMs\":1350146316}},\"id\":\"kcvmwfauxxepmy\",\"name\":\"bormcqmiciijqpkz\",\"type\":\"bojxjmcsmy\"},{\"properties\":{\"pubsubName\":\"xv\",\"topic\":\"wnkwywzwo\",\"deadLetterTopic\":\"lickduoi\",\"routes\":{\"rules\":[{}],\"default\":\"yvsk\"},\"scopes\":[\"wzawnvsbcfhzagxn\",\"hycvdimwrzre\"],\"metadata\":{\"eryekzkdhmeottaw\":\"yufutrwp\"},\"bulkSubscribe\":{\"enabled\":true,\"maxMessagesCount\":543459562,\"maxAwaitDurationMs\":1246274609}},\"id\":\"h\",\"name\":\"tfvpndpmiljpn\",\"type\":\"ynudqllzsa\"},{\"properties\":{\"pubsubName\":\"jlxeehuxiqhz\",\"topic\":\"aymezx\",\"deadLetterTopic\":\"kihmxrfdsajredn\",\"routes\":{\"rules\":[{},{}],\"default\":\"t\"},\"scopes\":[\"mevuafpwzy\",\"frkgwltxeq\",\"pxgzdyimsfayor\"],\"metadata\":{\"oge\":\"vk\",\"aekqsykvwj\":\"labnsmjkwynq\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":717793996,\"maxAwaitDurationMs\":838644872}},\"id\":\"tjcrspxklurccl\",\"name\":\"gxannnoytzposewx\",\"type\":\"gpxvkqmaupxvpi\"}],\"nextLink\":\"f\"}")
             .toObject(DaprSubscriptionsCollection.class);
-        Assertions.assertEquals("rmoucsofl", model.value().get(0).pubsubName());
-        Assertions.assertEquals("uviyfcaabeo", model.value().get(0).topic());
-        Assertions.assertEquals("bh", model.value().get(0).deadLetterTopic());
-        Assertions.assertEquals("uqibsxtkcu", model.value().get(0).routes().defaultProperty());
-        Assertions.assertEquals("sfar", model.value().get(0).scopes().get(0));
-        Assertions.assertEquals("owlkjxnqpv", model.value().get(0).metadata().get("gf"));
-        Assertions.assertEquals(true, model.value().get(0).bulkSubscribe().enabled());
-        Assertions.assertEquals(889840232, model.value().get(0).bulkSubscribe().maxMessagesCount());
-        Assertions.assertEquals(1864942425, model.value().get(0).bulkSubscribe().maxAwaitDurationMs());
+        Assertions.assertEquals("kjztjiuazjcgmxi", model.value().get(0).pubsubName());
+        Assertions.assertEquals("f", model.value().get(0).topic());
+        Assertions.assertEquals("zc", model.value().get(0).deadLetterTopic());
+        Assertions.assertEquals("rlgjm", model.value().get(0).routes().defaultProperty());
+        Assertions.assertEquals("rvcqguefzhomphe", model.value().get(0).scopes().get(0));
+        Assertions.assertEquals("clcdigptajbrzmq", model.value().get(0).metadata().get("ucycijo"));
+        Assertions.assertEquals(false, model.value().get(0).bulkSubscribe().enabled());
+        Assertions.assertEquals(235713184, model.value().get(0).bulkSubscribe().maxMessagesCount());
+        Assertions.assertEquals(1350146316, model.value().get(0).bulkSubscribe().maxAwaitDurationMs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprSubscriptionsCollection model
-            = new DaprSubscriptionsCollection()
-                .withValue(Arrays.asList(
-                    new DaprSubscriptionInner().withPubsubName("rmoucsofl").withTopic("uviyfcaabeo")
-                        .withDeadLetterTopic("bh")
-                        .withRoutes(
-                            new DaprSubscriptionRoutes().withRules(Arrays.asList(new DaprSubscriptionRouteRule()))
-                                .withDefaultProperty("uqibsxtkcu"))
-                        .withScopes(Arrays.asList("sfar")).withMetadata(
-                            mapOf("gf", "owlkjxnqpv"))
-                        .withBulkSubscribe(
-                            new DaprSubscriptionBulkSubscribeOptions().withEnabled(true).withMaxMessagesCount(889840232)
-                                .withMaxAwaitDurationMs(1864942425)),
-                    new DaprSubscriptionInner().withPubsubName("gwe").withTopic("dsxwefoh")
-                        .withDeadLetterTopic("bvopwndyqle")
-                        .withRoutes(
-                            new DaprSubscriptionRoutes()
-                                .withRules(Arrays.asList(new DaprSubscriptionRouteRule(),
-                                    new DaprSubscriptionRouteRule(), new DaprSubscriptionRouteRule()))
-                                .withDefaultProperty("mtkhlowkxxpvbr"))
-                        .withScopes(Arrays.asList("mzsyzfhotl", "ikcyyc"))
-                        .withMetadata(
-                            mapOf("uic", "sjlpjrtwszhv", "ubhvj", "hvtrrmhwrbfdpyf", "memhooclutnpq", "lrocuyzlwh"))
-                        .withBulkSubscribe(
-                            new DaprSubscriptionBulkSubscribeOptions().withEnabled(false).withMaxMessagesCount(
-                                339637531).withMaxAwaitDurationMs(1132519096)),
-                    new DaprSubscriptionInner().withPubsubName("lpxuzzjgnrefq").withTopic("qotoihiqakydiwfb")
-                        .withDeadLetterTopic("wpzdqtvhcspo")
-                        .withRoutes(
-                            new DaprSubscriptionRoutes()
-                                .withRules(Arrays.asList(new DaprSubscriptionRouteRule(),
-                                    new DaprSubscriptionRouteRule(), new DaprSubscriptionRouteRule()))
-                                .withDefaultProperty("sipi"))
-                        .withScopes(Arrays.asList("bebjfu", "bmoichd"))
-                        .withMetadata(mapOf("iqsowsaaelc", "fpubntnbatz", "mjvlgfgg", "ttcjuhplrvkmjc", "sfuztlvtmv",
-                            "vkyylizrzbjpsf"))
-                        .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(false)
-                            .withMaxMessagesCount(891535208).withMaxAwaitDurationMs(563395516)),
-                    new DaprSubscriptionInner().withPubsubName("yzgib").withTopic("ujr")
-                        .withDeadLetterTopic("fojuidjpuuyj")
-                        .withRoutes(new DaprSubscriptionRoutes()
-                            .withRules(Arrays.asList(new DaprSubscriptionRouteRule(), new DaprSubscriptionRouteRule(),
-                                new DaprSubscriptionRouteRule(), new DaprSubscriptionRouteRule()))
-                            .withDefaultProperty("kzoeovvtzejetj"))
-                        .withScopes(Arrays.asList("tikyj")).withMetadata(mapOf("rhtgvgzpcrrkol", "dbqzolxrzvhqjw"))
-                        .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(false)
-                            .withMaxMessagesCount(817860491).withMaxAwaitDurationMs(660756224))));
+        DaprSubscriptionsCollection model = new DaprSubscriptionsCollection().withValue(Arrays.asList(
+            new DaprSubscriptionInner().withPubsubName("kjztjiuazjcgmxi")
+                .withTopic("f")
+                .withDeadLetterTopic("zc")
+                .withRoutes(new DaprSubscriptionRoutes().withRules(Arrays.asList(new DaprSubscriptionRouteRule(),
+                    new DaprSubscriptionRouteRule(), new DaprSubscriptionRouteRule())).withDefaultProperty("rlgjm"))
+                .withScopes(Arrays.asList("rvcqguefzhomphe", "durelyujl", "youmpc"))
+                .withMetadata(mapOf("ucycijo", "clcdigptajbrzmq", "jb", "lxiutgjcyzyzjdnr", "w", "xjeaoqaqbzgyh",
+                    "atbwbqam", "v"))
+                .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(false)
+                    .withMaxMessagesCount(235713184)
+                    .withMaxAwaitDurationMs(1350146316)),
+            new DaprSubscriptionInner().withPubsubName("xv")
+                .withTopic("wnkwywzwo")
+                .withDeadLetterTopic("lickduoi")
+                .withRoutes(new DaprSubscriptionRoutes().withRules(Arrays.asList(new DaprSubscriptionRouteRule()))
+                    .withDefaultProperty("yvsk"))
+                .withScopes(Arrays.asList("wzawnvsbcfhzagxn", "hycvdimwrzre"))
+                .withMetadata(mapOf("eryekzkdhmeottaw", "yufutrwp"))
+                .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(true)
+                    .withMaxMessagesCount(543459562)
+                    .withMaxAwaitDurationMs(1246274609)),
+            new DaprSubscriptionInner().withPubsubName("jlxeehuxiqhz")
+                .withTopic("aymezx")
+                .withDeadLetterTopic("kihmxrfdsajredn")
+                .withRoutes(new DaprSubscriptionRoutes()
+                    .withRules(Arrays.asList(new DaprSubscriptionRouteRule(), new DaprSubscriptionRouteRule()))
+                    .withDefaultProperty("t"))
+                .withScopes(Arrays.asList("mevuafpwzy", "frkgwltxeq", "pxgzdyimsfayor"))
+                .withMetadata(mapOf("oge", "vk", "aekqsykvwj", "labnsmjkwynq"))
+                .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(false)
+                    .withMaxMessagesCount(717793996)
+                    .withMaxAwaitDurationMs(838644872))));
         model = BinaryData.fromObject(model).toObject(DaprSubscriptionsCollection.class);
-        Assertions.assertEquals("rmoucsofl", model.value().get(0).pubsubName());
-        Assertions.assertEquals("uviyfcaabeo", model.value().get(0).topic());
-        Assertions.assertEquals("bh", model.value().get(0).deadLetterTopic());
-        Assertions.assertEquals("uqibsxtkcu", model.value().get(0).routes().defaultProperty());
-        Assertions.assertEquals("sfar", model.value().get(0).scopes().get(0));
-        Assertions.assertEquals("owlkjxnqpv", model.value().get(0).metadata().get("gf"));
-        Assertions.assertEquals(true, model.value().get(0).bulkSubscribe().enabled());
-        Assertions.assertEquals(889840232, model.value().get(0).bulkSubscribe().maxMessagesCount());
-        Assertions.assertEquals(1864942425, model.value().get(0).bulkSubscribe().maxAwaitDurationMs());
+        Assertions.assertEquals("kjztjiuazjcgmxi", model.value().get(0).pubsubName());
+        Assertions.assertEquals("f", model.value().get(0).topic());
+        Assertions.assertEquals("zc", model.value().get(0).deadLetterTopic());
+        Assertions.assertEquals("rlgjm", model.value().get(0).routes().defaultProperty());
+        Assertions.assertEquals("rvcqguefzhomphe", model.value().get(0).scopes().get(0));
+        Assertions.assertEquals("clcdigptajbrzmq", model.value().get(0).metadata().get("ucycijo"));
+        Assertions.assertEquals(false, model.value().get(0).bulkSubscribe().enabled());
+        Assertions.assertEquals(235713184, model.value().get(0).bulkSubscribe().maxMessagesCount());
+        Assertions.assertEquals(1350146316, model.value().get(0).bulkSubscribe().maxAwaitDurationMs());
     }
 
     // Use "Map.of" if available

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.dataprotection.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -23,6 +24,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.dataprotection.fluent.BackupInstancesClient;
+import com.azure.resourcemanager.dataprotection.fluent.BackupInstancesExtensionRoutingsClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupVaultOperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.BackupVaultsClient;
@@ -339,6 +341,20 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
     }
 
     /**
+     * The BackupInstancesExtensionRoutingsClient object to access its operations.
+     */
+    private final BackupInstancesExtensionRoutingsClient backupInstancesExtensionRoutings;
+
+    /**
+     * Gets the BackupInstancesExtensionRoutingsClient object to access its operations.
+     * 
+     * @return the BackupInstancesExtensionRoutingsClient object.
+     */
+    public BackupInstancesExtensionRoutingsClient getBackupInstancesExtensionRoutings() {
+        return this.backupInstancesExtensionRoutings;
+    }
+
+    /**
      * The JobsClient object to access its operations.
      */
     private final JobsClient jobs;
@@ -453,7 +469,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-11-01";
+        this.apiVersion = "2024-04-01";
         this.backupVaults = new BackupVaultsClientImpl(this);
         this.operationResults = new OperationResultsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
@@ -468,6 +484,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         this.fetchSecondaryRecoveryPoints = new FetchSecondaryRecoveryPointsClientImpl(this);
         this.fetchCrossRegionRestoreJobs = new FetchCrossRegionRestoreJobsClientImpl(this);
         this.fetchCrossRegionRestoreJobsOperations = new FetchCrossRegionRestoreJobsOperationsClientImpl(this);
+        this.backupInstancesExtensionRoutings = new BackupInstancesExtensionRoutingsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.restorableTimeRanges = new RestorableTimeRangesClientImpl(this);
         this.exportJobs = new ExportJobsClientImpl(this);
@@ -537,8 +554,8 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -579,7 +596,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

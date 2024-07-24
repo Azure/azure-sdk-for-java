@@ -6,6 +6,10 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -13,10 +17,55 @@ import java.util.Map;
  */
 @Fluent
 public class PrivateLinkScopesResource extends Resource {
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
     /**
      * Creates an instance of PrivateLinkScopesResource class.
      */
     public PrivateLinkScopesResource() {
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -43,5 +92,52 @@ public class PrivateLinkScopesResource extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkScopesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkScopesResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateLinkScopesResource.
+     */
+    public static PrivateLinkScopesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkScopesResource deserializedPrivateLinkScopesResource = new PrivateLinkScopesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkScopesResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkScopesResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkScopesResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPrivateLinkScopesResource.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPrivateLinkScopesResource.withTags(tags);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkScopesResource;
+        });
     }
 }

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RouteTablesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RouteTableGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteTableGet.json
      */
     /**
      * Sample code: Get route table.
