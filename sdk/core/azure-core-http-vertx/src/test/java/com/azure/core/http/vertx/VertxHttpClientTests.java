@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class VertxAsyncHttpClientTests {
+public class VertxHttpClientTests {
     private static final String SERVER_HTTP_URI = VertxHttpClientLocalTestServer.getServer().getHttpUri();
 
     private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS
@@ -68,7 +68,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void responseBodyAsStringAsyncWithCharset() {
-        HttpClient client = new VertxAsyncHttpClientBuilder().build();
+        HttpClient client = new VertxHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, "/short").flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(result -> assertArrayEquals(SHORT_BODY, result))
             .verifyComplete();
@@ -99,7 +99,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
+        HttpClient client = new VertxHttpClientProvider().createInstance();
         HttpRequest request
             = new HttpRequest(HttpMethod.POST, url("/shortPost")).setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
                 .setBody(Flux.error(new RuntimeException("boo")));
@@ -109,7 +109,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
-        HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
+        HttpClient client = new VertxHttpClientProvider().createInstance();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
@@ -128,7 +128,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
-        HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
+        HttpClient client = new VertxHttpClientProvider().createInstance();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url("/connectionClose"));
 
@@ -139,7 +139,7 @@ public class VertxAsyncHttpClientTests {
     @Test
     public void testConcurrentRequests() {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
+        HttpClient client = new VertxHttpClientProvider().createInstance();
 
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
             .parallel()
@@ -156,7 +156,7 @@ public class VertxAsyncHttpClientTests {
     @Test
     public void testConcurrentRequestsSync() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
+        HttpClient client = new VertxHttpClientProvider().createInstance();
 
         ForkJoinPool pool = new ForkJoinPool();
         try {
@@ -180,7 +180,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void validateHeadersReturnAsIs() {
-        HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
+        HttpClient client = new VertxHttpClientProvider().createInstance();
 
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
@@ -212,7 +212,7 @@ public class VertxAsyncHttpClientTests {
     @Test
     public void testBufferedResponse() {
         Context context = new Context("azure-eagerly-read-response", true);
-        HttpClient client = new VertxAsyncHttpClientBuilder().build();
+        HttpClient client = new VertxHttpClientBuilder().build();
 
         StepVerifier.create(getResponse(client, "/short", context).flatMapMany(HttpResponse::getBody))
             .assertNext(buffer -> assertArrayEquals(SHORT_BODY, buffer.array()))
@@ -230,7 +230,7 @@ public class VertxAsyncHttpClientTests {
     @Test
     public void testEmptyBufferedResponse() {
         Context context = new Context("azure-eagerly-read-response", true);
-        HttpClient client = new VertxAsyncHttpClientBuilder().build();
+        HttpClient client = new VertxHttpClientBuilder().build();
 
         StepVerifier
             .create(getResponse(client, "/empty", context).flatMapMany(HttpResponse::getBody),
@@ -242,7 +242,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void perCallTimeout() {
-        HttpClient client = new VertxAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+        HttpClient client = new VertxHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 
@@ -264,7 +264,7 @@ public class VertxAsyncHttpClientTests {
 
     @Test
     public void perCallTimeoutSync() {
-        HttpClient client = new VertxAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+        HttpClient client = new VertxHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
 
@@ -281,7 +281,7 @@ public class VertxAsyncHttpClientTests {
     }
 
     private static Mono<HttpResponse> getResponse(String path) {
-        HttpClient client = new VertxAsyncHttpClientBuilder().build();
+        HttpClient client = new VertxHttpClientBuilder().build();
         return getResponse(client, path, Context.NONE);
     }
 
@@ -299,7 +299,7 @@ public class VertxAsyncHttpClientTests {
     }
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
-        HttpClient client = new VertxAsyncHttpClientBuilder().build();
+        HttpClient client = new VertxHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();

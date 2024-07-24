@@ -37,13 +37,13 @@ The following sections provide several code snippets covering some of the most c
 Create a Vert.x HttpClient.
 
 ```java readme-sample-createBasicClient
-HttpClient client = new VertxAsyncHttpClientBuilder().build();
+HttpClient client = new VertxHttpClientBuilder().build();
 ```
 
 Create a Vert.x HttpClient using a connection timeout of 60 seconds.
 
 ```java readme-sample-createClientWithConnectionTimeout
-HttpClient client = new VertxAsyncHttpClientBuilder().connectTimeout(Duration.ofSeconds(60)).build();
+HttpClient client = new VertxHttpClientBuilder().connectTimeout(Duration.ofSeconds(60)).build();
 ```
 
 ### Create a Client with Proxy
@@ -51,7 +51,7 @@ HttpClient client = new VertxAsyncHttpClientBuilder().connectTimeout(Duration.of
 Create a Vert.x client that is using a proxy.
 
 ```java readme-sample-createProxyClient
-HttpClient client = new VertxAsyncHttpClientBuilder()
+HttpClient client = new VertxHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();
 ```

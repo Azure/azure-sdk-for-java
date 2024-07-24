@@ -11,14 +11,14 @@ import com.azure.core.util.HttpClientOptions;
 /**
  * {@link HttpClientProvider} backed by the Vert.x {@link io.vertx.core.http.HttpClient}
  */
-public class VertxAsyncHttpClientProvider implements HttpClientProvider {
+public class VertxHttpClientProvider implements HttpClientProvider {
     private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING
         = Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
 
     // Enum Singleton Pattern
     private enum GlobalVertxHttpClient {
-        HTTP_CLIENT(new VertxAsyncHttpClientBuilder().build());
+        HTTP_CLIENT(new VertxHttpClientBuilder().build());
 
         private final HttpClient httpClient;
 
@@ -35,11 +35,11 @@ public class VertxAsyncHttpClientProvider implements HttpClientProvider {
      * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for 'final'
      * modifier.
      */
-    public VertxAsyncHttpClientProvider() {
+    public VertxHttpClientProvider() {
         enableHttpClientSharing = AZURE_ENABLE_HTTP_CLIENT_SHARING;
     }
 
-    VertxAsyncHttpClientProvider(Configuration configuration) {
+    VertxHttpClientProvider(Configuration configuration) {
         enableHttpClientSharing = configuration.get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     }
 
@@ -48,7 +48,7 @@ public class VertxAsyncHttpClientProvider implements HttpClientProvider {
         if (enableHttpClientSharing) {
             return GlobalVertxHttpClient.HTTP_CLIENT.getHttpClient();
         }
-        return new VertxAsyncHttpClientBuilder().build();
+        return new VertxHttpClientBuilder().build();
     }
 
     @Override
@@ -57,7 +57,7 @@ public class VertxAsyncHttpClientProvider implements HttpClientProvider {
             return createInstance();
         }
 
-        return new VertxAsyncHttpClientBuilder().proxy(clientOptions.getProxyOptions())
+        return new VertxHttpClientBuilder().proxy(clientOptions.getProxyOptions())
             .configuration(clientOptions.getConfiguration())
             .connectTimeout(clientOptions.getConnectTimeout())
             .writeTimeout(clientOptions.getWriteTimeout())

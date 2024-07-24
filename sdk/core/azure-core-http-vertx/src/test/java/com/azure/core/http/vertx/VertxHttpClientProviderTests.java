@@ -30,14 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests {@link VertxAsyncHttpClientProvider}.
+ * Tests {@link VertxHttpClientProvider}.
  */
-public class VertxAsyncHttpClientProviderTests {
+public class VertxHttpClientProviderTests {
 
     @Test
     public void nullOptionsReturnsBaseClient() {
-        VertxAsyncHttpClient httpClient
-            = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance(null);
+        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(null);
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
@@ -52,8 +51,8 @@ public class VertxAsyncHttpClientProviderTests {
 
     @Test
     public void defaultOptionsReturnsBaseClient() {
-        VertxAsyncHttpClient httpClient
-            = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance(new HttpClientOptions());
+        VertxHttpClient httpClient
+            = (VertxHttpClient) new VertxHttpClientProvider().createInstance(new HttpClientOptions());
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
@@ -73,8 +72,7 @@ public class VertxAsyncHttpClientProviderTests {
 
         HttpClientOptions clientOptions = new HttpClientOptions().setProxyOptions(proxyOptions);
 
-        VertxAsyncHttpClient httpClient
-            = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance(clientOptions);
+        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(clientOptions);
 
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
@@ -101,8 +99,7 @@ public class VertxAsyncHttpClientProviderTests {
             .setReadTimeout(timeout)
             .setWriteTimeout(timeout);
 
-        VertxAsyncHttpClient httpClient
-            = (VertxAsyncHttpClient) new VertxAsyncHttpClientProvider().createInstance(clientOptions);
+        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(clientOptions);
 
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
@@ -118,7 +115,7 @@ public class VertxAsyncHttpClientProviderTests {
         CreateCountVertxProvider mockVertxProvider = new CreateCountVertxProvider(vertx);
 
         try {
-            Vertx vertxSelectedByBuilder = VertxAsyncHttpClientBuilder
+            Vertx vertxSelectedByBuilder = VertxHttpClientBuilder
                 .getVertx(Collections.singletonList((VertxProvider) mockVertxProvider).iterator());
 
             assertEquals(1, mockVertxProvider.getCreateCount());
@@ -138,7 +135,7 @@ public class VertxAsyncHttpClientProviderTests {
         CreateCountVertxProvider mockVertxProviderB = new CreateCountVertxProvider(vertx);
 
         try {
-            Vertx vertxSelectedByBuilder = VertxAsyncHttpClientBuilder
+            Vertx vertxSelectedByBuilder = VertxHttpClientBuilder
                 .getVertx(Arrays.asList((VertxProvider) mockVertxProviderA, mockVertxProviderB).iterator());
 
             // Only the first provider should have been invoked

@@ -11,8 +11,8 @@ import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.vertx.VertxAsyncHttpClientBuilder;
-import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
+import com.azure.core.http.vertx.VertxHttpClientBuilder;
+import com.azure.core.http.vertx.VertxHttpClientProvider;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -126,9 +126,9 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
                 io.vertx.core.http.HttpClientOptions vertxOptions = new io.vertx.core.http.HttpClientOptions()
                     .setSsl(true)
                     .setTrustAll(true);
-                return new VertxAsyncHttpClientBuilder().httpClientOptions(vertxOptions).build();
+                return new VertxHttpClientBuilder().httpClientOptions(vertxOptions).build();
             } else {
-                httpClientProvider = VertxAsyncHttpClientProvider.class;
+                httpClientProvider = VertxHttpClientProvider.class;
             }
         }
 

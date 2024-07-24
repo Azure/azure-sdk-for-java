@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
+import com.azure.core.http.vertx.VertxHttpClientProvider;
 
 module com.azure.core.http.vertx {
     requires transitive com.azure.core;
@@ -13,7 +13,7 @@ module com.azure.core.http.vertx {
 
     exports com.azure.core.http.vertx;
 
-    provides com.azure.core.http.HttpClientProvider with VertxAsyncHttpClientProvider;
+    provides com.azure.core.http.HttpClientProvider with VertxHttpClientProvider;
 
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.vertx.VertxProvider;

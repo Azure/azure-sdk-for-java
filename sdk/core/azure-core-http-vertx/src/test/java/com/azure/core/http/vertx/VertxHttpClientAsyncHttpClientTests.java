@@ -13,7 +13,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 @Execution(ExecutionMode.SAME_THREAD)
-public class VertxAsyncHttpClientAsyncHttpClientTests extends HttpClientTests {
+public class VertxHttpClientAsyncHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
 
     @BeforeAll
@@ -42,6 +42,6 @@ public class VertxAsyncHttpClientAsyncHttpClientTests extends HttpClientTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return new VertxAsyncHttpClientBuilder().build();
+        return new VertxHttpClientBuilder().build();
     }
 }

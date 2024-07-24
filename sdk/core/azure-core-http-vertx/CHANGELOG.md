@@ -2,6 +2,10 @@
 
 ## 1.0.0-beta.20 (2024-07-12)
 
+### Breaking Changes
+
+- Renamed `VertxAsyncHttpClientBuilder` to `VertxHttpClientBuilder` and `VertxAsyncHttpClientProvider` to `VertxHttpClientProvider`.
+
 ### Other Changes
 
 #### Dependency Updates
