@@ -19,3 +19,9 @@ mvn clean package -DskipTests=true
 copy target\*.jar $PSScriptRoot/connectors
 rm -rf "$PSScriptRoot/src/connectors/insertuuid"
 cd $PSScriptRoot
+
+Write-Host "Building Cosmos DB Kafka Connect Docker image"
+docker build . -t cosmosdb-kafka-connect:latest
+
+Write-Host "Starting Docker Compose..."
+docker-compose up -d
