@@ -74,11 +74,6 @@ public class QuickPulseConfiguration {
 
     }
 
-    public synchronized void reset() {
-        this.setEtag(null);
-        this.derivedMetrics.clear();
-    }
-
     class DerivedMetricInfo {
         private String id;
         private String projection;
