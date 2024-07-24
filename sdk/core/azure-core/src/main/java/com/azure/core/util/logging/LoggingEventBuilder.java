@@ -302,12 +302,7 @@ public final class LoggingEventBuilder {
             jsonWriter.writeStartObject().writeStringField("az.sdk.message", message);
 
             if (throwable != null) {
-                String exceptionMessage = throwable.getMessage();
-                if (exceptionMessage != null) {
-                    jsonWriter.writeStringField("exception", exceptionMessage);
-                } else {
-                    jsonWriter.writeNullField("exception");
-                }
+                jsonWriter.writeNullableField("exception", throwable.getMessage(), JsonWriter::writeString);
             }
 
             if (hasGlobalContext) {
