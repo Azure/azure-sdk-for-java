@@ -6,8 +6,4 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Azure Deidentification client library for Java. This package contains Microsoft Azure Deidentification client library.
