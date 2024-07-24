@@ -163,6 +163,10 @@ public abstract class JsonWriter implements Closeable {
      * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
      * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
+     * If an element in the array is null, whether writing {@link JsonToken#NULL} for the element will be determined by
+     * the {@code elementWriterFunc}'s handling of null values. For example, {@link #writeJson(JsonSerializable)} will
+     * skip writing null values, so if that is used nothing will be written for a null element.
+     * <p>
      * If {@code array} is null {@link JsonToken#NULL} will be written.
      * <p>
      * This API is used instead of {@link #writeArrayField(String, Object[], WriteValueCallback)} when the value
@@ -178,13 +182,7 @@ public abstract class JsonWriter implements Closeable {
      */
     public final <T> JsonWriter writeArray(T[] array, WriteValueCallback<JsonWriter, T> elementWriterFunc)
         throws IOException {
-        Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
-
-        if (array == null) {
-            return writeNull();
-        }
-
-        return writeArrayInternal(Arrays.asList(array), elementWriterFunc, null);
+        return writeArray(array, elementWriterFunc, false);
     }
 
     /**
@@ -192,6 +190,46 @@ public abstract class JsonWriter implements Closeable {
      * <p>
      * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
      * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If an element in the array is null, {@link JsonToken#NULL} will be written for that element if
+     * {@code explicitlyWriteNull} is true. If {@code explicitlyWriteNull} is false, writing a null element will be left
+     * to the decision of {@code elementWriterFunc}. So, if {@code elementWriterFunc} doesn't write null values, such as
+     * using {@link #writeJson(JsonSerializable)}, and an element in the array is null it will be skipped.
+     * <p>
+     * If {@code array} is null {@link JsonToken#NULL} will be written.
+     * <p>
+     * This API is used instead of {@link #writeArrayField(String, Object[], WriteValueCallback, boolean)} when the
+     * value needs to be written to the root of the JSON value, as an element in an array, or after a call to
+     * {@link #writeFieldName(String)}.
+     *
+     * @param array The array being written.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param explicitlyWriteNull Whether null values will explicitly be written.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code elementWriterFunc} is null.
+     * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
+     */
+    public <T> JsonWriter writeArray(T[] array, WriteValueCallback<JsonWriter, T> elementWriterFunc,
+        boolean explicitlyWriteNull) throws IOException {
+        Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
+
+        if (array == null) {
+            return writeNull();
+        }
+
+        return writeArrayInternal(Arrays.asList(array), elementWriterFunc, null, explicitlyWriteNull);
+    }
+
+    /**
+     * Writes a JSON array.
+     * <p>
+     * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
+     * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If an element in the array is null, whether writing {@link JsonToken#NULL} for the element will be determined by
+     * the {@code elementWriterFunc}'s handling of null values. For example, {@link #writeJson(JsonSerializable)} will
+     * skip writing null values, so if that is used nothing will be written for a null element.
      * <p>
      * If {@code array} is null {@link JsonToken#NULL} will be written.
      * <p>
@@ -208,17 +246,47 @@ public abstract class JsonWriter implements Closeable {
      */
     public final <T> JsonWriter writeArray(Iterable<T> array, WriteValueCallback<JsonWriter, T> elementWriterFunc)
         throws IOException {
+        return writeArray(array, elementWriterFunc, false);
+    }
+
+    /**
+     * Writes a JSON array.
+     * <p>
+     * This API will begin by writing the start array ({@code [}) followed by all elements in the array using the
+     * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If an element in the array is null, {@link JsonToken#NULL} will be written for that element if
+     * {@code explicitlyWriteNull} is true. If {@code explicitlyWriteNull} is false, writing a null element will be left
+     * to the decision of {@code elementWriterFunc}. So, if {@code elementWriterFunc} doesn't write null values, such as
+     * using {@link #writeJson(JsonSerializable)}, and an element in the array is null it will be skipped.
+     * <p>
+     * If {@code array} is null {@link JsonToken#NULL} will be written.
+     * <p>
+     * This API is used instead of {@link #writeArrayField(String, Object[], WriteValueCallback, boolean)} when the
+     * value needs to be written to the root of the JSON value, as an element in an array, or after a call to
+     * {@link #writeFieldName(String)}.
+     *
+     * @param array The array being written.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param explicitlyWriteNull Whether null values will explicitly be written.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code elementWriterFunc} is null.
+     * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
+     */
+    public <T> JsonWriter writeArray(Iterable<T> array, WriteValueCallback<JsonWriter, T> elementWriterFunc,
+        boolean explicitlyWriteNull) throws IOException {
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
         if (array == null) {
             return writeNull();
         }
 
-        return writeArrayInternal(array, elementWriterFunc, null);
+        return writeArrayInternal(array, elementWriterFunc, null, explicitlyWriteNull);
     }
 
     private <T> JsonWriter writeArrayInternal(Iterable<T> array, WriteValueCallback<JsonWriter, T> func,
-        String fieldName) throws IOException {
+        String fieldName, boolean explicitlyWriteNull) throws IOException {
         if (fieldName == null) {
             writeStartArray();
         } else {
@@ -226,7 +294,11 @@ public abstract class JsonWriter implements Closeable {
         }
 
         for (T element : array) {
-            func.write(this, element);
+            if (explicitlyWriteNull && element == null) {
+                writeNull();
+            } else {
+                func.write(this, element);
+            }
         }
 
         return writeEndArray();
@@ -238,6 +310,10 @@ public abstract class JsonWriter implements Closeable {
      * This API will begin by writing the start object ({@code &#123;}) followed by key-value fields in the map using
      * the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
      * <p>
+     * If any value in the map is null and the {@code valueWriterFunc} skips null values, such as
+     * {@link #writeJson(JsonSerializable)}, {@link JsonToken#NULL} will be written for that value. Otherwise, handling
+     * of the null value is determined by {@code valueWriterFunc}.
+     * <p>
      * If {@code map} is null {@link JsonToken#NULL} will be written.
      * <p>
      * This API is used instead of {@link #writeMapField(String, Map, WriteValueCallback)} when the value needs to be
@@ -248,22 +324,76 @@ public abstract class JsonWriter implements Closeable {
      * @param valueWriterFunc The function that writes value of each key-value pair in the map.
      * @param <T> The value element type.
      * @return The updated JsonWriter object.
-     * @throws NullPointerException If {@code valueWriterFunc} is null.
+     * @throws NullPointerException If {@code valueWriterFunc} is null or any key in the map is null.
      * @throws IOException If the JSON map fails to be written, either the start or end object or a key or value write.
      */
     public final <T> JsonWriter writeMap(Map<String, T> map, WriteValueCallback<JsonWriter, T> valueWriterFunc)
         throws IOException {
+        return writeMap(map, valueWriterFunc, false);
+    }
+
+    /**
+     * Writes a JSON map.
+     * <p>
+     * This API will begin by writing the start object ({@code &#123;}) followed by key-value fields in the map using
+     * the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
+     * <p>
+     * If a value in the map is null and {@code skipNullValues} is true, that key-value pair will be skipped. Otherwise,
+     * handling of the null value will be based on {@code valueWriterFunc}. If {@code valueWriterFunc} skips null
+     * values, such as {@link #writeJson(JsonSerializable)}, {@link JsonToken#NULL} will be written for that value.
+     * <p>
+     * If {@code map} is null {@link JsonToken#NULL} will be written.
+     * <p>
+     * This API is used instead of {@link #writeMapField(String, Map, WriteValueCallback, boolean)} when the value needs
+     * to be written to the root of the JSON value, as an element in an array, or after a call to
+     * {@link #writeFieldName(String)}.
+     *
+     * @param map The map being written.
+     * @param valueWriterFunc The function that writes value of each key-value pair in the map.
+     * @param skipNullValues Whether null values in the map are skipped.
+     * @param <T> The value element type.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code valueWriterFunc} is null or any key in the map is null.
+     * @throws IOException If the JSON map fails to be written, either the start or end object or a key or value write.
+     */
+    public <T> JsonWriter writeMap(Map<String, T> map, WriteValueCallback<JsonWriter, T> valueWriterFunc,
+        boolean skipNullValues) throws IOException {
         Objects.requireNonNull(valueWriterFunc, "'valueWriterFunc' cannot be null.");
 
         if (map == null) {
             return writeNull();
         }
 
-        writeStartObject();
+        return writeMapInternal(null, map, valueWriterFunc, skipNullValues);
+    }
+
+    private <T> JsonWriter writeMapInternal(String fieldName, Map<String, T> map,
+        WriteValueCallback<JsonWriter, T> valueWriterFunc, boolean skipNullValues) throws IOException {
+        if (fieldName == null) {
+            writeStartObject();
+        } else {
+            writeStartObject(fieldName);
+        }
 
         for (Map.Entry<String, T> entry : map.entrySet()) {
+            T value = entry.getValue();
+            if (skipNullValues && value == null) {
+                // Skipping null values.
+                continue;
+            }
+
+            // Write the key as the field name.
             writeFieldName(entry.getKey());
-            valueWriterFunc.write(this, entry.getValue());
+
+            // Attempt to write the value.
+            JsonWriteContext context = getWriteContext();
+            valueWriterFunc.write(this, value);
+
+            if (context == getWriteContext() && value == null) {
+                // Keep track of the JsonWriteContext. If it didn't change, that means the value wasn't consumed by the
+                // valueWriterFunc. If the value is null, write a null value.
+                writeNull();
+            }
         }
 
         return writeEndObject();
@@ -496,6 +626,10 @@ public abstract class JsonWriter implements Closeable {
      * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
      * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
+     * If an element in the array is null, whether writing {@link JsonToken#NULL} for the element will be determined by
+     * the {@code elementWriterFunc}'s handling of null values. For example, {@link #writeJson(JsonSerializable)} will
+     * skip writing null values, so if that is used nothing will be written for a null element.
+     * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
      * {@link #writeNullableField(String, Object, WriteValueCallback)}.
      * <p>
@@ -513,14 +647,7 @@ public abstract class JsonWriter implements Closeable {
      */
     public final <T> JsonWriter writeArrayField(String fieldName, T[] array,
         WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
-        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
-        Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
-
-        if (array == null) {
-            return this;
-        }
-
-        return writeArrayInternal(Arrays.asList(array), elementWriterFunc, fieldName);
+        return writeArrayField(fieldName, array, elementWriterFunc, false);
     }
 
     /**
@@ -528,6 +655,48 @@ public abstract class JsonWriter implements Closeable {
      * <p>
      * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
      * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If an element in the array is null, whether writing {@link JsonToken#NULL} for the element will be determined by
+     * the {@code elementWriterFunc}'s handling of null values. For example, {@link #writeJson(JsonSerializable)} will
+     * skip writing null values, so if that is used nothing will be written for a null element.
+     * <p>
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], WriteValueCallback, boolean)} to
+     * simplify adding a key-value to a JSON object.
+     *
+     * @param fieldName The field name.
+     * @param array The array being written.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param explicitlyWriteNull Whether null values will explicitly be written.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} or {@code elementWriterFunc} is null.
+     * @throws IOException If the {@code fieldName} or the JSON array fails to be written, either JSON start or end
+     * array or the element write.
+     */
+    public <T> JsonWriter writeArrayField(String fieldName, T[] array,
+        WriteValueCallback<JsonWriter, T> elementWriterFunc, boolean explicitlyWriteNull) throws IOException {
+        Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
+        Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
+
+        if (array == null) {
+            return this;
+        }
+
+        return writeArrayInternal(Arrays.asList(array), elementWriterFunc, fieldName, explicitlyWriteNull);
+    }
+
+    /**
+     * Writes a JSON array field.
+     * <p>
+     * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
+     * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If an element in the array is null, whether writing {@link JsonToken#NULL} for the element will be determined by
+     * the {@code elementWriterFunc}'s handling of null values. For example, {@link #writeJson(JsonSerializable)} will
+     * skip writing null values, so if that is used nothing will be written for a null element.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
      * {@link #writeNullableField(String, Object, WriteValueCallback)}.
@@ -546,6 +715,37 @@ public abstract class JsonWriter implements Closeable {
      */
     public final <T> JsonWriter writeArrayField(String fieldName, Iterable<T> array,
         WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
+        return writeArrayField(fieldName, array, elementWriterFunc, false);
+    }
+
+    /**
+     * Writes a JSON array field.
+     * <p>
+     * This API will begin by writing the field name and start array ({@code [}) followed by all elements in the array
+     * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
+     * <p>
+     * If an element in the array is null, whether writing {@link JsonToken#NULL} for the element will be determined by
+     * the {@code elementWriterFunc}'s handling of null values. For example, {@link #writeJson(JsonSerializable)} will
+     * skip writing null values, so if that is used nothing will be written for a null element.
+     * <p>
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], WriteValueCallback, boolean)} to
+     * simplify adding a key-value to a JSON object.
+     *
+     * @param fieldName The field name.
+     * @param array The array being written.
+     * @param elementWriterFunc The function that writes each element of the array.
+     * @param explicitlyWriteNull Whether null values will explicitly be written.
+     * @param <T> The array element type.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} or {@code elementWriterFunc} is null.
+     * @throws IOException If the {@code fieldName} or the JSON array fails to be written, either JSON start or end
+     * array or the element write.
+     */
+    public <T> JsonWriter writeArrayField(String fieldName, Iterable<T> array,
+        WriteValueCallback<JsonWriter, T> elementWriterFunc, boolean explicitlyWriteNull) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
@@ -553,7 +753,7 @@ public abstract class JsonWriter implements Closeable {
             return this;
         }
 
-        return writeArrayInternal(array, elementWriterFunc, fieldName);
+        return writeArrayInternal(array, elementWriterFunc, fieldName, explicitlyWriteNull);
     }
 
     /**
@@ -561,6 +761,10 @@ public abstract class JsonWriter implements Closeable {
      * <p>
      * This API will begin by writing the field name and start object ({@code &#123;}) followed by key-value fields in
      * the map using the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
+     * <p>
+     * If any value in the map is null and the {@code valueWriterFunc} skips null values, such as
+     * {@link #writeJson(JsonSerializable)}, {@link JsonToken#NULL} will be written for that value. Otherwise, handling
+     * of the null value is determined by {@code valueWriterFunc}.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
      * {@link #writeNullableField(String, Object, WriteValueCallback)}.
@@ -573,12 +777,45 @@ public abstract class JsonWriter implements Closeable {
      * @param valueWriterFunc The function that writes each value of the map.
      * @param <T> The value element type.
      * @return The updated JsonWriter object.
-     * @throws NullPointerException If {@code fieldName} or {@code valueWriterFunc} is null.
+     * @throws NullPointerException If {@code fieldName} or {@code valueWriterFunc} is null or any key in the map is
+     * null.
      * @throws IOException If the {@code fieldName} or the JSON map fails to be written, either JSON start or end object
      * or the key or value write.
      */
     public final <T> JsonWriter writeMapField(String fieldName, Map<String, T> map,
         WriteValueCallback<JsonWriter, T> valueWriterFunc) throws IOException {
+        return writeMapField(fieldName, map, valueWriterFunc, false);
+    }
+
+    /**
+     * Writes a JSON map field.
+     * <p>
+     * This API will begin by writing the field name and start object ({@code &#123;}) followed by key-value fields in
+     * the map using the {@code valueWriterFunc} and finishing by writing the end object ({@code &#125;}).
+     * <p>
+     * If a value in the map is null and {@code skipNullValues} is true, that key-value pair will be skipped. Otherwise,
+     * handling of the null value will be based on {@code valueWriterFunc}. If {@code valueWriterFunc} skips null
+     * values, such as {@link #writeJson(JsonSerializable)}, {@link JsonToken#NULL} will be written for that value.
+     * <p>
+     * The field is only written when {@code value} isn't null, if a null field needs to be written use
+     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * <p>
+     * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, WriteValueCallback, boolean)} to simplify
+     * adding a key-value to a JSON object.
+     *
+     * @param fieldName The field name.
+     * @param map The map being written.
+     * @param valueWriterFunc The function that writes each value of the map.
+     * @param skipNullValues Whether null values in the map are skipped.
+     * @param <T> The value element type.
+     * @return The updated JsonWriter object.
+     * @throws NullPointerException If {@code fieldName} or {@code valueWriterFunc} is null or any key in the map is
+     * null.
+     * @throws IOException If the {@code fieldName} or the JSON map fails to be written, either JSON start or end object
+     * or the key or value write.
+     */
+    public <T> JsonWriter writeMapField(String fieldName, Map<String, T> map,
+        WriteValueCallback<JsonWriter, T> valueWriterFunc, boolean skipNullValues) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(valueWriterFunc, "'valueWriterFunc' cannot be null.");
 
@@ -586,14 +823,7 @@ public abstract class JsonWriter implements Closeable {
             return this;
         }
 
-        writeStartObject(fieldName);
-
-        for (Map.Entry<String, T> entry : map.entrySet()) {
-            writeFieldName(entry.getKey());
-            valueWriterFunc.write(this, entry.getValue());
-        }
-
-        return writeEndObject();
+        return writeMapInternal(fieldName, map, valueWriterFunc, skipNullValues);
     }
 
     /**
