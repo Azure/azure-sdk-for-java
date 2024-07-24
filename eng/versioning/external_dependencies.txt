@@ -544,3 +544,9 @@ springboot3_org.springframework:spring-webmvc;6.1.10
 springboot3_org.testcontainers:testcontainers;1.19.8
 springboot3_org.testcontainers:junit-jupiter;1.19.8
 springboot3_org.testcontainers:azure;1.19.8
+
+# Libraries supporting Java 7
+
+java7support_com.fasterxml.jackson.core:jackson-annotations;2.13.5
+java7support_com.fasterxml.jackson.core:jackson-core;2.13.5
+java7support_com.fasterxml.jackson.core:jackson-databind;2.13.5
