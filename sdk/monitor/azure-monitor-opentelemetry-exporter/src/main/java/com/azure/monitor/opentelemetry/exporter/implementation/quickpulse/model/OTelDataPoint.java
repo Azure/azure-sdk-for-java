@@ -1,6 +1,6 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model;
 
-public class OpenTelDataPoint {
+public class OTelDataPoint {
     private double value;
 
     public OpenTelDataPoint(double value) {
