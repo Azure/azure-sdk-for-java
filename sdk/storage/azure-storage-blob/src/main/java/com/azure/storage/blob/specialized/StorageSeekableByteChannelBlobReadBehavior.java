@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 

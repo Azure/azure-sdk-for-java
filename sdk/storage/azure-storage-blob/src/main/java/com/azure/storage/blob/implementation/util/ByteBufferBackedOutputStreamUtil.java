@@ -11,6 +11,11 @@ import java.nio.ByteBuffer;
 public class ByteBufferBackedOutputStreamUtil extends OutputStream {
     private final ByteBuffer dst;
 
+    /**
+     * Creates a new ByteBufferBackedOutputStreamUtil.
+     *
+     * @param dst The destination byte buffer.
+     */
     public ByteBufferBackedOutputStreamUtil(ByteBuffer dst) {
         this.dst = dst;
     }

@@ -15,7 +15,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.json.JsonProviders;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
