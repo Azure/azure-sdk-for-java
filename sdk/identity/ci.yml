@@ -72,6 +72,7 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           CalledFromClient: true
+          UseFederatedAuth: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
           EnvVars:

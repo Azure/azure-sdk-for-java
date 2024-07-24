@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
@@ -16,6 +17,7 @@ import reactor.test.StepVerifier;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +42,7 @@ public class AzurePowerShellCredentialTest {
                     .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                             && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
                     .verifyComplete();
-            Assertions.assertNotNull(identityClientMock);
+            assertNotNull(identityClientMock);
         }
 
     }
@@ -63,7 +65,20 @@ public class AzurePowerShellCredentialTest {
                 .expectErrorMatches(e -> e instanceof Exception && e.getMessage()
                     .contains("Azure PowerShell not installed"))
                 .verify();
-            Assertions.assertNotNull(identityClientMock);
+            assertNotNull(identityClientMock);
         }
+    }
+
+    @Test
+    @LiveOnly
+    public void azurePowerShellCredentialLiveTest() {
+        AzurePowerShellCredential credential = new AzurePowerShellCredentialBuilder().build();
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default");
+        StepVerifier.create(credential.getToken(request))
+            .assertNext(accessToken -> {
+                assertNotNull(accessToken.getToken());
+                assertNotNull(accessToken.getExpiresAt());
+            })
+            .verifyComplete();
     }
 }
