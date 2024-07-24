@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class SmbAccessBasedEnumeration extends ExpandableStringEnum<SmbAcc
      * @param name a name to look for.
      * @return the corresponding SmbAccessBasedEnumeration.
      */
-    @JsonCreator
     public static SmbAccessBasedEnumeration fromString(String name) {
         return fromString(name, SmbAccessBasedEnumeration.class);
     }

@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of Subscription Quota Items.
  */
 @Fluent
-public final class SubscriptionQuotaItemList {
+public final class SubscriptionQuotaItemList implements JsonSerializable<SubscriptionQuotaItemList> {
     /*
      * A list of SubscriptionQuotaItems
      */
-    @JsonProperty(value = "value")
     private List<SubscriptionQuotaItemInner> value;
 
     /**
@@ -55,5 +58,43 @@ public final class SubscriptionQuotaItemList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionQuotaItemList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionQuotaItemList if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionQuotaItemList.
+     */
+    public static SubscriptionQuotaItemList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionQuotaItemList deserializedSubscriptionQuotaItemList = new SubscriptionQuotaItemList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SubscriptionQuotaItemInner> value
+                        = reader.readArray(reader1 -> SubscriptionQuotaItemInner.fromJson(reader1));
+                    deserializedSubscriptionQuotaItemList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionQuotaItemList;
+        });
     }
 }
