@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.http.HttpTimeoutException;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
@@ -46,18 +47,19 @@ public final class InputStreamWithReadTimeout extends InputStream {
 
     @Override
     public int read(byte[] b) throws IOException {
-        if (hasTimeout) {
-            Future<Integer> readOp = SharedExecutorService.getInstance().submit(() -> delegate.read(b));
-            return getResultWithTimeout(readOp, readTimeout);
-        } else {
-            return delegate.read(b);
-        }
+        Objects.requireNonNull(b, "'b' cannot be null.");
+        return read(b, 0, b.length);
     }
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
+        Objects.checkFromIndexSize(off, len, b.length);
         if (hasTimeout) {
-            Future<Integer> readOp = SharedExecutorService.getInstance().submit(() -> delegate.read(b, off, len));
+            // Reading is done in chunks of 8192 bytes. This is done to have the timeout closer resemble the network
+            // read timeout, as trying to read hundreds of MBs with a timeout of 1 second would be unreasonable to
+            // represent the network stalling.
+            int toRead = Math.min(len, 8192);
+            Future<Integer> readOp = SharedExecutorService.getInstance().submit(() -> delegate.read(b, off, toRead));
             return getResultWithTimeout(readOp, readTimeout);
         } else {
             return delegate.read(b, off, len);
