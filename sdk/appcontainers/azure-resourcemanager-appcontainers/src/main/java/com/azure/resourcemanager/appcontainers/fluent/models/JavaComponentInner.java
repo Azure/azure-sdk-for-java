@@ -7,12 +7,11 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.appcontainers.models.JavaComponentConfigurationProperty;
-import com.azure.resourcemanager.appcontainers.models.JavaComponentProvisioningState;
-import com.azure.resourcemanager.appcontainers.models.JavaComponentServiceBind;
-import com.azure.resourcemanager.appcontainers.models.JavaComponentType;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.appcontainers.models.JavaComponentProperties;
+import java.io.IOException;
 
 /**
  * Java Component.
@@ -22,14 +21,27 @@ public final class JavaComponentInner extends ProxyResource {
     /*
      * Java Component resource specific properties
      */
-    @JsonProperty(value = "properties")
-    private JavaComponentProperties innerProperties;
+    private JavaComponentProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of JavaComponentInner class.
@@ -38,12 +50,23 @@ public final class JavaComponentInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Java Component resource specific properties.
+     * Get the properties property: Java Component resource specific properties.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private JavaComponentProperties innerProperties() {
-        return this.innerProperties;
+    public JavaComponentProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Java Component resource specific properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the JavaComponentInner object itself.
+     */
+    public JavaComponentInner withProperties(JavaComponentProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -56,81 +79,33 @@ public final class JavaComponentInner extends ProxyResource {
     }
 
     /**
-     * Get the componentType property: Type of the Java Component.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the componentType value.
+     * @return the id value.
      */
-    public JavaComponentType componentType() {
-        return this.innerProperties() == null ? null : this.innerProperties().componentType();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the componentType property: Type of the Java Component.
+     * Get the name property: The name of the resource.
      * 
-     * @param componentType the componentType value to set.
-     * @return the JavaComponentInner object itself.
+     * @return the name value.
      */
-    public JavaComponentInner withComponentType(JavaComponentType componentType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new JavaComponentProperties();
-        }
-        this.innerProperties().withComponentType(componentType);
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the Java Component.
+     * Get the type property: The type of the resource.
      * 
-     * @return the provisioningState value.
+     * @return the type value.
      */
-    public JavaComponentProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the configurations property: List of Java Components configuration properties.
-     * 
-     * @return the configurations value.
-     */
-    public List<JavaComponentConfigurationProperty> configurations() {
-        return this.innerProperties() == null ? null : this.innerProperties().configurations();
-    }
-
-    /**
-     * Set the configurations property: List of Java Components configuration properties.
-     * 
-     * @param configurations the configurations value to set.
-     * @return the JavaComponentInner object itself.
-     */
-    public JavaComponentInner withConfigurations(List<JavaComponentConfigurationProperty> configurations) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new JavaComponentProperties();
-        }
-        this.innerProperties().withConfigurations(configurations);
-        return this;
-    }
-
-    /**
-     * Get the serviceBinds property: List of Java Components that are bound to the Java component.
-     * 
-     * @return the serviceBinds value.
-     */
-    public List<JavaComponentServiceBind> serviceBinds() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceBinds();
-    }
-
-    /**
-     * Set the serviceBinds property: List of Java Components that are bound to the Java component.
-     * 
-     * @param serviceBinds the serviceBinds value to set.
-     * @return the JavaComponentInner object itself.
-     */
-    public JavaComponentInner withServiceBinds(List<JavaComponentServiceBind> serviceBinds) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new JavaComponentProperties();
-        }
-        this.innerProperties().withServiceBinds(serviceBinds);
-        return this;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -139,8 +114,53 @@ public final class JavaComponentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JavaComponentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JavaComponentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JavaComponentInner.
+     */
+    public static JavaComponentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JavaComponentInner deserializedJavaComponentInner = new JavaComponentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJavaComponentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJavaComponentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJavaComponentInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJavaComponentInner.properties = JavaComponentProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedJavaComponentInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJavaComponentInner;
+        });
     }
 }
