@@ -13,22 +13,23 @@ public final class DaprComponentResiliencyPolicyHttpRetryPolicyConfigurationTest
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration model = BinaryData.fromString(
-            "{\"maxRetries\":1923932304,\"retryBackOff\":{\"initialDelayInMilliseconds\":366697291,\"maxIntervalInMilliseconds\":1294543038}}")
+            "{\"maxRetries\":1679853059,\"retryBackOff\":{\"initialDelayInMilliseconds\":206316371,\"maxIntervalInMilliseconds\":664347452}}")
             .toObject(DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration.class);
-        Assertions.assertEquals(1923932304, model.maxRetries());
-        Assertions.assertEquals(366697291, model.retryBackOff().initialDelayInMilliseconds());
-        Assertions.assertEquals(1294543038, model.retryBackOff().maxIntervalInMilliseconds());
+        Assertions.assertEquals(1679853059, model.maxRetries());
+        Assertions.assertEquals(206316371, model.retryBackOff().initialDelayInMilliseconds());
+        Assertions.assertEquals(664347452, model.retryBackOff().maxIntervalInMilliseconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration model
-            = new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(1923932304)
+            = new DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration().withMaxRetries(1679853059)
                 .withRetryBackOff(new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()
-                    .withInitialDelayInMilliseconds(366697291).withMaxIntervalInMilliseconds(1294543038));
+                    .withInitialDelayInMilliseconds(206316371)
+                    .withMaxIntervalInMilliseconds(664347452));
         model = BinaryData.fromObject(model).toObject(DaprComponentResiliencyPolicyHttpRetryPolicyConfiguration.class);
-        Assertions.assertEquals(1923932304, model.maxRetries());
-        Assertions.assertEquals(366697291, model.retryBackOff().initialDelayInMilliseconds());
-        Assertions.assertEquals(1294543038, model.retryBackOff().maxIntervalInMilliseconds());
+        Assertions.assertEquals(1679853059, model.maxRetries());
+        Assertions.assertEquals(206316371, model.retryBackOff().initialDelayInMilliseconds());
+        Assertions.assertEquals(664347452, model.retryBackOff().maxIntervalInMilliseconds());
     }
 }

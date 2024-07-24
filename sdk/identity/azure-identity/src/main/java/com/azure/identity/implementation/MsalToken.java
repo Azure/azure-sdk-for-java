@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
@@ -24,7 +25,11 @@ public final class MsalToken extends AccessToken {
      */
     public MsalToken(IAuthenticationResult msalResult) {
         super(msalResult.accessToken(),
-                OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC));
+                OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC),
+                msalResult.metadata() != null
+                    ? msalResult.metadata().refreshOn() == null ? null
+                        : OffsetDateTime.ofInstant(Instant.ofEpochSecond(msalResult.metadata().refreshOn()), ZoneOffset.UTC)
+                    : null);
         authenticationResult = msalResult;
     }
 

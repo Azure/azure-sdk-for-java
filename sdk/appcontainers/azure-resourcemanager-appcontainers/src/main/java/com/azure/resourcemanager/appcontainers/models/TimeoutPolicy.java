@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Policy to set request timeouts.
  */
 @Fluent
-public final class TimeoutPolicy {
+public final class TimeoutPolicy implements JsonSerializable<TimeoutPolicy> {
     /*
      * Timeout, in seconds, for a request to respond
      */
-    @JsonProperty(value = "responseTimeoutInSeconds")
     private Integer responseTimeoutInSeconds;
 
     /*
      * Timeout, in seconds, for a request to initiate a connection
      */
-    @JsonProperty(value = "connectionTimeoutInSeconds")
     private Integer connectionTimeoutInSeconds;
 
     /**
@@ -76,5 +78,44 @@ public final class TimeoutPolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("responseTimeoutInSeconds", this.responseTimeoutInSeconds);
+        jsonWriter.writeNumberField("connectionTimeoutInSeconds", this.connectionTimeoutInSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeoutPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeoutPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TimeoutPolicy.
+     */
+    public static TimeoutPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeoutPolicy deserializedTimeoutPolicy = new TimeoutPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("responseTimeoutInSeconds".equals(fieldName)) {
+                    deserializedTimeoutPolicy.responseTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("connectionTimeoutInSeconds".equals(fieldName)) {
+                    deserializedTimeoutPolicy.connectionTimeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeoutPolicy;
+        });
     }
 }

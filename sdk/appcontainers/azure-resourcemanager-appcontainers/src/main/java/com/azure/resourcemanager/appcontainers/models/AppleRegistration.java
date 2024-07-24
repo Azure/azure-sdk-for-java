@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration settings of the registration for the Apple provider.
  */
 @Fluent
-public final class AppleRegistration {
+public final class AppleRegistration implements JsonSerializable<AppleRegistration> {
     /*
      * The Client ID of the app used for login.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * The app setting name that contains the client secret.
      */
-    @JsonProperty(value = "clientSecretSettingName")
     private String clientSecretSettingName;
 
     /**
@@ -76,5 +78,44 @@ public final class AppleRegistration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("clientSecretSettingName", this.clientSecretSettingName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppleRegistration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppleRegistration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppleRegistration.
+     */
+    public static AppleRegistration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppleRegistration deserializedAppleRegistration = new AppleRegistration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedAppleRegistration.clientId = reader.getString();
+                } else if ("clientSecretSettingName".equals(fieldName)) {
+                    deserializedAppleRegistration.clientSecretSettingName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppleRegistration;
+        });
     }
 }

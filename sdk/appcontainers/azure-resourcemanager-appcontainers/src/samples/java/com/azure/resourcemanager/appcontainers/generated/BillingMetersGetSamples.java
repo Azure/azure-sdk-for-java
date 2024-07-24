@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class BillingMetersGetSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/BillingMeters_Get.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/BillingMeters_Get.json
      */
     /**
      * Sample code: BillingMeters_Get.

@@ -20,7 +20,10 @@ public final class ImagesListByResourceGroupSamples {
      */
     public static void
         listAllVirtualMachineImagesInAResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().listByResourceGroup("myResourceGroup",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

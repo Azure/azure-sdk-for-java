@@ -10,7 +10,7 @@ package com.azure.resourcemanager.dataprotection.generated;
 public final class BackupInstancesGetBackupInstanceOperationResultSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
      * BackupInstanceOperations/GetBackupInstanceOperationResult.json
      */
     /**
@@ -20,9 +20,9 @@ public final class BackupInstancesGetBackupInstanceOperationResultSamples {
      */
     public static void
         getBackupInstanceOperationResult(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupInstances().getBackupInstanceOperationResultWithResponse("SampleResourceGroup", "swaggerExample",
-            "testInstance1",
-            "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
-            com.azure.core.util.Context.NONE);
+        manager.backupInstances()
+            .getBackupInstanceOperationResultWithResponse("SampleResourceGroup", "swaggerExample", "testInstance1",
+                "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
+                com.azure.core.util.Context.NONE);
     }
 }

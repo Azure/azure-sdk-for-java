@@ -5,38 +5,46 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SparkStatement model. */
+/**
+ * The SparkStatement model.
+ */
 @Fluent
-public final class SparkStatement {
+public final class SparkStatement implements JsonSerializable<SparkStatement> {
     /*
      * The id property.
      */
-    @JsonProperty(value = "id", required = true)
     private int id;
 
     /*
      * The code property.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * The state property.
      */
-    @JsonProperty(value = "state")
     private LivyStatementStates state;
 
     /*
      * The output property.
      */
-    @JsonProperty(value = "output")
     private SparkStatementOutput output;
 
     /**
+     * Creates an instance of SparkStatement class.
+     */
+    public SparkStatement() {
+    }
+
+    /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public int getId() {
@@ -45,7 +53,7 @@ public final class SparkStatement {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the SparkStatement object itself.
      */
@@ -56,7 +64,7 @@ public final class SparkStatement {
 
     /**
      * Get the code property: The code property.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -65,7 +73,7 @@ public final class SparkStatement {
 
     /**
      * Set the code property: The code property.
-     *
+     * 
      * @param code the code value to set.
      * @return the SparkStatement object itself.
      */
@@ -76,7 +84,7 @@ public final class SparkStatement {
 
     /**
      * Get the state property: The state property.
-     *
+     * 
      * @return the state value.
      */
     public LivyStatementStates getState() {
@@ -85,7 +93,7 @@ public final class SparkStatement {
 
     /**
      * Set the state property: The state property.
-     *
+     * 
      * @param state the state value to set.
      * @return the SparkStatement object itself.
      */
@@ -96,7 +104,7 @@ public final class SparkStatement {
 
     /**
      * Get the output property: The output property.
-     *
+     * 
      * @return the output value.
      */
     public SparkStatementOutput getOutput() {
@@ -105,12 +113,58 @@ public final class SparkStatement {
 
     /**
      * Set the output property: The output property.
-     *
+     * 
      * @param output the output value to set.
      * @return the SparkStatement object itself.
      */
     public SparkStatement setOutput(SparkStatementOutput output) {
         this.output = output;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("id", this.id);
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("output", this.output);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SparkStatement from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SparkStatement if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SparkStatement.
+     */
+    public static SparkStatement fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SparkStatement deserializedSparkStatement = new SparkStatement();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSparkStatement.id = reader.getInt();
+                } else if ("code".equals(fieldName)) {
+                    deserializedSparkStatement.code = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedSparkStatement.state = LivyStatementStates.fromString(reader.getString());
+                } else if ("output".equals(fieldName)) {
+                    deserializedSparkStatement.output = SparkStatementOutput.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSparkStatement;
+        });
     }
 }

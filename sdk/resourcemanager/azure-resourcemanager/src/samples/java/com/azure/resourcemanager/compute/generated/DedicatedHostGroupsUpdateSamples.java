@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupUpdate;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,16 +21,20 @@ public final class DedicatedHostGroupsUpdateSamples {
      */
     /**
      * Sample code: DedicatedHostGroup_Update_MaximumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostGroupUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().updateWithResponse("rgcompute",
-            "aaaa",
-            new DedicatedHostGroupUpdate().withTags(mapOf("key9921", "fakeTokenPlaceholder"))
-                .withZones(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")).withPlatformFaultDomainCount(3)
-                .withSupportAutomaticPlacement(true),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .updateWithResponse("rgcompute", "aaaa",
+                new DedicatedHostGroupUpdate().withTags(mapOf("key9921", "fakeTokenPlaceholder"))
+                    .withZones(Arrays.asList("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+                    .withPlatformFaultDomainCount(3)
+                    .withSupportAutomaticPlacement(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,12 +44,16 @@ public final class DedicatedHostGroupsUpdateSamples {
      */
     /**
      * Sample code: DedicatedHostGroup_Update_MinimumSet_Gen.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void dedicatedHostGroupUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().updateWithResponse("rgcompute",
-            "aaaaaaaaaaa", new DedicatedHostGroupUpdate(), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaa", new DedicatedHostGroupUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

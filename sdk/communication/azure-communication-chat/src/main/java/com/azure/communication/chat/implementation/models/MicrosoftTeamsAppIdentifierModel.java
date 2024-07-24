@@ -5,23 +5,25 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A Microsoft Teams application.
  */
 @Fluent
-public final class MicrosoftTeamsAppIdentifierModel {
+public final class MicrosoftTeamsAppIdentifierModel implements JsonSerializable<MicrosoftTeamsAppIdentifierModel> {
     /*
      * The Id of the Microsoft Teams application.
      */
-    @JsonProperty(value = "appId", required = true)
     private String appId;
 
     /*
      * The cloud that the Microsoft Teams application belongs to. By default 'public' if missing.
      */
-    @JsonProperty(value = "cloud")
     private CommunicationCloudEnvironmentModel cloud;
 
     /**
@@ -70,5 +72,47 @@ public final class MicrosoftTeamsAppIdentifierModel {
     public MicrosoftTeamsAppIdentifierModel setCloud(CommunicationCloudEnvironmentModel cloud) {
         this.cloud = cloud;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appId", this.appId);
+        jsonWriter.writeStringField("cloud", this.cloud == null ? null : this.cloud.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftTeamsAppIdentifierModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftTeamsAppIdentifierModel if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MicrosoftTeamsAppIdentifierModel.
+     */
+    public static MicrosoftTeamsAppIdentifierModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftTeamsAppIdentifierModel deserializedMicrosoftTeamsAppIdentifierModel
+                = new MicrosoftTeamsAppIdentifierModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appId".equals(fieldName)) {
+                    deserializedMicrosoftTeamsAppIdentifierModel.appId = reader.getString();
+                } else if ("cloud".equals(fieldName)) {
+                    deserializedMicrosoftTeamsAppIdentifierModel.cloud
+                        = CommunicationCloudEnvironmentModel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMicrosoftTeamsAppIdentifierModel;
+        });
     }
 }

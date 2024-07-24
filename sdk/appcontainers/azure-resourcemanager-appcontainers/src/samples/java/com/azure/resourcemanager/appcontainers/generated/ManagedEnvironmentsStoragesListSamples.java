@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ManagedEnvironmentsStoragesListSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ManagedEnvironmentsStorages_List.json
      */
     /**
@@ -19,7 +19,7 @@ public final class ManagedEnvironmentsStoragesListSamples {
      */
     public static void listEnvironmentsStoragesBySubscription(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironmentsStorages().listWithResponse("examplerg", "managedEnv",
-            com.azure.core.util.Context.NONE);
+        manager.managedEnvironmentsStorages()
+            .listWithResponse("examplerg", "managedEnv", com.azure.core.util.Context.NONE);
     }
 }

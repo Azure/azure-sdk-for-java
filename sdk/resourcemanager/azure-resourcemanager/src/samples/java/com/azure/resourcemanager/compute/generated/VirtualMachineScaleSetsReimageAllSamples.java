@@ -23,10 +23,13 @@ public final class VirtualMachineScaleSetsReimageAllSamples {
      */
     public static void
         virtualMachineScaleSetReimageAllMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().reimageAll("rgcompute",
-            "aaaaaaaaaaaa",
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .reimageAll("rgcompute", "aaaaaaaaaaaa",
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,7 +44,10 @@ public final class VirtualMachineScaleSetsReimageAllSamples {
      */
     public static void
         virtualMachineScaleSetReimageAllMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().reimageAll("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .reimageAll("rgcompute", "aaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 }

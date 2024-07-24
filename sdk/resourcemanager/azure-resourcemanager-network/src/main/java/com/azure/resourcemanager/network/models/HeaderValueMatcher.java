@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HeaderValueMatcher {
     /*
-     * The pattern, either fixed string or regular expression, that evaluates if a header value should be selected for rewrite.
+     * The pattern, either fixed string or regular expression, that evaluates if a header value should be selected for
+     * rewrite.
      */
     @JsonProperty(value = "pattern")
     private String pattern;
@@ -27,7 +28,8 @@ public final class HeaderValueMatcher {
     private Boolean ignoreCase;
 
     /*
-     * Setting this value as truth will force to check the negation of the condition given by the user in the pattern field.
+     * Setting this value as truth will force to check the negation of the condition given by the user in the pattern
+     * field.
      */
     @JsonProperty(value = "negate")
     private Boolean negate;

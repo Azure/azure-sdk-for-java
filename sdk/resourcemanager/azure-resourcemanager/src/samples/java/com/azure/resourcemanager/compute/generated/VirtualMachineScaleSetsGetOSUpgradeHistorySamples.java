@@ -20,8 +20,11 @@ public final class VirtualMachineScaleSetsGetOSUpgradeHistorySamples {
      */
     public static void
         virtualMachineScaleSetGetOSUpgradeHistoryMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().getOSUpgradeHistory("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .getOSUpgradeHistory("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,10 @@ public final class VirtualMachineScaleSetsGetOSUpgradeHistorySamples {
      */
     public static void
         virtualMachineScaleSetGetOSUpgradeHistoryMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().getOSUpgradeHistory("rgcompute",
-            "aaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .getOSUpgradeHistory("rgcompute", "aaaaaa", com.azure.core.util.Context.NONE);
     }
 }

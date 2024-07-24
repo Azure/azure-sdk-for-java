@@ -78,8 +78,8 @@ public final class WeeklySchedule {
      */
     public void validate() {
         if (dayOfWeek() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dayOfWeek in model WeeklySchedule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dayOfWeek in model WeeklySchedule"));
         }
     }
 

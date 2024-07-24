@@ -27,7 +27,7 @@ public final class MachineExtensionsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.machineExtensions().delete("r", "gh", "iypoqeyhlqhykprl", com.azure.core.util.Context.NONE);
+        manager.machineExtensions().delete("rvxcush", "phai", "mxyasflvgsgzw", com.azure.core.util.Context.NONE);
 
     }
 }

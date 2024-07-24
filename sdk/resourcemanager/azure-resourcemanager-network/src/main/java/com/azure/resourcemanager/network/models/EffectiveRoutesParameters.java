@@ -19,7 +19,8 @@ public final class EffectiveRoutesParameters {
     private String resourceId;
 
     /*
-     * The type of the specified resource like RouteTable, ExpressRouteConnection, HubVirtualNetworkConnection, VpnConnection and P2SConnection.
+     * The type of the specified resource like RouteTable, ExpressRouteConnection, HubVirtualNetworkConnection,
+     * VpnConnection and P2SConnection.
      */
     @JsonProperty(value = "virtualWanResourceType")
     private String virtualWanResourceType;

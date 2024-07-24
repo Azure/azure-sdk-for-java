@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.15.2 (2024-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty version logging (#40733)[https://github.com/Azure/azure-sdk-for-java/pull/40733]
+
 ## 1.15.1 (2024-06-06)
 
 ### Other Changes

@@ -23,7 +23,7 @@ public final class MongoClusterUpdate implements JsonSerializable<MongoClusterUp
     private Map<String, String> tags;
 
     /*
-     * The properties property.
+     * The resource-specific properties for this resource.
      */
     private MongoClusterUpdateProperties properties;
 
@@ -54,7 +54,7 @@ public final class MongoClusterUpdate implements JsonSerializable<MongoClusterUp
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
@@ -63,7 +63,7 @@ public final class MongoClusterUpdate implements JsonSerializable<MongoClusterUp
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: The resource-specific properties for this resource.
      * 
      * @param properties the properties value to set.
      * @return the MongoClusterUpdate object itself.
