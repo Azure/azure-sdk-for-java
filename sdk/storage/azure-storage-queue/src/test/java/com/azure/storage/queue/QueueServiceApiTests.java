@@ -232,7 +232,7 @@ public class QueueServiceApiTests extends QueueTestBase {
 
     @Test
     public void defaultAudience() {
-        QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient aadService = getOAuthServiceClientBuilder()
             .audience(null) // should default to "https://storage.azure.com/"
             .buildClient();
 
@@ -241,7 +241,7 @@ public class QueueServiceApiTests extends QueueTestBase {
 
     @Test
     public void storageAccountAudience() {
-        QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient aadService = getOAuthServiceClientBuilder()
             .audience(QueueAudience.createQueueServiceAccountAudience(primaryQueueServiceClient.getAccountName()))
             .buildClient();
 
@@ -255,7 +255,7 @@ public class QueueServiceApiTests extends QueueTestBase {
     the default audience, and the request gets retried with this default audience, making the call function as expected.
      */
     public void audienceErrorBearerChallengeRetry() {
-        QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient aadService = getOAuthServiceClientBuilder()
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildClient();
 
@@ -267,7 +267,7 @@ public class QueueServiceApiTests extends QueueTestBase {
         String url = String.format("https://%s.queue.core.windows.net/", primaryQueueServiceClient.getAccountName());
         QueueAudience audience = QueueAudience.fromString(url);
 
-        QueueServiceClient aadService = getOAuthServiceClientBuilder(primaryQueueServiceClient.getQueueServiceUrl())
+        QueueServiceClient aadService = getOAuthServiceClientBuilder()
             .audience(audience)
             .buildClient();
 

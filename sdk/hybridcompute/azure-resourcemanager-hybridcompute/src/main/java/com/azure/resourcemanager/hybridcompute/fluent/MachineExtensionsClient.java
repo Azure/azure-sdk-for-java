@@ -85,7 +85,7 @@ public interface MachineExtensionsClient {
         MachineExtensionInner extensionParameters, Context context);
 
     /**
-     * The operation to create or update the extension.
+     * The operation to update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -101,7 +101,7 @@ public interface MachineExtensionsClient {
         String machineName, String extensionName, MachineExtensionUpdate extensionParameters);
 
     /**
-     * The operation to create or update the extension.
+     * The operation to update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -118,7 +118,7 @@ public interface MachineExtensionsClient {
         String machineName, String extensionName, MachineExtensionUpdate extensionParameters, Context context);
 
     /**
-     * The operation to create or update the extension.
+     * The operation to update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.
@@ -134,7 +134,7 @@ public interface MachineExtensionsClient {
         MachineExtensionUpdate extensionParameters);
 
     /**
-     * The operation to create or update the extension.
+     * The operation to update the extension.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be created or updated.

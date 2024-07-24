@@ -1,6 +1,16 @@
 # Release History
 
-## 2.9.0-beta.2 (2024-07-01)
+## 2.9.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.9.0-beta.2 (2024-07-09)
 
 ### Features Added
 - Added the new system property `azure.keyvault.disable-challenge-resource-verification`, which can be set to `true` to disable challenge resource verification when authenticating against the Azure Key Vault service. For more information, please refer to [this link](https://devblogs.microsoft.com/azure-sdk/guidance-for-applications-using-the-key-vault-libraries/).

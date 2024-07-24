@@ -1488,7 +1488,7 @@ public class CosmosAsyncContainer {
 
         CosmosReadManyRequestOptions options = new CosmosReadManyRequestOptions();
 
-        if (!StringUtils.isNotEmpty(sessionToken)) {
+        if (StringUtils.isNotEmpty(sessionToken)) {
             options = options.setSessionToken(sessionToken);
         }
 

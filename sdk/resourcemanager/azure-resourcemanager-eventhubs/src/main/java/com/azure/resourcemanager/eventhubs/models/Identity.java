@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
-/** Properties to configure Identity for Bring your Own Keys. */
+/**
+ * Properties to configure Identity for Bring your Own Keys.
+ */
 @Fluent
-public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
+public final class Identity {
     /*
      * ObjectId from the KeyVault
      */
@@ -40,6 +39,12 @@ public class Identity {
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
+
+    /**
+     * Creates an instance of Identity class.
+     */
+    public Identity() {
+    }
 
     /**
      * Get the principalId property: ObjectId from the KeyVault.
@@ -106,14 +111,11 @@ public class Identity {
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

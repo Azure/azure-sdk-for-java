@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ReestablishReplicationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReestablishReplicationRequest model = BinaryData.fromString("{\"sourceVolumeId\":\"gxysmocmbqfqvm\"}")
-            .toObject(ReestablishReplicationRequest.class);
-        Assertions.assertEquals("gxysmocmbqfqvm", model.sourceVolumeId());
+        ReestablishReplicationRequest model
+            = BinaryData.fromString("{\"sourceVolumeId\":\"rhos\"}").toObject(ReestablishReplicationRequest.class);
+        Assertions.assertEquals("rhos", model.sourceVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReestablishReplicationRequest model = new ReestablishReplicationRequest().withSourceVolumeId("gxysmocmbqfqvm");
+        ReestablishReplicationRequest model = new ReestablishReplicationRequest().withSourceVolumeId("rhos");
         model = BinaryData.fromObject(model).toObject(ReestablishReplicationRequest.class);
-        Assertions.assertEquals("gxysmocmbqfqvm", model.sourceVolumeId());
+        Assertions.assertEquals("rhos", model.sourceVolumeId());
     }
 }

@@ -21,7 +21,8 @@ public final class Action {
     private RouteMapActionType type;
 
     /*
-     * List of parameters relevant to the action.For instance if type is drop then parameters has list of prefixes to be dropped.If type is add, parameters would have list of ASN numbers to be added
+     * List of parameters relevant to the action.For instance if type is drop then parameters has list of prefixes to be
+     * dropped.If type is add, parameters would have list of ASN numbers to be added
      */
     @JsonProperty(value = "parameters")
     private List<Parameter> parameters;

@@ -33,18 +33,36 @@ public final class ReplicaCollectionInnerTests {
     public void testSerialize() throws Exception {
         ReplicaCollectionInner model = new ReplicaCollectionInner().withValue(Arrays.asList(new ReplicaInner()
             .withContainers(Arrays.asList(
-                new ReplicaContainer().withName("mpjw").withContainerId("vqikfxcvhrfsphu").withReady(true)
-                    .withStarted(true).withRestartCount(95880088),
-                new ReplicaContainer().withName("slqxi").withContainerId("rmooizqse").withReady(false).withStarted(true)
+                new ReplicaContainer().withName("mpjw")
+                    .withContainerId("vqikfxcvhrfsphu")
+                    .withReady(true)
+                    .withStarted(true)
+                    .withRestartCount(95880088),
+                new ReplicaContainer().withName("slqxi")
+                    .withContainerId("rmooizqse")
+                    .withReady(false)
+                    .withStarted(true)
                     .withRestartCount(719616130),
-                new ReplicaContainer().withName("brqnkkzjcjb").withContainerId("gaehvvibrxjjst").withReady(false)
-                    .withStarted(false).withRestartCount(774286462)))
+                new ReplicaContainer().withName("brqnkkzjcjb")
+                    .withContainerId("gaehvvibrxjjst")
+                    .withReady(false)
+                    .withStarted(false)
+                    .withRestartCount(774286462)))
             .withInitContainers(Arrays.asList(
-                new ReplicaContainer().withName("xzhemjyh").withContainerId("uj").withReady(false).withStarted(true)
+                new ReplicaContainer().withName("xzhemjyh")
+                    .withContainerId("uj")
+                    .withReady(false)
+                    .withStarted(true)
                     .withRestartCount(1064188609),
-                new ReplicaContainer().withName("oaimlnw").withContainerId("aomylwea").withReady(true)
-                    .withStarted(false).withRestartCount(1226042956),
-                new ReplicaContainer().withName("bcxf").withContainerId("cporxvxcjz").withReady(false).withStarted(true)
+                new ReplicaContainer().withName("oaimlnw")
+                    .withContainerId("aomylwea")
+                    .withReady(true)
+                    .withStarted(false)
+                    .withRestartCount(1226042956),
+                new ReplicaContainer().withName("bcxf")
+                    .withContainerId("cporxvxcjz")
+                    .withReady(false)
+                    .withStarted(true)
                     .withRestartCount(444626662)))));
         model = BinaryData.fromObject(model).toObject(ReplicaCollectionInner.class);
         Assertions.assertEquals("mpjw", model.value().get(0).containers().get(0).name());

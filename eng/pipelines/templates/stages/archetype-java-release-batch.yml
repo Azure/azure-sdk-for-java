@@ -222,7 +222,6 @@ stages:
                       ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                       OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
                       Target: EsrpRelease
-                      BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                       JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
                   - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                     parameters:
@@ -236,7 +235,6 @@ stages:
                       ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                       RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
                       Target: JavaDevFeed
-                      BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                       JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
                   - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                     parameters:

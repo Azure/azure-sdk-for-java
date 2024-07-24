@@ -85,14 +85,17 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
     }
 
     public AuthConfig create() {
-        this.innerObject
-            = serviceManager.serviceClient().getContainerAppsAuthConfigs().createOrUpdateWithResponse(resourceGroupName,
-                containerAppName, authConfigName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthConfig create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getContainerAppsAuthConfigs()
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
             .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(), context)
             .getValue();
         return this;
@@ -109,14 +112,17 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
     }
 
     public AuthConfig apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getContainerAppsAuthConfigs().createOrUpdateWithResponse(resourceGroupName,
-                containerAppName, authConfigName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthConfig apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getContainerAppsAuthConfigs()
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
             .createOrUpdateWithResponse(resourceGroupName, containerAppName, authConfigName, this.innerModel(), context)
             .getValue();
         return this;
@@ -132,14 +138,18 @@ public final class AuthConfigImpl implements AuthConfig, AuthConfig.Definition, 
     }
 
     public AuthConfig refresh() {
-        this.innerObject = serviceManager.serviceClient().getContainerAppsAuthConfigs()
-            .getWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .getWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthConfig refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getContainerAppsAuthConfigs()
-            .getWithResponse(resourceGroupName, containerAppName, authConfigName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerAppsAuthConfigs()
+            .getWithResponse(resourceGroupName, containerAppName, authConfigName, context)
+            .getValue();
         return this;
     }
 

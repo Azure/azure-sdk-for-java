@@ -19,7 +19,10 @@ public final class CloudServiceRoleInstancesRestartSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void restartCloudServiceRoleInstance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServiceRoleInstances().restart("{roleInstance-name}",
-            "ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServiceRoleInstances()
+            .restart("{roleInstance-name}", "ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

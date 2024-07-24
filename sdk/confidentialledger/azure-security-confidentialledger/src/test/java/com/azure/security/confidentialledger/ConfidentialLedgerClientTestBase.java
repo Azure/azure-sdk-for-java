@@ -20,6 +20,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClient;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateClientBuilder;
@@ -71,7 +72,7 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
                 .credential(new DefaultAzureCredentialBuilder().build());
             addSanitizers();
         } else if (getTestMode() == TestMode.LIVE) {
-            confidentialLedgerCertificateClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+            confidentialLedgerCertificateClientBuilder.credential(new AzurePowerShellCredentialBuilder().build());
 
         }
 

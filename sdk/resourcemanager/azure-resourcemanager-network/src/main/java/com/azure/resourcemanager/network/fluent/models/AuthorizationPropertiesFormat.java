@@ -27,6 +27,12 @@ public final class AuthorizationPropertiesFormat {
     private AuthorizationUseStatus authorizationUseStatus;
 
     /*
+     * The reference to the ExpressRoute connection resource using the authorization.
+     */
+    @JsonProperty(value = "connectionResourceUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String connectionResourceUri;
+
+    /*
      * The provisioning state of the authorization resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -76,6 +82,16 @@ public final class AuthorizationPropertiesFormat {
     public AuthorizationPropertiesFormat withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus) {
         this.authorizationUseStatus = authorizationUseStatus;
         return this;
+    }
+
+    /**
+     * Get the connectionResourceUri property: The reference to the ExpressRoute connection resource using the
+     * authorization.
+     * 
+     * @return the connectionResourceUri value.
+     */
+    public String connectionResourceUri() {
+        return this.connectionResourceUri;
     }
 
     /**

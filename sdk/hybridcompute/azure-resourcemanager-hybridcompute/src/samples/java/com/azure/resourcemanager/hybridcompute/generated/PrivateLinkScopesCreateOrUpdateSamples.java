@@ -12,7 +12,9 @@ import java.util.Map;
  */
 public final class PrivateLinkScopesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/privateLinkScope/PrivateLinkScopes_Create.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * privateLinkScope/PrivateLinkScopes_Create.json
      */
     /**
      * Sample code: PrivateLinkScopeCreate.
@@ -28,7 +30,9 @@ public final class PrivateLinkScopesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/privateLinkScope/PrivateLinkScopes_Update.json
+     * x-ms-original-file:
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
+     * privateLinkScope/PrivateLinkScopes_Update.json
      */
     /**
      * Sample code: PrivateLinkScopeUpdate.

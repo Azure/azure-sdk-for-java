@@ -13,7 +13,7 @@ import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequest;
 public final class DataProtectionCheckFeatureSupportSamples {
     /*
      * x-ms-original-file:
-     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
      * CheckfeatureSupport.json
      */
     /**
@@ -23,8 +23,9 @@ public final class DataProtectionCheckFeatureSupportSamples {
      */
     public static void
         checkAzureVmBackupFeatureSupport(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.dataProtections().checkFeatureSupportWithResponse("WestUS",
-            new FeatureValidationRequest().withFeatureType(FeatureType.DATA_SOURCE_TYPE),
-            com.azure.core.util.Context.NONE);
+        manager.dataProtections()
+            .checkFeatureSupportWithResponse("WestUS",
+                new FeatureValidationRequest().withFeatureType(FeatureType.DATA_SOURCE_TYPE),
+                com.azure.core.util.Context.NONE);
     }
 }

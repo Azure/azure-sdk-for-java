@@ -6,25 +6,25 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cross Region Restore Request Object.
  */
 @Fluent
-public final class CrossRegionRestoreRequestObject {
+public final class CrossRegionRestoreRequestObject implements JsonSerializable<CrossRegionRestoreRequestObject> {
     /*
-     * AzureBackupRestoreRequest
-     * 
      * Gets or sets the restore request object.
      */
-    @JsonProperty(value = "restoreRequestObject", required = true)
     private AzureBackupRestoreRequest restoreRequestObject;
 
     /*
      * Cross region restore details.
      */
-    @JsonProperty(value = "crossRegionRestoreDetails", required = true)
     private CrossRegionRestoreDetails crossRegionRestoreDetails;
 
     /**
@@ -34,9 +34,7 @@ public final class CrossRegionRestoreRequestObject {
     }
 
     /**
-     * Get the restoreRequestObject property: AzureBackupRestoreRequest
-     * 
-     * Gets or sets the restore request object.
+     * Get the restoreRequestObject property: Gets or sets the restore request object.
      * 
      * @return the restoreRequestObject value.
      */
@@ -45,9 +43,7 @@ public final class CrossRegionRestoreRequestObject {
     }
 
     /**
-     * Set the restoreRequestObject property: AzureBackupRestoreRequest
-     * 
-     * Gets or sets the restore request object.
+     * Set the restoreRequestObject property: Gets or sets the restore request object.
      * 
      * @param restoreRequestObject the restoreRequestObject value to set.
      * @return the CrossRegionRestoreRequestObject object itself.
@@ -85,18 +81,63 @@ public final class CrossRegionRestoreRequestObject {
      */
     public void validate() {
         if (restoreRequestObject() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property restoreRequestObject in model CrossRegionRestoreRequestObject"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property restoreRequestObject in model CrossRegionRestoreRequestObject"));
         } else {
             restoreRequestObject().validate();
         }
         if (crossRegionRestoreDetails() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property crossRegionRestoreDetails in model CrossRegionRestoreRequestObject"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property crossRegionRestoreDetails in model CrossRegionRestoreRequestObject"));
         } else {
             crossRegionRestoreDetails().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CrossRegionRestoreRequestObject.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("restoreRequestObject", this.restoreRequestObject);
+        jsonWriter.writeJsonField("crossRegionRestoreDetails", this.crossRegionRestoreDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CrossRegionRestoreRequestObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CrossRegionRestoreRequestObject if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CrossRegionRestoreRequestObject.
+     */
+    public static CrossRegionRestoreRequestObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CrossRegionRestoreRequestObject deserializedCrossRegionRestoreRequestObject
+                = new CrossRegionRestoreRequestObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restoreRequestObject".equals(fieldName)) {
+                    deserializedCrossRegionRestoreRequestObject.restoreRequestObject
+                        = AzureBackupRestoreRequest.fromJson(reader);
+                } else if ("crossRegionRestoreDetails".equals(fieldName)) {
+                    deserializedCrossRegionRestoreRequestObject.crossRegionRestoreDetails
+                        = CrossRegionRestoreDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCrossRegionRestoreRequestObject;
+        });
+    }
 }

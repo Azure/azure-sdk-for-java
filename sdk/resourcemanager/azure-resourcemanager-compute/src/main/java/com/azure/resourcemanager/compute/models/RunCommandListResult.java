@@ -22,8 +22,7 @@ public final class RunCommandListResult {
     private List<RunCommandDocumentBaseInner> value;
 
     /*
-     * The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run
-     * commands.
+     * The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run commands.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -55,8 +54,8 @@ public final class RunCommandListResult {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch
-     * the next page of run commands.
+     * Get the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch the
+     * next page of run commands.
      * 
      * @return the nextLink value.
      */
@@ -65,8 +64,8 @@ public final class RunCommandListResult {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch
-     * the next page of run commands.
+     * Set the nextLink property: The uri to fetch the next page of run commands. Call ListNext() with this to fetch the
+     * next page of run commands.
      * 
      * @param nextLink the nextLink value to set.
      * @return the RunCommandListResult object itself.
@@ -83,8 +82,8 @@ public final class RunCommandListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model RunCommandListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model RunCommandListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

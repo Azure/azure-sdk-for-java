@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -28,6 +27,11 @@ public final class JavaComponentType extends ExpandableStringEnum<JavaComponentT
     public static final JavaComponentType SPRING_CLOUD_CONFIG = fromString("SpringCloudConfig");
 
     /**
+     * Static value Nacos for JavaComponentType.
+     */
+    public static final JavaComponentType NACOS = fromString("Nacos");
+
+    /**
      * Creates a new instance of JavaComponentType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -42,7 +46,6 @@ public final class JavaComponentType extends ExpandableStringEnum<JavaComponentT
      * @param name a name to look for.
      * @return the corresponding JavaComponentType.
      */
-    @JsonCreator
     public static JavaComponentType fromString(String name) {
         return fromString(name, JavaComponentType.class);
     }

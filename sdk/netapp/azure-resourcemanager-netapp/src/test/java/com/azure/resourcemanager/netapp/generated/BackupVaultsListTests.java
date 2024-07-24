@@ -16,25 +16,29 @@ public final class BackupVaultsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"slordilmyww\"},\"location\":\"gkxnyedabg\",\"tags\":{\"ewbcihxuuw\":\"dtj\",\"yxccyb\":\"c\",\"px\":\"payakkud\"},\"id\":\"wjplma\",\"name\":\"stcyohpfkyrkdbd\",\"type\":\"iogsjkmnwq\"},{\"properties\":{\"provisioningState\":\"baiyhddviaceg\"},\"location\":\"m\",\"tags\":{\"alxlllchp\":\"pmvmemfnczdwvv\",\"evwrdnhfuk\":\"db\",\"fcvlerch\":\"vsjcswsmystuluqy\"},\"id\":\"qbmfpjbabwidf\",\"name\":\"xsspuunnoxyhk\",\"type\":\"g\"}],\"nextLink\":\"drihpfhoqcaaewda\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"gohbuffkmrq\"},\"location\":\"vvhmxtdrj\",\"tags\":{\"ewzcjznmwcp\":\"acoebj\"},\"id\":\"guaadraufactkahz\",\"name\":\"v\",\"type\":\"jjziuxxpsh\"},{\"properties\":{\"provisioningState\":\"kulfg\"},\"location\":\"qubkw\",\"tags\":{\"inyflnorwmduvwp\":\"nrdsutujbazpjuoh\"},\"id\":\"lvxwmyg\",\"name\":\"xpgpq\",\"type\":\"hiszepnnbjcrxgib\"},{\"properties\":{\"provisioningState\":\"xconfozauors\"},\"location\":\"okwbqplh\",\"tags\":{\"yuqdu\":\"uuepzlrphwzsoldw\",\"biorktal\":\"vmnnrw\",\"miloxggdufiqndie\":\"wjhhgdnhxmsivf\"},\"id\":\"zaofjchvcyy\",\"name\":\"s\",\"type\":\"gdotcubiipuipwo\"},{\"properties\":{\"provisioningState\":\"macjekn\"},\"location\":\"shqvcimpev\",\"tags\":{\"rrilbywdxsmic\":\"b\",\"qujizdvo\":\"wrwfscjfnyns\",\"blgyavutpthj\":\"ytibyow\"},\"id\":\"xoi\",\"name\":\"msksbp\",\"type\":\"mlqoljx\"}],\"nextLink\":\"gxxlxsffgcvizq\"}")
             .toObject(BackupVaultsList.class);
-        Assertions.assertEquals("gkxnyedabg", model.value().get(0).location());
-        Assertions.assertEquals("dtj", model.value().get(0).tags().get("ewbcihxuuw"));
-        Assertions.assertEquals("drihpfhoqcaaewda", model.nextLink());
+        Assertions.assertEquals("vvhmxtdrj", model.value().get(0).location());
+        Assertions.assertEquals("acoebj", model.value().get(0).tags().get("ewzcjznmwcp"));
+        Assertions.assertEquals("gxxlxsffgcvizq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupVaultsList model = new BackupVaultsList().withValue(Arrays.asList(
-            new BackupVaultInner().withLocation("gkxnyedabg")
-                .withTags(mapOf("ewbcihxuuw", "dtj", "yxccyb", "c", "px", "payakkud")),
-            new BackupVaultInner().withLocation("m")
-                .withTags(mapOf("alxlllchp", "pmvmemfnczdwvv", "evwrdnhfuk", "db", "fcvlerch", "vsjcswsmystuluqy"))))
-            .withNextLink("drihpfhoqcaaewda");
+        BackupVaultsList model = new BackupVaultsList()
+            .withValue(
+                Arrays.asList(new BackupVaultInner().withLocation("vvhmxtdrj").withTags(mapOf("ewzcjznmwcp", "acoebj")),
+                    new BackupVaultInner().withLocation("qubkw").withTags(mapOf("inyflnorwmduvwp", "nrdsutujbazpjuoh")),
+                    new BackupVaultInner().withLocation("okwbqplh")
+                        .withTags(mapOf("yuqdu", "uuepzlrphwzsoldw", "biorktal", "vmnnrw", "miloxggdufiqndie",
+                            "wjhhgdnhxmsivf")),
+                    new BackupVaultInner().withLocation("shqvcimpev")
+                        .withTags(mapOf("rrilbywdxsmic", "b", "qujizdvo", "wrwfscjfnyns", "blgyavutpthj", "ytibyow"))))
+            .withNextLink("gxxlxsffgcvizq");
         model = BinaryData.fromObject(model).toObject(BackupVaultsList.class);
-        Assertions.assertEquals("gkxnyedabg", model.value().get(0).location());
-        Assertions.assertEquals("dtj", model.value().get(0).tags().get("ewbcihxuuw"));
-        Assertions.assertEquals("drihpfhoqcaaewda", model.nextLink());
+        Assertions.assertEquals("vvhmxtdrj", model.value().get(0).location());
+        Assertions.assertEquals("acoebj", model.value().get(0).tags().get("ewzcjznmwcp"));
+        Assertions.assertEquals("gxxlxsffgcvizq", model.nextLink());
     }
 
     // Use "Map.of" if available

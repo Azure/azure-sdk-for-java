@@ -23,9 +23,9 @@ public final class DaprComponentServiceBindingTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprComponentServiceBinding model
-            = new DaprComponentServiceBinding().withName("owpulpq").withServiceId("ylsyxkqjnsje")
-                .withMetadata(new DaprServiceBindMetadata().withName("iagxsdszuempsbz").withValue("z"));
+        DaprComponentServiceBinding model = new DaprComponentServiceBinding().withName("owpulpq")
+            .withServiceId("ylsyxkqjnsje")
+            .withMetadata(new DaprServiceBindMetadata().withName("iagxsdszuempsbz").withValue("z"));
         model = BinaryData.fromObject(model).toObject(DaprComponentServiceBinding.class);
         Assertions.assertEquals("owpulpq", model.name());
         Assertions.assertEquals("ylsyxkqjnsje", model.serviceId());

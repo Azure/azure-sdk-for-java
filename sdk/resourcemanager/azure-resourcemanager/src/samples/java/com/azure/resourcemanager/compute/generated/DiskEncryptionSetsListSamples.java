@@ -18,7 +18,10 @@ public final class DiskEncryptionSetsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllDiskEncryptionSetsInASubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskEncryptionSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskEncryptionSets()
             .list(com.azure.core.util.Context.NONE);
     }
 }

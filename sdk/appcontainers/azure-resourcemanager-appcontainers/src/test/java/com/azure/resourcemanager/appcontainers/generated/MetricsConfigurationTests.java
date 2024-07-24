@@ -13,16 +13,14 @@ public final class MetricsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricsConfiguration model
-            = BinaryData.fromString("{\"destinations\":[\"fmd\",\"ragegi\",\"vcjfelisdjubggb\"]}")
-                .toObject(MetricsConfiguration.class);
-        Assertions.assertEquals("fmd", model.destinations().get(0));
+            = BinaryData.fromString("{\"destinations\":[\"xzopjhbzxl\"]}").toObject(MetricsConfiguration.class);
+        Assertions.assertEquals("xzopjhbzxl", model.destinations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricsConfiguration model
-            = new MetricsConfiguration().withDestinations(Arrays.asList("fmd", "ragegi", "vcjfelisdjubggb"));
+        MetricsConfiguration model = new MetricsConfiguration().withDestinations(Arrays.asList("xzopjhbzxl"));
         model = BinaryData.fromObject(model).toObject(MetricsConfiguration.class);
-        Assertions.assertEquals("fmd", model.destinations().get(0));
+        Assertions.assertEquals("xzopjhbzxl", model.destinations().get(0));
     }
 }

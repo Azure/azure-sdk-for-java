@@ -19,7 +19,10 @@ public final class VirtualMachineRunCommandsListByVirtualMachineSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listRunCommandsInAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineRunCommands()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineRunCommands()
             .listByVirtualMachine("myResourceGroup", "myVM", null, com.azure.core.util.Context.NONE);
     }
 }

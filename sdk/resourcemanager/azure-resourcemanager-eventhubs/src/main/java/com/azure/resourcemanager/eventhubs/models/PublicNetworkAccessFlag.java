@@ -6,15 +6,37 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
-/** Defines values for PublicNetworkAccessFlag. */
+/**
+ * This determines if traffic is allowed over public network. By default it is enabled. If value is SecuredByPerimeter
+ * then Inbound and Outbound communication is controlled by the network security perimeter and profile's access rules.
+ */
 public final class PublicNetworkAccessFlag extends ExpandableStringEnum<PublicNetworkAccessFlag> {
-    /** Static value Enabled for PublicNetworkAccessFlag. */
+    /**
+     * Static value Enabled for PublicNetworkAccessFlag.
+     */
     public static final PublicNetworkAccessFlag ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for PublicNetworkAccessFlag. */
+    /**
+     * Static value Disabled for PublicNetworkAccessFlag.
+     */
     public static final PublicNetworkAccessFlag DISABLED = fromString("Disabled");
+
+    /**
+     * Static value SecuredByPerimeter for PublicNetworkAccessFlag.
+     */
+    public static final PublicNetworkAccessFlag SECURED_BY_PERIMETER = fromString("SecuredByPerimeter");
+
+    /**
+     * Creates a new instance of PublicNetworkAccessFlag value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicNetworkAccessFlag() {
+    }
 
     /**
      * Creates or finds a PublicNetworkAccessFlag from its string representation.
@@ -27,7 +49,11 @@ public final class PublicNetworkAccessFlag extends ExpandableStringEnum<PublicNe
         return fromString(name, PublicNetworkAccessFlag.class);
     }
 
-    /** @return known PublicNetworkAccessFlag values. */
+    /**
+     * Gets known PublicNetworkAccessFlag values.
+     *
+     * @return known PublicNetworkAccessFlag values.
+     */
     public static Collection<PublicNetworkAccessFlag> values() {
         return values(PublicNetworkAccessFlag.class);
     }

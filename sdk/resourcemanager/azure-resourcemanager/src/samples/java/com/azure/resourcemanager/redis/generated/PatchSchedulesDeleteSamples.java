@@ -6,19 +6,22 @@ package com.azure.resourcemanager.redis.generated;
 
 import com.azure.resourcemanager.redis.models.DefaultName;
 
-/** Samples for PatchSchedules Delete. */
+/**
+ * Samples for PatchSchedules Delete.
+ */
 public final class PatchSchedulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCachePatchSchedulesDelete.json
+     * x-ms-original-file:
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/RedisCachePatchSchedulesDelete.
+     * json
      */
     /**
      * Sample code: RedisCachePatchSchedulesDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCachePatchSchedulesDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getPatchSchedules()

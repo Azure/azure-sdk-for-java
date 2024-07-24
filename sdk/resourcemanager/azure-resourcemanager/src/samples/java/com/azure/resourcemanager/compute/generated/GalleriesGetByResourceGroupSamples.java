@@ -22,8 +22,12 @@ public final class GalleriesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getACommunityGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().getByResourceGroupWithResponse(
-            "myResourceGroup", "myGalleryName", null, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -37,8 +41,12 @@ public final class GalleriesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGalleryWithSelectPermissions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().getByResourceGroupWithResponse(
-            "myResourceGroup", "myGalleryName", SelectPermissions.PERMISSIONS, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", SelectPermissions.PERMISSIONS, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -52,8 +60,12 @@ public final class GalleriesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGallery(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().getByResourceGroupWithResponse(
-            "myResourceGroup", "myGalleryName", null, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -67,8 +79,11 @@ public final class GalleriesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAGalleryWithExpandSharingProfileGroups(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getGalleries().getByResourceGroupWithResponse(
-            "myResourceGroup", "myGalleryName", null, GalleryExpandParams.SHARING_PROFILE_GROUPS,
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null,
+                GalleryExpandParams.SHARING_PROFILE_GROUPS, com.azure.core.util.Context.NONE);
     }
 }
