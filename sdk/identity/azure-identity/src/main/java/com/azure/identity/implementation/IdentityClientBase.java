@@ -473,7 +473,7 @@ public abstract class IdentityClientBase {
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        if ("DEFAULT_TO_IMDS".equals(ManagedIdentityApplication.getManagedIdentitySource())) {
+        if ("DEFAULT_TO_IMDS".equals(String.valueOf(ManagedIdentityApplication.getManagedIdentitySource()))) {
             options.setUseImdsRetryStrategy();
         }
 
