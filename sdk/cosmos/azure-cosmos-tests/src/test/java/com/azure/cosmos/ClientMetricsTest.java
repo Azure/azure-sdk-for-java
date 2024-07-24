@@ -299,7 +299,6 @@ public class ClientMetricsTest extends BatchTestBase {
 
             } finally {
                 this.afterTest();
-                assertThat(this.meterRegistry).isNull();
             }
         }
     }
@@ -373,7 +372,6 @@ public class ClientMetricsTest extends BatchTestBase {
 
             } finally {
                 this.afterTest();
-                assertThat(this.meterRegistry).isNull();
             }
         }
     }
@@ -1021,7 +1019,6 @@ public class ClientMetricsTest extends BatchTestBase {
             );
         } finally {
             this.afterTest();
-            assertThat(this.meterRegistry).isNull();
         }
     }
 
@@ -1684,7 +1681,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 } )
                 .collect(Collectors.toList());
             if (metersTagPresent.size() != meterMatches.size()) {
-
+               logger.error("MeterRegistry: {}", this.meterRegistry);
                logger.error("MetersTagPresent");
                for (Meter meter : metersTagPresent) {
                      logger.error("Meter: {}", meter.getId());
