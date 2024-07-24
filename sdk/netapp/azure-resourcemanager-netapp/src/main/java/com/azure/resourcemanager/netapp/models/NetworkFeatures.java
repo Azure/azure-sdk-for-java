@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -49,7 +48,6 @@ public final class NetworkFeatures extends ExpandableStringEnum<NetworkFeatures>
      * @param name a name to look for.
      * @return the corresponding NetworkFeatures.
      */
-    @JsonCreator
     public static NetworkFeatures fromString(String name) {
         return fromString(name, NetworkFeatures.class);
     }

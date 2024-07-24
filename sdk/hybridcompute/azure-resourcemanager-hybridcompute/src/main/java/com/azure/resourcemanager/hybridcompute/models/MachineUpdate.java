@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -17,19 +20,16 @@ public final class MachineUpdate extends ResourceUpdate {
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
      */
-    @JsonProperty(value = "kind")
     private ArcKindEnum kind;
 
     /*
      * Hybrid Compute Machine properties
      */
-    @JsonProperty(value = "properties")
     private MachineUpdateProperties innerProperties;
 
     /**
@@ -254,5 +254,51 @@ public final class MachineUpdate extends ResourceUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineUpdate.
+     */
+    public static MachineUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineUpdate deserializedMachineUpdate = new MachineUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMachineUpdate.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMachineUpdate.identity = Identity.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedMachineUpdate.kind = ArcKindEnum.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMachineUpdate.innerProperties = MachineUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineUpdate;
+        });
     }
 }

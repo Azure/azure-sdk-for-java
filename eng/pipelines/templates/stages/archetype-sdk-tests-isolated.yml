@@ -44,6 +44,12 @@ parameters:
 - name: Location
   type: string
   default: ''
+- name: PreGenerationSteps
+  type: stepList
+  default: []
+- name: BuildOptions
+  type: string
+  default: ''
 - name: ServiceDirectory
   type: string
   default: not-specified
@@ -117,6 +123,9 @@ parameters:
 - name: UseFederatedAuth
   type: boolean
   default: false
+- name: AdditionalSparseCheckoutPaths
+  type: object
+  default: []
 
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
@@ -138,10 +147,12 @@ stages:
         jobs:
         - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
           parameters:
+            PreGenerationSteps: ${{ parameters.PreGenerationSteps }}
             SparseCheckoutPaths:
               - "sdk/${{ parameters.ServiceDirectory }}/**/*.json"
               - '!sdk/**/test-recordings/*'
               - '!sdk/**/session-records/*'
+              - ${{ parameters.AdditionalSparseCheckoutPaths }}
             JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
             AdditionalParameters:
               PreSteps:
@@ -150,6 +161,7 @@ stages:
               PostSteps:
                 - ${{ parameters.PlatformPostSteps }}
                 - ${{ parameters.PostSteps }}
+              BuildOptions: ${{ parameters.BuildOptions }}
               EnvVars: ${{ parameters.EnvVars }}
               MaxParallel: ${{ parameters.MaxParallel }}
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}

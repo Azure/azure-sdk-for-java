@@ -14,24 +14,24 @@ public final class DataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataDisk model = BinaryData.fromString(
-            "{\"caching\":\"ReadOnly\",\"diskSizeGiB\":84876236,\"storageAccountType\":\"Premium_ZRS\",\"driveLetter\":\"wzwbnguitn\"}")
+            "{\"caching\":\"ReadWrite\",\"diskSizeGiB\":1555370196,\"storageAccountType\":\"StandardSSD_ZRS\",\"driveLetter\":\"uizga\"}")
             .toObject(DataDisk.class);
-        Assertions.assertEquals(CachingType.READ_ONLY, model.caching());
-        Assertions.assertEquals(84876236, model.diskSizeGiB());
-        Assertions.assertEquals(StorageAccountType.PREMIUM_ZRS, model.storageAccountType());
-        Assertions.assertEquals("wzwbnguitn", model.driveLetter());
+        Assertions.assertEquals(CachingType.READ_WRITE, model.caching());
+        Assertions.assertEquals(1555370196, model.diskSizeGiB());
+        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_ZRS, model.storageAccountType());
+        Assertions.assertEquals("uizga", model.driveLetter());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataDisk model = new DataDisk().withCaching(CachingType.READ_ONLY)
-            .withDiskSizeGiB(84876236)
-            .withStorageAccountType(StorageAccountType.PREMIUM_ZRS)
-            .withDriveLetter("wzwbnguitn");
+        DataDisk model = new DataDisk().withCaching(CachingType.READ_WRITE)
+            .withDiskSizeGiB(1555370196)
+            .withStorageAccountType(StorageAccountType.STANDARD_SSD_ZRS)
+            .withDriveLetter("uizga");
         model = BinaryData.fromObject(model).toObject(DataDisk.class);
-        Assertions.assertEquals(CachingType.READ_ONLY, model.caching());
-        Assertions.assertEquals(84876236, model.diskSizeGiB());
-        Assertions.assertEquals(StorageAccountType.PREMIUM_ZRS, model.storageAccountType());
-        Assertions.assertEquals("wzwbnguitn", model.driveLetter());
+        Assertions.assertEquals(CachingType.READ_WRITE, model.caching());
+        Assertions.assertEquals(1555370196, model.diskSizeGiB());
+        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_ZRS, model.storageAccountType());
+        Assertions.assertEquals("uizga", model.driveLetter());
     }
 }

@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupPatch model
-            = BinaryData.fromString("{\"properties\":{\"label\":\"orbteoy\"}}").toObject(BackupPatch.class);
-        Assertions.assertEquals("orbteoy", model.label());
+        BackupPatch model = BinaryData.fromString("{\"properties\":{\"label\":\"jcvb\"}}").toObject(BackupPatch.class);
+        Assertions.assertEquals("jcvb", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPatch model = new BackupPatch().withLabel("orbteoy");
+        BackupPatch model = new BackupPatch().withLabel("jcvb");
         model = BinaryData.fromObject(model).toObject(BackupPatch.class);
-        Assertions.assertEquals("orbteoy", model.label());
+        Assertions.assertEquals("jcvb", model.label());
     }
 }

@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public final class DaprSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DaprSubscriptions_CreateOrUpdate_RouteRulesAndMetadata.json
      */
     /**
@@ -26,19 +26,22 @@ public final class DaprSubscriptionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateDaprSubscriptionWithRouteRulesAndMetadata(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.daprSubscriptions().define("mysubscription")
-            .withExistingManagedEnvironment("examplerg", "myenvironment").withPubsubName("mypubsubcomponent")
+        manager.daprSubscriptions()
+            .define("mysubscription")
+            .withExistingManagedEnvironment("examplerg", "myenvironment")
+            .withPubsubName("mypubsubcomponent")
             .withTopic("inventory")
             .withRoutes(new DaprSubscriptionRoutes()
                 .withRules(Arrays.asList(
                     new DaprSubscriptionRouteRule().withMatch("event.type == 'widget'").withPath("/widgets"),
                     new DaprSubscriptionRouteRule().withMatch("event.type == 'gadget'").withPath("/gadgets")))
                 .withDefaultProperty("/products"))
-            .withMetadata(mapOf("foo", "bar", "hello", "world")).create();
+            .withMetadata(mapOf("foo", "bar", "hello", "world"))
+            .create();
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DaprSubscriptions_CreateOrUpdate_DefaultRoute.json
      */
     /**
@@ -48,13 +51,17 @@ public final class DaprSubscriptionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateDaprSubscriptionWithDefaultRouteOnly(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.daprSubscriptions().define("mysubscription")
-            .withExistingManagedEnvironment("examplerg", "myenvironment").withPubsubName("mypubsubcomponent")
-            .withTopic("inventory").withRoutes(new DaprSubscriptionRoutes().withDefaultProperty("/products")).create();
+        manager.daprSubscriptions()
+            .define("mysubscription")
+            .withExistingManagedEnvironment("examplerg", "myenvironment")
+            .withPubsubName("mypubsubcomponent")
+            .withTopic("inventory")
+            .withRoutes(new DaprSubscriptionRoutes().withDefaultProperty("/products"))
+            .create();
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DaprSubscriptions_CreateOrUpdate_BulkSubscribeAndScopes.json
      */
     /**
@@ -64,11 +71,15 @@ public final class DaprSubscriptionsCreateOrUpdateSamples {
      */
     public static void createOrUpdateDaprSubscriptionWithBulkSubscribeConfigurationAndScopes(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.daprSubscriptions().define("mysubscription")
-            .withExistingManagedEnvironment("examplerg", "myenvironment").withPubsubName("mypubsubcomponent")
-            .withTopic("inventory").withRoutes(new DaprSubscriptionRoutes().withDefaultProperty("/products"))
+        manager.daprSubscriptions()
+            .define("mysubscription")
+            .withExistingManagedEnvironment("examplerg", "myenvironment")
+            .withPubsubName("mypubsubcomponent")
+            .withTopic("inventory")
+            .withRoutes(new DaprSubscriptionRoutes().withDefaultProperty("/products"))
             .withScopes(Arrays.asList("warehouseapp", "customersupportapp"))
-            .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(true).withMaxMessagesCount(123)
+            .withBulkSubscribe(new DaprSubscriptionBulkSubscribeOptions().withEnabled(true)
+                .withMaxMessagesCount(123)
                 .withMaxAwaitDurationMs(500))
             .create();
     }

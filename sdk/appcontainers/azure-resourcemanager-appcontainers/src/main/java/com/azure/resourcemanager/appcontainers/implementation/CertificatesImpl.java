@@ -61,8 +61,9 @@ public final class CertificatesImpl implements Certificates {
 
     public Response<Certificate> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
         String certificateName, CertificateInner certificateEnvelope, Context context) {
-        Response<CertificateInner> inner = this.serviceClient().createOrUpdateWithResponse(resourceGroupName,
-            environmentName, certificateName, certificateEnvelope, context);
+        Response<CertificateInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, certificateName, certificateEnvelope,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));
@@ -92,8 +93,8 @@ public final class CertificatesImpl implements Certificates {
 
     public Response<Certificate> updateWithResponse(String resourceGroupName, String environmentName,
         String certificateName, CertificatePatch certificateEnvelope, Context context) {
-        Response<CertificateInner> inner = this.serviceClient().updateWithResponse(resourceGroupName, environmentName,
-            certificateName, certificateEnvelope, context);
+        Response<CertificateInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, environmentName, certificateName, certificateEnvelope, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));

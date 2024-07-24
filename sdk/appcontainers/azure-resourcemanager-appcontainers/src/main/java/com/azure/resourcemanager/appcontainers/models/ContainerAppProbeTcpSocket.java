@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported.
  */
 @Fluent
-public final class ContainerAppProbeTcpSocket {
+public final class ContainerAppProbeTcpSocket implements JsonSerializable<ContainerAppProbeTcpSocket> {
     /*
      * Optional: Host name to connect to, defaults to the pod IP.
      */
-    @JsonProperty(value = "host")
     private String host;
 
     /*
      * Number or name of the port to access on the container. Number must be in the range 1 to 65535. Name must be an
      * IANA_SVC_NAME.
      */
-    @JsonProperty(value = "port", required = true)
     private int port;
 
     /**
@@ -79,5 +81,45 @@ public final class ContainerAppProbeTcpSocket {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("port", this.port);
+        jsonWriter.writeStringField("host", this.host);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerAppProbeTcpSocket from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerAppProbeTcpSocket if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerAppProbeTcpSocket.
+     */
+    public static ContainerAppProbeTcpSocket fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerAppProbeTcpSocket deserializedContainerAppProbeTcpSocket = new ContainerAppProbeTcpSocket();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedContainerAppProbeTcpSocket.port = reader.getInt();
+                } else if ("host".equals(fieldName)) {
+                    deserializedContainerAppProbeTcpSocket.host = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerAppProbeTcpSocket;
+        });
     }
 }

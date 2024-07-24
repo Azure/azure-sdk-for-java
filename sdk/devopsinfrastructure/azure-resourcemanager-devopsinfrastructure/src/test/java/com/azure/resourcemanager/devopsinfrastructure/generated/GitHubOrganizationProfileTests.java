@@ -14,23 +14,19 @@ public final class GitHubOrganizationProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubOrganizationProfile model = BinaryData.fromString(
-            "{\"kind\":\"GitHub\",\"organizations\":[{\"url\":\"dmailzydehojw\",\"repositories\":[\"uxinpmqnjaq\",\"ixjsprozvcputeg\",\"vwmf\"]},{\"url\":\"atscmd\",\"repositories\":[\"hulsuuvmkjozkrwf\",\"dio\",\"jpslwejd\"]},{\"url\":\"vwryoqpso\",\"repositories\":[\"tazak\",\"j\",\"ahbc\",\"yffdfdos\"]}]}")
+            "{\"kind\":\"GitHub\",\"organizations\":[{\"url\":\"yoqpsoaccta\",\"repositories\":[\"ljlahbcryf\",\"dfdosygexp\"]}]}")
             .toObject(GitHubOrganizationProfile.class);
-        Assertions.assertEquals("dmailzydehojw", model.organizations().get(0).url());
-        Assertions.assertEquals("uxinpmqnjaq", model.organizations().get(0).repositories().get(0));
+        Assertions.assertEquals("yoqpsoaccta", model.organizations().get(0).url());
+        Assertions.assertEquals("ljlahbcryf", model.organizations().get(0).repositories().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitHubOrganizationProfile model = new GitHubOrganizationProfile().withOrganizations(Arrays.asList(
-            new GitHubOrganization().withUrl("dmailzydehojw")
-                .withRepositories(Arrays.asList("uxinpmqnjaq", "ixjsprozvcputeg", "vwmf")),
-            new GitHubOrganization().withUrl("atscmd")
-                .withRepositories(Arrays.asList("hulsuuvmkjozkrwf", "dio", "jpslwejd")),
-            new GitHubOrganization().withUrl("vwryoqpso")
-                .withRepositories(Arrays.asList("tazak", "j", "ahbc", "yffdfdos"))));
+        GitHubOrganizationProfile model = new GitHubOrganizationProfile()
+            .withOrganizations(Arrays.asList(new GitHubOrganization().withUrl("yoqpsoaccta")
+                .withRepositories(Arrays.asList("ljlahbcryf", "dfdosygexp"))));
         model = BinaryData.fromObject(model).toObject(GitHubOrganizationProfile.class);
-        Assertions.assertEquals("dmailzydehojw", model.organizations().get(0).url());
-        Assertions.assertEquals("uxinpmqnjaq", model.organizations().get(0).repositories().get(0));
+        Assertions.assertEquals("yoqpsoaccta", model.organizations().get(0).url());
+        Assertions.assertEquals("ljlahbcryf", model.organizations().get(0).repositories().get(0));
     }
 }

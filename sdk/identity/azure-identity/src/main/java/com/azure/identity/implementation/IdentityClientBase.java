@@ -17,6 +17,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -472,6 +473,10 @@ public abstract class IdentityClientBase {
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
+        if ("DEFAULT_TO_IMDS".equals(String.valueOf(ManagedIdentityApplication.getManagedIdentitySource()))) {
+            options.setUseImdsRetryStrategy();
+        }
+
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
             miBuilder.httpClient(httpPipelineAdapter);
@@ -890,7 +895,11 @@ public abstract class IdentityClientBase {
         policies.addAll(options.getPerCallPolicies());
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         // Add retry policy.
-        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(options.getRetryPolicy(), options.getRetryOptions()));
+        RetryPolicy retryPolicy = options.getRetryPolicy();
+        if (retryPolicy == null && options.getUseImdsRetryStrategy()) {
+            retryPolicy = new RetryPolicy(new ImdsRetryStrategy());
+        }
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, options.getRetryOptions()));
         policies.addAll(options.getPerRetryPolicies());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -907,6 +916,7 @@ public abstract class IdentityClientBase {
     }
 
     HttpPipeline getPipeline() {
+
         // if we've already initialized, return the pipeline
         if (this.httpPipeline != null) {
             return httpPipeline;
