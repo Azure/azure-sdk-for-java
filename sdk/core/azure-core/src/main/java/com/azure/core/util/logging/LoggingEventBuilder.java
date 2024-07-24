@@ -302,7 +302,6 @@ public final class LoggingEventBuilder {
             jsonWriter.writeStartObject().writeStringField("az.sdk.message", message);
 
             if (throwable != null) {
-                // todo (alzimmer): Is adding '"exception": null' useful?
                 String exceptionMessage = throwable.getMessage();
                 if (exceptionMessage != null) {
                     jsonWriter.writeStringField("exception", exceptionMessage);
