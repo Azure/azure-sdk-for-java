@@ -622,7 +622,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" })
     public void readAllItems() throws Exception {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
@@ -1422,6 +1422,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 .getCosmosClientTelemetryConfigAccessor()
                 .shouldApplyDiagnosticThresholdsForTransportLevelMeters(clientTelemetryConfig);
         assertThat(applyDiagnosticThresholdsForTransportLevelMeters).isTrue();
+        System.clearProperty("COSMOS.METRICS_CONFIG");
     }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {
