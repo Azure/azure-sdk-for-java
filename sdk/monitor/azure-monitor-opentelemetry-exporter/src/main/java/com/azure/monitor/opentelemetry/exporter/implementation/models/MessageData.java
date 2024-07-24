@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
+
 /**
  * Instances of Message represent printf-like trace statements that are text-searched. Log4Net, NLog and other
  * text-based log file entries are translated into instances of this type. The message does not have measurements.
@@ -142,12 +144,24 @@ public final class MessageData extends MonitorDomain {
         jsonWriter.writeIntField("ver", getVersion());
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("severityLevel", this.severityLevel == null ? null : this.severityLevel.toString());
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+        writeMap(this.properties, "properties", jsonWriter, (element) -> {
             if (element != null) {
-                writer.writeString(element);
+                try {
+                    jsonWriter.writeString(element);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        jsonWriter.writeMapField("measurements", this.measurements, (writer, element) -> writer.writeDouble(element));
+        writeMap(this.measurements, "measurements", jsonWriter, (element) -> {
+            if (element != null) {
+                try {
+                    jsonWriter.writeDouble(element);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

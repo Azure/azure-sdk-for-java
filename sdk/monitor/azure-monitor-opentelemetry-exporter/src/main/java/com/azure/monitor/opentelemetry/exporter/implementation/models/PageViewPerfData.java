@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
+
 /**
  * An instance of PageViewPerf represents: a page view with no performance data, a page view with performance data, or
  * just the performance data of an earlier page request.
@@ -334,12 +336,24 @@ public final class PageViewPerfData extends MonitorDomain {
         jsonWriter.writeStringField("sentRequest", this.sentRequest);
         jsonWriter.writeStringField("receivedResponse", this.receivedResponse);
         jsonWriter.writeStringField("domProcessing", this.domProcessing);
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+        writeMap(this.properties, "properties", jsonWriter, (element) -> {
             if (element != null) {
-                writer.writeString(element);
+                try {
+                    jsonWriter.writeString(element);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
-        jsonWriter.writeMapField("measurements", this.measurements, (writer, element) -> writer.writeDouble(element));
+        writeMap(this.measurements, "measurements", jsonWriter, (element) -> {
+            if (element != null) {
+                try {
+                    jsonWriter.writeDouble(element);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

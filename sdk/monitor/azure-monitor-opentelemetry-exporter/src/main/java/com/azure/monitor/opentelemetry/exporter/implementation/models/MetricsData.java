@@ -13,6 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
+
 /**
  * An instance of the Metric item is a list of measurements (single data points) and/or aggregations.
  */
@@ -93,9 +95,13 @@ public final class MetricsData extends MonitorDomain {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("ver", getVersion());
         jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> {
+        writeMap(this.properties, "properties", jsonWriter, (element) -> {
             if (element != null) {
-                writer.writeString(element);
+                try {
+                    jsonWriter.writeString(element);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         if (getAdditionalProperties() != null) {

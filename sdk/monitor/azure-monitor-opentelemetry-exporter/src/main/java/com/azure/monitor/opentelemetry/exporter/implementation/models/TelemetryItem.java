@@ -19,6 +19,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+
+import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
 
 /**
  * System variables for a telemetry item.
@@ -320,9 +323,13 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
         jsonWriter.writeNumberField("sampleRate", this.sampleRate);
         jsonWriter.writeStringField("seq", this.sequence);
         jsonWriter.writeStringField("iKey", this.instrumentationKey);
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> {
+        writeMap(this.tags, "tags", jsonWriter, (element) -> {
             if (element != null) {
-                writer.writeString(element);
+                try {
+                    jsonWriter.writeString(element);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         jsonWriter.writeJsonField("data", this.data);
