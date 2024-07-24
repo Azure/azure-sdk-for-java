@@ -69,8 +69,6 @@ class SpringMonitorTest {
         }
     }
 
-    // TODO - this test is disabled because it requires spring starter to be migrated to azure-json
-    @Disabled
     @Test
     public void shouldMonitor() throws InterruptedException, MalformedURLException {
 
