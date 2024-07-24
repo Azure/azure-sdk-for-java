@@ -37,14 +37,9 @@ public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions
         super(options);
 
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
-
-        String connectionString = options.getPageBlobConnectionString();
         String endpoint = options.getPageBlobEndpointString();
 
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-
         BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
-            //.connectionString(connectionString)
             .credential(defaultAzureCredential)
             .endpoint(endpoint)
             .httpLogOptions(getLogOptions());
