@@ -23,7 +23,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spotbugs.skip>true</spotbugs.skip>
     <codesnippet.skip>true</codesnippet.skip>
-    <opentelemetry.version>1.32.0</opentelemetry.version> <!-- Only required with Spring Boot 3 to override the OTel version used in the Spring Boot BOM-->
   </properties>
 
   <dependencies>

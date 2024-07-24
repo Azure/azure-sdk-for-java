@@ -12,6 +12,7 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
@@ -113,6 +114,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createPublicAccess(PublicAccessType publicAccess) {
         dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
@@ -239,6 +241,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void createIfNotExistsPublicAccess(PublicAccessType publicAccess) {
         dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
 
@@ -2079,6 +2082,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     @ParameterizedTest
     @MethodSource("publicAccessSupplier")
+    @PlaybackOnly
     public void setAccessPolicy(PublicAccessType access) {
         Response<?> response = dataLakeFileSystemClient.setAccessPolicyWithResponse(access, null, null, null, null);
 
@@ -2086,6 +2090,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertEquals(access, dataLakeFileSystemClient.getProperties().getDataLakePublicAccess());
     }
 
+    @PlaybackOnly
     @Test
     public void setAccessPolicyMinAccess() {
         dataLakeFileSystemClient.setAccessPolicy(PublicAccessType.CONTAINER, null);
@@ -2184,6 +2189,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void getAccessPolicy() {
         DataLakeSignedIdentifier identifier = new DataLakeSignedIdentifier()
             .setId("0000")

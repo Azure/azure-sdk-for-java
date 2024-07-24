@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeter;
 import com.azure.resourcemanager.hybridcompute.models.NetworkSecurityPerimeterProfile;
 import com.azure.resourcemanager.hybridcompute.models.ProvisioningIssue;
 import com.azure.resourcemanager.hybridcompute.models.ResourceAssociation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties that define a Network Security Perimeter resource.
  */
 @Fluent
-public final class NetworkSecurityPerimeterConfigurationProperties {
+public final class NetworkSecurityPerimeterConfigurationProperties
+    implements JsonSerializable<NetworkSecurityPerimeterConfigurationProperties> {
     /*
-     * Current state of this NetworkSecurityPerimeter: whether or not is has been provisioned within the resource group it is defined. Users cannot change this value but are able to read from it. Values will include Provisioning ,Succeeded, Canceled and Failed.
+     * Current state of this NetworkSecurityPerimeter: whether or not is has been provisioned within the resource group
+     * it is defined. Users cannot change this value but are able to read from it. Values will include Provisioning
+     * ,Succeeded, Canceled and Failed.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Provisioning issues.
      */
-    @JsonProperty(value = "provisioningIssues", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProvisioningIssue> provisioningIssues;
 
     /*
      * The Network Security Perimeter associated with this configuration.
      */
-    @JsonProperty(value = "networkSecurityPerimeter")
     private NetworkSecurityPerimeter networkSecurityPerimeter;
 
     /*
      * The Resource Association.
      */
-    @JsonProperty(value = "resourceAssociation")
     private ResourceAssociation resourceAssociation;
 
     /*
      * Network Security Perimeter profile
      */
-    @JsonProperty(value = "profile")
     private NetworkSecurityPerimeterProfile profile;
 
     /**
@@ -153,5 +155,57 @@ public final class NetworkSecurityPerimeterConfigurationProperties {
         if (profile() != null) {
             profile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("networkSecurityPerimeter", this.networkSecurityPerimeter);
+        jsonWriter.writeJsonField("resourceAssociation", this.resourceAssociation);
+        jsonWriter.writeJsonField("profile", this.profile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSecurityPerimeterConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSecurityPerimeterConfigurationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSecurityPerimeterConfigurationProperties.
+     */
+    public static NetworkSecurityPerimeterConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSecurityPerimeterConfigurationProperties deserializedNetworkSecurityPerimeterConfigurationProperties
+                = new NetworkSecurityPerimeterConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.provisioningState = reader.getString();
+                } else if ("provisioningIssues".equals(fieldName)) {
+                    List<ProvisioningIssue> provisioningIssues
+                        = reader.readArray(reader1 -> ProvisioningIssue.fromJson(reader1));
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.provisioningIssues = provisioningIssues;
+                } else if ("networkSecurityPerimeter".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.networkSecurityPerimeter
+                        = NetworkSecurityPerimeter.fromJson(reader);
+                } else if ("resourceAssociation".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.resourceAssociation
+                        = ResourceAssociation.fromJson(reader);
+                } else if ("profile".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationProperties.profile
+                        = NetworkSecurityPerimeterProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSecurityPerimeterConfigurationProperties;
+        });
     }
 }

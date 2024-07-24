@@ -5,10 +5,16 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatus;
 import com.azure.resourcemanager.hybridcompute.models.ProductFeature;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,41 +22,46 @@ import java.util.List;
  * Describes the properties of a Product License Profile ARM model.
  */
 @Fluent
-public final class LicenseProfileArmProductProfileProperties {
+public final class LicenseProfileArmProductProfileProperties
+    implements JsonSerializable<LicenseProfileArmProductProfileProperties> {
     /*
      * Indicates the subscription status of the product.
      */
-    @JsonProperty(value = "subscriptionStatus")
     private LicenseProfileSubscriptionStatus subscriptionStatus;
 
     /*
      * Indicates the product type of the license.
      */
-    @JsonProperty(value = "productType")
     private LicenseProfileProductType productType;
-
-    /*
-     * The timestamp in UTC when the billing starts.
-     */
-    @JsonProperty(value = "billingStartDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime billingStartDate;
 
     /*
      * The timestamp in UTC when the user enrolls the feature.
      */
-    @JsonProperty(value = "enrollmentDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime enrollmentDate;
+
+    /*
+     * The timestamp in UTC when the billing starts.
+     */
+    private OffsetDateTime billingStartDate;
 
     /*
      * The timestamp in UTC when the user disenrolled the feature.
      */
-    @JsonProperty(value = "disenrollmentDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime disenrollmentDate;
+
+    /*
+     * The timestamp in UTC when the billing ends.
+     */
+    private OffsetDateTime billingEndDate;
+
+    /*
+     * The errors that were encountered during the feature enrollment or disenrollment.
+     */
+    private ManagementError error;
 
     /*
      * The list of product features.
      */
-    @JsonProperty(value = "productFeatures")
     private List<ProductFeature> productFeatures;
 
     /**
@@ -101,15 +112,6 @@ public final class LicenseProfileArmProductProfileProperties {
     }
 
     /**
-     * Get the billingStartDate property: The timestamp in UTC when the billing starts.
-     * 
-     * @return the billingStartDate value.
-     */
-    public OffsetDateTime billingStartDate() {
-        return this.billingStartDate;
-    }
-
-    /**
      * Get the enrollmentDate property: The timestamp in UTC when the user enrolls the feature.
      * 
      * @return the enrollmentDate value.
@@ -119,12 +121,39 @@ public final class LicenseProfileArmProductProfileProperties {
     }
 
     /**
+     * Get the billingStartDate property: The timestamp in UTC when the billing starts.
+     * 
+     * @return the billingStartDate value.
+     */
+    public OffsetDateTime billingStartDate() {
+        return this.billingStartDate;
+    }
+
+    /**
      * Get the disenrollmentDate property: The timestamp in UTC when the user disenrolled the feature.
      * 
      * @return the disenrollmentDate value.
      */
     public OffsetDateTime disenrollmentDate() {
         return this.disenrollmentDate;
+    }
+
+    /**
+     * Get the billingEndDate property: The timestamp in UTC when the billing ends.
+     * 
+     * @return the billingEndDate value.
+     */
+    public OffsetDateTime billingEndDate() {
+        return this.billingEndDate;
+    }
+
+    /**
+     * Get the error property: The errors that were encountered during the feature enrollment or disenrollment.
+     * 
+     * @return the error value.
+     */
+    public ManagementError error() {
+        return this.error;
     }
 
     /**
@@ -156,5 +185,68 @@ public final class LicenseProfileArmProductProfileProperties {
         if (productFeatures() != null) {
             productFeatures().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subscriptionStatus",
+            this.subscriptionStatus == null ? null : this.subscriptionStatus.toString());
+        jsonWriter.writeStringField("productType", this.productType == null ? null : this.productType.toString());
+        jsonWriter.writeArrayField("productFeatures", this.productFeatures,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LicenseProfileArmProductProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LicenseProfileArmProductProfileProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LicenseProfileArmProductProfileProperties.
+     */
+    public static LicenseProfileArmProductProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LicenseProfileArmProductProfileProperties deserializedLicenseProfileArmProductProfileProperties
+                = new LicenseProfileArmProductProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionStatus".equals(fieldName)) {
+                    deserializedLicenseProfileArmProductProfileProperties.subscriptionStatus
+                        = LicenseProfileSubscriptionStatus.fromString(reader.getString());
+                } else if ("productType".equals(fieldName)) {
+                    deserializedLicenseProfileArmProductProfileProperties.productType
+                        = LicenseProfileProductType.fromString(reader.getString());
+                } else if ("enrollmentDate".equals(fieldName)) {
+                    deserializedLicenseProfileArmProductProfileProperties.enrollmentDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("billingStartDate".equals(fieldName)) {
+                    deserializedLicenseProfileArmProductProfileProperties.billingStartDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("disenrollmentDate".equals(fieldName)) {
+                    deserializedLicenseProfileArmProductProfileProperties.disenrollmentDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("billingEndDate".equals(fieldName)) {
+                    deserializedLicenseProfileArmProductProfileProperties.billingEndDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedLicenseProfileArmProductProfileProperties.error = ManagementError.fromJson(reader);
+                } else if ("productFeatures".equals(fieldName)) {
+                    List<ProductFeature> productFeatures
+                        = reader.readArray(reader1 -> ProductFeature.fromJson(reader1));
+                    deserializedLicenseProfileArmProductProfileProperties.productFeatures = productFeatures;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLicenseProfileArmProductProfileProperties;
+        });
     }
 }

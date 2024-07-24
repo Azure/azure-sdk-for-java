@@ -5,3 +5,4 @@ extends:
   parameters:
       PackageName: azure-communication-jobrouter
       SafeName: azurecommunicationjobrouter
+      UseFederatedAuth: true

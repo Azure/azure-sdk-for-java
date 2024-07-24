@@ -10,8 +10,7 @@ import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
 public final class CloudMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudMetadata model
-            = BinaryData.fromString("{\"provider\":\"chcbonqvpkvlrxnj\"}").toObject(CloudMetadata.class);
+        CloudMetadata model = BinaryData.fromString("{\"provider\":\"kvlrxnj\"}").toObject(CloudMetadata.class);
     }
 
     @org.junit.jupiter.api.Test

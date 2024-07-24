@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.redis.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** REST API operation. */
+/**
+ * REST API operation.
+ */
 @Fluent
 public final class OperationInner {
     /*
@@ -23,13 +25,15 @@ public final class OperationInner {
     @JsonProperty(value = "display")
     private OperationDisplay display;
 
-    /** Creates an instance of OperationInner class. */
+    /**
+     * Creates an instance of OperationInner class.
+     */
     public OperationInner() {
     }
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class OperationInner {
 
     /**
      * Set the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
@@ -49,7 +53,7 @@ public final class OperationInner {
 
     /**
      * Get the display property: The object that describes the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -58,7 +62,7 @@ public final class OperationInner {
 
     /**
      * Set the display property: The object that describes the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
@@ -69,7 +73,7 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
