@@ -116,7 +116,13 @@ public class SessionTokenHelper {
         }
 
         if (highestSessionToken == null) {
-            logger.warn("The session token : {} for partition key range id : {} could not be evaluated, the operation will fallback to eventual consistency.", globalSessionToken, partitionKeyRangeId);
+            if (StringUtils.isNotEmpty(globalSessionToken)) {
+                logger.warn("The session token : {} for partition key range id : {} and collection rid : {} could not be evaluated, " +
+                        "the operation will fallback to eventual consistency.",
+                    globalSessionToken,
+                    partitionKeyRangeId,
+                    request.requestContext.resolvedCollectionRid);
+            }
         }
 
         return highestSessionToken;
