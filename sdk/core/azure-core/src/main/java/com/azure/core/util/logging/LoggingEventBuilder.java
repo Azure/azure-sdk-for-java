@@ -54,7 +54,7 @@ public final class LoggingEventBuilder {
     private final Logger logger;
     private final LogLevel level;
     private List<ContextKeyValuePair> context;
-    private final byte[] globalContextCached;
+    private final Map<String, Object> globalContext;
     private final boolean hasGlobalContext;
 
     // flag for no-op instance instead of inheritance
@@ -64,21 +64,21 @@ public final class LoggingEventBuilder {
      * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
      * If level is disabled, returns no-op instance.
      */
-    static LoggingEventBuilder create(Logger logger, LogLevel level, byte[] globalContextSerialized,
+    static LoggingEventBuilder create(Logger logger, LogLevel level, Map<String, Object> globalContext,
         boolean canLogAtLevel) {
         if (canLogAtLevel) {
-            return new LoggingEventBuilder(logger, level, globalContextSerialized, true);
+            return new LoggingEventBuilder(logger, level, globalContext, true);
         }
 
         return NOOP;
     }
 
-    private LoggingEventBuilder(Logger logger, LogLevel level, byte[] globalContextSerialized, boolean isEnabled) {
+    private LoggingEventBuilder(Logger logger, LogLevel level, Map<String, Object> globalContext, boolean isEnabled) {
         this.logger = logger;
         this.level = level;
         this.isEnabled = isEnabled;
-        this.globalContextCached = globalContextSerialized == null ? new byte[0] : globalContextSerialized;
-        this.hasGlobalContext = this.globalContextCached.length > 0;
+        this.globalContext = globalContext;
+        this.hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContext);
     }
 
     /**
@@ -312,9 +312,9 @@ public final class LoggingEventBuilder {
             }
 
             if (hasGlobalContext) {
-                jsonWriter.flush();
-                outputStream.write(',');
-                outputStream.write(globalContextCached);
+                for (Map.Entry<String, Object> entry : globalContext.entrySet()) {
+                    jsonWriter.writeUntypedField(entry.getKey(), entry.getValue());
+                }
             }
 
             if (context != null) {
@@ -392,31 +392,6 @@ public final class LoggingEventBuilder {
             default:
                 // Don't do anything, this state shouldn't be possible.
                 break;
-        }
-    }
-
-    /**
-     * Serializes passed map to string containing valid JSON fragment:
-     * e.g. "k1":"v1","k2":"v2", properly escaped and without trailing comma.
-     * <p>
-     * For complex object serialization, it calls {@code toString()} guarded with null check.
-     *
-     * @param context to serialize.
-     * @return Serialized JSON fragment or an empty string.
-     * @throws UncheckedIOException If an I/O error occurs.
-     */
-    static byte[] writeJsonFragment(Map<String, Object> context) {
-        if (CoreUtils.isNullOrEmpty(context)) {
-            return EMPTY_BYTES;
-        }
-
-        try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-            jsonWriter.writeMap(context, JsonWriter::writeUntyped).flush();
-
-            return outputStream.toByteArray(1, outputStream.count() - 1);
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
         }
     }
 
