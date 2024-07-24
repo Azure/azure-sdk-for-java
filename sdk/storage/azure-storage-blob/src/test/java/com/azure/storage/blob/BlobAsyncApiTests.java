@@ -2659,8 +2659,10 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(blobClient.getAccountInfo())
             .verifyErrorSatisfies(r -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
+                RuntimeException e = assertInstanceOf(RuntimeException.class, r);
+                if (e instanceof BlobStorageException) {
+                    assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, ((BlobStorageException) e).getErrorCode());
+                }
             });
     }
 

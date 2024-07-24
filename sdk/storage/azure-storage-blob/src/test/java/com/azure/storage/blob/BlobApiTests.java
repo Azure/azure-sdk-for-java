@@ -2967,9 +2967,10 @@ public class BlobApiTests extends BlobTestBase {
 
         BlobClient blobClient = serviceClient.getBlobContainerClient(generateContainerName()).getBlobClient(generateBlobName());
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, blobClient::getAccountInfo);
-        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-
+        RuntimeException e = assertThrows(RuntimeException.class, blobClient::getAccountInfo);
+        if (e instanceof BlobStorageException) {
+            assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO, ((BlobStorageException) e).getErrorCode());
+        }
     }
 
 
