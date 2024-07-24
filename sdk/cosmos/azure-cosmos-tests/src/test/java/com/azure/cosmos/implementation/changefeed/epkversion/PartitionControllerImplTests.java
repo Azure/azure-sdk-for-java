@@ -13,6 +13,9 @@ import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledExcept
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.Range;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -40,6 +43,20 @@ public class PartitionControllerImplTests {
             { true },
             { false }
         };
+    }
+
+    private AutoCloseable mocksCloseable;
+
+    @BeforeTest
+    public void openMocks() {
+        mocksCloseable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterTest
+    public void cleanupMocks() throws Exception {
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test(groups = "unit", dataProvider = "shouldSkipDirectLeaseAssignmentArgProvider")
