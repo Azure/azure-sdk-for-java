@@ -513,10 +513,7 @@ public class IdentityClient extends IdentityClientBase {
                 + "    exit" + sep
                 + "}" + sep
                 + "" + sep
-                + "$useSecureString = $false" + sep
-                + "if ($m.Version -ge [version]'2.17.0') {" + sep
-                + "    $useSecureString = $true" + sep
-                + "}" + sep
+                + "$useSecureString = $m.Version -ge [version]'2.17.0'" + sep
                 + "" + sep
                 + "$params = @{" + sep
                 + "    'WarningAction'='Ignore'" + sep
