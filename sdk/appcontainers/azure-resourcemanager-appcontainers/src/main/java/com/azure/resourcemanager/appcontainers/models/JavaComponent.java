@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.JavaComponentInner;
-import java.util.List;
 
 /**
  * An immutable client-side representation of JavaComponent.
@@ -35,39 +34,18 @@ public interface JavaComponent {
     String type();
 
     /**
+     * Gets the properties property: Java Component resource specific properties.
+     * 
+     * @return the properties value.
+     */
+    JavaComponentProperties properties();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the componentType property: Type of the Java Component.
-     * 
-     * @return the componentType value.
-     */
-    JavaComponentType componentType();
-
-    /**
-     * Gets the provisioningState property: Provisioning state of the Java Component.
-     * 
-     * @return the provisioningState value.
-     */
-    JavaComponentProvisioningState provisioningState();
-
-    /**
-     * Gets the configurations property: List of Java Components configuration properties.
-     * 
-     * @return the configurations value.
-     */
-    List<JavaComponentConfigurationProperty> configurations();
-
-    /**
-     * Gets the serviceBinds property: List of Java Components that are bound to the Java component.
-     * 
-     * @return the serviceBinds value.
-     */
-    List<JavaComponentServiceBind> serviceBinds();
 
     /**
      * Gets the name of the resource group.
@@ -118,8 +96,7 @@ public interface JavaComponent {
          * The stage of the JavaComponent definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithComponentType, DefinitionStages.WithConfigurations,
-            DefinitionStages.WithServiceBinds {
+        interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -137,42 +114,16 @@ public interface JavaComponent {
         }
 
         /**
-         * The stage of the JavaComponent definition allowing to specify componentType.
+         * The stage of the JavaComponent definition allowing to specify properties.
          */
-        interface WithComponentType {
+        interface WithProperties {
             /**
-             * Specifies the componentType property: Type of the Java Component..
+             * Specifies the properties property: Java Component resource specific properties.
              * 
-             * @param componentType Type of the Java Component.
+             * @param properties Java Component resource specific properties.
              * @return the next definition stage.
              */
-            WithCreate withComponentType(JavaComponentType componentType);
-        }
-
-        /**
-         * The stage of the JavaComponent definition allowing to specify configurations.
-         */
-        interface WithConfigurations {
-            /**
-             * Specifies the configurations property: List of Java Components configuration properties.
-             * 
-             * @param configurations List of Java Components configuration properties.
-             * @return the next definition stage.
-             */
-            WithCreate withConfigurations(List<JavaComponentConfigurationProperty> configurations);
-        }
-
-        /**
-         * The stage of the JavaComponent definition allowing to specify serviceBinds.
-         */
-        interface WithServiceBinds {
-            /**
-             * Specifies the serviceBinds property: List of Java Components that are bound to the Java component.
-             * 
-             * @param serviceBinds List of Java Components that are bound to the Java component.
-             * @return the next definition stage.
-             */
-            WithCreate withServiceBinds(List<JavaComponentServiceBind> serviceBinds);
+            WithCreate withProperties(JavaComponentProperties properties);
         }
     }
 
@@ -186,8 +137,7 @@ public interface JavaComponent {
     /**
      * The template for JavaComponent update.
      */
-    interface Update
-        extends UpdateStages.WithComponentType, UpdateStages.WithConfigurations, UpdateStages.WithServiceBinds {
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -209,42 +159,16 @@ public interface JavaComponent {
      */
     interface UpdateStages {
         /**
-         * The stage of the JavaComponent update allowing to specify componentType.
+         * The stage of the JavaComponent update allowing to specify properties.
          */
-        interface WithComponentType {
+        interface WithProperties {
             /**
-             * Specifies the componentType property: Type of the Java Component..
+             * Specifies the properties property: Java Component resource specific properties.
              * 
-             * @param componentType Type of the Java Component.
+             * @param properties Java Component resource specific properties.
              * @return the next definition stage.
              */
-            Update withComponentType(JavaComponentType componentType);
-        }
-
-        /**
-         * The stage of the JavaComponent update allowing to specify configurations.
-         */
-        interface WithConfigurations {
-            /**
-             * Specifies the configurations property: List of Java Components configuration properties.
-             * 
-             * @param configurations List of Java Components configuration properties.
-             * @return the next definition stage.
-             */
-            Update withConfigurations(List<JavaComponentConfigurationProperty> configurations);
-        }
-
-        /**
-         * The stage of the JavaComponent update allowing to specify serviceBinds.
-         */
-        interface WithServiceBinds {
-            /**
-             * Specifies the serviceBinds property: List of Java Components that are bound to the Java component.
-             * 
-             * @param serviceBinds List of Java Components that are bound to the Java component.
-             * @return the next definition stage.
-             */
-            Update withServiceBinds(List<JavaComponentServiceBind> serviceBinds);
+            Update withProperties(JavaComponentProperties properties);
         }
     }
 

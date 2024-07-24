@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * NFS Azure File Properties.
  */
 @Fluent
-public final class NfsAzureFileProperties {
+public final class NfsAzureFileProperties implements JsonSerializable<NfsAzureFileProperties> {
     /*
      * Server for NFS azure file.
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
      * Access mode for storage
      */
-    @JsonProperty(value = "accessMode")
     private AccessMode accessMode;
 
     /*
      * NFS Azure file share name.
      */
-    @JsonProperty(value = "shareName")
     private String shareName;
 
     /**
@@ -102,5 +103,47 @@ public final class NfsAzureFileProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("accessMode", this.accessMode == null ? null : this.accessMode.toString());
+        jsonWriter.writeStringField("shareName", this.shareName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NfsAzureFileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NfsAzureFileProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NfsAzureFileProperties.
+     */
+    public static NfsAzureFileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NfsAzureFileProperties deserializedNfsAzureFileProperties = new NfsAzureFileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedNfsAzureFileProperties.server = reader.getString();
+                } else if ("accessMode".equals(fieldName)) {
+                    deserializedNfsAzureFileProperties.accessMode = AccessMode.fromString(reader.getString());
+                } else if ("shareName".equals(fieldName)) {
+                    deserializedNfsAzureFileProperties.shareName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNfsAzureFileProperties;
+        });
     }
 }

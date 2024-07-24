@@ -17,7 +17,7 @@ public final class BuilderResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BuilderResourceUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"84d35291-d118-4f28-95b0-c1dcc3c3a910\",\"tenantId\":\"263ffff3-91e3-4316-90cc-1884f071a054\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dnhjdauwhvylw\":{\"principalId\":\"b77a149b-c006-4798-9e9d-df5a35b59301\",\"clientId\":\"39ba2083-5071-4bde-9214-424f126d40a2\"}}},\"tags\":{\"uwprzql\":\"dhxujznbmpo\",\"obbc\":\"eualupjmkhf\",\"tghfgblcgwxzvl\":\"wsrtjriplrbpbe\",\"egibtnmxiebww\":\"qhjk\"},\"properties\":{\"environmentId\":\"ayqcgw\"}}")
+            "{\"identity\":{\"principalId\":\"baa6b7aa-8830-4ad0-83d6-45771d48fada\",\"tenantId\":\"c2e8c2db-5cbc-4d37-93c9-1c49cf60444a\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dnhjdauwhvylw\":{\"principalId\":\"54b9d44a-d711-407f-a940-763ff5a70747\",\"clientId\":\"40731f01-c1bd-48bc-903d-98715273678f\"}}},\"tags\":{\"uwprzql\":\"dhxujznbmpo\",\"obbc\":\"eualupjmkhf\",\"tghfgblcgwxzvl\":\"wsrtjriplrbpbe\",\"egibtnmxiebww\":\"qhjk\"},\"properties\":{\"environmentId\":\"ayqcgw\"}}")
             .toObject(BuilderResourceUpdate.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals("dhxujznbmpo", model.tags().get("uwprzql"));

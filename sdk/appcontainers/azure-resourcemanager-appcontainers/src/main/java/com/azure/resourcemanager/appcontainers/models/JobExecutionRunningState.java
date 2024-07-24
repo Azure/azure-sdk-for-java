@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class JobExecutionRunningState extends ExpandableStringEnum<JobExec
      * @param name a name to look for.
      * @return the corresponding JobExecutionRunningState.
      */
-    @JsonCreator
     public static JobExecutionRunningState fromString(String name) {
         return fromString(name, JobExecutionRunningState.class);
     }

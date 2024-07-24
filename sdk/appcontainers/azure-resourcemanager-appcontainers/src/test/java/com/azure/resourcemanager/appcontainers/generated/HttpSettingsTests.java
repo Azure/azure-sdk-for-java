@@ -26,10 +26,11 @@ public final class HttpSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpSettings model
-            = new HttpSettings().withRequireHttps(false).withRoutes(new HttpSettingsRoutes().withApiPrefix("jzzvdud"))
-                .withForwardProxy(new ForwardProxy().withConvention(ForwardProxyConvention.NO_PROXY)
-                    .withCustomHostHeaderName("fhotw").withCustomProtoHeaderName("ynpwlbj"));
+        HttpSettings model = new HttpSettings().withRequireHttps(false)
+            .withRoutes(new HttpSettingsRoutes().withApiPrefix("jzzvdud"))
+            .withForwardProxy(new ForwardProxy().withConvention(ForwardProxyConvention.NO_PROXY)
+                .withCustomHostHeaderName("fhotw")
+                .withCustomProtoHeaderName("ynpwlbj"));
         model = BinaryData.fromObject(model).toObject(HttpSettings.class);
         Assertions.assertEquals(false, model.requireHttps());
         Assertions.assertEquals("jzzvdud", model.routes().apiPrefix());
