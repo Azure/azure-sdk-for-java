@@ -26,7 +26,8 @@ public final class GlobalValidationTests {
     public void testSerialize() throws Exception {
         GlobalValidation model = new GlobalValidation()
             .withUnauthenticatedClientAction(UnauthenticatedClientActionV2.REDIRECT_TO_LOGIN_PAGE)
-            .withRedirectToProvider("rkujy").withExcludedPaths(Arrays.asList("eju"));
+            .withRedirectToProvider("rkujy")
+            .withExcludedPaths(Arrays.asList("eju"));
         model = BinaryData.fromObject(model).toObject(GlobalValidation.class);
         Assertions.assertEquals(UnauthenticatedClientActionV2.REDIRECT_TO_LOGIN_PAGE,
             model.unauthenticatedClientAction());

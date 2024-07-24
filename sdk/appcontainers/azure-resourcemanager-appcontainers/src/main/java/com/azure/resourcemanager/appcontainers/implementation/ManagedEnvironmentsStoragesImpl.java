@@ -11,9 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsStoragesClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStorageInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStoragesCollectionInner;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentsStorages;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentStorage;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentStoragesCollection;
-import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentsStorages;
 
 public final class ManagedEnvironmentsStoragesImpl implements ManagedEnvironmentsStorages {
     private static final ClientLogger LOGGER = new ClientLogger(ManagedEnvironmentsStoragesImpl.class);

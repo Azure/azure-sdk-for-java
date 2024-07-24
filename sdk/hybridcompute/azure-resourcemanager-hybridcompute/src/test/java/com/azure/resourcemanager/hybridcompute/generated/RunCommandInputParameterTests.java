@@ -12,18 +12,16 @@ public final class RunCommandInputParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RunCommandInputParameter model
-            = BinaryData.fromString("{\"name\":\"ysuiizynkedya\",\"value\":\"rwyhqmibzyhwitsm\"}")
-                .toObject(RunCommandInputParameter.class);
-        Assertions.assertEquals("ysuiizynkedya", model.name());
-        Assertions.assertEquals("rwyhqmibzyhwitsm", model.value());
+            = BinaryData.fromString("{\"name\":\"r\",\"value\":\"ea\"}").toObject(RunCommandInputParameter.class);
+        Assertions.assertEquals("r", model.name());
+        Assertions.assertEquals("ea", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RunCommandInputParameter model
-            = new RunCommandInputParameter().withName("ysuiizynkedya").withValue("rwyhqmibzyhwitsm");
+        RunCommandInputParameter model = new RunCommandInputParameter().withName("r").withValue("ea");
         model = BinaryData.fromObject(model).toObject(RunCommandInputParameter.class);
-        Assertions.assertEquals("ysuiizynkedya", model.name());
-        Assertions.assertEquals("rwyhqmibzyhwitsm", model.value());
+        Assertions.assertEquals("r", model.name());
+        Assertions.assertEquals("ea", model.value());
     }
 }

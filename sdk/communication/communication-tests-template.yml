@@ -7,7 +7,7 @@ parameters:
   default: not-specified
 - name: Clouds
   type: string
-  default: 'Public, Int'
+  default: 'Public'
 - name: TestMode
   type: string
   default: 'LIVE'
@@ -25,19 +25,19 @@ parameters:
       Path: eng/pipelines/templates/stages/platform-matrix.json
       Selection: sparse
       GenerateVMJobs: true
+- name: UseFederatedAuth
+  type: boolean
+  default: false
 - name: CloudConfig
   type: object
   default:
     Public:
+      ServiceConnection: azure-sdk-tests
+      SubscriptionConfigurationFilePaths:
+        - eng/common/TestResources/sub-config/AzurePublicMsft.json
       SubscriptionConfigurations:
-        - $(sub-config-azure-cloud-test-resources)
         - $(sub-config-communication-services-cloud-test-resources-common)
         - $(sub-config-communication-services-cloud-test-resources-java)
-    Int:
-      SubscriptionConfigurations:
-        - $(sub-config-communication-int-test-resources-common)
-        - $(sub-config-communication-int-test-resources-java)
-
       # This only affects the phone-numbers package
       MatrixReplace:
         - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
@@ -48,6 +48,7 @@ extends:
     stages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
           CloudConfig: ${{ parameters.CloudConfig }}
           Clouds: ${{ parameters.Clouds }}
           TestMode: ${{ parameters.TestMode }}

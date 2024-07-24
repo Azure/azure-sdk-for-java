@@ -555,10 +555,8 @@ Changes when compared to the last stable release (`4.5.9`) include:
 - Removed `AdministratorContact` constructor overloads and introduced setters for all parameters.
 - Removed `CertificateContact` constructor overloads and introduced setters for all parameters.
 
-For details on the Azure SDK for Java (December 2019 beta) release refer to the [release announcement](https://aka.ms/azure-sdk-beta7-java).
 
 ## 4.0.0-beta.6 (2019-12-04)
-For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 
 
 ### Breaking changes
@@ -590,7 +588,6 @@ For details on the Azure SDK for Java (November 2019 Preview) release refer to t
 
 
 ## 4.0.0-preview.5 (2019-11-01)
-For details on the Azure SDK for Java (November 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview5-java).
 
 ### Breaking changes
 - `beginCreateCertificate` method now returns a SyncPoller in `CertificateClient` and a PollerFlux in`CertificateAsyncClient`

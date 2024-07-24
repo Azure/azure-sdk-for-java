@@ -34,11 +34,11 @@ class LongRunningTest extends IntegrationTestBase {
         final EventPosition firstPosition = EventPosition.fromEnqueuedTime(Instant.now());
 
         EventHubProducerAsyncClient producer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .retry(RETRY_OPTIONS)
             .buildAsyncProducerClient());
         EventHubConsumerAsyncClient consumer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .retry(RETRY_OPTIONS)
             .buildAsyncConsumerClient());
@@ -83,7 +83,7 @@ class LongRunningTest extends IntegrationTestBase {
     @Test
     void idleConnection() throws InterruptedException {
         try (EventHubProducerAsyncClient idleProducer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .buildAsyncProducerClient()) {
             for (int i = 0; i < 4; i++) {
                 logger.verbose("Iteration: " + i);
@@ -112,7 +112,7 @@ class LongRunningTest extends IntegrationTestBase {
     @Test
     void idleSendLinks() throws InterruptedException {
         try (EventHubProducerAsyncClient idleProducer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .buildAsyncProducerClient()) {
 
             for (int i = 0; i < 4; i++) {
@@ -152,12 +152,12 @@ class LongRunningTest extends IntegrationTestBase {
         final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(partitionId);
 
         EventHubProducerAsyncClient producer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .retry(RETRY_OPTIONS)
             .buildAsyncProducerClient());
 
         EventHubAsyncClient client = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .buildAsyncClient());
 
         toClose(Flux.interval(Duration.ofSeconds(1))

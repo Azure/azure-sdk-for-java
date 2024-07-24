@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class GitHubOrganizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GitHubOrganization model = BinaryData
-            .fromString(
-                "{\"url\":\"gexpaojakhmsbz\",\"repositories\":[\"rzevdphlxaol\",\"hqtrgqjbpf\",\"fsinzgvfcjrwzoxx\"]}")
-            .toObject(GitHubOrganization.class);
-        Assertions.assertEquals("gexpaojakhmsbz", model.url());
-        Assertions.assertEquals("rzevdphlxaol", model.repositories().get(0));
+        GitHubOrganization model
+            = BinaryData.fromString("{\"url\":\"ojakhmsbzjhcrze\",\"repositories\":[\"hlxaolthqtr\",\"qjbpfzfsin\"]}")
+                .toObject(GitHubOrganization.class);
+        Assertions.assertEquals("ojakhmsbzjhcrze", model.url());
+        Assertions.assertEquals("hlxaolthqtr", model.repositories().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitHubOrganization model = new GitHubOrganization().withUrl("gexpaojakhmsbz")
-            .withRepositories(Arrays.asList("rzevdphlxaol", "hqtrgqjbpf", "fsinzgvfcjrwzoxx"));
+        GitHubOrganization model = new GitHubOrganization().withUrl("ojakhmsbzjhcrze")
+            .withRepositories(Arrays.asList("hlxaolthqtr", "qjbpfzfsin"));
         model = BinaryData.fromObject(model).toObject(GitHubOrganization.class);
-        Assertions.assertEquals("gexpaojakhmsbz", model.url());
-        Assertions.assertEquals("rzevdphlxaol", model.repositories().get(0));
+        Assertions.assertEquals("ojakhmsbzjhcrze", model.url());
+        Assertions.assertEquals("hlxaolthqtr", model.repositories().get(0));
     }
 }

@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.ArmDisasterRecoveryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The result of the List Alias(Disaster Recovery configuration) operation. */
+/**
+ * The result of the List Alias(Disaster Recovery configuration) operation.
+ */
 @Fluent
 public final class ArmDisasterRecoveryListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmDisasterRecoveryListResult.class);
-
     /*
      * List of Alias(Disaster Recovery configurations)
      */
@@ -23,11 +22,17 @@ public final class ArmDisasterRecoveryListResult {
     private List<ArmDisasterRecoveryInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of Alias(Disaster Recovery configuration)
+     * Link to the next set of results. Not empty if Value contains incomplete list of Alias(Disaster Recovery
+     * configuration)
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /**
+     * Creates an instance of ArmDisasterRecoveryListResult class.
+     */
+    public ArmDisasterRecoveryListResult() {
+    }
 
     /**
      * Get the value property: List of Alias(Disaster Recovery configurations).

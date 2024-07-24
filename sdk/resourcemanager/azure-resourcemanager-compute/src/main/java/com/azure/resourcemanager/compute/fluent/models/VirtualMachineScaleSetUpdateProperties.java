@@ -306,8 +306,8 @@ public final class VirtualMachineScaleSetUpdateProperties {
     }
 
     /**
-     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs
-     * within the same VMSS Flex instance.
+     * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
      * 
      * @return the priorityMixPolicy value.
      */
@@ -316,8 +316,8 @@ public final class VirtualMachineScaleSetUpdateProperties {
     }
 
     /**
-     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs
-     * within the same VMSS Flex instance.
+     * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
+     * the same VMSS Flex instance.
      * 
      * @param priorityMixPolicy the priorityMixPolicy value to set.
      * @return the VirtualMachineScaleSetUpdateProperties object itself.

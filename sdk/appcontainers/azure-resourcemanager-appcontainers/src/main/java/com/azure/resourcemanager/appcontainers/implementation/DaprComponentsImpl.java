@@ -63,8 +63,9 @@ public final class DaprComponentsImpl implements DaprComponents {
 
     public Response<DaprComponent> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
         String componentName, DaprComponentInner daprComponentEnvelope, Context context) {
-        Response<DaprComponentInner> inner = this.serviceClient().createOrUpdateWithResponse(resourceGroupName,
-            environmentName, componentName, daprComponentEnvelope, context);
+        Response<DaprComponentInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, componentName, daprComponentEnvelope,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DaprComponentImpl(inner.getValue(), this.manager()));
@@ -75,8 +76,8 @@ public final class DaprComponentsImpl implements DaprComponents {
 
     public DaprComponent createOrUpdate(String resourceGroupName, String environmentName, String componentName,
         DaprComponentInner daprComponentEnvelope) {
-        DaprComponentInner inner = this.serviceClient().createOrUpdate(resourceGroupName, environmentName,
-            componentName, daprComponentEnvelope);
+        DaprComponentInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, environmentName, componentName, daprComponentEnvelope);
         if (inner != null) {
             return new DaprComponentImpl(inner, this.manager());
         } else {

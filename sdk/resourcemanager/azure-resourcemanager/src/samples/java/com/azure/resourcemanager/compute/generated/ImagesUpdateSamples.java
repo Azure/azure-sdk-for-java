@@ -25,11 +25,14 @@ public final class ImagesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updatesTagsOfAnImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getImages().update("myResourceGroup", "myImage",
-            new ImageUpdate().withTags(mapOf("department", "HR")).withSourceVirtualMachine(new SubResource().withId(
-                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"))
-                .withHyperVGeneration(HyperVGenerationTypes.V1),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getImages()
+            .update("myResourceGroup", "myImage", new ImageUpdate().withTags(mapOf("department", "HR"))
+                .withSourceVirtualMachine(new SubResource().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"))
+                .withHyperVGeneration(HyperVGenerationTypes.V1), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

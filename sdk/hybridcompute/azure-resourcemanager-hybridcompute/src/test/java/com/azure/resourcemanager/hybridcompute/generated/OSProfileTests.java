@@ -16,12 +16,14 @@ public final class OSProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OSProfile model = BinaryData.fromString(
-            "{\"computerName\":\"umasxazjpq\",\"windowsConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"ImageDefault\"}},\"linuxConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"ImageDefault\"}}}")
+            "{\"computerName\":\"umasxazjpq\",\"windowsConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"ImageDefault\",\"enableHotpatching\":true,\"status\":{\"hotpatchEnablementStatus\":\"Disabled\"}}},\"linuxConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"AutomaticByOS\",\"enableHotpatching\":true,\"status\":{\"hotpatchEnablementStatus\":\"Unknown\"}}}}")
             .toObject(OSProfile.class);
         Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().assessmentMode());
         Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().patchMode());
+        Assertions.assertEquals(true, model.windowsConfiguration().enableHotpatching());
         Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.linuxConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.linuxConfiguration().patchMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.linuxConfiguration().patchMode());
+        Assertions.assertEquals(true, model.linuxConfiguration().enableHotpatching());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,14 +31,18 @@ public final class OSProfileTests {
         OSProfile model = new OSProfile()
             .withWindowsConfiguration(
                 new OSProfileWindowsConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
-                    .withPatchMode(PatchModeTypes.IMAGE_DEFAULT))
+                    .withPatchMode(PatchModeTypes.IMAGE_DEFAULT)
+                    .withEnableHotpatching(true))
             .withLinuxConfiguration(
                 new OSProfileLinuxConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
-                    .withPatchMode(PatchModeTypes.IMAGE_DEFAULT));
+                    .withPatchMode(PatchModeTypes.AUTOMATIC_BY_OS)
+                    .withEnableHotpatching(true));
         model = BinaryData.fromObject(model).toObject(OSProfile.class);
         Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().assessmentMode());
         Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.windowsConfiguration().patchMode());
+        Assertions.assertEquals(true, model.windowsConfiguration().enableHotpatching());
         Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.linuxConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.linuxConfiguration().patchMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.linuxConfiguration().patchMode());
+        Assertions.assertEquals(true, model.linuxConfiguration().enableHotpatching());
     }
 }

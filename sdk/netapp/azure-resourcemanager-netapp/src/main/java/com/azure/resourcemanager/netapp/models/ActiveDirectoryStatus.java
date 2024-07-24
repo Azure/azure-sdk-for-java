@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class ActiveDirectoryStatus extends ExpandableStringEnum<ActiveDire
      * @param name a name to look for.
      * @return the corresponding ActiveDirectoryStatus.
      */
-    @JsonCreator
     public static ActiveDirectoryStatus fromString(String name) {
         return fromString(name, ActiveDirectoryStatus.class);
     }

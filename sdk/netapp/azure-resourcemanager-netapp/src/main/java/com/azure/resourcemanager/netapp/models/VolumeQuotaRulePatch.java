@@ -5,27 +5,27 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeQuotaRulesProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Patchable Quota Rule of a Volume.
  */
 @Fluent
-public final class VolumeQuotaRulePatch {
+public final class VolumeQuotaRulePatch implements JsonSerializable<VolumeQuotaRulePatch> {
     /*
      * Resource tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Volume Quota Rule Properties
      */
-    @JsonProperty(value = "properties")
     private VolumeQuotaRulesProperties innerProperties;
 
     /**
@@ -96,9 +96,7 @@ public final class VolumeQuotaRulePatch {
     }
 
     /**
-     * Get the quotaType property: quotaType
-     * 
-     * Type of quota.
+     * Get the quotaType property: Type of quota.
      * 
      * @return the quotaType value.
      */
@@ -107,9 +105,7 @@ public final class VolumeQuotaRulePatch {
     }
 
     /**
-     * Set the quotaType property: quotaType
-     * 
-     * Type of quota.
+     * Set the quotaType property: Type of quota.
      * 
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRulePatch object itself.
@@ -158,5 +154,45 @@ public final class VolumeQuotaRulePatch {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeQuotaRulePatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeQuotaRulePatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeQuotaRulePatch.
+     */
+    public static VolumeQuotaRulePatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeQuotaRulePatch deserializedVolumeQuotaRulePatch = new VolumeQuotaRulePatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVolumeQuotaRulePatch.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVolumeQuotaRulePatch.innerProperties = VolumeQuotaRulesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeQuotaRulePatch;
+        });
     }
 }

@@ -8,9 +8,16 @@ import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import java.time.Duration;
 
 /**
- *
+ *  Event Hubs producer properties
  */
 public class EventHubsProducerProperties extends ProducerProperties {
+
+    /**
+     * Creates an instance of {@link EventHubsProducerProperties}.
+     */
+    public EventHubsProducerProperties() {
+    }
+
     /**
      * Whether the producer should act in a synchronous manner with respect to sending messages into destination.
      * If true, the producer will wait for a response from Event Hub after a send operation before sending next message.

@@ -43,7 +43,6 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -51,7 +50,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -354,7 +352,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
                 assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
-                String regionName = getAvailableRegionNames(rxDocumentClient, true).iterator().next();
+                String regionName = getRegionNames(rxDocumentClient).iterator().next();
                 assertThat(ex.getDiagnostics().getContactedRegionNames().iterator().next()).isEqualTo(regionName.toLowerCase());
             }
 
@@ -409,7 +407,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         return regionMap;
     }
 
-    private Set<String> getAvailableRegionNames(RxDocumentClientImpl rxDocumentClient, boolean isWriteRegion) throws Exception {
+    private List<String> getRegionNames(RxDocumentClientImpl rxDocumentClient) throws Exception {
         GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
         LocationCache locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
 
@@ -420,21 +418,12 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing" +
             ".LocationCache$DatabaseAccountLocationsInfo");
 
-        if (isWriteRegion) {
-            Field availableWriteEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
-                "availableWriteEndpointByLocation");
-            availableWriteEndpointByLocation.setAccessible(true);
-            @SuppressWarnings("unchecked")
-            Map<String, URI> map = (Map<String, URI>) availableWriteEndpointByLocation.get(locationInfo);
-            return map.keySet();
-        } else {
-            Field availableReadEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
-                "availableReadEndpointByLocation");
-            availableReadEndpointByLocation.setAccessible(true);
-            @SuppressWarnings("unchecked")
-            Map<String, URI> map = (Map<String, URI>) availableReadEndpointByLocation.get(locationInfo);
-            return map.keySet();
-        }
+        Field availableWriteEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
+            "availableWriteLocations");
+        availableWriteEndpointByLocation.setAccessible(true);
+        @SuppressWarnings("unchecked")
+        List<String> list = (List<String>) availableWriteEndpointByLocation.get(locationInfo);
+        return list;
     }
 
     private class RntbdTransportClientTest extends TransportClient {

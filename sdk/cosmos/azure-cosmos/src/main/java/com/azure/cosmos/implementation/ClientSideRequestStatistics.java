@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.circuitBreaker.LocationSpecificHealthContext;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -26,8 +27,10 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
@@ -46,6 +49,7 @@ public class ClientSideRequestStatistics {
     private Instant requestStartTimeUTC;
     private Instant requestEndTimeUTC;
     private Set<String> regionsContacted;
+    private NavigableSet<RegionWithContext> regionsContactedWithContext;
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
     private FaultInjectionRequestContext requestContext;
@@ -57,6 +61,7 @@ public class ClientSideRequestStatistics {
 
     private double samplingRateSnapshot = 1;
     private long approximateInsertionCountInBloomFilter = 0;
+    private Set<String> keywordIdentifiers;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -69,6 +74,7 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
+        this.regionsContactedWithContext = Collections.synchronizedNavigableSet(new TreeSet<>());
         this.locationEndpointsContacted = Collections.synchronizedSet(new HashSet<>());
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
@@ -77,6 +83,7 @@ public class ClientSideRequestStatistics {
         this.userAgent = diagnosticsClientContext.getUserAgent();
         this.samplingRateSnapshot = 1;
         this.approximateInsertionCountInBloomFilter = 0;
+        this.keywordIdentifiers = new HashSet<>();
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -90,6 +97,7 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>(toBeCloned.contactedReplicas));
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>(toBeCloned.failedReplicas));
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>(toBeCloned.regionsContacted));
+        this.regionsContactedWithContext = Collections.synchronizedNavigableSet(new TreeSet<>(toBeCloned.regionsContactedWithContext));
         this.locationEndpointsContacted = Collections.synchronizedSet(
             new HashSet<>(toBeCloned.locationEndpointsContacted));
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext(toBeCloned.metadataDiagnosticsContext);
@@ -100,6 +108,7 @@ public class ClientSideRequestStatistics {
         this.userAgent = toBeCloned.userAgent;
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
         this.approximateInsertionCountInBloomFilter = toBeCloned.approximateInsertionCountInBloomFilter;
+        this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
     }
 
     @JsonIgnore
@@ -159,6 +168,7 @@ public class ClientSideRequestStatistics {
 
             this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
             storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
+            storeResponseStatistics.locationToLocationSpecificHealthContext = request.requestContext.getLocationToLocationSpecificHealthContext();
 
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
@@ -171,6 +181,7 @@ public class ClientSideRequestStatistics {
             if (excludedRegions != null && !excludedRegions.isEmpty()) {
                 storeResponseStatistics.excludedRegions = String.join(", ", excludedRegions);
             }
+            this.keywordIdentifiers = request.requestContext.getKeywordIdentifiers();
         }
 
         synchronized (this) {
@@ -183,6 +194,7 @@ public class ClientSideRequestStatistics {
                     globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType());
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
+                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, locationEndPoint));
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -210,12 +222,18 @@ public class ClientSideRequestStatistics {
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
                 this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
+                this.keywordIdentifiers = rxDocumentServiceRequest.requestContext.getKeywordIdentifiers();
             }
             this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
+
+                String regionName = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
+
+                this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
+
+                this.regionsContactedWithContext.add(new RegionWithContext(regionName, locationEndPoint));
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
@@ -226,6 +244,7 @@ public class ClientSideRequestStatistics {
 
                 if (rxDocumentServiceRequest.requestContext != null) {
                     gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
+                    gatewayStatistics.locationToLocationSpecificHealthContext = rxDocumentServiceRequest.requestContext.getLocationToLocationSpecificHealthContext();
                 }
             }
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
@@ -249,6 +268,26 @@ public class ClientSideRequestStatistics {
 
     public int getRequestPayloadSizeInBytes() {
         return this.requestPayloadSizeInBytes;
+    }
+
+    public void mergeMetadataDiagnosticsContext(MetadataDiagnosticsContext other) {
+        if (other == null || other.metadataDiagnosticList == null || other.metadataDiagnosticList.isEmpty()) {
+            return;
+        }
+
+        for (MetadataDiagnosticsContext.MetadataDiagnostics metadataDiagnostics : other.metadataDiagnosticList) {
+            this.metadataDiagnosticsContext.addMetaDataDiagnostic(metadataDiagnostics);
+        }
+    }
+
+    public void mergeSerializationDiagnosticsContext(SerializationDiagnosticsContext other) {
+        if (other == null || other.serializationDiagnosticsList == null || other.serializationDiagnosticsList.isEmpty()) {
+            return;
+        }
+
+        for (SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics : other.serializationDiagnosticsList) {
+            this.serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
     }
 
     public String recordAddressResolutionStart(
@@ -409,6 +448,21 @@ public class ClientSideRequestStatistics {
         }
     }
 
+    private void mergeRegionWithContextSet(NavigableSet<RegionWithContext> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
+            this.regionsContactedWithContext = other;
+            return;
+        }
+
+        for (RegionWithContext regionWithContext : other) {
+            this.regionsContactedWithContext.add(regionWithContext);
+        }
+    }
+
     private void mergeRegionsContacted(Set<String> other) {
         if (other == null) {
             return;
@@ -444,7 +498,7 @@ public class ClientSideRequestStatistics {
         }
     }
 
-    private Instant extractRequestStartTime(StoreResultDiagnostics storeResultDiagnostics){
+    private Instant extractRequestStartTime(StoreResultDiagnostics storeResultDiagnostics) {
         if (storeResultDiagnostics == null
             || storeResultDiagnostics.getStoreResponseDiagnostics() == null) {
             return null;
@@ -470,6 +524,7 @@ public class ClientSideRequestStatistics {
         this.mergeFailedReplica(other.failedReplicas);
         this.mergeLocationEndpointsContacted(other.locationEndpointsContacted);
         this.mergeRegionsContacted(other.regionsContacted);
+        this.mergeRegionWithContextSet(other.regionsContactedWithContext);
         this.mergeStartTime(other.requestStartTimeUTC);
         this.mergeEndTime(other.requestEndTimeUTC);
         this.mergeSupplementalResponses(other.supplementalResponseStatisticsList);
@@ -515,7 +570,7 @@ public class ClientSideRequestStatistics {
         this.locationEndpointsContacted = locationEndpointsContacted;
     }
 
-    public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
+    public MetadataDiagnosticsContext getMetadataDiagnosticsContext() {
         return this.metadataDiagnosticsContext;
     }
 
@@ -596,6 +651,22 @@ public class ClientSideRequestStatistics {
         return this;
     }
 
+    public String getFirstContactedRegion() {
+        if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
+            return StringUtils.EMPTY;
+        }
+
+        return this.regionsContactedWithContext.first().regionContacted;
+    }
+
+    public URI getFirstContactedLocationEndpoint() {
+        if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
+            return null;
+        }
+
+        return this.regionsContactedWithContext.first().locationEndpointsContacted;
+    }
+
     public static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResultDiagnostics.StoreResultDiagnosticsSerializer.class)
         private StoreResultDiagnostics storeResult;
@@ -622,7 +693,12 @@ public class ClientSideRequestStatistics {
         @JsonSerialize
         private Set<String> sessionTokenEvaluationResults;
 
-        public String getExcludedRegions() { return this.excludedRegions; }
+        @JsonSerialize
+        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
+
+        public String getExcludedRegions() {
+            return this.excludedRegions;
+        }
 
         public StoreResultDiagnostics getStoreResult() {
             return storeResult;
@@ -644,12 +720,20 @@ public class ClientSideRequestStatistics {
             return requestOperationType;
         }
 
-        public String getRegionName() { return regionName; }
+        public String getRegionName() {
+            return regionName;
+        }
 
-        public String getRequestSessionToken() { return requestSessionToken; }
+        public String getRequestSessionToken() {
+            return requestSessionToken;
+        }
 
         public Set<String> getSessionTokenEvaluationResults() {
             return sessionTokenEvaluationResults;
+        }
+
+        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
+            return locationToLocationSpecificHealthContext;
         }
 
         @JsonIgnore
@@ -666,6 +750,7 @@ public class ClientSideRequestStatistics {
 
             return Duration.between(requestStartTimeUTC, requestResponseTimeUTC);
         }
+
     }
 
     public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
@@ -692,13 +777,16 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             generator.writeObjectField("supplementalResponseStatisticsList", getCappedSupplementalResponseStatisticsList(statistics.supplementalResponseStatisticsList));
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
-            generator.writeObjectField("regionsContacted", statistics.regionsContacted);
+            generator.writeObjectField("regionsContacted", statistics.getContactedRegionNames());
             generator.writeObjectField("retryContext", statistics.retryContext);
             generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatisticsList", statistics.gatewayStatisticsList);
             generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
             generator.writeNumberField("bloomFilterInsertionCountSnapshot", statistics.approximateInsertionCountInBloomFilter);
+            if (statistics.keywordIdentifiers != null && !statistics.keywordIdentifiers.isEmpty()) {
+                generator.writeObjectField("keywordIdentifiers", statistics.keywordIdentifiers);
+            }
 
             try {
                 CosmosDiagnosticsSystemUsageSnapshot systemInformation = fetchSystemInformation();
@@ -810,6 +898,7 @@ public class ClientSideRequestStatistics {
         private String faultInjectionRuleId;
         private List<String> faultInjectionEvaluationResults;
         private Set<String> sessionTokenEvaluationResults;
+        private Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> locationToLocationSpecificHealthContext;
 
         public String getSessionToken() {
             return sessionToken;
@@ -867,10 +956,14 @@ public class ClientSideRequestStatistics {
             return sessionTokenEvaluationResults;
         }
 
+        public Utils.ValueHolder<Map<String, LocationSpecificHealthContext>> getLocationToLocationSpecificHealthContext() {
+            return locationToLocationSpecificHealthContext;
+        }
+
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
-            public GatewayStatisticsSerializer(){
+            public GatewayStatisticsSerializer() {
                 super(GatewayStatistics.class);
             }
 
@@ -900,6 +993,7 @@ public class ClientSideRequestStatistics {
                 }
 
                 this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
+                this.writeNonNullObjectField(jsonGenerator, "locationToLocationSpecificHealthContext", gatewayStatistics.getLocationToLocationSpecificHealthContext());
                 jsonGenerator.writeEndObject();
             }
 
@@ -926,6 +1020,14 @@ public class ClientSideRequestStatistics {
 
                 jsonGenerator.writePOJOField(fieldName, values);
             }
+
+            private void writeNonNullObjectField(JsonGenerator jsonGenerator, String fieldName, Object object) throws IOException {
+                if (object == null) {
+                    return;
+                }
+
+                jsonGenerator.writePOJOField(fieldName, object);
+            }
         }
     }
 
@@ -949,5 +1051,32 @@ public class ClientSideRequestStatistics {
                 totalMemory - freeMemory + " KB",
                 (maxMemory - (totalMemory - freeMemory)) + " KB",
                 runtime.availableProcessors());
+    }
+
+    static class RegionWithContext implements Comparable<RegionWithContext> {
+
+        private final String regionContacted;
+        private final URI locationEndpointsContacted;
+        private final long recordedTimestamp;
+
+        RegionWithContext(String regionContacted, URI locationEndpointsContacted) {
+            this.regionContacted = regionContacted;
+            this.locationEndpointsContacted = locationEndpointsContacted;
+            this.recordedTimestamp = System.currentTimeMillis();
+        }
+
+        @Override
+        public int compareTo(RegionWithContext o) {
+
+            if (o == null || this.recordedTimestamp > o.recordedTimestamp) {
+                return 1;
+            }
+
+            if (this.recordedTimestamp == o.recordedTimestamp) {
+                return 0;
+            }
+
+            return -1;
+        }
     }
 }

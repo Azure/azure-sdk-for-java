@@ -219,6 +219,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                             // 2) The EpkRange spans exactly one physical partition
                             // In this case we can route to the physical pkrange id
                             request.routeTo(new PartitionKeyRangeIdentity(pkRanges.get(0).getId()));
+                            request.setHasFeedRangeFilteringBeenApplied(true);
                         } else {
                             // 3) The EpkRange spans less than single physical partition
                             // In this case we route to the physical partition and
@@ -236,6 +237,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                                 HttpConstants.HttpHeaders.END_EPK,
                                 this.range.getMax());
 
+                            request.setHasFeedRangeFilteringBeenApplied(true);
                         }
 
                         return Mono.just(request);
