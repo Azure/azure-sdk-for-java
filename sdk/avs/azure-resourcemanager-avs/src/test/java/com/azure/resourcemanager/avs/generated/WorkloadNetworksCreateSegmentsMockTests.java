@@ -19,9 +19,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class WorkloadNetworksCreateSegmentMockTests {
+public final class WorkloadNetworksCreateSegmentsMockTests {
     @Test
-    public void testCreateSegment() throws Exception {
+    public void testCreateSegments() throws Exception {
         String responseStr
             = "{\"properties\":{\"displayName\":\"hslhca\",\"connectedGateway\":\"u\",\"subnet\":{\"dhcpRanges\":[\"wfmvigorqjbt\",\"zhraglkafh\",\"n\"],\"gatewayAddress\":\"ujeickp\"},\"portVif\":[{\"portName\":\"opmx\"},{\"portName\":\"nwcl\"}],\"status\":\"FAILURE\",\"provisioningState\":\"Succeeded\",\"revision\":6137899211514369318},\"id\":\"lfmk\",\"name\":\"scazuawxtzxpu\",\"type\":\"mwabzxrvxc\"}";
 
@@ -33,7 +33,7 @@ public final class WorkloadNetworksCreateSegmentMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkSegment response = manager.workloadNetworks()
-            .defineSegment("jqg")
+            .defineSegments("jqg")
             .withExistingPrivateCloud("svtui", "zh")
             .withDisplayName("hm")
             .withConnectedGateway("qryxyn")

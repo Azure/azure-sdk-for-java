@@ -133,7 +133,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createSegment(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createSegments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("segmentId") String segmentId,
@@ -144,7 +144,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/segments/{segmentId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateSegment(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> updateSegments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("segmentId") String segmentId,
@@ -480,7 +480,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIP(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIp(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("publicIPId") String publicIPId,
@@ -490,7 +490,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createPublicIP(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createPublicIp(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @PathParam("publicIPId") String publicIPId,
@@ -501,7 +501,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> deletePublicIP(@HostParam("endpoint") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> deletePublicIp(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("publicIPId") String publicIPId,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -1143,7 +1143,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createSegmentWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createSegmentsWithResponseAsync(String resourceGroupName,
         String privateCloudName, String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1172,7 +1172,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createSegment(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.createSegments(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, accept,
                 workloadNetworkSegment, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1192,7 +1192,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createSegmentWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createSegmentsWithResponseAsync(String resourceGroupName,
         String privateCloudName, String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -1222,7 +1222,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createSegment(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createSegments(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, accept,
             workloadNetworkSegment, context);
     }
@@ -1240,11 +1240,11 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link PollerFlux} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegmentAsync(
+    private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegmentsAsync(
         String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createSegmentWithResponseAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment);
+            = createSegmentsWithResponseAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment);
         return this.client.<WorkloadNetworkSegmentInner, WorkloadNetworkSegmentInner>getLroResult(mono,
             this.client.getHttpPipeline(), WorkloadNetworkSegmentInner.class, WorkloadNetworkSegmentInner.class,
             this.client.getContext());
@@ -1264,11 +1264,11 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link PollerFlux} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegmentAsync(
+    private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegmentsAsync(
         String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createSegmentWithResponseAsync(resourceGroupName, privateCloudName,
+        Mono<Response<Flux<ByteBuffer>>> mono = createSegmentsWithResponseAsync(resourceGroupName, privateCloudName,
             segmentId, workloadNetworkSegment, context);
         return this.client.<WorkloadNetworkSegmentInner, WorkloadNetworkSegmentInner>getLroResult(mono,
             this.client.getHttpPipeline(), WorkloadNetworkSegmentInner.class, WorkloadNetworkSegmentInner.class,
@@ -1288,10 +1288,10 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegment(
+    public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        return this.beginCreateSegmentAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
+        return this.beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
             .getSyncPoller();
     }
 
@@ -1309,11 +1309,11 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegment(
+    public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment, Context context) {
         return this
-            .beginCreateSegmentAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
+            .beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
             .getSyncPoller();
     }
 
@@ -1330,9 +1330,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadNetworkSegmentInner> createSegmentAsync(String resourceGroupName, String privateCloudName,
+    private Mono<WorkloadNetworkSegmentInner> createSegmentsAsync(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        return beginCreateSegmentAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment).last()
+        return beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1350,9 +1350,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadNetworkSegmentInner> createSegmentAsync(String resourceGroupName, String privateCloudName,
+    private Mono<WorkloadNetworkSegmentInner> createSegmentsAsync(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment, Context context) {
-        return beginCreateSegmentAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
+        return beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1370,9 +1370,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadNetworkSegmentInner createSegment(String resourceGroupName, String privateCloudName,
+    public WorkloadNetworkSegmentInner createSegments(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        return createSegmentAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment).block();
+        return createSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment).block();
     }
 
     /**
@@ -1389,9 +1389,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadNetworkSegmentInner createSegment(String resourceGroupName, String privateCloudName,
+    public WorkloadNetworkSegmentInner createSegments(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner workloadNetworkSegment, Context context) {
-        return createSegmentAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
+        return createSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
             .block();
     }
 
@@ -1408,7 +1408,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateSegmentWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> updateSegmentsWithResponseAsync(String resourceGroupName,
         String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1436,7 +1436,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.updateSegment(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.updateSegments(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, accept, properties,
                 context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1456,7 +1456,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateSegmentWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> updateSegmentsWithResponseAsync(String resourceGroupName,
         String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1484,7 +1484,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateSegment(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.updateSegments(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, segmentId, accept, properties,
             context);
     }
@@ -1502,10 +1502,10 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link PollerFlux} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegmentAsync(
+    private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegmentsAsync(
         String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = updateSegmentWithResponseAsync(resourceGroupName, privateCloudName, segmentId, properties);
+            = updateSegmentsWithResponseAsync(resourceGroupName, privateCloudName, segmentId, properties);
         return this.client.<WorkloadNetworkSegmentInner, WorkloadNetworkSegmentInner>getLroResult(mono,
             this.client.getHttpPipeline(), WorkloadNetworkSegmentInner.class, WorkloadNetworkSegmentInner.class,
             this.client.getContext());
@@ -1525,12 +1525,12 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link PollerFlux} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegmentAsync(
+    private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegmentsAsync(
         String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = updateSegmentWithResponseAsync(resourceGroupName, privateCloudName, segmentId, properties, context);
+            = updateSegmentsWithResponseAsync(resourceGroupName, privateCloudName, segmentId, properties, context);
         return this.client.<WorkloadNetworkSegmentInner, WorkloadNetworkSegmentInner>getLroResult(mono,
             this.client.getHttpPipeline(), WorkloadNetworkSegmentInner.class, WorkloadNetworkSegmentInner.class,
             context);
@@ -1549,9 +1549,10 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegment(
+    public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties) {
-        return this.beginUpdateSegmentAsync(resourceGroupName, privateCloudName, segmentId, properties).getSyncPoller();
+        return this.beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, properties)
+            .getSyncPoller();
     }
 
     /**
@@ -1568,10 +1569,10 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegment(
+    public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties,
         Context context) {
-        return this.beginUpdateSegmentAsync(resourceGroupName, privateCloudName, segmentId, properties, context)
+        return this.beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, properties, context)
             .getSyncPoller();
     }
 
@@ -1588,9 +1589,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadNetworkSegmentInner> updateSegmentAsync(String resourceGroupName, String privateCloudName,
+    private Mono<WorkloadNetworkSegmentInner> updateSegmentsAsync(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner properties) {
-        return beginUpdateSegmentAsync(resourceGroupName, privateCloudName, segmentId, properties).last()
+        return beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1608,9 +1609,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadNetworkSegmentInner> updateSegmentAsync(String resourceGroupName, String privateCloudName,
+    private Mono<WorkloadNetworkSegmentInner> updateSegmentsAsync(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner properties, Context context) {
-        return beginUpdateSegmentAsync(resourceGroupName, privateCloudName, segmentId, properties, context).last()
+        return beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1627,9 +1628,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadNetworkSegmentInner updateSegment(String resourceGroupName, String privateCloudName,
+    public WorkloadNetworkSegmentInner updateSegments(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner properties) {
-        return updateSegmentAsync(resourceGroupName, privateCloudName, segmentId, properties).block();
+        return updateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, properties).block();
     }
 
     /**
@@ -1646,9 +1647,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadNetworkSegmentInner updateSegment(String resourceGroupName, String privateCloudName,
+    public WorkloadNetworkSegmentInner updateSegments(String resourceGroupName, String privateCloudName,
         String segmentId, WorkloadNetworkSegmentInner properties, Context context) {
-        return updateSegmentAsync(resourceGroupName, privateCloudName, segmentId, properties, context).block();
+        return updateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, properties, context).block();
     }
 
     /**
@@ -7786,7 +7787,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return a WorkloadNetworkPublicIP along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIPWithResponseAsync(String resourceGroupName,
+    private Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIpWithResponseAsync(String resourceGroupName,
         String privateCloudName, String publicIPId) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -7809,7 +7810,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getPublicIP(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.getPublicIp(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, publicIPId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -7827,7 +7828,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return a WorkloadNetworkPublicIP along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIPWithResponseAsync(String resourceGroupName,
+    private Mono<Response<WorkloadNetworkPublicIpInner>> getPublicIpWithResponseAsync(String resourceGroupName,
         String privateCloudName, String publicIPId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -7850,7 +7851,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getPublicIP(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.getPublicIp(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, publicIPId, accept, context);
     }
 
@@ -7866,9 +7867,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return a WorkloadNetworkPublicIP on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadNetworkPublicIpInner> getPublicIPAsync(String resourceGroupName, String privateCloudName,
+    private Mono<WorkloadNetworkPublicIpInner> getPublicIpAsync(String resourceGroupName, String privateCloudName,
         String publicIPId) {
-        return getPublicIPWithResponseAsync(resourceGroupName, privateCloudName, publicIPId)
+        return getPublicIpWithResponseAsync(resourceGroupName, privateCloudName, publicIPId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -7885,9 +7886,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return a WorkloadNetworkPublicIP along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadNetworkPublicIpInner> getPublicIPWithResponse(String resourceGroupName,
+    public Response<WorkloadNetworkPublicIpInner> getPublicIpWithResponse(String resourceGroupName,
         String privateCloudName, String publicIPId, Context context) {
-        return getPublicIPWithResponseAsync(resourceGroupName, privateCloudName, publicIPId, context).block();
+        return getPublicIpWithResponseAsync(resourceGroupName, privateCloudName, publicIPId, context).block();
     }
 
     /**
@@ -7902,9 +7903,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return a WorkloadNetworkPublicIP.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadNetworkPublicIpInner getPublicIP(String resourceGroupName, String privateCloudName,
+    public WorkloadNetworkPublicIpInner getPublicIp(String resourceGroupName, String privateCloudName,
         String publicIPId) {
-        return getPublicIPWithResponse(resourceGroupName, privateCloudName, publicIPId, Context.NONE).getValue();
+        return getPublicIpWithResponse(resourceGroupName, privateCloudName, publicIPId, Context.NONE).getValue();
     }
 
     /**
@@ -7920,7 +7921,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Public IP Block along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createPublicIPWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createPublicIpWithResponseAsync(String resourceGroupName,
         String privateCloudName, String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIP) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -7949,7 +7950,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createPublicIP(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.createPublicIp(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, publicIPId, accept,
                 workloadNetworkPublicIP, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -7969,7 +7970,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Public IP Block along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createPublicIPWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createPublicIpWithResponseAsync(String resourceGroupName,
         String privateCloudName, String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIP,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -7999,7 +8000,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createPublicIP(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createPublicIp(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, privateCloudName, publicIPId, accept,
             workloadNetworkPublicIP, context);
     }
@@ -8017,11 +8018,11 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link PollerFlux} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIPAsync(
+    private PollerFlux<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIpAsync(
         String resourceGroupName, String privateCloudName, String publicIPId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIP) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createPublicIPWithResponseAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP);
+            = createPublicIpWithResponseAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP);
         return this.client.<WorkloadNetworkPublicIpInner, WorkloadNetworkPublicIpInner>getLroResult(mono,
             this.client.getHttpPipeline(), WorkloadNetworkPublicIpInner.class, WorkloadNetworkPublicIpInner.class,
             this.client.getContext());
@@ -8041,11 +8042,11 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link PollerFlux} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIPAsync(
+    private PollerFlux<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIpAsync(
         String resourceGroupName, String privateCloudName, String publicIPId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIP, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createPublicIPWithResponseAsync(resourceGroupName, privateCloudName,
+        Mono<Response<Flux<ByteBuffer>>> mono = createPublicIpWithResponseAsync(resourceGroupName, privateCloudName,
             publicIPId, workloadNetworkPublicIP, context);
         return this.client.<WorkloadNetworkPublicIpInner, WorkloadNetworkPublicIpInner>getLroResult(mono,
             this.client.getHttpPipeline(), WorkloadNetworkPublicIpInner.class, WorkloadNetworkPublicIpInner.class,
@@ -8065,10 +8066,10 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link SyncPoller} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIP(
+    public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
         String resourceGroupName, String privateCloudName, String publicIPId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIP) {
-        return this.beginCreatePublicIPAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP)
+        return this.beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP)
             .getSyncPoller();
     }
 
@@ -8086,11 +8087,11 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link SyncPoller} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIP(
+    public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
         String resourceGroupName, String privateCloudName, String publicIPId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIP, Context context) {
         return this
-            .beginCreatePublicIPAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP, context)
+            .beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP, context)
             .getSyncPoller();
     }
 
@@ -8107,9 +8108,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Public IP Block on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadNetworkPublicIpInner> createPublicIPAsync(String resourceGroupName, String privateCloudName,
+    private Mono<WorkloadNetworkPublicIpInner> createPublicIpAsync(String resourceGroupName, String privateCloudName,
         String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIP) {
-        return beginCreatePublicIPAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP).last()
+        return beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -8127,9 +8128,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Public IP Block on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadNetworkPublicIpInner> createPublicIPAsync(String resourceGroupName, String privateCloudName,
+    private Mono<WorkloadNetworkPublicIpInner> createPublicIpAsync(String resourceGroupName, String privateCloudName,
         String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIP, Context context) {
-        return beginCreatePublicIPAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP,
+        return beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP,
             context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -8146,9 +8147,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadNetworkPublicIpInner createPublicIP(String resourceGroupName, String privateCloudName,
+    public WorkloadNetworkPublicIpInner createPublicIp(String resourceGroupName, String privateCloudName,
         String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIP) {
-        return createPublicIPAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP).block();
+        return createPublicIpAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP).block();
     }
 
     /**
@@ -8165,9 +8166,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadNetworkPublicIpInner createPublicIP(String resourceGroupName, String privateCloudName,
+    public WorkloadNetworkPublicIpInner createPublicIp(String resourceGroupName, String privateCloudName,
         String publicIPId, WorkloadNetworkPublicIpInner workloadNetworkPublicIP, Context context) {
-        return createPublicIPAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP, context)
+        return createPublicIpAsync(resourceGroupName, privateCloudName, publicIPId, workloadNetworkPublicIP, context)
             .block();
     }
 
@@ -8183,7 +8184,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deletePublicIPWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deletePublicIpWithResponseAsync(String resourceGroupName,
         String publicIPId, String privateCloudName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -8206,7 +8207,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deletePublicIP(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.deletePublicIp(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, publicIPId, privateCloudName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -8224,7 +8225,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deletePublicIPWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deletePublicIpWithResponseAsync(String resourceGroupName,
         String publicIPId, String privateCloudName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -8247,7 +8248,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deletePublicIP(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.deletePublicIp(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, publicIPId, privateCloudName, accept, context);
     }
 
@@ -8263,10 +8264,10 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeletePublicIPAsync(String resourceGroupName, String publicIPId,
+    private PollerFlux<PollResult<Void>, Void> beginDeletePublicIpAsync(String resourceGroupName, String publicIPId,
         String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deletePublicIPWithResponseAsync(resourceGroupName, publicIPId, privateCloudName);
+            = deletePublicIpWithResponseAsync(resourceGroupName, publicIPId, privateCloudName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -8284,11 +8285,11 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeletePublicIPAsync(String resourceGroupName, String publicIPId,
+    private PollerFlux<PollResult<Void>, Void> beginDeletePublicIpAsync(String resourceGroupName, String publicIPId,
         String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deletePublicIPWithResponseAsync(resourceGroupName, publicIPId, privateCloudName, context);
+            = deletePublicIpWithResponseAsync(resourceGroupName, publicIPId, privateCloudName, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -8305,9 +8306,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeletePublicIP(String resourceGroupName, String publicIPId,
+    public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(String resourceGroupName, String publicIPId,
         String privateCloudName) {
-        return this.beginDeletePublicIPAsync(resourceGroupName, publicIPId, privateCloudName).getSyncPoller();
+        return this.beginDeletePublicIpAsync(resourceGroupName, publicIPId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -8323,9 +8324,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDeletePublicIP(String resourceGroupName, String publicIPId,
+    public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(String resourceGroupName, String publicIPId,
         String privateCloudName, Context context) {
-        return this.beginDeletePublicIPAsync(resourceGroupName, publicIPId, privateCloudName, context).getSyncPoller();
+        return this.beginDeletePublicIpAsync(resourceGroupName, publicIPId, privateCloudName, context).getSyncPoller();
     }
 
     /**
@@ -8340,8 +8341,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deletePublicIPAsync(String resourceGroupName, String publicIPId, String privateCloudName) {
-        return beginDeletePublicIPAsync(resourceGroupName, publicIPId, privateCloudName).last()
+    private Mono<Void> deletePublicIpAsync(String resourceGroupName, String publicIPId, String privateCloudName) {
+        return beginDeletePublicIpAsync(resourceGroupName, publicIPId, privateCloudName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -8358,9 +8359,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deletePublicIPAsync(String resourceGroupName, String publicIPId, String privateCloudName,
+    private Mono<Void> deletePublicIpAsync(String resourceGroupName, String publicIPId, String privateCloudName,
         Context context) {
-        return beginDeletePublicIPAsync(resourceGroupName, publicIPId, privateCloudName, context).last()
+        return beginDeletePublicIpAsync(resourceGroupName, publicIPId, privateCloudName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -8375,8 +8376,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deletePublicIP(String resourceGroupName, String publicIPId, String privateCloudName) {
-        deletePublicIPAsync(resourceGroupName, publicIPId, privateCloudName).block();
+    public void deletePublicIp(String resourceGroupName, String publicIPId, String privateCloudName) {
+        deletePublicIpAsync(resourceGroupName, publicIPId, privateCloudName).block();
     }
 
     /**
@@ -8391,8 +8392,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deletePublicIP(String resourceGroupName, String publicIPId, String privateCloudName, Context context) {
-        deletePublicIPAsync(resourceGroupName, publicIPId, privateCloudName, context).block();
+    public void deletePublicIp(String resourceGroupName, String publicIPId, String privateCloudName, Context context) {
+        deletePublicIpAsync(resourceGroupName, publicIPId, privateCloudName, context).block();
     }
 
     /**

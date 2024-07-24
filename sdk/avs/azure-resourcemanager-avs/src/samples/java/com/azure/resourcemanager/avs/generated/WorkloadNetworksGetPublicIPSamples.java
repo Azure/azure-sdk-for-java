@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.avs.generated;
 
 /**
- * Samples for WorkloadNetworks GetPublicIP.
+ * Samples for WorkloadNetworks GetPublicIp.
  */
-public final class WorkloadNetworksGetPublicIPSamples {
+public final class WorkloadNetworksGetPublicIpSamples {
     /*
      * x-ms-original-file:
      * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_GetPublicIP.json
@@ -19,6 +19,6 @@ public final class WorkloadNetworksGetPublicIPSamples {
      */
     public static void workloadNetworksGetPublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getPublicIPWithResponse("group1", "cloud1", "publicIP1", com.azure.core.util.Context.NONE);
+            .getPublicIpWithResponse("group1", "cloud1", "publicIP1", com.azure.core.util.Context.NONE);
     }
 }

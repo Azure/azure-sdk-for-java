@@ -692,7 +692,7 @@ public interface WorkloadNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a WorkloadNetworkPublicIP along with {@link Response}.
      */
-    Response<WorkloadNetworkPublicIp> getPublicIPWithResponse(String resourceGroupName, String privateCloudName,
+    Response<WorkloadNetworkPublicIp> getPublicIpWithResponse(String resourceGroupName, String privateCloudName,
         String publicIPId, Context context);
 
     /**
@@ -706,7 +706,7 @@ public interface WorkloadNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a WorkloadNetworkPublicIP.
      */
-    WorkloadNetworkPublicIp getPublicIP(String resourceGroupName, String privateCloudName, String publicIPId);
+    WorkloadNetworkPublicIp getPublicIp(String resourceGroupName, String privateCloudName, String publicIPId);
 
     /**
      * Delete a WorkloadNetworkPublicIP.
@@ -718,7 +718,7 @@ public interface WorkloadNetworks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deletePublicIP(String resourceGroupName, String publicIPId, String privateCloudName);
+    void deletePublicIp(String resourceGroupName, String publicIPId, String privateCloudName);
 
     /**
      * Delete a WorkloadNetworkPublicIP.
@@ -731,7 +731,7 @@ public interface WorkloadNetworks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deletePublicIP(String resourceGroupName, String publicIPId, String privateCloudName, Context context);
+    void deletePublicIp(String resourceGroupName, String publicIPId, String privateCloudName, Context context);
 
     /**
      * Get a WorkloadNetworkSegment.
@@ -880,7 +880,7 @@ public interface WorkloadNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a WorkloadNetworkPublicIP along with {@link Response}.
      */
-    WorkloadNetworkPublicIp getPublicIPById(String id);
+    WorkloadNetworkPublicIp getPublicIpById(String id);
 
     /**
      * Get a WorkloadNetworkPublicIP.
@@ -892,7 +892,7 @@ public interface WorkloadNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a WorkloadNetworkPublicIP along with {@link Response}.
      */
-    Response<WorkloadNetworkPublicIp> getPublicIPByIdWithResponse(String id, Context context);
+    Response<WorkloadNetworkPublicIp> getPublicIpByIdWithResponse(String id, Context context);
 
     /**
      * Delete a WorkloadNetworkSegment.
@@ -1028,7 +1028,7 @@ public interface WorkloadNetworks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deletePublicIPById(String id);
+    void deletePublicIpById(String id);
 
     /**
      * Delete a WorkloadNetworkPublicIP.
@@ -1039,7 +1039,7 @@ public interface WorkloadNetworks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deletePublicIPByIdWithResponse(String id, Context context);
+    void deletePublicIpByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new WorkloadNetworkSegment resource.
@@ -1047,7 +1047,7 @@ public interface WorkloadNetworks {
      * @param name resource name.
      * @return the first stage of the new WorkloadNetworkSegment definition.
      */
-    WorkloadNetworkSegment.DefinitionStages.Blank defineSegment(String name);
+    WorkloadNetworkSegment.DefinitionStages.Blank defineSegments(String name);
 
     /**
      * Begins definition for a new WorkloadNetworkDhcp resource.
@@ -1095,5 +1095,5 @@ public interface WorkloadNetworks {
      * @param name resource name.
      * @return the first stage of the new WorkloadNetworkPublicIp definition.
      */
-    WorkloadNetworkPublicIp.DefinitionStages.Blank definePublicIP(String name);
+    WorkloadNetworkPublicIp.DefinitionStages.Blank definePublicIp(String name);
 }

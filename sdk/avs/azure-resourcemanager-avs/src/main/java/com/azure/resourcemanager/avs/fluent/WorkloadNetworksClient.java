@@ -151,7 +151,7 @@ public interface WorkloadNetworksClient {
      * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegment(
+    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment);
 
@@ -169,7 +169,7 @@ public interface WorkloadNetworksClient {
      * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegment(
+    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
         String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment, Context context);
 
@@ -186,7 +186,7 @@ public interface WorkloadNetworksClient {
      * @return nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadNetworkSegmentInner createSegment(String resourceGroupName, String privateCloudName, String segmentId,
+    WorkloadNetworkSegmentInner createSegments(String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment);
 
     /**
@@ -203,7 +203,7 @@ public interface WorkloadNetworksClient {
      * @return nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadNetworkSegmentInner createSegment(String resourceGroupName, String privateCloudName, String segmentId,
+    WorkloadNetworkSegmentInner createSegments(String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment, Context context);
 
     /**
@@ -219,7 +219,7 @@ public interface WorkloadNetworksClient {
      * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegment(
+    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties);
 
     /**
@@ -236,7 +236,7 @@ public interface WorkloadNetworksClient {
      * @return the {@link SyncPoller} for polling of nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegment(
+    SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName, String privateCloudName, String segmentId, WorkloadNetworkSegmentInner properties,
         Context context);
 
@@ -253,7 +253,7 @@ public interface WorkloadNetworksClient {
      * @return nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadNetworkSegmentInner updateSegment(String resourceGroupName, String privateCloudName, String segmentId,
+    WorkloadNetworkSegmentInner updateSegments(String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner properties);
 
     /**
@@ -270,7 +270,7 @@ public interface WorkloadNetworksClient {
      * @return nSX Segment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadNetworkSegmentInner updateSegment(String resourceGroupName, String privateCloudName, String segmentId,
+    WorkloadNetworkSegmentInner updateSegments(String resourceGroupName, String privateCloudName, String segmentId,
         WorkloadNetworkSegmentInner properties, Context context);
 
     /**
@@ -1757,7 +1757,7 @@ public interface WorkloadNetworksClient {
      * @return a WorkloadNetworkPublicIP along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkloadNetworkPublicIpInner> getPublicIPWithResponse(String resourceGroupName, String privateCloudName,
+    Response<WorkloadNetworkPublicIpInner> getPublicIpWithResponse(String resourceGroupName, String privateCloudName,
         String publicIPId, Context context);
 
     /**
@@ -1772,7 +1772,7 @@ public interface WorkloadNetworksClient {
      * @return a WorkloadNetworkPublicIP.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadNetworkPublicIpInner getPublicIP(String resourceGroupName, String privateCloudName, String publicIPId);
+    WorkloadNetworkPublicIpInner getPublicIp(String resourceGroupName, String privateCloudName, String publicIPId);
 
     /**
      * Create a WorkloadNetworkPublicIP.
@@ -1787,7 +1787,7 @@ public interface WorkloadNetworksClient {
      * @return the {@link SyncPoller} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIP(
+    SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
         String resourceGroupName, String privateCloudName, String publicIPId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIP);
 
@@ -1805,7 +1805,7 @@ public interface WorkloadNetworksClient {
      * @return the {@link SyncPoller} for polling of nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIP(
+    SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
         String resourceGroupName, String privateCloudName, String publicIPId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIP, Context context);
 
@@ -1822,7 +1822,7 @@ public interface WorkloadNetworksClient {
      * @return nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadNetworkPublicIpInner createPublicIP(String resourceGroupName, String privateCloudName, String publicIPId,
+    WorkloadNetworkPublicIpInner createPublicIp(String resourceGroupName, String privateCloudName, String publicIPId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIP);
 
     /**
@@ -1839,7 +1839,7 @@ public interface WorkloadNetworksClient {
      * @return nSX Public IP Block.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadNetworkPublicIpInner createPublicIP(String resourceGroupName, String privateCloudName, String publicIPId,
+    WorkloadNetworkPublicIpInner createPublicIp(String resourceGroupName, String privateCloudName, String publicIPId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIP, Context context);
 
     /**
@@ -1854,7 +1854,7 @@ public interface WorkloadNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeletePublicIP(String resourceGroupName, String publicIPId,
+    SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(String resourceGroupName, String publicIPId,
         String privateCloudName);
 
     /**
@@ -1870,7 +1870,7 @@ public interface WorkloadNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeletePublicIP(String resourceGroupName, String publicIPId,
+    SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(String resourceGroupName, String publicIPId,
         String privateCloudName, Context context);
 
     /**
@@ -1884,7 +1884,7 @@ public interface WorkloadNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deletePublicIP(String resourceGroupName, String publicIPId, String privateCloudName);
+    void deletePublicIp(String resourceGroupName, String publicIPId, String privateCloudName);
 
     /**
      * Delete a WorkloadNetworkPublicIP.
@@ -1898,5 +1898,5 @@ public interface WorkloadNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deletePublicIP(String resourceGroupName, String publicIPId, String privateCloudName, Context context);
+    void deletePublicIp(String resourceGroupName, String publicIPId, String privateCloudName, Context context);
 }

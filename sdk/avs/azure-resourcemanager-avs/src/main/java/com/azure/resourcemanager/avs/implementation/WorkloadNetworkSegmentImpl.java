@@ -97,14 +97,14 @@ public final class WorkloadNetworkSegmentImpl
     public WorkloadNetworkSegment create() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createSegment(resourceGroupName, privateCloudName, segmentId, this.innerModel(), Context.NONE);
+            .createSegments(resourceGroupName, privateCloudName, segmentId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkSegment create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .createSegment(resourceGroupName, privateCloudName, segmentId, this.innerModel(), context);
+            .createSegments(resourceGroupName, privateCloudName, segmentId, this.innerModel(), context);
         return this;
     }
 
@@ -121,14 +121,14 @@ public final class WorkloadNetworkSegmentImpl
     public WorkloadNetworkSegment apply() {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateSegment(resourceGroupName, privateCloudName, segmentId, this.innerModel(), Context.NONE);
+            .updateSegments(resourceGroupName, privateCloudName, segmentId, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadNetworkSegment apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getWorkloadNetworks()
-            .updateSegment(resourceGroupName, privateCloudName, segmentId, this.innerModel(), context);
+            .updateSegments(resourceGroupName, privateCloudName, segmentId, this.innerModel(), context);
         return this;
     }
 

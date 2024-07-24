@@ -17,9 +17,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class WorkloadNetworksGetPublicIPWithResponseMockTests {
+public final class WorkloadNetworksGetPublicIpWithResponseMockTests {
     @Test
-    public void testGetPublicIPWithResponse() throws Exception {
+    public void testGetPublicIpWithResponse() throws Exception {
         String responseStr
             = "{\"properties\":{\"displayName\":\"dcdab\",\"numberOfPublicIPs\":8090697821679343432,\"publicIPBlock\":\"yawbzasqbu\",\"provisioningState\":\"Updating\"},\"id\":\"kyexaoguyaipi\",\"name\":\"sdaultxij\",\"type\":\"um\"}";
 
@@ -31,7 +31,7 @@ public final class WorkloadNetworksGetPublicIPWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPublicIp response = manager.workloadNetworks()
-            .getPublicIPWithResponse("ex", "kmfx", "pjwogqqno", com.azure.core.util.Context.NONE)
+            .getPublicIpWithResponse("ex", "kmfx", "pjwogqqno", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals("dcdab", response.displayName());

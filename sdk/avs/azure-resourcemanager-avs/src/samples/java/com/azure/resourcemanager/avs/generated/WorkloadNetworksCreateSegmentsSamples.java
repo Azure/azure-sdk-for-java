@@ -8,9 +8,9 @@ import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentSubnet;
 import java.util.Arrays;
 
 /**
- * Samples for WorkloadNetworks CreateSegment.
+ * Samples for WorkloadNetworks CreateSegments.
  */
-public final class WorkloadNetworksCreateSegmentSamples {
+public final class WorkloadNetworksCreateSegmentsSamples {
     /*
      * x-ms-original-file:
      * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreateSegments.json
@@ -22,7 +22,7 @@ public final class WorkloadNetworksCreateSegmentSamples {
      */
     public static void workloadNetworksCreateSegments(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .defineSegment("segment1")
+            .defineSegments("segment1")
             .withExistingPrivateCloud("group1", "cloud1")
             .withDisplayName("segment1")
             .withConnectedGateway("/infra/tier-1s/gateway")

@@ -7,9 +7,9 @@ package com.azure.resourcemanager.avs.generated;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
 
 /**
- * Samples for WorkloadNetworks UpdateSegment.
+ * Samples for WorkloadNetworks UpdateSegments.
  */
-public final class WorkloadNetworksUpdateSegmentSamples {
+public final class WorkloadNetworksUpdateSegmentsSamples {
     /*
      * x-ms-original-file:
      * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_UpdateSegments.json

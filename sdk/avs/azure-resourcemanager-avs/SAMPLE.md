@@ -118,14 +118,14 @@
 - [CreateDnsService](#workloadnetworks_creatednsservice)
 - [CreateDnsZone](#workloadnetworks_creatednszone)
 - [CreatePortMirroring](#workloadnetworks_createportmirroring)
-- [CreatePublicIP](#workloadnetworks_createpublicip)
-- [CreateSegment](#workloadnetworks_createsegment)
+- [CreatePublicIp](#workloadnetworks_createpublicip)
+- [CreateSegments](#workloadnetworks_createsegments)
 - [CreateVMGroup](#workloadnetworks_createvmgroup)
 - [DeleteDhcp](#workloadnetworks_deletedhcp)
 - [DeleteDnsService](#workloadnetworks_deletednsservice)
 - [DeleteDnsZone](#workloadnetworks_deletednszone)
 - [DeletePortMirroring](#workloadnetworks_deleteportmirroring)
-- [DeletePublicIP](#workloadnetworks_deletepublicip)
+- [DeletePublicIp](#workloadnetworks_deletepublicip)
 - [DeleteSegment](#workloadnetworks_deletesegment)
 - [DeleteVMGroup](#workloadnetworks_deletevmgroup)
 - [Get](#workloadnetworks_get)
@@ -134,7 +134,7 @@
 - [GetDnsZone](#workloadnetworks_getdnszone)
 - [GetGateway](#workloadnetworks_getgateway)
 - [GetPortMirroring](#workloadnetworks_getportmirroring)
-- [GetPublicIP](#workloadnetworks_getpublicip)
+- [GetPublicIp](#workloadnetworks_getpublicip)
 - [GetSegment](#workloadnetworks_getsegment)
 - [GetVMGroup](#workloadnetworks_getvmgroup)
 - [GetVirtualMachine](#workloadnetworks_getvirtualmachine)
@@ -152,7 +152,7 @@
 - [UpdateDnsService](#workloadnetworks_updatednsservice)
 - [UpdateDnsZone](#workloadnetworks_updatednszone)
 - [UpdatePortMirroring](#workloadnetworks_updateportmirroring)
-- [UpdateSegment](#workloadnetworks_updatesegment)
+- [UpdateSegments](#workloadnetworks_updatesegments)
 - [UpdateVMGroup](#workloadnetworks_updatevmgroup)
 ### Addons_CreateOrUpdate
 
@@ -1795,13 +1795,13 @@ public final class WorkloadNetworksCreatePortMirroringSamples {
 }
 ```
 
-### WorkloadNetworks_CreatePublicIP
+### WorkloadNetworks_CreatePublicIp
 
 ```java
 /**
- * Samples for WorkloadNetworks CreatePublicIP.
+ * Samples for WorkloadNetworks CreatePublicIp.
  */
-public final class WorkloadNetworksCreatePublicIPSamples {
+public final class WorkloadNetworksCreatePublicIpSamples {
     /*
      * x-ms-original-file:
      * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreatePublicIP.json
@@ -1813,7 +1813,7 @@ public final class WorkloadNetworksCreatePublicIPSamples {
      */
     public static void workloadNetworksCreatePublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .definePublicIP("publicIP1")
+            .definePublicIp("publicIP1")
             .withExistingPrivateCloud("group1", "cloud1")
             .withDisplayName("publicIP1")
             .withNumberOfPublicIPs(32L)
@@ -1822,16 +1822,16 @@ public final class WorkloadNetworksCreatePublicIPSamples {
 }
 ```
 
-### WorkloadNetworks_CreateSegment
+### WorkloadNetworks_CreateSegments
 
 ```java
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentSubnet;
 import java.util.Arrays;
 
 /**
- * Samples for WorkloadNetworks CreateSegment.
+ * Samples for WorkloadNetworks CreateSegments.
  */
-public final class WorkloadNetworksCreateSegmentSamples {
+public final class WorkloadNetworksCreateSegmentsSamples {
     /*
      * x-ms-original-file:
      * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_CreateSegments.json
@@ -1843,7 +1843,7 @@ public final class WorkloadNetworksCreateSegmentSamples {
      */
     public static void workloadNetworksCreateSegments(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .defineSegment("segment1")
+            .defineSegments("segment1")
             .withExistingPrivateCloud("group1", "cloud1")
             .withDisplayName("segment1")
             .withConnectedGateway("/infra/tier-1s/gateway")
@@ -1967,13 +1967,13 @@ public final class WorkloadNetworksDeletePortMirroringSamples {
 }
 ```
 
-### WorkloadNetworks_DeletePublicIP
+### WorkloadNetworks_DeletePublicIp
 
 ```java
 /**
- * Samples for WorkloadNetworks DeletePublicIP.
+ * Samples for WorkloadNetworks DeletePublicIp.
  */
-public final class WorkloadNetworksDeletePublicIPSamples {
+public final class WorkloadNetworksDeletePublicIpSamples {
     /*
      * x-ms-original-file:
      * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_DeletePublicIP.json
@@ -1984,7 +1984,7 @@ public final class WorkloadNetworksDeletePublicIPSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeletePublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deletePublicIP("group1", "publicIP1", "cloud1", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().deletePublicIp("group1", "publicIP1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2168,13 +2168,13 @@ public final class WorkloadNetworksGetPortMirroringSamples {
 }
 ```
 
-### WorkloadNetworks_GetPublicIP
+### WorkloadNetworks_GetPublicIp
 
 ```java
 /**
- * Samples for WorkloadNetworks GetPublicIP.
+ * Samples for WorkloadNetworks GetPublicIp.
  */
-public final class WorkloadNetworksGetPublicIPSamples {
+public final class WorkloadNetworksGetPublicIpSamples {
     /*
      * x-ms-original-file:
      * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_GetPublicIP.json
@@ -2186,7 +2186,7 @@ public final class WorkloadNetworksGetPublicIPSamples {
      */
     public static void workloadNetworksGetPublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.workloadNetworks()
-            .getPublicIPWithResponse("group1", "cloud1", "publicIP1", com.azure.core.util.Context.NONE);
+            .getPublicIpWithResponse("group1", "cloud1", "publicIP1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2613,15 +2613,15 @@ public final class WorkloadNetworksUpdatePortMirroringSamples {
 }
 ```
 
-### WorkloadNetworks_UpdateSegment
+### WorkloadNetworks_UpdateSegments
 
 ```java
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
 
 /**
- * Samples for WorkloadNetworks UpdateSegment.
+ * Samples for WorkloadNetworks UpdateSegments.
  */
-public final class WorkloadNetworksUpdateSegmentSamples {
+public final class WorkloadNetworksUpdateSegmentsSamples {
     /*
      * x-ms-original-file:
      * specification/vmware/Microsoft.AVS.Management/examples/2023-09-01/WorkloadNetworks_UpdateSegments.json

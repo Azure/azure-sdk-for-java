@@ -17,9 +17,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class WorkloadNetworksCreatePublicIPMockTests {
+public final class WorkloadNetworksCreatePublicIpMockTests {
     @Test
-    public void testCreatePublicIP() throws Exception {
+    public void testCreatePublicIp() throws Exception {
         String responseStr
             = "{\"properties\":{\"displayName\":\"nfprnjletlxs\",\"numberOfPublicIPs\":8927877098345650470,\"publicIPBlock\":\"ou\",\"provisioningState\":\"Succeeded\"},\"id\":\"owa\",\"name\":\"iynknlq\",\"type\":\"zdvpiw\"}";
 
@@ -31,7 +31,7 @@ public final class WorkloadNetworksCreatePublicIPMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkloadNetworkPublicIp response = manager.workloadNetworks()
-            .definePublicIP("yg")
+            .definePublicIp("yg")
             .withExistingPrivateCloud("hkwfbkgozxwop", "bydpizqaclnapxb")
             .withDisplayName("j")
             .withNumberOfPublicIPs(5251325077784054834L)
