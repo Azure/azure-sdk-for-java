@@ -324,12 +324,10 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
         jsonWriter.writeStringField("seq", this.sequence);
         jsonWriter.writeStringField("iKey", this.instrumentationKey);
         writeMap(this.tags, "tags", jsonWriter, (element) -> {
-            if (element != null) {
-                try {
-                    jsonWriter.writeString(element);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                jsonWriter.writeString(element);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
         jsonWriter.writeJsonField("data", this.data);

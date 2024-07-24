@@ -337,21 +337,17 @@ public final class PageViewPerfData extends MonitorDomain {
         jsonWriter.writeStringField("receivedResponse", this.receivedResponse);
         jsonWriter.writeStringField("domProcessing", this.domProcessing);
         writeMap(this.properties, "properties", jsonWriter, (element) -> {
-            if (element != null) {
-                try {
-                    jsonWriter.writeString(element);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                jsonWriter.writeString(element);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
         writeMap(this.measurements, "measurements", jsonWriter, (element) -> {
-            if (element != null) {
-                try {
-                    jsonWriter.writeDouble(element);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                jsonWriter.writeDouble(element);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
         if (getAdditionalProperties() != null) {

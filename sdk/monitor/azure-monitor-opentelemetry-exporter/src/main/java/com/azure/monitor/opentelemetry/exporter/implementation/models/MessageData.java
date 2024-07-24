@@ -145,21 +145,17 @@ public final class MessageData extends MonitorDomain {
         jsonWriter.writeStringField("message", this.message);
         jsonWriter.writeStringField("severityLevel", this.severityLevel == null ? null : this.severityLevel.toString());
         writeMap(this.properties, "properties", jsonWriter, (element) -> {
-            if (element != null) {
-                try {
-                    jsonWriter.writeString(element);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                jsonWriter.writeString(element);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
         writeMap(this.measurements, "measurements", jsonWriter, (element) -> {
-            if (element != null) {
-                try {
-                    jsonWriter.writeDouble(element);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                jsonWriter.writeDouble(element);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
         if (getAdditionalProperties() != null) {

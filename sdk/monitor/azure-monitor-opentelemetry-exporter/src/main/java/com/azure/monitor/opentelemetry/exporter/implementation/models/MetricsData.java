@@ -96,12 +96,10 @@ public final class MetricsData extends MonitorDomain {
         jsonWriter.writeIntField("ver", getVersion());
         jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
         writeMap(this.properties, "properties", jsonWriter, (element) -> {
-            if (element != null) {
-                try {
-                    jsonWriter.writeString(element);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                jsonWriter.writeString(element);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
         if (getAdditionalProperties() != null) {
