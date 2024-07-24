@@ -103,6 +103,7 @@ class SpringMonitorTest {
         while (!found && System.currentTimeMillis() - start < SECONDS.toMillis(10));
 
         // Log telemetry
+        assertThat(logs.size()).isGreaterThan(0);
         TelemetryItem firstLogTelemetry = logs.get(0);
         MonitorDomain logBaseData = firstLogTelemetry.getData().getBaseData();
         MessageData logData = (MessageData) logBaseData;
@@ -110,6 +111,7 @@ class SpringMonitorTest {
         assertThat(logData.getSeverityLevel()).isEqualTo(SeverityLevel.INFORMATION);
 
         // SQL telemetry
+        assertThat(remoteDependencies.size()).isGreaterThan(0);
         TelemetryItem remoteDependency = remoteDependencies.get(0);
         MonitorDomain remoteBaseData = remoteDependency.getData().getBaseData();
         RemoteDependencyData remoteDependencyData = (RemoteDependencyData) remoteBaseData;
@@ -118,6 +120,7 @@ class SpringMonitorTest {
             .isEqualTo("create table test_table (id bigint not null, primary key (id))");
 
         // HTTP telemetry
+        assertThat(requests.size()).isGreaterThan(0);
         TelemetryItem request = requests.get(0);
         MonitorDomain requestBaseData = request.getData().getBaseData();
         RequestData requestData = (RequestData) requestBaseData;
