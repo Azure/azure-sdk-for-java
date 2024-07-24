@@ -299,6 +299,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
             } finally {
                 this.afterTest();
+                assertThat(this.meterRegistry).isNull();
             }
         }
     }
@@ -372,6 +373,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
             } finally {
                 this.afterTest();
+                assertThat(this.meterRegistry).isNull();
             }
         }
     }
@@ -1019,6 +1021,7 @@ public class ClientMetricsTest extends BatchTestBase {
             );
         } finally {
             this.afterTest();
+            assertThat(this.meterRegistry).isNull();
         }
     }
 
