@@ -361,9 +361,9 @@ cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 cosmos_org.codehaus.mojo:build-helper-maven-plugin;3.5.0
-cosmos_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.15.4
-cosmos_com.fasterxml.jackson.core:jackson-databind;2.15.4
-cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.4
+cosmos_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.15.2
+cosmos_com.fasterxml.jackson.core:jackson-databind;2.15.2
+cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.2
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-1_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
