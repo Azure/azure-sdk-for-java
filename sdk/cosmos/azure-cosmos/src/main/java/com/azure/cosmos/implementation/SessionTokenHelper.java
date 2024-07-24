@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.apachecommons.collections.map.Unmodifiabl
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +23,8 @@ import static com.azure.cosmos.implementation.Utils.ValueHolder;
  * Used internally to provides helper functions to work with session tokens in the Azure Cosmos DB database service.
  */
 public class SessionTokenHelper {
+
+    private static final Logger logger = LoggerFactory.getLogger(SessionTokenHelper.class);
 
     public static void setOriginalSessionToken(RxDocumentServiceRequest request, String originalSessionToken) {
         if (request == null) {
@@ -108,8 +112,11 @@ public class SessionTokenHelper {
                 } else {
                     highestSessionToken = highestSessionToken.merge(parsedSessionToken);
                 }
-
             }
+        }
+
+        if (highestSessionToken == null) {
+            logger.warn("The session token : {} for partition key range id : {} could not be evaluated, the operation will fallback to eventual consistency.", globalSessionToken, partitionKeyRangeId);
         }
 
         return highestSessionToken;
