@@ -49,6 +49,10 @@ public class RequestTimeoutException extends CosmosException {
         this(message, null, null, requestUri);
     }
 
+    public RequestTimeoutException(String message, URI requestUri, int subStatusCode) {
+        this(message, null, null, requestUri, subStatusCode);
+    }
+
     /**
      * Instantiates a new Request timeout exception.
      *
@@ -94,5 +98,15 @@ public class RequestTimeoutException extends CosmosException {
                             URI requestUrl) {
         super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT,
             requestUrl != null ? requestUrl.toString() : null);
+    }
+
+    RequestTimeoutException(String message,
+                            Exception innerException,
+                            HttpHeaders headers,
+                            URI requestUrl,
+                            int subStatusCode) {
+        super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+            requestUrl != null ? requestUrl.toString() : null);
+        BridgeInternal.setSubStatusCode(this, subStatusCode);
     }
 }

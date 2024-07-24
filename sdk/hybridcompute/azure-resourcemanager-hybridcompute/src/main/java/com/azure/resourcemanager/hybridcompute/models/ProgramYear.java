@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ProgramYear extends ExpandableStringEnum<ProgramYear> {
      * @param name a name to look for.
      * @return the corresponding ProgramYear.
      */
-    @JsonCreator
     public static ProgramYear fromString(String name) {
         return fromString(name, ProgramYear.class);
     }

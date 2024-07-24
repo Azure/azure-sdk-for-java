@@ -86,6 +86,11 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
+    public void blobNameNull() {
+        assertThrows(NullPointerException.class, () -> cc.getBlobClient(null));
+    }
+
+    @Test
     public void createAllNull() {
         // Overwrite the existing cc, which has already been created
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());

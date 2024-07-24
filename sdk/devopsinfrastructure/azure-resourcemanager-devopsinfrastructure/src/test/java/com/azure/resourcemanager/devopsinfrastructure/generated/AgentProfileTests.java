@@ -6,19 +6,20 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devopsinfrastructure.models.AgentProfile;
+import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictions;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictionsProfile;
 
 public final class AgentProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentProfile model = BinaryData.fromString(
-            "{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datajwnzlljfmp\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}}")
+            "{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}}")
             .toObject(AgentProfile.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentProfile model = new AgentProfile().withResourcePredictions("datajwnzlljfmp")
+        AgentProfile model = new AgentProfile().withResourcePredictions(new ResourcePredictions())
             .withResourcePredictionsProfile(new ResourcePredictionsProfile());
         model = BinaryData.fromObject(model).toObject(AgentProfile.class);
     }

@@ -12,18 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductFeatureUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductFeatureUpdate model = BinaryData.fromString("{\"name\":\"u\",\"subscriptionStatus\":\"Enable\"}")
-            .toObject(ProductFeatureUpdate.class);
-        Assertions.assertEquals("u", model.name());
+        ProductFeatureUpdate model
+            = BinaryData.fromString("{\"name\":\"oobklftidgfcwq\",\"subscriptionStatus\":\"Enable\"}")
+                .toObject(ProductFeatureUpdate.class);
+        Assertions.assertEquals("oobklftidgfcwq", model.name());
         Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.ENABLE, model.subscriptionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductFeatureUpdate model = new ProductFeatureUpdate().withName("u")
+        ProductFeatureUpdate model = new ProductFeatureUpdate().withName("oobklftidgfcwq")
             .withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate.ENABLE);
         model = BinaryData.fromObject(model).toObject(ProductFeatureUpdate.class);
-        Assertions.assertEquals("u", model.name());
+        Assertions.assertEquals("oobklftidgfcwq", model.name());
         Assertions.assertEquals(LicenseProfileSubscriptionStatusUpdate.ENABLE, model.subscriptionStatus());
     }
 }

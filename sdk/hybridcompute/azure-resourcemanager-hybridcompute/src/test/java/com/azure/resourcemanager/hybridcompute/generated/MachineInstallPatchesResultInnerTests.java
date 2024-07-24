@@ -11,7 +11,7 @@ public final class MachineInstallPatchesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineInstallPatchesResultInner model = BinaryData.fromString(
-            "{\"status\":\"Succeeded\",\"installationActivityId\":\"tslhspkdeem\",\"rebootStatus\":\"Failed\",\"maintenanceWindowExceeded\":true,\"excludedPatchCount\":1437529213,\"notSelectedPatchCount\":375290729,\"pendingPatchCount\":230289658,\"installedPatchCount\":696697077,\"failedPatchCount\":683816537,\"startDateTime\":\"2021-06-04T11:35:51Z\",\"lastModifiedDateTime\":\"2021-09-27T01:04:36Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"Zypper\",\"osType\":\"Windows\"}")
+            "{\"status\":\"Succeeded\",\"installationActivityId\":\"g\",\"rebootStatus\":\"Required\",\"maintenanceWindowExceeded\":true,\"excludedPatchCount\":1436522503,\"notSelectedPatchCount\":2080912340,\"pendingPatchCount\":656621417,\"installedPatchCount\":1326604366,\"failedPatchCount\":2130871697,\"startDateTime\":\"2021-07-05T08:36:14Z\",\"lastModifiedDateTime\":\"2021-05-30T12:28:52Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"YUM\",\"osType\":\"Windows\"}")
             .toObject(MachineInstallPatchesResultInner.class);
     }
 
