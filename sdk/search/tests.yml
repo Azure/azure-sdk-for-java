@@ -10,12 +10,18 @@ extends:
     TimeoutInMinutes: 60
     CloudConfig:
       Preview:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+        ServiceConnection: azure-sdk-tests-preview
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePreviewMsft.json
         Location: 'eastus2euap'
       UsGov:
-        SubscriptionConfiguration: $(sub-config-gov-test-resources)
+        ServiceConnection: usgov_azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzureUsGovMsft.json
       China:
-        SubscriptionConfiguration: $(sub-config-cn-test-resources)
+        ServiceConnection: china_azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzureChinaMsft.json
     EnvVars:
       AZURE_SEARCH_TEST_MODE: Live
     Artifacts:
