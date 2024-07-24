@@ -710,6 +710,8 @@ public class CosmosItemTest extends TestSuiteBase {
                 bumpedUpSessionToken,
                 InternalObjectNode.class);
 
+            fail("Should have hit read session not available error.");
+
         } catch (Exception ex) {
             assertThat(ex instanceof CosmosException).isTrue();
             CosmosException cosmosException = Utils.as(ex, CosmosException.class);
@@ -758,6 +760,8 @@ public class CosmosItemTest extends TestSuiteBase {
                 cosmosItemIdentities,
                 bumpedUpSessionToken,
                 InternalObjectNode.class);
+
+            fail("Should have hit read session not available error.");
 
         } catch (Exception ex) {
             assertThat(ex instanceof CosmosException).isTrue();
@@ -836,6 +840,8 @@ public class CosmosItemTest extends TestSuiteBase {
                 itemIdentities,
                 bumpedUpSessionToken,
                 InternalObjectNode.class);
+
+            fail("Should have hit read session not available error.");
 
         } catch (Exception ex) {
             assertThat(ex instanceof CosmosException).isTrue();
