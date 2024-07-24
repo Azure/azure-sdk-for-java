@@ -74,12 +74,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     private List<DocumentFigure> figures;
 
     /*
-     * Extracted lists.
-     */
-    @Generated
-    private List<DocumentList> lists;
-
-    /*
      * Extracted sections.
      */
     @Generated
@@ -226,16 +220,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     }
 
     /**
-     * Get the lists property: Extracted lists.
-     * 
-     * @return the lists value.
-     */
-    @Generated
-    public List<DocumentList> getLists() {
-        return this.lists;
-    }
-
-    /**
      * Get the sections property: Extracted sections.
      * 
      * @return the sections value.
@@ -312,7 +296,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
         jsonWriter.writeArrayField("paragraphs", this.paragraphs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("figures", this.figures, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("lists", this.lists, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("sections", this.sections, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("keyValuePairs", this.keyValuePairs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("styles", this.styles, (writer, element) -> writer.writeJson(element));
@@ -343,7 +326,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
             List<DocumentParagraph> paragraphs = null;
             List<DocumentTable> tables = null;
             List<DocumentFigure> figures = null;
-            List<DocumentList> lists = null;
             List<DocumentSection> sections = null;
             List<DocumentKeyValuePair> keyValuePairs = null;
             List<DocumentStyle> styles = null;
@@ -372,8 +354,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                     tables = reader.readArray(reader1 -> DocumentTable.fromJson(reader1));
                 } else if ("figures".equals(fieldName)) {
                     figures = reader.readArray(reader1 -> DocumentFigure.fromJson(reader1));
-                } else if ("lists".equals(fieldName)) {
-                    lists = reader.readArray(reader1 -> DocumentList.fromJson(reader1));
                 } else if ("sections".equals(fieldName)) {
                     sections = reader.readArray(reader1 -> DocumentSection.fromJson(reader1));
                 } else if ("keyValuePairs".equals(fieldName)) {
@@ -396,7 +376,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
             deserializedAnalyzeResult.paragraphs = paragraphs;
             deserializedAnalyzeResult.tables = tables;
             deserializedAnalyzeResult.figures = figures;
-            deserializedAnalyzeResult.lists = lists;
             deserializedAnalyzeResult.sections = sections;
             deserializedAnalyzeResult.keyValuePairs = keyValuePairs;
             deserializedAnalyzeResult.styles = styles;

@@ -308,7 +308,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[][] table = new int[][] {{5, 4, 20}, {3, 2, 6}};
+        int[][] table = new int[][] {{5, 4, 20}, {4, 2, 6}};
         Assertions.assertEquals(2, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             int j = 0;

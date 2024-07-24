@@ -105,8 +105,6 @@
     "com.azure.ai.documentintelligence.models.DocumentKeyValuePair": "DocumentIntelligence.DocumentKeyValuePair",
     "com.azure.ai.documentintelligence.models.DocumentLanguage": "DocumentIntelligence.DocumentLanguage",
     "com.azure.ai.documentintelligence.models.DocumentLine": "DocumentIntelligence.DocumentLine",
-    "com.azure.ai.documentintelligence.models.DocumentList": "DocumentIntelligence.DocumentList",
-    "com.azure.ai.documentintelligence.models.DocumentListItem": "DocumentIntelligence.DocumentListItem",
     "com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails": "DocumentIntelligence.DocumentModelBuildOperationDetails",
     "com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails": "DocumentIntelligence.DocumentModelComposeOperationDetails",
     "com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails": "DocumentIntelligence.DocumentModelCopyToOperationDetails",

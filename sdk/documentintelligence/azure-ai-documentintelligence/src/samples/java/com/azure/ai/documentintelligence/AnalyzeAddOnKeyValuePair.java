@@ -47,6 +47,7 @@ public class AnalyzeAddOnKeyValuePair {
                         Arrays.asList(DocumentAnalysisFeature.KEY_VALUE_PAIRS),
                         null,
                         null,
+                        null,
                         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();

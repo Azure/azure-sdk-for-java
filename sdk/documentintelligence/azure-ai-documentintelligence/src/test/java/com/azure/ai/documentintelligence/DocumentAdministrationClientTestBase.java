@@ -83,7 +83,7 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
 
     static void validateResourceInfo(ResourceDetails actualResourceDetails) {
         assertNotNull(actualResourceDetails.getCustomDocumentModels().getLimit());
-        assertNotNull(actualResourceDetails.getCustomNeuralDocumentModelBuilds().getQuota());
+        assertNotNull(actualResourceDetails.getCustomDocumentModels().getCount());
     }
 
     void validateDocumentModelData(DocumentModelDetails actualCustomModel) {
