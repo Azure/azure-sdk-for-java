@@ -21,6 +21,7 @@ public final class AzureJsonHelper {
             return;
         }
         jsonWriter.writeFieldName(fieldName);
+        jsonWriter.writeStartObject();
         for (Map.Entry<String, T> entry : map.entrySet()) {
             T value = entry.getValue();
             if (value == null) {
@@ -29,6 +30,7 @@ public final class AzureJsonHelper {
             jsonWriter.writeFieldName(entry.getKey());
             writeValueCallback.accept(entry.getValue());
         }
+        jsonWriter.writeEndObject();
     }
 
     private AzureJsonHelper() {
