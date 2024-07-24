@@ -1,6 +1,8 @@
 #!/usr/bin/env pwsh
 $ErrorActionPreference='Stop'
 cd $PSScriptRoot
+Write-Host "Shutting down Docker Compose orchestration..."
+docker-compose down
 
 Write-Host "Deleting prior Cosmos DB connectors..."
 rm -rf "$PSScriptRoot/connectors"
@@ -17,7 +19,7 @@ cd $PSScriptRoot/connectors
 git clone https://github.com/confluentinc/kafka-connect-insert-uuid.git insertuuid -q && cd insertuuid
 mvn clean package -DskipTests=true
 copy target\*.jar $PSScriptRoot/connectors
-rm -rf "$PSScriptRoot/src/connectors/insertuuid"
+rm -rf "$PSScriptRoot/connectors/insertuuid"
 cd $PSScriptRoot
 
 Write-Host "Building Cosmos DB Kafka Connect Docker image"
