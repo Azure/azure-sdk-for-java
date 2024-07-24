@@ -457,14 +457,14 @@ final class QuickPulseDataCollector {
         // setting most amount of openTel metrics a user can stream to this. will review if users surpass threshold.
         private final int maxMetricsLimit = 50;
         // setting buffer time for receiving data for a metric before declaring it inactive. (in minutes)
-        private final double metricBufferTime = 5;
+        //private final double metricBufferTime = 5;
 
         public void addMetric(String metricName, double value) {
             OpenTelMetric metric = metrics.get(metricName);
             if (metric == null) {
                 if (metrics.size() <= maxMetricsLimit) {
                     // create new metric and add to metrics map
-                    // (if we have reached the limit, we will not create a new metric and add it to the map
+                    // (if we have reached the limit, we will block the metric from being created
                     metric = new OpenTelMetric(metricName);
                     metric.addDataPoint(value);
                     metrics.putIfAbsent(metricName, metric);
@@ -478,6 +478,23 @@ final class QuickPulseDataCollector {
             ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.OpenTelMetricInfo>> requestedMetrics = quickPulseConfiguration.getMetrics();
             ArrayList<QuickPulseMetrics> processedMetrics = new ArrayList<>();
 
+            for(Map.Entry<String, OpenTelMetric> entry : this.metrics.entrySet()) {
+
+                String key = entry.getKey();
+                OpenTelMetric value = entry.getValue();
+
+                if (requestedMetrics.containsKey(key)) {
+                    for (QuickPulseConfiguration.OpenTelMetricInfo metricInfo : requestedMetrics.get(key)) {
+                        QuickPulseMetrics processedMetric = processMetric(value, metricInfo);
+                        processedMetrics.add(processedMetric);
+                    }
+                }
+            }
+
+            this.clearMetrics();
+            return processedMetrics;
+
+            /*
             Iterator<Map.Entry<String, OpenTelMetric>> iterator = this.metrics.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<String, OpenTelMetric> entry = iterator.next();
@@ -502,6 +519,8 @@ final class QuickPulseDataCollector {
 
             }
             return processedMetrics;
+
+             */
 
         }
 
@@ -533,7 +552,7 @@ final class QuickPulseDataCollector {
         }
 
         public void clearMetrics() {
-            this.metrics = new ConcurrentHashMap<String, OpenTelMetric>();
+            this.metrics.clear();
         }
 
         //for testing
