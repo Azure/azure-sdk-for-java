@@ -11,7 +11,9 @@ import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
  */
 public final class VolumesAuthorizeReplicationSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Volumes_AuthorizeReplication.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Volumes_AuthorizeReplication.
+     * json
      */
     /**
      * Sample code: Volumes_AuthorizeReplication.
