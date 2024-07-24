@@ -8,7 +8,6 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
