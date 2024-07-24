@@ -23,8 +23,11 @@ public final class ReplicaContainerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaContainer model = new ReplicaContainer().withName("isofieypefojyqd").withContainerId("u")
-            .withReady(false).withStarted(true).withRestartCount(1554312221);
+        ReplicaContainer model = new ReplicaContainer().withName("isofieypefojyqd")
+            .withContainerId("u")
+            .withReady(false)
+            .withStarted(true)
+            .withRestartCount(1554312221);
         model = BinaryData.fromObject(model).toObject(ReplicaContainer.class);
         Assertions.assertEquals("isofieypefojyqd", model.name());
         Assertions.assertEquals("u", model.containerId());

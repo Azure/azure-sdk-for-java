@@ -5,18 +5,27 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Storage properties.
  */
 @Fluent
-public final class ConnectedEnvironmentStorageProperties {
+public final class ConnectedEnvironmentStorageProperties
+    implements JsonSerializable<ConnectedEnvironmentStorageProperties> {
     /*
      * Azure file properties
      */
-    @JsonProperty(value = "azureFile")
     private AzureFileProperties azureFile;
+
+    /*
+     * SMB storage properties
+     */
+    private SmbStorage smb;
 
     /**
      * Creates an instance of ConnectedEnvironmentStorageProperties class.
@@ -45,6 +54,26 @@ public final class ConnectedEnvironmentStorageProperties {
     }
 
     /**
+     * Get the smb property: SMB storage properties.
+     * 
+     * @return the smb value.
+     */
+    public SmbStorage smb() {
+        return this.smb;
+    }
+
+    /**
+     * Set the smb property: SMB storage properties.
+     * 
+     * @param smb the smb value to set.
+     * @return the ConnectedEnvironmentStorageProperties object itself.
+     */
+    public ConnectedEnvironmentStorageProperties withSmb(SmbStorage smb) {
+        this.smb = smb;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -53,5 +82,48 @@ public final class ConnectedEnvironmentStorageProperties {
         if (azureFile() != null) {
             azureFile().validate();
         }
+        if (smb() != null) {
+            smb().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("azureFile", this.azureFile);
+        jsonWriter.writeJsonField("smb", this.smb);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectedEnvironmentStorageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectedEnvironmentStorageProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectedEnvironmentStorageProperties.
+     */
+    public static ConnectedEnvironmentStorageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectedEnvironmentStorageProperties deserializedConnectedEnvironmentStorageProperties
+                = new ConnectedEnvironmentStorageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureFile".equals(fieldName)) {
+                    deserializedConnectedEnvironmentStorageProperties.azureFile = AzureFileProperties.fromJson(reader);
+                } else if ("smb".equals(fieldName)) {
+                    deserializedConnectedEnvironmentStorageProperties.smb = SmbStorage.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectedEnvironmentStorageProperties;
+        });
     }
 }

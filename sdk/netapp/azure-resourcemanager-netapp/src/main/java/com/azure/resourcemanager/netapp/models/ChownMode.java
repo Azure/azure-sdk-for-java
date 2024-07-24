@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class ChownMode extends ExpandableStringEnum<ChownMode> {
      * @param name a name to look for.
      * @return the corresponding ChownMode.
      */
-    @JsonCreator
     public static ChownMode fromString(String name) {
         return fromString(name, ChownMode.class);
     }

@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings for retry backoff characteristics.
  */
 @Fluent
-public final class HttpRetryPolicyRetryBackOff {
+public final class HttpRetryPolicyRetryBackOff implements JsonSerializable<HttpRetryPolicyRetryBackOff> {
     /*
      * Initial delay, in milliseconds, before retrying a request
      */
-    @JsonProperty(value = "initialDelayInMilliseconds")
     private Long initialDelayInMilliseconds;
 
     /*
      * Maximum interval, in milliseconds, between retries
      */
-    @JsonProperty(value = "maxIntervalInMilliseconds")
     private Long maxIntervalInMilliseconds;
 
     /**
@@ -76,5 +78,46 @@ public final class HttpRetryPolicyRetryBackOff {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("initialDelayInMilliseconds", this.initialDelayInMilliseconds);
+        jsonWriter.writeNumberField("maxIntervalInMilliseconds", this.maxIntervalInMilliseconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpRetryPolicyRetryBackOff from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpRetryPolicyRetryBackOff if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpRetryPolicyRetryBackOff.
+     */
+    public static HttpRetryPolicyRetryBackOff fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpRetryPolicyRetryBackOff deserializedHttpRetryPolicyRetryBackOff = new HttpRetryPolicyRetryBackOff();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("initialDelayInMilliseconds".equals(fieldName)) {
+                    deserializedHttpRetryPolicyRetryBackOff.initialDelayInMilliseconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("maxIntervalInMilliseconds".equals(fieldName)) {
+                    deserializedHttpRetryPolicyRetryBackOff.maxIntervalInMilliseconds
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpRetryPolicyRetryBackOff;
+        });
     }
 }
