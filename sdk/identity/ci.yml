@@ -72,14 +72,12 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           CalledFromClient: true
-          UseFederatedAuth: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
+          EnvVars:
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests
-              SubscriptionConfigurationFilePaths:
-                - eng/common/TestResources/sub-config/AzurePublicMsft.json
               SubscriptionConfigurations:
                 - $(sub-config-azure-cloud-test-resources)
                 - $(sub-config-identity-test-resources)
