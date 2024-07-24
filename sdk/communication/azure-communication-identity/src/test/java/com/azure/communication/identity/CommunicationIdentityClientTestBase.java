@@ -99,15 +99,10 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
             .endpoint(communicationEndpoint)
             .httpClient(httpClient);
 
-        if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential());
-        } else {
-            builder.credential(getIdentityTestCredential(interceptorManager));
-            if (interceptorManager.isRecordMode()) {
-                builder.addPolicy(interceptorManager.getRecordPolicy());
-            }
+        builder.credential(getIdentityTestCredential(interceptorManager));
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
-
         addTestProxyTestSanitizersAndMatchers(interceptorManager);
         return builder;
     }
