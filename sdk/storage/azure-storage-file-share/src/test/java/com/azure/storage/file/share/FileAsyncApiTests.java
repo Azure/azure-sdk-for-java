@@ -1596,7 +1596,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(aadFileClient.exists())
             .verifyErrorSatisfies(r -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+                assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
             });
     }
 
