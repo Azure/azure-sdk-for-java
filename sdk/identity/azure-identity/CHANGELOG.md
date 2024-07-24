@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bugs in `AzurePowerShellCredential` - Fixed break on Windows related to ordering of parameters, and fixed [#41234](https://github.com/Azure/azure-sdk-for-java/issues/41234)
 
 ### Other Changes
 
