@@ -37,14 +37,11 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         super(options);
 
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
-
-        String connectionString = options.getConnectionString();
-
-        Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
+        String endpoint = options.getEndpointString();
 
         BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilder()
-            .connectionString(connectionString)
-            //.credential(defaultAzureCredential)
+            .credential(defaultAzureCredential)
+            .endpoint(endpoint)
             .httpLogOptions(getLogOptions());
 
         BlobServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();

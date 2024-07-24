@@ -70,6 +70,12 @@
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
       <version>1.0.0-beta.47</version> <!--{x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
     </dependency>
+      <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-identity</artifactId>
+          <version>1.13.1</version>
+          <scope>compile</scope>
+      </dependency>
   </dependencies>
 
   <build>
