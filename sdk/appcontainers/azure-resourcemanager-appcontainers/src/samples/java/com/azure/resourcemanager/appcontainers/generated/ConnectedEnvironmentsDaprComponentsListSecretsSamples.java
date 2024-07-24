@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ConnectedEnvironmentsDaprComponentsListSecretsSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ConnectedEnvironmentsDaprComponents_ListSecrets.json
      */
     /**
@@ -19,7 +19,7 @@ public final class ConnectedEnvironmentsDaprComponentsListSecretsSamples {
      */
     public static void
         listContainerAppsSecrets(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.connectedEnvironmentsDaprComponents().listSecretsWithResponse("examplerg", "myenvironment", "reddog",
-            com.azure.core.util.Context.NONE);
+        manager.connectedEnvironmentsDaprComponents()
+            .listSecretsWithResponse("examplerg", "myenvironment", "reddog", com.azure.core.util.Context.NONE);
     }
 }

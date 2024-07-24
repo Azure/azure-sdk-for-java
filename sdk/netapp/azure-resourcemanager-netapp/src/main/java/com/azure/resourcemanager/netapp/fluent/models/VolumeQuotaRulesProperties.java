@@ -5,39 +5,38 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.ProvisioningState;
 import com.azure.resourcemanager.netapp.models.Type;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Volume Quota Rule properties.
  */
 @Fluent
-public final class VolumeQuotaRulesProperties {
+public final class VolumeQuotaRulesProperties implements JsonSerializable<VolumeQuotaRulesProperties> {
     /*
      * Gets the status of the VolumeQuotaRule at the time the operation was called.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Size of quota
      */
-    @JsonProperty(value = "quotaSizeInKiBs")
     private Long quotaSizeInKiBs;
 
     /*
-     * quotaType
-     * 
      * Type of quota
      */
-    @JsonProperty(value = "quotaType")
     private Type quotaType;
 
     /*
-     * UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’ command for the user or group and SID can be found by running <wmic useraccount where name='user-name' get sid>
+     * UserID/GroupID/SID based on the quota target type. UserID and groupID can be found by running ‘id’ or ‘getent’
+     * command for the user or group and SID can be found by running <wmic useraccount where name='user-name' get sid>
      */
-    @JsonProperty(value = "quotaTarget")
     private String quotaTarget;
 
     /**
@@ -76,9 +75,7 @@ public final class VolumeQuotaRulesProperties {
     }
 
     /**
-     * Get the quotaType property: quotaType
-     * 
-     * Type of quota.
+     * Get the quotaType property: Type of quota.
      * 
      * @return the quotaType value.
      */
@@ -87,9 +84,7 @@ public final class VolumeQuotaRulesProperties {
     }
 
     /**
-     * Set the quotaType property: quotaType
-     * 
-     * Type of quota.
+     * Set the quotaType property: Type of quota.
      * 
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRulesProperties object itself.
@@ -129,5 +124,50 @@ public final class VolumeQuotaRulesProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("quotaSizeInKiBs", this.quotaSizeInKiBs);
+        jsonWriter.writeStringField("quotaType", this.quotaType == null ? null : this.quotaType.toString());
+        jsonWriter.writeStringField("quotaTarget", this.quotaTarget);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeQuotaRulesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeQuotaRulesProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeQuotaRulesProperties.
+     */
+    public static VolumeQuotaRulesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeQuotaRulesProperties deserializedVolumeQuotaRulesProperties = new VolumeQuotaRulesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedVolumeQuotaRulesProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("quotaSizeInKiBs".equals(fieldName)) {
+                    deserializedVolumeQuotaRulesProperties.quotaSizeInKiBs = reader.getNullable(JsonReader::getLong);
+                } else if ("quotaType".equals(fieldName)) {
+                    deserializedVolumeQuotaRulesProperties.quotaType = Type.fromString(reader.getString());
+                } else if ("quotaTarget".equals(fieldName)) {
+                    deserializedVolumeQuotaRulesProperties.quotaTarget = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeQuotaRulesProperties;
+        });
     }
 }

@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Daily Schedule properties.
  */
 @Fluent
-public final class DailySchedule {
+public final class DailySchedule implements JsonSerializable<DailySchedule> {
     /*
      * Daily snapshot count to keep
      */
-    @JsonProperty(value = "snapshotsToKeep")
     private Integer snapshotsToKeep;
 
     /*
      * Indicates which hour in UTC timezone a snapshot should be taken
      */
-    @JsonProperty(value = "hour")
     private Integer hour;
 
     /*
      * Indicates which minute snapshot should be taken
      */
-    @JsonProperty(value = "minute")
     private Integer minute;
 
     /*
      * Resource size in bytes, current storage usage for the volume in bytes
      */
-    @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
     /**
@@ -128,5 +128,50 @@ public final class DailySchedule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("snapshotsToKeep", this.snapshotsToKeep);
+        jsonWriter.writeNumberField("hour", this.hour);
+        jsonWriter.writeNumberField("minute", this.minute);
+        jsonWriter.writeNumberField("usedBytes", this.usedBytes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DailySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DailySchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DailySchedule.
+     */
+    public static DailySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DailySchedule deserializedDailySchedule = new DailySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("snapshotsToKeep".equals(fieldName)) {
+                    deserializedDailySchedule.snapshotsToKeep = reader.getNullable(JsonReader::getInt);
+                } else if ("hour".equals(fieldName)) {
+                    deserializedDailySchedule.hour = reader.getNullable(JsonReader::getInt);
+                } else if ("minute".equals(fieldName)) {
+                    deserializedDailySchedule.minute = reader.getNullable(JsonReader::getInt);
+                } else if ("usedBytes".equals(fieldName)) {
+                    deserializedDailySchedule.usedBytes = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDailySchedule;
+        });
     }
 }

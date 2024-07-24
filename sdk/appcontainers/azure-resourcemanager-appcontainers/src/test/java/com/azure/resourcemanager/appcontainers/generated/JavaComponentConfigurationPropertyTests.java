@@ -12,18 +12,18 @@ public final class JavaComponentConfigurationPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaComponentConfigurationProperty model
-            = BinaryData.fromString("{\"propertyName\":\"ltn\",\"value\":\"dhqoawj\"}")
+            = BinaryData.fromString("{\"propertyName\":\"paseksgb\",\"value\":\"antuygdhgaqipirp\"}")
                 .toObject(JavaComponentConfigurationProperty.class);
-        Assertions.assertEquals("ltn", model.propertyName());
-        Assertions.assertEquals("dhqoawj", model.value());
+        Assertions.assertEquals("paseksgb", model.propertyName());
+        Assertions.assertEquals("antuygdhgaqipirp", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JavaComponentConfigurationProperty model
-            = new JavaComponentConfigurationProperty().withPropertyName("ltn").withValue("dhqoawj");
+            = new JavaComponentConfigurationProperty().withPropertyName("paseksgb").withValue("antuygdhgaqipirp");
         model = BinaryData.fromObject(model).toObject(JavaComponentConfigurationProperty.class);
-        Assertions.assertEquals("ltn", model.propertyName());
-        Assertions.assertEquals("dhqoawj", model.value());
+        Assertions.assertEquals("paseksgb", model.propertyName());
+        Assertions.assertEquals("antuygdhgaqipirp", model.value());
     }
 }

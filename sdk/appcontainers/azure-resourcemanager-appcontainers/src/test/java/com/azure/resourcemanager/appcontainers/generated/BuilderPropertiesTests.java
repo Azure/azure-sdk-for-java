@@ -23,12 +23,14 @@ public final class BuilderPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BuilderProperties model = new BuilderProperties().withEnvironmentId("b").withContainerRegistries(Arrays.asList(
-            new ContainerRegistry().withContainerRegistryServer("dawkzbali").withIdentityResourceId("urqhaka"),
-            new ContainerRegistry().withContainerRegistryServer("hashsfwxosow").withIdentityResourceId("xcug"),
-            new ContainerRegistry().withContainerRegistryServer("cjooxdjebwpucwwf")
-                .withIdentityResourceId("ovbvmeueciv"),
-            new ContainerRegistry().withContainerRegistryServer("hzceuojgjrwjue").withIdentityResourceId("otwmcdyt")));
+        BuilderProperties model = new BuilderProperties().withEnvironmentId("b")
+            .withContainerRegistries(Arrays.asList(
+                new ContainerRegistry().withContainerRegistryServer("dawkzbali").withIdentityResourceId("urqhaka"),
+                new ContainerRegistry().withContainerRegistryServer("hashsfwxosow").withIdentityResourceId("xcug"),
+                new ContainerRegistry().withContainerRegistryServer("cjooxdjebwpucwwf")
+                    .withIdentityResourceId("ovbvmeueciv"),
+                new ContainerRegistry().withContainerRegistryServer("hzceuojgjrwjue")
+                    .withIdentityResourceId("otwmcdyt")));
         model = BinaryData.fromObject(model).toObject(BuilderProperties.class);
         Assertions.assertEquals("b", model.environmentId());
         Assertions.assertEquals("dawkzbali", model.containerRegistries().get(0).containerRegistryServer());

@@ -25,7 +25,7 @@ import java.util.Arrays;
 public final class JobsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_Patch.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Job_Patch.json
      */
     /**
      * Sample code: Patch Container Apps Job.
@@ -34,28 +34,33 @@ public final class JobsUpdateSamples {
      */
     public static void patchContainerAppsJob(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         Job resource = manager.jobs()
-            .getByResourceGroupWithResponse("rg", "testcontainerAppsJob0", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rg", "testcontainerAppsJob0", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
-            .withProperties(
-                new JobPatchPropertiesProperties()
-                    .withConfiguration(
-                        new JobConfiguration().withTriggerType(TriggerType.MANUAL).withReplicaTimeout(10)
-                            .withReplicaRetryLimit(10)
-                            .withManualTriggerConfig(new JobConfigurationManualTriggerConfig()
-                                .withReplicaCompletionCount(1).withParallelism(4)))
-                    .withTemplate(new JobTemplate()
-                        .withInitContainers(Arrays.asList(new InitContainer().withImage("repo/testcontainerAppsJob0:v4")
-                            .withName("testinitcontainerAppsJob0").withCommand(Arrays.asList("/bin/sh"))
-                            .withArgs(Arrays.asList("-c", "while true; do echo hello; sleep 10;done"))
-                            .withResources(new ContainerResources().withCpu(0.2D).withMemory("100Mi"))))
-                        .withContainers(Arrays.asList(
-                            new Container().withImage("repo/testcontainerAppsJob0:v1").withName("testcontainerAppsJob0")
-                                .withProbes(Arrays.asList(new ContainerAppProbe()
-                                    .withHttpGet(new ContainerAppProbeHttpGet()
-                                        .withHttpHeaders(Arrays.asList(new ContainerAppProbeHttpGetHttpHeadersItem()
-                                            .withName("Custom-Header").withValue("Awesome")))
-                                        .withPath("/health").withPort(8080))
-                                    .withInitialDelaySeconds(3).withPeriodSeconds(3).withType(Type.LIVENESS)))))))
+            .withProperties(new JobPatchPropertiesProperties()
+                .withConfiguration(new JobConfiguration().withTriggerType(TriggerType.MANUAL)
+                    .withReplicaTimeout(10)
+                    .withReplicaRetryLimit(10)
+                    .withManualTriggerConfig(
+                        new JobConfigurationManualTriggerConfig().withReplicaCompletionCount(1).withParallelism(4)))
+                .withTemplate(new JobTemplate()
+                    .withInitContainers(Arrays.asList(new InitContainer().withImage("repo/testcontainerAppsJob0:v4")
+                        .withName("testinitcontainerAppsJob0")
+                        .withCommand(Arrays.asList("/bin/sh"))
+                        .withArgs(Arrays.asList("-c", "while true; do echo hello; sleep 10;done"))
+                        .withResources(new ContainerResources().withCpu(0.2D).withMemory("100Mi"))))
+                    .withContainers(Arrays.asList(new Container().withImage("repo/testcontainerAppsJob0:v1")
+                        .withName("testcontainerAppsJob0")
+                        .withProbes(Arrays.asList(new ContainerAppProbe()
+                            .withHttpGet(new ContainerAppProbeHttpGet()
+                                .withHttpHeaders(Arrays
+                                    .asList(new ContainerAppProbeHttpGetHttpHeadersItem().withName("Custom-Header")
+                                        .withValue("Awesome")))
+                                .withPath("/health")
+                                .withPort(8080))
+                            .withInitialDelaySeconds(3)
+                            .withPeriodSeconds(3)
+                            .withType(Type.LIVENESS)))))))
             .apply();
     }
 }

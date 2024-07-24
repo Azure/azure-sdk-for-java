@@ -12,7 +12,16 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -28,7 +37,6 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
-import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
@@ -48,7 +56,6 @@ import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
-import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,7 +97,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     private static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
     private static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
     private static final String API_VERSION = "2021-04-01";
-    private static final TokenCredential CREDENTIAL = new EnvironmentCredentialBuilder().build();
+    private static final TokenCredential CREDENTIAL = getTokenCredential(ENVIRONMENT.getTestMode());
     private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY =
         new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");
     private BlobContainerAsyncClient vlwContainer;
@@ -247,6 +254,43 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 LOGGER.warning(response.getBodyAsString().block());
             }
             assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    public static TokenCredential getTokenCredential(TestMode testMode) {
+        if (testMode == TestMode.RECORD) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else if (testMode == TestMode.LIVE) {
+            Configuration config = Configuration.getGlobalConfiguration();
+
+            ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
+                .addLast(new EnvironmentCredentialBuilder().build())
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId)
+                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+                builder.addLast(new AzurePipelinesCredentialBuilder()
+                    .systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build());
+            }
+
+            builder.addLast(new AzurePowerShellCredentialBuilder().build());
+
+            return builder.build();
+        } else { //playback or not set
+            return new MockTokenCredential();
         }
     }
 
@@ -514,7 +558,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(vlwContainer.getServiceAsyncClient().listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(vlwContainer.getBlobContainerName())))
+                new ListBlobContainersOptions().setPrefix(vlwContainer.getBlobContainerName())))
             .assertNext(r -> assertTrue(r.getProperties().isImmutableStorageWithVersioningEnabled()))
             .verifyComplete();
     }
@@ -646,14 +690,9 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         return Stream.of(Arguments.of(1L), Arguments.of((Long) null));
     }
 
-    // Live mode does not support copy from URL with immutability policy due to public access
-    // Revisit this and remove public access once default credential is enabled
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
-    @PlaybackOnly()
     public void syncCopy() {
-        vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        sleepIfRunningAgainstService(30000); // Give time for the policy to take effect
         BlockBlobAsyncClient destination = vlwContainer.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
@@ -662,7 +701,10 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        destination.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(vlwBlob.getBlobUrl())
+        String sas = vlwBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+
+        destination.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(vlwBlob.getBlobUrl() + "?" + sas)
             .setImmutabilityPolicy(immutabilityPolicy)
             .setLegalHold(true)).block();
 
@@ -673,9 +715,6 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 assertTrue(r.hasLegalHold());
             })
             .verifyComplete();
-
-        // cleanup:
-        vlwContainer.setAccessPolicy(null, null).block();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -691,8 +730,8 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
 
         PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
             destination.beginCopy(new BlobBeginCopyOptions(vlwBlob.getBlobUrl())
-            .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true)));
+                .setImmutabilityPolicy(immutabilityPolicy)
+                .setLegalHold(true)));
         poller.blockLast();
 
         StepVerifier.create(destination.getProperties())

@@ -23,7 +23,7 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":1476688386116323232,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"uahokq\"},\"location\":\"bkau\",\"tags\":{\"phwpnulaiywzej\":\"sh\",\"llndnpd\":\"whslwkoj\"},\"id\":\"rpqaf\",\"name\":\"fugsnnfhyetefy\",\"type\":\"oc\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":4706724990573713348,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"knlqwzdvpiwhxqsz\"},\"location\":\"maajquhuxylr\",\"tags\":{\"jbmzyospspsh\":\"ty\"},\"id\":\"kfkyjp\",\"name\":\"sp\",\"type\":\"pssdfppyogtie\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,12 @@ public final class VolumeQuotaRulesListByVolumeMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VolumeQuotaRule> response = manager.volumeQuotaRules()
-            .listByVolume("ozqvbubqmam", "sycxhxzgaz", "taboidvmf", "hppubowsepdfgkmt",
-                com.azure.core.util.Context.NONE);
+            .listByVolume("w", "auunfprnjletlx", "mr", "ddoui", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bkau", response.iterator().next().location());
-        Assertions.assertEquals("sh", response.iterator().next().tags().get("phwpnulaiywzej"));
-        Assertions.assertEquals(1476688386116323232L, response.iterator().next().quotaSizeInKiBs());
+        Assertions.assertEquals("maajquhuxylr", response.iterator().next().location());
+        Assertions.assertEquals("ty", response.iterator().next().tags().get("jbmzyospspsh"));
+        Assertions.assertEquals(4706724990573713348L, response.iterator().next().quotaSizeInKiBs());
         Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, response.iterator().next().quotaType());
-        Assertions.assertEquals("uahokq", response.iterator().next().quotaTarget());
+        Assertions.assertEquals("knlqwzdvpiwhxqsz", response.iterator().next().quotaTarget());
     }
 }

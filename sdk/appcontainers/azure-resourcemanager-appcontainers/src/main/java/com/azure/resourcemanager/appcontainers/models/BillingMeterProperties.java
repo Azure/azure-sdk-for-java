@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Revision resource specific properties.
  */
 @Fluent
-public final class BillingMeterProperties {
+public final class BillingMeterProperties implements JsonSerializable<BillingMeterProperties> {
     /*
      * Used to categorize billing meters.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * Billing meter type.
      */
-    @JsonProperty(value = "meterType")
     private String meterType;
 
     /*
      * The everyday name of the billing meter.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /**
@@ -102,5 +103,47 @@ public final class BillingMeterProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("meterType", this.meterType);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingMeterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingMeterProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingMeterProperties.
+     */
+    public static BillingMeterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingMeterProperties deserializedBillingMeterProperties = new BillingMeterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedBillingMeterProperties.category = reader.getString();
+                } else if ("meterType".equals(fieldName)) {
+                    deserializedBillingMeterProperties.meterType = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedBillingMeterProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingMeterProperties;
+        });
     }
 }

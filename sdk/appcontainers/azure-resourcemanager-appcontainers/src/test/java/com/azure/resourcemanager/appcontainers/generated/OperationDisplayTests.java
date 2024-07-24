@@ -12,22 +12,24 @@ public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationDisplay model = BinaryData.fromString(
-            "{\"provider\":\"hvsujztc\",\"resource\":\"tqjtwhauu\",\"operation\":\"prnjletlxsmr\",\"description\":\"do\"}")
+            "{\"provider\":\"ufypiv\",\"resource\":\"bbjpmcubkmif\",\"operation\":\"xkubvphavpmhbrbq\",\"description\":\"govpbbtte\"}")
             .toObject(OperationDisplay.class);
-        Assertions.assertEquals("hvsujztc", model.provider());
-        Assertions.assertEquals("tqjtwhauu", model.resource());
-        Assertions.assertEquals("prnjletlxsmr", model.operation());
-        Assertions.assertEquals("do", model.description());
+        Assertions.assertEquals("ufypiv", model.provider());
+        Assertions.assertEquals("bbjpmcubkmif", model.resource());
+        Assertions.assertEquals("xkubvphavpmhbrbq", model.operation());
+        Assertions.assertEquals("govpbbtte", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationDisplay model = new OperationDisplay().withProvider("hvsujztc").withResource("tqjtwhauu")
-            .withOperation("prnjletlxsmr").withDescription("do");
+        OperationDisplay model = new OperationDisplay().withProvider("ufypiv")
+            .withResource("bbjpmcubkmif")
+            .withOperation("xkubvphavpmhbrbq")
+            .withDescription("govpbbtte");
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
-        Assertions.assertEquals("hvsujztc", model.provider());
-        Assertions.assertEquals("tqjtwhauu", model.resource());
-        Assertions.assertEquals("prnjletlxsmr", model.operation());
-        Assertions.assertEquals("do", model.description());
+        Assertions.assertEquals("ufypiv", model.provider());
+        Assertions.assertEquals("bbjpmcubkmif", model.resource());
+        Assertions.assertEquals("xkubvphavpmhbrbq", model.operation());
+        Assertions.assertEquals("govpbbtte", model.description());
     }
 }

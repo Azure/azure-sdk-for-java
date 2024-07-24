@@ -22,7 +22,7 @@ public final class BackupPoliciesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"syrq\",\"properties\":{\"backupPolicyId\":\"jqhden\",\"provisioningState\":\"ulkpakd\",\"dailyBackupsToKeep\":466096532,\"weeklyBackupsToKeep\":2145222324,\"monthlyBackupsToKeep\":211340974,\"volumesAssigned\":641557673,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"xuckpggqoweyir\",\"volumeResourceId\":\"lisn\",\"backupsCount\":351115849,\"policyEnabled\":true},{\"volumeName\":\"mpizru\",\"volumeResourceId\":\"pqxpx\",\"backupsCount\":1760888733,\"policyEnabled\":false},{\"volumeName\":\"jsa\",\"volumeResourceId\":\"iixtmkzj\",\"backupsCount\":671429821,\"policyEnabled\":true},{\"volumeName\":\"hgfgrwsd\",\"volumeResourceId\":\"ra\",\"backupsCount\":202714227,\"policyEnabled\":true}]},\"location\":\"lbyvictctbrxkjzw\",\"tags\":{\"hkwfbkgozxwop\":\"ffm\"},\"id\":\"bydpizqaclnapxb\",\"name\":\"yg\",\"type\":\"ugjknf\"}]}";
+            = "{\"value\":[{\"etag\":\"emxswvruu\",\"properties\":{\"backupPolicyId\":\"zjgehkfkim\",\"provisioningState\":\"ixokffqyin\",\"dailyBackupsToKeep\":758637615,\"weeklyBackupsToKeep\":667642909,\"monthlyBackupsToKeep\":800032229,\"volumesAssigned\":1195081046,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"tshi\",\"volumeResourceId\":\"gvelfc\",\"backupsCount\":666781891,\"policyEnabled\":false},{\"volumeName\":\"irdsvuwcob\",\"volumeResourceId\":\"gstmninwjizciln\",\"backupsCount\":1617896998,\"policyEnabled\":false}]},\"location\":\"jjtbxqmuluxlxqz\",\"tags\":{\"mikzeb\":\"rsbycucrwn\"},\"id\":\"qbsms\",\"name\":\"ziqgfuh\",\"type\":\"kzruswh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class BackupPoliciesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<BackupPolicy> response
-            = manager.backupPolicies().list("nlb", "jkwrusnkq", com.azure.core.util.Context.NONE);
+            = manager.backupPolicies().list("jgicgaao", "pttaqutd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lbyvictctbrxkjzw", response.iterator().next().location());
-        Assertions.assertEquals("ffm", response.iterator().next().tags().get("hkwfbkgozxwop"));
-        Assertions.assertEquals(466096532, response.iterator().next().dailyBackupsToKeep());
-        Assertions.assertEquals(2145222324, response.iterator().next().weeklyBackupsToKeep());
-        Assertions.assertEquals(211340974, response.iterator().next().monthlyBackupsToKeep());
+        Assertions.assertEquals("jjtbxqmuluxlxqz", response.iterator().next().location());
+        Assertions.assertEquals("rsbycucrwn", response.iterator().next().tags().get("mikzeb"));
+        Assertions.assertEquals(758637615, response.iterator().next().dailyBackupsToKeep());
+        Assertions.assertEquals(667642909, response.iterator().next().weeklyBackupsToKeep());
+        Assertions.assertEquals(800032229, response.iterator().next().monthlyBackupsToKeep());
         Assertions.assertEquals(true, response.iterator().next().enabled());
     }
 }

@@ -11,10 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.computefleet.fluent.FleetsClient;
 import com.azure.resourcemanager.computefleet.fluent.models.FleetInner;
-import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineScaleSetListResultInner;
+import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.computefleet.models.Fleet;
 import com.azure.resourcemanager.computefleet.models.Fleets;
-import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetListResult;
+import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSet;
 
 public final class FleetsImpl implements Fleets {
     private static final ClientLogger LOGGER = new ClientLogger(FleetsImpl.class);
@@ -77,26 +77,17 @@ public final class FleetsImpl implements Fleets {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new FleetImpl(inner1, this.manager()));
     }
 
-    public Response<VirtualMachineScaleSetListResult> listVirtualMachineScaleSetsWithResponse(String resourceGroupName,
-        String name, Context context) {
-        Response<VirtualMachineScaleSetListResultInner> inner
-            = this.serviceClient().listVirtualMachineScaleSetsWithResponse(resourceGroupName, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new VirtualMachineScaleSetListResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<VirtualMachineScaleSet> listVirtualMachineScaleSets(String resourceGroupName, String name) {
+        PagedIterable<VirtualMachineScaleSetInner> inner
+            = this.serviceClient().listVirtualMachineScaleSets(resourceGroupName, name);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineScaleSetImpl(inner1, this.manager()));
     }
 
-    public VirtualMachineScaleSetListResult listVirtualMachineScaleSets(String resourceGroupName, String name) {
-        VirtualMachineScaleSetListResultInner inner
-            = this.serviceClient().listVirtualMachineScaleSets(resourceGroupName, name);
-        if (inner != null) {
-            return new VirtualMachineScaleSetListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<VirtualMachineScaleSet> listVirtualMachineScaleSets(String resourceGroupName, String name,
+        Context context) {
+        PagedIterable<VirtualMachineScaleSetInner> inner
+            = this.serviceClient().listVirtualMachineScaleSets(resourceGroupName, name, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VirtualMachineScaleSetImpl(inner1, this.manager()));
     }
 
     public Fleet getById(String id) {

@@ -221,7 +221,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             .getContinuationToken();
 
         Document docToBeDeleted = partitionKeyToDocuments.get(partitionKey).stream().findFirst().get();
-        deleteDocument(client, docToBeDeleted.getSelfLink(), new PartitionKey(partitionKey));
+        deleteDocument(client, docToBeDeleted.getSelfLink(), new PartitionKey(partitionKey), TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
 
         CosmosChangeFeedRequestOptions changeFeedOptionForContinuationAfterDeletes =
             CosmosChangeFeedRequestOptions

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ResourceProviderJobExecutionSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/Job_Execution_Get.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Job_Execution_Get.json
      */
     /**
      * Sample code: Get a single Job Execution.
@@ -18,7 +18,7 @@ public final class ResourceProviderJobExecutionSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void getASingleJobExecution(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.resourceProviders().jobExecutionWithResponse("rg", "testcontainerAppsJob0", "jobExecution1",
-            com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .jobExecutionWithResponse("rg", "testcontainerAppsJob0", "jobExecution1", com.azure.core.util.Context.NONE);
     }
 }
