@@ -37,6 +37,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -1057,10 +1058,12 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
     @Test
     public void oAuthOnSecondary() {
-        BlobServiceAsyncClient serviceClient = setOauthCredentials(getServiceClientBuilder(null,
-            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary())).buildAsyncClient();
+        BlobServiceClientBuilder secondaryBuilder = getServiceClientBuilder(null,
+            ENVIRONMENT.getPrimaryAccount().getBlobEndpointSecondary());
+        BlobServiceAsyncClient secondaryClient = secondaryBuilder
+            .credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
 
-        StepVerifier.create(serviceClient.getProperties())
+        StepVerifier.create(secondaryClient.getProperties())
             .expectNextCount(1)
             .verifyComplete();
     }
