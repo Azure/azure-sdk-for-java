@@ -3,7 +3,7 @@
 ## 1.0.0-beta.26 (2024-07-24)
 
 ### Bugs Fixed
-- [Fix request.success](https://github.com/Azure/azure-sdk-for-java/pull/40599)
+- [Fix pre-aggregated standard HTTP server metric success calculation](https://github.com/Azure/azure-sdk-for-java/pull/40599)
   
 ### Other Changes
 - [Update OpenTelemetry to 1.40.0](https://github.com/Azure/azure-sdk-for-java/pull/39843)
