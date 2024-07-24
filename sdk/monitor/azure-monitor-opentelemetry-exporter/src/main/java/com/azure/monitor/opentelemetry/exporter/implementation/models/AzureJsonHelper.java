@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class AzureJsonHelper<T> {
+public class AzureJsonHelper {
 
     // this method is replacing JsonWriter.writeMapField(), which would generate json attributes with null value.
     // This method is used to write a map to a json writer.
