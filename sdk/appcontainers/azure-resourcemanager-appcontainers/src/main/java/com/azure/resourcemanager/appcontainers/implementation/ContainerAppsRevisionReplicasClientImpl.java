@@ -52,8 +52,8 @@ public final class ContainerAppsRevisionReplicasClientImpl implements ContainerA
     }
 
     /**
-     * The interface defining all the services for ContainerAppsApiClientContainerAppsRevisionReplicas to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for ContainerAppsApiClientContainerAppsRevisionReplicas to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")

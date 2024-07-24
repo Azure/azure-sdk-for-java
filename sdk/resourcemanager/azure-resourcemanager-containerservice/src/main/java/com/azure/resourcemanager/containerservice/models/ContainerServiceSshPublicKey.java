@@ -55,8 +55,9 @@ public final class ContainerServiceSshPublicKey {
      */
     public void validate() {
         if (keyData() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property keyData in model ContainerServiceSshPublicKey"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyData in model ContainerServiceSshPublicKey"));
         }
     }
 

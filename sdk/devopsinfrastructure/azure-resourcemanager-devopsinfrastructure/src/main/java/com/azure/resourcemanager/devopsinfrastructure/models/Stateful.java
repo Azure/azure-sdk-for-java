@@ -93,7 +93,7 @@ public final class Stateful extends AgentProfile {
      * {@inheritDoc}
      */
     @Override
-    public Stateful withResourcePredictions(Object resourcePredictions) {
+    public Stateful withResourcePredictions(ResourcePredictions resourcePredictions) {
         super.withResourcePredictions(resourcePredictions);
         return this;
     }
@@ -123,7 +123,7 @@ public final class Stateful extends AgentProfile {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("resourcePredictions", resourcePredictions());
+        jsonWriter.writeJsonField("resourcePredictions", resourcePredictions());
         jsonWriter.writeJsonField("resourcePredictionsProfile", resourcePredictionsProfile());
         jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeStringField("maxAgentLifetime", this.maxAgentLifetime);
@@ -147,7 +147,7 @@ public final class Stateful extends AgentProfile {
                 reader.nextToken();
 
                 if ("resourcePredictions".equals(fieldName)) {
-                    deserializedStateful.withResourcePredictions(reader.readUntyped());
+                    deserializedStateful.withResourcePredictions(ResourcePredictions.fromJson(reader));
                 } else if ("resourcePredictionsProfile".equals(fieldName)) {
                     deserializedStateful.withResourcePredictionsProfile(ResourcePredictionsProfile.fromJson(reader));
                 } else if ("kind".equals(fieldName)) {

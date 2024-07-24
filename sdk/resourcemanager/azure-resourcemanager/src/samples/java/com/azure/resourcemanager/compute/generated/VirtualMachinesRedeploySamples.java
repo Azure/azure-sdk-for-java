@@ -19,8 +19,11 @@ public final class VirtualMachinesRedeploySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineRedeployMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().redeploy("rgcompute", "aaaaaaaaaaaaaaa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .redeploy("rgcompute", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class VirtualMachinesRedeploySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineRedeployMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().redeploy("rgcompute", "a",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
+            .redeploy("rgcompute", "a", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,45 +5,44 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.AccessRule;
 import com.azure.resourcemanager.hybridcompute.models.ProvisioningIssueSeverity;
 import com.azure.resourcemanager.hybridcompute.models.ProvisioningIssueType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of a provisioning issue.
  */
 @Immutable
-public final class ProvisioningIssueProperties {
+public final class ProvisioningIssueProperties implements JsonSerializable<ProvisioningIssueProperties> {
     /*
      * Issue type
      */
-    @JsonProperty(value = "issueType", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningIssueType issueType;
 
     /*
      * Severity of the provisioning issue.
      */
-    @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningIssueSeverity severity;
 
     /*
      * Description of the provisioning issue.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * ARM Ids of the resources that can be associated to the same perimeter to remediate the issue
      */
-    @JsonProperty(value = "suggestedResourceIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> suggestedResourceIds;
 
     /*
      * Access rules that can be added to the perimeter to remediate the issue
      */
-    @JsonProperty(value = "suggestedAccessRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<AccessRule> suggestedAccessRules;
 
     /**
@@ -107,5 +106,52 @@ public final class ProvisioningIssueProperties {
         if (suggestedAccessRules() != null) {
             suggestedAccessRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProvisioningIssueProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProvisioningIssueProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProvisioningIssueProperties.
+     */
+    public static ProvisioningIssueProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProvisioningIssueProperties deserializedProvisioningIssueProperties = new ProvisioningIssueProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("issueType".equals(fieldName)) {
+                    deserializedProvisioningIssueProperties.issueType
+                        = ProvisioningIssueType.fromString(reader.getString());
+                } else if ("severity".equals(fieldName)) {
+                    deserializedProvisioningIssueProperties.severity
+                        = ProvisioningIssueSeverity.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedProvisioningIssueProperties.description = reader.getString();
+                } else if ("suggestedResourceIds".equals(fieldName)) {
+                    List<String> suggestedResourceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProvisioningIssueProperties.suggestedResourceIds = suggestedResourceIds;
+                } else if ("suggestedAccessRules".equals(fieldName)) {
+                    List<AccessRule> suggestedAccessRules = reader.readArray(reader1 -> AccessRule.fromJson(reader1));
+                    deserializedProvisioningIssueProperties.suggestedAccessRules = suggestedAccessRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProvisioningIssueProperties;
+        });
     }
 }

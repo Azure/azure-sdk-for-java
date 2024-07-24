@@ -60,6 +60,7 @@ public class AddressRepositoryIT {
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
+    @SuppressWarnings("deprecation")
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -87,7 +88,7 @@ public class AddressRepositoryIT {
 
     @Test
     public void testFindById() {
-        // test findById (ID id) cross partition query
+        // test findById (ID id) cross partition
         final Address result = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode()).get();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics().toString().contains("\"requestOperationType\":\"Query\"")).isTrue();
@@ -96,7 +97,7 @@ public class AddressRepositoryIT {
 
     @Test
     public void testFindAll() {
-        // findAll cross partition query
+        // findAll cross partition
         final List<Address> result = TestUtils.toList(repository.findAll());
 
         assertThat(result.size()).isEqualTo(4);

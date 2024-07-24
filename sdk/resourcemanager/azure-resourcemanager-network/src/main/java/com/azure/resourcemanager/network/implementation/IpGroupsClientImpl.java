@@ -39,10 +39,9 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in IpGroupsClient.
@@ -61,7 +60,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Initializes an instance of IpGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IpGroupsClientImpl(NetworkManagementClientImpl client) {
@@ -148,7 +147,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
@@ -176,7 +175,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -186,7 +185,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
@@ -215,7 +214,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, ipGroupsName, apiVersion,
@@ -224,7 +223,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +240,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param expand Expands resourceIds (of Firewalls/Network Security Groups etc.) back referenced by the IpGroups
@@ -260,7 +259,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +275,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -308,7 +307,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, ipGroupsName,
@@ -318,7 +317,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -351,7 +350,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, ipGroupsName, apiVersion,
@@ -360,7 +359,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -380,7 +379,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -402,7 +401,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -419,7 +418,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -437,7 +436,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -455,7 +454,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -474,7 +473,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -490,7 +489,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Creates or updates an ipGroups in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the create or update IpGroups operation.
@@ -508,7 +507,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Updates tags of an IpGroups resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the update ipGroups operation.
@@ -540,7 +539,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateGroups(this.client.getEndpoint(), resourceGroupName, ipGroupsName,
@@ -550,7 +549,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Updates tags of an IpGroups resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the update ipGroups operation.
@@ -583,7 +582,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateGroups(this.client.getEndpoint(), resourceGroupName, ipGroupsName, apiVersion,
@@ -592,7 +591,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Updates tags of an IpGroups resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the update ipGroups operation.
@@ -609,7 +608,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Updates tags of an IpGroups resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the update ipGroups operation.
@@ -627,7 +626,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Updates tags of an IpGroups resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param parameters Parameters supplied to the update ipGroups operation.
@@ -643,7 +642,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,7 +667,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, ipGroupsName,
@@ -678,7 +677,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param context The context to associate with this operation.
@@ -705,7 +704,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, ipGroupsName, apiVersion,
@@ -714,7 +713,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -731,7 +730,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param context The context to associate with this operation.
@@ -751,7 +750,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -766,7 +765,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param context The context to associate with this operation.
@@ -783,7 +782,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -798,7 +797,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param context The context to associate with this operation.
@@ -815,7 +814,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,7 +828,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Deletes the specified ipGroups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
      * @param context The context to associate with this operation.
@@ -844,7 +843,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -866,7 +865,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -878,7 +877,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -902,7 +901,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -914,7 +913,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -929,7 +928,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -945,7 +944,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -959,7 +958,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -974,7 +973,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpGroups in a subscription along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -989,7 +988,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1001,7 +1000,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1018,7 +1017,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-11-01";
+        final String apiVersion = "2024-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1028,7 +1027,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpGroups in a subscription as paginated response with {@link PagedFlux}.
@@ -1040,7 +1039,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1055,7 +1054,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all IpGroups in a subscription as paginated response with {@link PagedIterable}.
@@ -1067,7 +1066,7 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Gets all IpGroups in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1081,10 +1080,8 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1111,10 +1108,8 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1140,10 +1135,8 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1168,10 +1161,8 @@ public final class IpGroupsClientImpl implements InnerSupportsGet<IpGroupInner>,
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.

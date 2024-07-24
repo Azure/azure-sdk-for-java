@@ -7,6 +7,6 @@ module com.azure.analytics.synapse.spark {
     exports com.azure.analytics.synapse.spark;
     exports com.azure.analytics.synapse.spark.models;
 
-    opens com.azure.analytics.synapse.spark.models to com.fasterxml.jackson.databind;
-
+    opens com.azure.analytics.synapse.spark.implementation to com.azure.core;
+    opens com.azure.analytics.synapse.spark.models to com.azure.core;
 }

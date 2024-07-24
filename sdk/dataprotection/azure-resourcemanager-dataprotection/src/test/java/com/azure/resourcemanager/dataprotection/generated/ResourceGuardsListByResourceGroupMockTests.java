@@ -6,56 +6,38 @@ package com.azure.resourcemanager.dataprotection.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.dataprotection.DataProtectionManager;
 import com.azure.resourcemanager.dataprotection.models.ResourceGuardResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ResourceGuardsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"ac\",\"requestResourceType\":\"m\"}],\"vaultCriticalOperationExclusionList\":[\"ebnfxofvc\"],\"description\":\"gdirazf\"},\"eTag\":\"ejwabmdujtmvco\",\"location\":\"xcmjurbu\",\"tags\":{\"wkffdjkt\":\"kyqltqsrogt\",\"n\":\"ysidfvclgl\",\"qogsfikayian\":\"uijtkbu\"},\"id\":\"haru\",\"name\":\"t\",\"type\":\"iqxf\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"allowAutoApprovals\":true,\"resourceGuardOperations\":[{\"vaultCriticalOperation\":\"uwnpqxpxiwfcng\",\"requestResourceType\":\"aas\"},{\"vaultCriticalOperation\":\"xtmkzjvkviir\",\"requestResourceType\":\"fgrwsdpgratzvz\"}],\"vaultCriticalOperationExclusionList\":[\"byvi\",\"tctbrxkjzwrgxffm\",\"hkwfbkgozxwop\",\"bydpizqaclnapxb\"],\"description\":\"gn\"},\"eTag\":\"j\",\"location\":\"fsmfcttuxuuyi\",\"tags\":{\"ujztcz\":\"qoiquvrehmrnjhv\"},\"id\":\"tqjtwhauu\",\"name\":\"fprnjl\",\"type\":\"tlxs\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataProtectionManager manager = DataProtectionManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ResourceGuardResource> response
-            = manager.resourceGuards().listByResourceGroup("kjbsah", com.azure.core.util.Context.NONE);
+            = manager.resourceGuards().listByResourceGroup("hlisngw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xcmjurbu", response.iterator().next().location());
-        Assertions.assertEquals("kyqltqsrogt", response.iterator().next().tags().get("wkffdjkt"));
-        Assertions.assertEquals("ejwabmdujtmvco", response.iterator().next().etag());
-        Assertions.assertEquals("ebnfxofvc",
+        Assertions.assertEquals("fsmfcttuxuuyi", response.iterator().next().location());
+        Assertions.assertEquals("qoiquvrehmrnjhv", response.iterator().next().tags().get("ujztcz"));
+        Assertions.assertEquals("j", response.iterator().next().etag());
+        Assertions.assertEquals("byvi",
             response.iterator().next().properties().vaultCriticalOperationExclusionList().get(0));
     }
 }

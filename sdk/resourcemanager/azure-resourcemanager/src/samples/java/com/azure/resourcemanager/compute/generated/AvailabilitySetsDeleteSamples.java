@@ -19,8 +19,11 @@ public final class AvailabilitySetsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().deleteWithResponse("rgcompute",
-            "aaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .deleteWithResponse("rgcompute", "aaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +37,10 @@ public final class AvailabilitySetsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().deleteWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

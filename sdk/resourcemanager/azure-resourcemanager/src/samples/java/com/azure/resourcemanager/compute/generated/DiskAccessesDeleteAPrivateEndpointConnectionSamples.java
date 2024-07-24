@@ -20,7 +20,11 @@ public final class DiskAccessesDeleteAPrivateEndpointConnectionSamples {
      */
     public static void
         deleteAPrivateEndpointConnectionUnderADiskAccessResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses().deleteAPrivateEndpointConnection(
-            "myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
+            .deleteAPrivateEndpointConnection("myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection",
+                com.azure.core.util.Context.NONE);
     }
 }

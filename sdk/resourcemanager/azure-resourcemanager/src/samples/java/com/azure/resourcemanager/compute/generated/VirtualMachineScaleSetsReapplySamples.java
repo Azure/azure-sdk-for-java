@@ -20,8 +20,12 @@ public final class VirtualMachineScaleSetsReapplySamples {
      */
     public static void
         virtualMachineScaleSetsReapplyMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().reapply(
-            "VirtualMachineScaleSetReapplyTestRG", "VMSSReapply-Test-ScaleSet", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .reapply("VirtualMachineScaleSetReapplyTestRG", "VMSSReapply-Test-ScaleSet",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +40,11 @@ public final class VirtualMachineScaleSetsReapplySamples {
      */
     public static void
         virtualMachineScaleSetsReapplyMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets().reapply(
-            "VirtualMachineScaleSetReapplyTestRG", "VMSSReapply-Test-ScaleSet", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .reapply("VirtualMachineScaleSetReapplyTestRG", "VMSSReapply-Test-ScaleSet",
+                com.azure.core.util.Context.NONE);
     }
 }

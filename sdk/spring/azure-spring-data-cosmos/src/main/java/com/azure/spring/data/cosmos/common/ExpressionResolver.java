@@ -8,7 +8,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.EmbeddedValueResolver;
 
 /**
- *
+ * Expression Resolver class.
  * @author Domenico Sibilio
  *
  */

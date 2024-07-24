@@ -21,7 +21,8 @@ public final class ApplicationGatewayRewriteRule {
     private String name;
 
     /*
-     * Rule Sequence of the rewrite rule that determines the order of execution of a particular rule in a RewriteRuleSet.
+     * Rule Sequence of the rewrite rule that determines the order of execution of a particular rule in a
+     * RewriteRuleSet.
      */
     @JsonProperty(value = "ruleSequence")
     private Integer ruleSequence;

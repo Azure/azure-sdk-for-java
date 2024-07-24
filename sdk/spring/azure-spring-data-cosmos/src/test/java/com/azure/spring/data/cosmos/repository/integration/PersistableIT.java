@@ -45,6 +45,7 @@ public class PersistableIT {
     @Autowired
     private CosmosTemplate template;
 
+    @SuppressWarnings("deprecation")
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 

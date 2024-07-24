@@ -13,25 +13,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PacketCaptureStorageLocation {
     /*
-     * The ID of the storage account to save the packet capture session. Required if no localPath or filePath is provided.
+     * The ID of the storage account to save the packet capture session. Required if no localPath or filePath is
+     * provided.
      */
     @JsonProperty(value = "storageId")
     private String storageId;
 
     /*
-     * The URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to save the packet capture.
+     * The URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to save
+     * the packet capture.
      */
     @JsonProperty(value = "storagePath")
     private String storagePath;
 
     /*
-     * This path is invalid if 'Continuous Capture' is provided with 'true' or 'false'. A valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual machine it must start with /var/captures. Required if no storage ID is provided, otherwise optional.
+     * This path is invalid if 'Continuous Capture' is provided with 'true' or 'false'. A valid local path on the
+     * targeting VM. Must include the name of the capture file (*.cap). For linux virtual machine it must start with
+     * /var/captures. Required if no storage ID is provided, otherwise optional.
      */
     @JsonProperty(value = "filePath")
     private String filePath;
 
     /*
-     * This path is valid if 'Continuous Capture' is provided with 'true' or 'false' and required if no storage ID is provided, otherwise optional. Must include the name of the capture file (*.cap). For linux virtual machine it must start with /var/captures.
+     * This path is valid if 'Continuous Capture' is provided with 'true' or 'false' and required if no storage ID is
+     * provided, otherwise optional. Must include the name of the capture file (*.cap). For linux virtual machine it
+     * must start with /var/captures.
      */
     @JsonProperty(value = "localPath")
     private String localPath;
