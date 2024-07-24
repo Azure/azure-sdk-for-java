@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class PatchOperationStartedBy extends ExpandableStringEnum<PatchOpe
      * @param name a name to look for.
      * @return the corresponding PatchOperationStartedBy.
      */
-    @JsonCreator
     public static PatchOperationStartedBy fromString(String name) {
         return fromString(name, PatchOperationStartedBy.class);
     }

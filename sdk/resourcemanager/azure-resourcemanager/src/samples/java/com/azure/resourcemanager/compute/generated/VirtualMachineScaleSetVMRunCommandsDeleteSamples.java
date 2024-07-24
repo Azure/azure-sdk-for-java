@@ -19,7 +19,10 @@ public final class VirtualMachineScaleSetVMRunCommandsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteVirtualMachineScaleSetVMRunCommand(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSetVMRunCommands()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSetVMRunCommands()
             .delete("myResourceGroup", "myvmScaleSet", "0", "myRunCommand", com.azure.core.util.Context.NONE);
     }
 }

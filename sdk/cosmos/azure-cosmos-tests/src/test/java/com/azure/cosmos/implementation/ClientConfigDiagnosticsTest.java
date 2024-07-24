@@ -11,6 +11,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
+import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -73,7 +74,8 @@ public class ClientConfigDiagnosticsTest {
                 aggressiveWarmUpDuration1,
                 proactiveConnectionRegionCount1,
                 cosmosContainerIdentities,
-                false // is region scoped session capturing enabled
+                false, // is region scoped session capturing enabled
+                false // is partition-level circuit breaking enabled
             },
             {
                 new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
@@ -83,7 +85,8 @@ public class ClientConfigDiagnosticsTest {
                 aggressiveWarmUpDuration2,
                 proactiveConnectionRegionCount2,
                 cosmosContainerIdentities,
-                true
+                true,  // is region scoped session capturing enabled
+                false // is partition-level circuit breaking enabled
             },
             {
                 new CosmosContainerProactiveInitConfigBuilder(cosmosContainerIdentities)
@@ -92,7 +95,8 @@ public class ClientConfigDiagnosticsTest {
                 null,
                 proactiveConnectionRegionCount3,
                 cosmosContainerIdentities,
-                false
+                false, // is region scoped session capturing enabled
+                true // is partition-level circuit breaking enabled
             }
         };
     }
@@ -243,7 +247,8 @@ public class ClientConfigDiagnosticsTest {
         Duration aggressiveWarmupDuration,
         int proactiveConnectionRegionCount,
         List<CosmosContainerIdentity> cosmosContainerIdentities,
-        boolean isRegionScopedSessionCapturingEnabled) throws Exception {
+        boolean isRegionScopedSessionCapturingEnabled,
+        boolean isPartitionLevelCircuitBreakerEnabled) throws Exception {
 
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         System.setProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED", "false");
@@ -277,6 +282,19 @@ public class ClientConfigDiagnosticsTest {
             diagnosticsClientConfig.withRegionScopedSessionContainerOptions(regionScopedSessionContainer);
         }
 
+        if (isPartitionLevelCircuitBreakerEnabled) {
+            System.setProperty(
+                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}");
+
+            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
+            diagnosticsClientConfig.withPartitionLevelCircuitBreakerConfig(partitionLevelCircuitBreakerConfig);
+        }
+
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
 
         StringWriter jsonWriter = new StringWriter();
@@ -301,11 +319,18 @@ public class ClientConfigDiagnosticsTest {
             assertThat(objectNode.get("regionScopedSessionCfg")).isNull();
         }
 
+        if (isPartitionLevelCircuitBreakerEnabled) {
+            assertThat(objectNode.get("partitionLevelCircuitBreakerCfg").asText()).isEqualTo("(cb: true, type: CONSECUTIVE_EXCEPTION_COUNT_BASED, rexcntt: 10, wexcntt: 5)");
+        } else {
+            assertThat(objectNode.get("partitionLevelCircuitBreakerCfg")).isNull();
+        }
+
         String expectedProactiveInitConfigString = reconstructProactiveInitConfigString(cosmosContainerIdentities, aggressiveWarmupDuration, proactiveConnectionRegionCount);
 
         assertThat(objectNode.get("proactiveInitCfg").asText()).isEqualTo(expectedProactiveInitConfigString);
 
         System.clearProperty("COSMOS.REPLICA_ADDRESS_VALIDATION_ENABLED");
+        System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG");
     }
 
     @Test(groups = {"unit"}, dataProvider = "sessionRetryOptionsConfigProvider")

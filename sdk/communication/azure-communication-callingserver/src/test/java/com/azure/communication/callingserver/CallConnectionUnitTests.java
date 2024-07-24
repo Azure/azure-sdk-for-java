@@ -16,6 +16,7 @@ import com.azure.communication.callingserver.models.TransferToParticipantCallOpt
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void getCallProperties() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -42,6 +44,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void getCallPropertiesWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -58,6 +61,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void hangUp() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -69,6 +73,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void hangUpWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -83,6 +88,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void hangUpWithResponseForEveryone() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -97,6 +103,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void getParticipant() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -111,6 +118,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void getParticipantWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -127,6 +135,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void listParticipants() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -142,6 +151,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void listParticipantsWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -163,6 +173,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void transferToParticipantCall() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -181,6 +192,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void transferToParticipantCallWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -199,6 +211,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void addParticipants() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -221,6 +234,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void addParticipantsWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -239,6 +253,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void removeParticipants() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -255,6 +270,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void removeParticipantsWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(

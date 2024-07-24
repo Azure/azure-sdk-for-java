@@ -12,19 +12,20 @@ public final class DaprComponentResiliencyPolicyHttpRetryBackOffConfigurationTes
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration model = BinaryData
-            .fromString("{\"initialDelayInMilliseconds\":1297889112,\"maxIntervalInMilliseconds\":1150159087}")
+            .fromString("{\"initialDelayInMilliseconds\":1572864361,\"maxIntervalInMilliseconds\":1639161747}")
             .toObject(DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration.class);
-        Assertions.assertEquals(1297889112, model.initialDelayInMilliseconds());
-        Assertions.assertEquals(1150159087, model.maxIntervalInMilliseconds());
+        Assertions.assertEquals(1572864361, model.initialDelayInMilliseconds());
+        Assertions.assertEquals(1639161747, model.maxIntervalInMilliseconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration model
             = new DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration()
-                .withInitialDelayInMilliseconds(1297889112).withMaxIntervalInMilliseconds(1150159087);
+                .withInitialDelayInMilliseconds(1572864361)
+                .withMaxIntervalInMilliseconds(1639161747);
         model = BinaryData.fromObject(model).toObject(DaprComponentResiliencyPolicyHttpRetryBackOffConfiguration.class);
-        Assertions.assertEquals(1297889112, model.initialDelayInMilliseconds());
-        Assertions.assertEquals(1150159087, model.maxIntervalInMilliseconds());
+        Assertions.assertEquals(1572864361, model.initialDelayInMilliseconds());
+        Assertions.assertEquals(1639161747, model.maxIntervalInMilliseconds());
     }
 }

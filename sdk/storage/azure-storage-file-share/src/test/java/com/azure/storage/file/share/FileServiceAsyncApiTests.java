@@ -314,17 +314,24 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         options.setProtocols(protocols);
         options.setSnapshotVirtualDirectoryAccessEnabled(true);
 
-        ShareAsyncClient shareClient = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
-        shareClient.createWithResponse(options).block();
+        String shareName = generateShareName();
 
-        StepVerifier.create(premiumFileServiceAsyncClient.listShares())
-            .assertNext(r -> {
-                ShareProperties properties = r.getProperties();
-                assertEquals(protocols.toString(), properties.getProtocols().toString());
-                assertTrue(properties.isSnapshotVirtualDirectoryAccessEnabled());
-            })
-            .thenConsumeWhile(x -> true)
+        ShareAsyncClient shareClient = premiumFileServiceAsyncClient.getShareAsyncClient(shareName);
+
+        Flux<ShareItem> response = shareClient.createWithResponse(options)
+            .thenMany(premiumFileServiceAsyncClient.listShares());
+
+        List<ShareItem> shares = new ArrayList<>();
+
+        StepVerifier.create(response)
+            .thenConsumeWhile(shares::add)
             .verifyComplete();
+
+        ShareItem share = shares.stream().filter(r -> r.getName().equals(shareName)).findFirst().get();
+
+        ShareProperties properties = share.getProperties();
+        assertEquals(protocols.toString(), properties.getProtocols().toString());
+        assertTrue(properties.isSnapshotVirtualDirectoryAccessEnabled());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")

@@ -5,10 +5,9 @@
 package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.appcontainers.fluent.models.JavaComponentProperties;
 import com.azure.resourcemanager.appcontainers.models.JavaComponentConfigurationProperty;
+import com.azure.resourcemanager.appcontainers.models.JavaComponentProperties;
 import com.azure.resourcemanager.appcontainers.models.JavaComponentServiceBind;
-import com.azure.resourcemanager.appcontainers.models.JavaComponentType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,27 +15,28 @@ public final class JavaComponentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaComponentProperties model = BinaryData.fromString(
-            "{\"componentType\":\"SpringCloudConfig\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"aklsbsbq\",\"value\":\"agwwrxaom\"}],\"serviceBinds\":[{\"name\":\"lrrcz\",\"serviceId\":\"k\"}]}")
+            "{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"unwqr\",\"value\":\"frgqhaohcm\"},{\"propertyName\":\"oc\",\"value\":\"r\"},{\"propertyName\":\"mbpyryxamebly\",\"value\":\"vkfkmr\"},{\"propertyName\":\"xne\",\"value\":\"sm\"}],\"serviceBinds\":[{\"name\":\"fpyapucygvoavyu\",\"serviceId\":\"sxlghieegjlg\"}]}")
             .toObject(JavaComponentProperties.class);
-        Assertions.assertEquals(JavaComponentType.SPRING_CLOUD_CONFIG, model.componentType());
-        Assertions.assertEquals("aklsbsbq", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("agwwrxaom", model.configurations().get(0).value());
-        Assertions.assertEquals("lrrcz", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("k", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("unwqr", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("frgqhaohcm", model.configurations().get(0).value());
+        Assertions.assertEquals("fpyapucygvoavyu", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("sxlghieegjlg", model.serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JavaComponentProperties model
-            = new JavaComponentProperties().withComponentType(JavaComponentType.SPRING_CLOUD_CONFIG)
-                .withConfigurations(Arrays.asList(
-                    new JavaComponentConfigurationProperty().withPropertyName("aklsbsbq").withValue("agwwrxaom")))
-                .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("lrrcz").withServiceId("k")));
+        JavaComponentProperties model = new JavaComponentProperties()
+            .withConfigurations(Arrays.asList(
+                new JavaComponentConfigurationProperty().withPropertyName("unwqr").withValue("frgqhaohcm"),
+                new JavaComponentConfigurationProperty().withPropertyName("oc").withValue("r"),
+                new JavaComponentConfigurationProperty().withPropertyName("mbpyryxamebly").withValue("vkfkmr"),
+                new JavaComponentConfigurationProperty().withPropertyName("xne").withValue("sm")))
+            .withServiceBinds(Arrays
+                .asList(new JavaComponentServiceBind().withName("fpyapucygvoavyu").withServiceId("sxlghieegjlg")));
         model = BinaryData.fromObject(model).toObject(JavaComponentProperties.class);
-        Assertions.assertEquals(JavaComponentType.SPRING_CLOUD_CONFIG, model.componentType());
-        Assertions.assertEquals("aklsbsbq", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("agwwrxaom", model.configurations().get(0).value());
-        Assertions.assertEquals("lrrcz", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("k", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("unwqr", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("frgqhaohcm", model.configurations().get(0).value());
+        Assertions.assertEquals("fpyapucygvoavyu", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("sxlghieegjlg", model.serviceBinds().get(0).serviceId());
     }
 }

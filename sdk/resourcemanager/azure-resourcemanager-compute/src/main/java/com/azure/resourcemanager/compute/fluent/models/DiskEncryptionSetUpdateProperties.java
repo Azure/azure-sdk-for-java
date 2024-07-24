@@ -111,8 +111,8 @@ public final class DiskEncryptionSetUpdateProperties {
     }
 
     /**
-     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different
-     * tenant. Setting the value to 'None' will clear the property.
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
      * 
      * @return the federatedClientId value.
      */
@@ -121,8 +121,8 @@ public final class DiskEncryptionSetUpdateProperties {
     }
 
     /**
-     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different
-     * tenant. Setting the value to 'None' will clear the property.
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
      * 
      * @param federatedClientId the federatedClientId value to set.
      * @return the DiskEncryptionSetUpdateProperties object itself.

@@ -36,6 +36,7 @@ import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
 import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
@@ -88,6 +89,16 @@ abstract class AsyncBenchmark<T> {
         logger = LoggerFactory.getLogger(this.getClass());
         configuration = cfg;
 
+        if (configuration.isPartitionLevelCircuitBreakerEnabled()) {
+            System.setProperty(
+                "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
+                "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
+                    + "\"circuitBreakerType\": \"CONSECUTIVE_EXCEPTION_COUNT_BASED\","
+                    + "\"consecutiveExceptionCountToleratedForReads\": 10,"
+                    + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
+                    + "}");
+        }
+
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
@@ -138,8 +149,11 @@ abstract class AsyncBenchmark<T> {
             cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
 
-        CosmosClient syncClient = cosmosClientBuilder.buildClient();
         cosmosClient = cosmosClientBuilder.buildAsyncClient();
+        CosmosClient syncClient = cosmosClientBuilder
+            .endpoint(StringUtils.isNotEmpty(configuration.getServiceEndpointForRunResultsUploadAccount()) ? configuration.getServiceEndpointForRunResultsUploadAccount() : configuration.getServiceEndpoint())
+            .key(StringUtils.isNotEmpty(configuration.getMasterKeyForRunResultsUploadAccount()) ? configuration.getMasterKeyForRunResultsUploadAccount() : configuration.getMasterKey())
+            .buildClient();
 
         try {
             cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
@@ -168,6 +182,17 @@ abstract class AsyncBenchmark<T> {
                 ).block();
 
                 cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId());
+
+                // add some delay to allow container to be created across multiple regions
+                // container creation across regions is an async operation
+                // without the delay a container may not be available to process reads / writes
+
+                try {
+                    Thread.sleep(30_000);
+                } catch (Exception exception) {
+                    throw new RuntimeException(exception);
+                }
+
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {

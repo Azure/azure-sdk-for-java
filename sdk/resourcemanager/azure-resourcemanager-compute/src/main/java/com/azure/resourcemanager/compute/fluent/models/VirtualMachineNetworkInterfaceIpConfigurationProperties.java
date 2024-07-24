@@ -177,9 +177,9 @@ public final class VirtualMachineNetworkInterfaceIpConfigurationProperties {
     }
 
     /**
-     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
-     * pools of application gateways. A virtual machine can reference backend address pools of multiple application
-     * gateways. Multiple virtual machines cannot use the same application gateway.
+     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
+     * of application gateways. A virtual machine can reference backend address pools of multiple application gateways.
+     * Multiple virtual machines cannot use the same application gateway.
      * 
      * @return the applicationGatewayBackendAddressPools value.
      */
@@ -188,9 +188,9 @@ public final class VirtualMachineNetworkInterfaceIpConfigurationProperties {
     }
 
     /**
-     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
-     * pools of application gateways. A virtual machine can reference backend address pools of multiple application
-     * gateways. Multiple virtual machines cannot use the same application gateway.
+     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
+     * of application gateways. A virtual machine can reference backend address pools of multiple application gateways.
+     * Multiple virtual machines cannot use the same application gateway.
      * 
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
      * @return the VirtualMachineNetworkInterfaceIpConfigurationProperties object itself.

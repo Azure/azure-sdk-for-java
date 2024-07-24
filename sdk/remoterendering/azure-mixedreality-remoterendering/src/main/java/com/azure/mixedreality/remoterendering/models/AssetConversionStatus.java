@@ -25,6 +25,19 @@ public final class AssetConversionStatus extends ExpandableStringEnum<AssetConve
     public static final AssetConversionStatus SUCCEEDED = fromString("Succeeded");
 
     /**
+     * Creates a new instance of {@link AssetConversionStatus} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link AssetConversionStatus} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssetConversionStatus() {
+
+    }
+
+    /**
      * Creates or finds a AssetConversionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -34,7 +47,11 @@ public final class AssetConversionStatus extends ExpandableStringEnum<AssetConve
         return fromString(name, AssetConversionStatus.class);
     }
 
-    /** @return known AssetConversionStatus values. */
+    /**
+     * Gets known AssetConversionStatus values.
+     *
+     * @return known AssetConversionStatus values.
+     */
     public static Collection<AssetConversionStatus> values() {
         return values(AssetConversionStatus.class);
     }

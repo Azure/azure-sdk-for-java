@@ -21,7 +21,10 @@ public final class RestorePointCollectionsGetByResourceGroupSamples {
      */
     public static void getARestorePointCollectionIncludingTheRestorePointsContainedInTheRestorePointCollection(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
             .getByResourceGroupWithResponse("myResourceGroup", "rpcName", null, com.azure.core.util.Context.NONE);
     }
 
@@ -38,7 +41,10 @@ public final class RestorePointCollectionsGetByResourceGroupSamples {
      */
     public static void getARestorePointCollectionButNotTheRestorePointsContainedInTheRestorePointCollection(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getRestorePointCollections()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getRestorePointCollections()
             .getByResourceGroupWithResponse("myResourceGroup", "myRpc", null, com.azure.core.util.Context.NONE);
     }
 }

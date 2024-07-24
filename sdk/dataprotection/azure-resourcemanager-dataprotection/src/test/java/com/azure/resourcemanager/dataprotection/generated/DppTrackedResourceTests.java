@@ -16,25 +16,28 @@ public final class DppTrackedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DppTrackedResource model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"zzvypyqrimzinp\",\"tenantId\":\"wjdk\",\"type\":\"soodqxhcrmnoh\",\"userAssignedIdentities\":{\"h\":{\"principalId\":\"0e9376ce-13c1-4034-9eb2-155445a95c11\",\"clientId\":\"db523ea1-cce3-40f8-8251-1a8de338073f\"},\"ifiyipjxsqwpgrj\":{\"principalId\":\"363d7adc-a0aa-4c37-ab21-93494a8af706\",\"clientId\":\"2c98b6dd-7880-4fbd-ac76-b97036dcb286\"}}},\"eTag\":\"norcjxvsnbyxqab\",\"location\":\"ocpcy\",\"tags\":{\"klj\":\"rzafbljjgpbtoqcj\",\"qajzyulpkudjkr\":\"vbqid\"},\"id\":\"khbzhfepgzg\",\"name\":\"e\",\"type\":\"zloc\"}")
+            "{\"identity\":{\"principalId\":\"wlokjyem\",\"tenantId\":\"vnipjox\",\"type\":\"nchgej\",\"userAssignedIdentities\":{\"ailzydehojwyahu\":{\"principalId\":\"23dde3d6-297b-499b-a6d1-f338e8a69c88\",\"clientId\":\"d456f9b1-edce-4908-8336-6a6720d3ed45\"},\"pmqnja\":{\"principalId\":\"13e4241c-ca6b-4717-968d-a60f7903e22b\",\"clientId\":\"892c985a-9f6e-403f-8d5d-be936a847ef8\"},\"xj\":{\"principalId\":\"de9096cb-2e06-4455-81de-4bb95f983840\",\"clientId\":\"410d9903-943d-4945-8830-91a38585a794\"}}},\"eTag\":\"r\",\"location\":\"vcputegj\",\"tags\":{\"dvpjhulsuuvmk\":\"fdatsc\",\"jdpvwryo\":\"ozkrwfndiodjpslw\",\"hbcryffdfdosyge\":\"psoacctazakljl\"},\"id\":\"paojakhmsbzjh\",\"name\":\"rzevdphlxaol\",\"type\":\"hqtrgqjbpf\"}")
             .toObject(DppTrackedResource.class);
-        Assertions.assertEquals("ocpcy", model.location());
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.tags().get("klj"));
-        Assertions.assertEquals("norcjxvsnbyxqab", model.etag());
-        Assertions.assertEquals("soodqxhcrmnoh", model.identity().type());
+        Assertions.assertEquals("vcputegj", model.location());
+        Assertions.assertEquals("fdatsc", model.tags().get("dvpjhulsuuvmk"));
+        Assertions.assertEquals("r", model.etag());
+        Assertions.assertEquals("nchgej", model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DppTrackedResource model = new DppTrackedResource().withLocation("ocpcy")
-            .withTags(mapOf("klj", "rzafbljjgpbtoqcj", "qajzyulpkudjkr", "vbqid")).withEtag("norcjxvsnbyxqab")
-            .withIdentity(new DppIdentityDetails().withType("soodqxhcrmnoh").withUserAssignedIdentities(
-                mapOf("h", new UserAssignedIdentity(), "ifiyipjxsqwpgrj", new UserAssignedIdentity())));
+        DppTrackedResource model = new DppTrackedResource().withLocation("vcputegj")
+            .withTags(
+                mapOf("dvpjhulsuuvmk", "fdatsc", "jdpvwryo", "ozkrwfndiodjpslw", "hbcryffdfdosyge", "psoacctazakljl"))
+            .withEtag("r")
+            .withIdentity(new DppIdentityDetails().withType("nchgej")
+                .withUserAssignedIdentities(mapOf("ailzydehojwyahu", new UserAssignedIdentity(), "pmqnja",
+                    new UserAssignedIdentity(), "xj", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(DppTrackedResource.class);
-        Assertions.assertEquals("ocpcy", model.location());
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.tags().get("klj"));
-        Assertions.assertEquals("norcjxvsnbyxqab", model.etag());
-        Assertions.assertEquals("soodqxhcrmnoh", model.identity().type());
+        Assertions.assertEquals("vcputegj", model.location());
+        Assertions.assertEquals("fdatsc", model.tags().get("dvpjhulsuuvmk"));
+        Assertions.assertEquals("r", model.etag());
+        Assertions.assertEquals("nchgej", model.identity().type());
     }
 
     // Use "Map.of" if available

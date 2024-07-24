@@ -20,7 +20,10 @@ public final class VirtualMachinesRetrieveBootDiagnosticsDataSamples {
      */
     public static void
         retrieveBootDiagnosticsDataOfAVirtualMachine(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachines()
             .retrieveBootDiagnosticsDataWithResponse("ResourceGroup", "VMName", 60, com.azure.core.util.Context.NONE);
     }
 }

@@ -13,18 +13,24 @@ import com.azure.resourcemanager.redis.fluent.models.RedisFirewallRuleInner;
  */
 @Fluent
 public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleInner {
-    /** Creates an instance of RedisFirewallRuleCreateParameters class. */
+    /**
+     * Creates an instance of RedisFirewallRuleCreateParameters class.
+     */
     public RedisFirewallRuleCreateParameters() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisFirewallRuleCreateParameters withStartIp(String startIp) {
         super.withStartIp(startIp);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisFirewallRuleCreateParameters withEndIp(String endIp) {
         super.withEndIp(endIp);
@@ -33,7 +39,7 @@ public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleIn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

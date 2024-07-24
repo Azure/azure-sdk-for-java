@@ -30,6 +30,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private String queryName;
     private Integer maxItemCountForVectorSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
+    private String collectionRid;
 
     /**
      * Instantiates a new query request options.
@@ -68,6 +69,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.feedRange = options.feedRange;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
         this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
+        this.collectionRid = options.collectionRid;
     }
 
     /**
@@ -386,5 +388,13 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.maxBufferedItemCount = overrideOption(cosmosRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
         this.maxItemCount = overrideOption(cosmosRequestOptions.getMaxItemCount(), this.maxItemCount);
         this.queryName = overrideOption(cosmosRequestOptions.getQueryName(), this.queryName);
+    }
+
+    public String getCollectionRid() {
+        return collectionRid;
+    }
+
+    public void setCollectionRid(String collectionRid) {
+        this.collectionRid = collectionRid;
     }
 }

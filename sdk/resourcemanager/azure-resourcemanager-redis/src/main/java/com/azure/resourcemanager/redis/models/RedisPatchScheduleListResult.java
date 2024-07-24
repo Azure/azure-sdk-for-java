@@ -9,7 +9,9 @@ import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of list patch schedules Redis operation. */
+/**
+ * The response of list patch schedules Redis operation.
+ */
 @Fluent
 public final class RedisPatchScheduleListResult {
     /*
@@ -24,13 +26,15 @@ public final class RedisPatchScheduleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RedisPatchScheduleListResult class. */
+    /**
+     * Creates an instance of RedisPatchScheduleListResult class.
+     */
     public RedisPatchScheduleListResult() {
     }
 
     /**
      * Get the value property: Results of the list patch schedules operation.
-     *
+     * 
      * @return the value value.
      */
     public List<RedisPatchScheduleInner> value() {
@@ -39,7 +43,7 @@ public final class RedisPatchScheduleListResult {
 
     /**
      * Set the value property: Results of the list patch schedules operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the RedisPatchScheduleListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class RedisPatchScheduleListResult {
 
     /**
      * Get the nextLink property: Link for next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class RedisPatchScheduleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
