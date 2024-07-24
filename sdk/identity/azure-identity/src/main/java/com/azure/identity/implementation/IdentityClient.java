@@ -44,6 +44,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.net.URI;
@@ -485,45 +486,63 @@ public class IdentityClient extends IdentityClientBase {
             throw LOGGER.logExceptionAsError(ex);
         }
         return Mono.defer(() -> {
-            String azAccountsCommand = "Import-Module Az.Accounts -MinimumVersion 2.2.0 -PassThru";
-            return powershellManager.runCommand(azAccountsCommand).flatMap(output -> {
-                if (output.contains("The specified module 'Az.Accounts' with version '2.2.0' was not loaded "
-                                    + "because no valid module file")) {
+            String sep = System.lineSeparator();
+
+            String command = "$ErrorActionPreference = 'Stop'" + sep
+                + "[version]$minimumVersion = '2.2.0'" + sep
+                + "" + sep
+                + "$m = Import-Module Az.Accounts -MinimumVersion $minimumVersion -PassThru -ErrorAction SilentlyContinue" + sep
+                + "" + sep
+                + "if (! $m) {" + sep
+                + "    Write-Output 'VersionTooOld'" + sep
+                + "    exit" + sep
+                + "}" + sep
+                + "" + sep
+                + "$useSecureString = $m.Version -ge [version]'2.17.0'" + sep
+                + "" + sep
+                + "$params = @{" + sep
+                + "    'WarningAction'='Ignore'" + sep
+                + "    'ResourceUrl'='" + scope + "'" + sep
+                + "}" + sep
+                + "" + sep
+                + "if ($useSecureString) {" + sep
+                + "    $params['AsSecureString'] = $true" + sep
+                + "}" + sep
+                + "" + sep
+                + "$token = Get-AzAccessToken @params" + sep
+                + "$customToken = New-Object -TypeName psobject" + sep
+                + "" + sep
+                + "$customToken | Add-Member -MemberType NoteProperty -Name Token -Value ($useSecureString -eq $true ? (ConvertFrom-SecureString -AsPlainText $token.Token) : $token.Token)" + sep
+                + "$customToken | Add-Member -MemberType NoteProperty -Name ExpiresOn -Value $token.ExpiresOn" + sep
+                + "" + sep
+                + "return $customToken | ConvertTo-Json";
+            return powershellManager.runCommand(command).flatMap(output -> {
+                if (output.contains("VersionTooOld")) {
                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                         new CredentialUnavailableException("Az.Account module with version >= 2.2.0 is not installed. "
-                                                           + "It needs to be installed to use Azure PowerShell "
-                                                           + "Credential.")));
+                            + "It needs to be installed to use Azure PowerShell "
+                            + "Credential.")));
                 }
 
-                LOGGER.verbose("Az.accounts module was found installed.");
-                String command = "Get-AzAccessToken -ResourceUrl '"
-                    + scope
-                    + "' | ConvertTo-Json";
-                LOGGER.verbose("Azure Powershell Authentication => Executing the command `{}` in Azure "
-                               + "Powershell to retrieve the Access Token.", command);
+                if (output.contains("Run Connect-AzAccount to login")) {
+                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                        new CredentialUnavailableException(
+                            "Run Connect-AzAccount to login to Azure account in PowerShell.")));
+                }
 
-                return powershellManager.runCommand(command).flatMap(out -> {
-                    if (out.contains("Run Connect-AzAccount to login")) {
-                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException(
-                                "Run Connect-AzAccount to login to Azure account in PowerShell.")));
-                    }
 
-                    try {
-                        LOGGER.verbose("Azure Powershell Authentication => Attempting to deserialize the "
-                                       + "received response from Azure Powershell.");
-                        Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(out, Map.class,
-                            SerializerEncoding.JSON);
-                        String accessToken = objectMap.get("Token");
-                        String time = objectMap.get("ExpiresOn");
-                        OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
-                        return Mono.just(new AccessToken(accessToken, expiresOn));
-                    } catch (IOException e) {
-                        return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException(
-                                "Encountered error when deserializing response from Azure Power Shell.", e)));
-                    }
-                });
+                try {
+                    Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(output, Map.class,
+                        SerializerEncoding.JSON);
+                    String accessToken = objectMap.get("Token");
+                    String time = objectMap.get("ExpiresOn");
+                    OffsetDateTime expiresOn = OffsetDateTime.parse(time).withOffsetSameInstant(ZoneOffset.UTC);
+                    return Mono.just(new AccessToken(accessToken, expiresOn));
+                } catch (IOException e) {
+                    return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                        new CredentialUnavailableException(
+                            "Encountered error when deserializing response from Azure Power Shell.", e)));
+                }
             });
         });
     }
