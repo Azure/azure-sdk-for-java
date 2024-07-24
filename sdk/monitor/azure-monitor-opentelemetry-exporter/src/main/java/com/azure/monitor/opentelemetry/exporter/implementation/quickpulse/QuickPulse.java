@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 
 public class QuickPulse {
 
-    //supports Open Tel metrics but not live filtering
+    //supports OTel metrics but not live filtering
     // change to 7 once live filtering is also supported
     static final int QP_INVARIANT_VERSION = 6;
 

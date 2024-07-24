@@ -119,7 +119,7 @@ class QuickPulsePingSender {
                         lastValidTransmission = sendTime;
                         String etagValue = networkHelper.getEtagHeaderValue(response);
                         if (etagValue != null) {
-                            ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.OpenTelMetricInfo>> otelMetrics = quickPulseConfiguration.parseMetrics(response);
+                            ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> otelMetrics = quickPulseConfiguration.parseDerivedMetrics(response);
                             quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
                         }
                         operationLogger.recordSuccess();

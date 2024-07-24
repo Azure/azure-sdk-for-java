@@ -112,40 +112,6 @@ class QuickPulsePingSenderTests {
         assertThat(quickPulseConfiguration.getEtag()).isEqualTo("1::randometag::2::");
     }
 
-
-    @Test
-    void successfulPingReturnsWithEtagHeader() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("x-ms-qps-service-polling-interval-hint", "1000");
-        headers.put("x-ms-qps-service-endpoint-redirect-v2", "https://new.endpoint.com");
-        headers.put("x-ms-qps-subscribed", "true");
-        headers.put("x-ms-qps-configuration-etag", "2::randometag::3::");
-        HttpHeaders httpHeaders = new HttpHeaders(headers);
-        ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=fake-ikey");
-        QuickPulseConfiguration quickPulseConfiguration = new QuickPulseConfiguration();
-        HttpPipeline httpPipeline =
-            new HttpPipelineBuilder()
-                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, httpHeaders)))
-                .tracer(new NoopTracer())
-                .build();
-        QuickPulsePingSender quickPulsePingSender =
-            new QuickPulsePingSender(
-                httpPipeline,
-                connectionString::getLiveEndpoint,
-                connectionString::getInstrumentationKey,
-                null,
-                "instance1",
-                "machine1",
-                "qpid123",
-                "testSdkVersion",
-                quickPulseConfiguration);
-        QuickPulseHeaderInfo quickPulseHeaderInfo = quickPulsePingSender.ping(null);
-        assertThat(QuickPulseStatus.QP_IS_ON).isEqualTo(quickPulseHeaderInfo.getQuickPulseStatus());
-        assertThat("https://new.endpoint.com")
-            .isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
-        assertThat(quickPulseConfiguration.getEtag()).isEqualTo("2::randometag::3::");
-    }
-
     @Test
     void successfulPingReturnsWithEtagHeaderAndRequestedMetrics() {
         Map<String, String> headers = new HashMap<>();
@@ -176,7 +142,10 @@ class QuickPulsePingSenderTests {
         metrics.add(metric2);
 
         Map<String, Object> metricsMap = new HashMap<>();
+        metricsMap.put("DocumentStreams", null);
+        metricsMap.put("ETag", "3::randometag::4::");
         metricsMap.put("Metrics", metrics);
+        metricsMap.put("QuotaInfo", null);
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonBody;
         try {
@@ -208,16 +177,16 @@ class QuickPulsePingSenderTests {
         assertThat("https://new.endpoint.com")
             .isEqualTo(quickPulseHeaderInfo.getQpsServiceEndpointRedirect());
         assertThat(quickPulseConfiguration.getEtag()).isEqualTo("3::randometag::4::");
-        assertThat(quickPulseConfiguration.getMetrics().size()).isEqualTo(2);
-        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").get(0).getAggregation())
+        assertThat(quickPulseConfiguration.getDerivedMetrics().size()).isEqualTo(2);
+        assertThat(quickPulseConfiguration.getDerivedMetrics().get("my_gauge").get(0).getAggregation())
             .isEqualTo("Avg");
-        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").get(0).getTelemetryType())
+        assertThat(quickPulseConfiguration.getDerivedMetrics().get("my_gauge").get(0).getTelemetryType())
             .isEqualTo("Metric");
-        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").get(0).getProjection()).isEqualTo("my_gauge");
-        assertThat(quickPulseConfiguration.getMetrics().get("my_gauge").get(0).getId()).isEqualTo("my_gauge");
-        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").get(0).getAggregation()).isEqualTo("Sum");
-        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").get(0).getTelemetryType()).isEqualTo("Metric");
-        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").get(0).getProjection()).isEqualTo("MyFruitCounter");
-        assertThat(quickPulseConfiguration.getMetrics().get("MyFruitCounter").get(0).getId()).isEqualTo("MyFruitCounter");
+        assertThat(quickPulseConfiguration.getDerivedMetrics().get("my_gauge").get(0).getProjection()).isEqualTo("my_gauge");
+        assertThat(quickPulseConfiguration.getDerivedMetrics().get("my_gauge").get(0).getId()).isEqualTo("my_gauge");
+        assertThat(quickPulseConfiguration.getDerivedMetrics().get("MyFruitCounter").get(0).getAggregation()).isEqualTo("Sum");
+        assertThat(quickPulseConfiguration.getDerivedMetrics().get("MyFruitCounter").get(0).getTelemetryType()).isEqualTo("Metric");
+        assertThat(quickPulseConfiguration.getDerivedMetrics().get("MyFruitCounter").get(0).getProjection()).isEqualTo("MyFruitCounter");
+        assertThat(quickPulseConfiguration.getDerivedMetrics().get("MyFruitCounter").get(0).getId()).isEqualTo("MyFruitCounter");
     }
 }

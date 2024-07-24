@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class QuickPulseConfiguration {
     private static final ClientLogger logger = new ClientLogger(QuickPulseDataFetcher.class);
     private  AtomicReference<String> etag = new AtomicReference<>();
-    private ConcurrentHashMap<String, ArrayList<OpenTelMetricInfo>> metrics = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> derivedMetrics = new ConcurrentHashMap<>();
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     public synchronized String getEtag() {
@@ -25,67 +25,61 @@ public class QuickPulseConfiguration {
         this.etag.set(etag);
     }
 
-    public synchronized ConcurrentHashMap<String, ArrayList<OpenTelMetricInfo>> getMetrics() {
-        return this.metrics;
+    public synchronized ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> getDerivedMetrics() {
+        return this.derivedMetrics;
     }
 
-    public synchronized void setMetrics(ConcurrentHashMap<String, ArrayList<OpenTelMetricInfo>> metrics) {
-        this.metrics = metrics;
+    public synchronized void setDerivedMetrics(ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> derivedMetrics) {
+        this.derivedMetrics = derivedMetrics;
     }
 
-    public synchronized void updateConfig(String etagValue, ConcurrentHashMap<String, ArrayList<OpenTelMetricInfo>> otelMetrics) {
+    public synchronized void updateConfig(String etagValue, ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> otelMetrics) {
         if (!Objects.equals(this.getEtag(), etagValue)){
             this.setEtag(etagValue);
-            this.setMetrics(otelMetrics);
+            this.setDerivedMetrics(otelMetrics);
         }
 
     }
 
-    public ConcurrentHashMap<String,  ArrayList<OpenTelMetricInfo>> parseMetrics(HttpResponse response) {
+    public ConcurrentHashMap<String,  ArrayList<DerivedMetricInfo>> parseDerivedMetrics(HttpResponse response) {
 
-        ConcurrentHashMap<String, ArrayList<OpenTelMetricInfo>> requestedMetrics = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, ArrayList<DerivedMetricInfo>> requestedMetrics = new ConcurrentHashMap<>();
         try {
 
             String responseBody = response.getBodyAsString().block();
             if (responseBody == null || responseBody.isEmpty()) {
-                return new ConcurrentHashMap<String,  ArrayList<OpenTelMetricInfo>>();
+                return new ConcurrentHashMap<String,  ArrayList<DerivedMetricInfo>>();
             }
             JsonNode rootNode = objectMapper.readTree(responseBody);
             JsonNode metricsNode = rootNode.get("Metrics");
 
             if (metricsNode instanceof ArrayNode) {
                 ArrayNode metricsArray = (ArrayNode) metricsNode;
+
                 for (JsonNode metricNode : metricsArray) {
-                    OpenTelMetricInfo metric = new OpenTelMetricInfo();
+                    DerivedMetricInfo metric = new DerivedMetricInfo();
                     metric.setId(metricNode.get("Id").asText());
                     metric.setAggregation(metricNode.get("Aggregation").asText());
                     metric.setTelemetryType(metricNode.get("TelemetryType").asText());
-                    String projection = metricNode.get("Projection").asText();
-                    metric.setProjection(projection);
-                    if (Objects.equals(metricNode.get("TelemetryType").asText(), "Event")) {
-                        int dotIndex = projection.indexOf(".");
-                        if (dotIndex != -1) {
-                            projection = projection.substring(dotIndex + 1);
-                        }
-                    }
-                    metric.setProjection(projection);
+                    metric.setProjection(metricNode.get("Projection").asText());
                     requestedMetrics.computeIfAbsent(metric.getProjection(), k -> new ArrayList<>()).add(metric);
+
                 }
             }
             return requestedMetrics;
         } catch (Exception e) {
             logger.verbose("Failed to parse metrics from response: %s", e.getMessage());
         }
-        return new ConcurrentHashMap<String,  ArrayList<OpenTelMetricInfo>>();
+        return new ConcurrentHashMap<String,  ArrayList<DerivedMetricInfo>>();
 
     }
 
     public synchronized void reset() {
         this.setEtag(null);
-        this.setMetrics(new ConcurrentHashMap<String, ArrayList<OpenTelMetricInfo>>());
+        this.derivedMetrics.clear();
     }
 
-    class OpenTelMetricInfo {
+    class DerivedMetricInfo {
         private String id;
         private String projection;
         private String telemetryType;

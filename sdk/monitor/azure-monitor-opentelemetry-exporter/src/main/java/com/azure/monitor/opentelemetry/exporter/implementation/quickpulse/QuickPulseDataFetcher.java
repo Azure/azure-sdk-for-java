@@ -143,14 +143,14 @@ class QuickPulseDataFetcher {
         postEnvelope.setStreamId(quickPulseId);
         postEnvelope.setVersion(sdkVersion);
         postEnvelope.setTimeStamp("/Date(" + System.currentTimeMillis() + ")/");
-        postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters, collector.retrieveOpenTelMetrics()));
+        postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters, collector.retrieveOTelMetrics()));
         envelopes.add(postEnvelope);
         return mapper.writeValueAsString(envelopes);
     }
 
     private static List<QuickPulseMetrics> addMetricsToQuickPulseEnvelope(
         QuickPulseDataCollector.FinalCounters counters,
-        List<QuickPulseMetrics> openTelemetryMetrics) {
+        List<QuickPulseMetrics> OTelMetrics) {
         List<QuickPulseMetrics> metricsList = new ArrayList<>();
         metricsList.add(
             new QuickPulseMetrics("\\ApplicationInsights\\Requests/Sec", counters.requests, 1));
@@ -192,7 +192,7 @@ class QuickPulseDataFetcher {
             new QuickPulseMetrics("\\Memory\\Committed Bytes", counters.memoryCommitted, 1));
         metricsList.add(
             new QuickPulseMetrics("\\Processor(_Total)\\% Processor Time", counters.cpuUsage, 1));
-        metricsList.addAll(openTelemetryMetrics);
+        metricsList.addAll(OTelMetrics);
         return metricsList;
     }
 }

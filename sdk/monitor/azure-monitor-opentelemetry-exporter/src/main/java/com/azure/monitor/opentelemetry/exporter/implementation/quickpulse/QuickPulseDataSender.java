@@ -65,7 +65,7 @@ class QuickPulseDataSender implements Runnable {
                             this.quickPulseHeaderInfo = quickPulseHeaderInfo;
                             String etagValue = networkHelper.getEtagHeaderValue(response);
                             if (!Objects.equals(etagValue, quickPulseConfiguration.getEtag())) {
-                                ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.OpenTelMetricInfo>> otelMetrics = quickPulseConfiguration.parseMetrics(response);
+                                ConcurrentHashMap<String, ArrayList<QuickPulseConfiguration.DerivedMetricInfo>> otelMetrics = quickPulseConfiguration.parseDerivedMetrics(response);
                                 quickPulseConfiguration.updateConfig(etagValue, otelMetrics);
                             }
                             break;

@@ -78,7 +78,7 @@ final class QuickPulseCoordinator implements Runnable {
 
             case QP_IS_OFF:
                 pingMode = true;
-                collector.flushOpenTelMetrics();
+                collector.flushOTelMetrics();
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;

@@ -1,20 +1,19 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model;
 
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 
-public class OpenTelMetric {
+public class OTelMetric {
 
     private String name;
-    private ArrayList<OpenTelDataPoint> dataPoints;
+    private ArrayList<OTelDataPoint> dataPoints;
 
-    public OpenTelMetric(String name) {
+    public OTelMetric(String name) {
         this.name = name;
         this.dataPoints = new ArrayList<>();
     }
 
     public void addDataPoint(double value) {
-        OpenTelDataPoint dataPoint = new OpenTelDataPoint(value);
+        OTelDataPoint dataPoint = new OTelDataPoint(value);
         this.dataPoints.add(dataPoint);
     }
 
@@ -22,13 +21,13 @@ public class OpenTelMetric {
         return name;
     }
 
-    public ArrayList<OpenTelDataPoint> getDataPoints() {
+    public ArrayList<OTelDataPoint> getDataPoints() {
         return dataPoints;
     }
 
     public ArrayList<Double> getDataValues() {
         ArrayList<Double> values = new ArrayList<>();
-        for (OpenTelDataPoint dataPoint : dataPoints) {
+        for (OTelDataPoint dataPoint : dataPoints) {
             values.add(dataPoint.getValue());
         }
         return values;

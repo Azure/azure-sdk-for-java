@@ -9,7 +9,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricData
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.OpenTelMetric;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.OTelMetric;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMetrics;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.sdk.resources.Resource;
@@ -42,7 +42,7 @@ class QuickPulseDataCollectorTests {
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
         assertCountersReset(counters);
-        ArrayList<QuickPulseMetrics> storedMetrics = collector.retrieveOpenTelMetrics();
+        ArrayList<QuickPulseMetrics> storedMetrics = collector.retrieveOTelMetrics();
         assertThat(storedMetrics).isEmpty();
     }
 
@@ -53,7 +53,7 @@ class QuickPulseDataCollectorTests {
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         collector.disable();
         assertThat(collector.peek()).isNull();
-        assertThat(collector.retrieveOpenTelMetrics()).isEmpty();
+        assertThat(collector.retrieveOTelMetrics()).isEmpty();
     }
 
     @Test
@@ -187,7 +187,7 @@ class QuickPulseDataCollectorTests {
         Resource resource = Resource.create(attributes);
         telemetry.setResource(resource);
         collector.addOtelMetric(telemetry);
-        ConcurrentHashMap<String, OpenTelMetric> storedMetrics = collector.getOpenTelMetrics();
+        ConcurrentHashMap<String, OTelMetric> storedMetrics = collector.getOTelMetrics();
         assertThat(storedMetrics.size()).isEqualTo(1);
         assertThat(storedMetrics.containsKey("TestMetric")).isTrue();
         assertThat(storedMetrics.get("TestMetric").getDataValues().get(0)).isEqualTo(123.456);
@@ -195,13 +195,13 @@ class QuickPulseDataCollectorTests {
         point.setName("TestMetric2");
         point.setValue(789.012);
         collector.addOtelMetric(telemetry);
-        storedMetrics = collector.getOpenTelMetrics();
+        storedMetrics = collector.getOTelMetrics();
         assertThat(storedMetrics.size()).isEqualTo(2);
         assertThat(storedMetrics.containsKey("TestMetric2")).isTrue();
         assertThat(storedMetrics.get("TestMetric2").getDataValues().get(0)).isEqualTo(789.012);
 
-        collector.flushOpenTelMetrics();
-        assertThat(collector.getOpenTelMetrics().size()).isEqualTo(0);
+        collector.flushOTelMetrics();
+        assertThat(collector.getOTelMetrics().size()).isEqualTo(0);
     }
 
     @Test
