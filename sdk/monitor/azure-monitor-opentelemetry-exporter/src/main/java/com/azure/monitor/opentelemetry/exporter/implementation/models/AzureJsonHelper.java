@@ -20,14 +20,11 @@ public class AzureJsonHelper {
         if (map == null) {
             return;
         }
-
         jsonWriter.writeFieldName(fieldName);
-        jsonWriter.writeStartObject();
         for (Map.Entry<String, T> entry : map.entrySet()) {
             jsonWriter.writeFieldName(entry.getKey());
             writeValueCallback.accept(entry.getValue());
         }
-        jsonWriter.writeEndObject();
     }
 
     private AzureJsonHelper() {
