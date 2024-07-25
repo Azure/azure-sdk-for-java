@@ -43,16 +43,22 @@ public final class GsonJsonElementUtils {
         switch (currentToken) {
             case START_OBJECT:
                 return readJsonObject(jsonReader);
+
             case START_ARRAY:
                 return readJsonArray(jsonReader);
+
             case BOOLEAN:
                 return new JsonPrimitive(jsonReader.getBoolean());
+
             case NULL:
                 return JsonNull.INSTANCE;
+
             case NUMBER:
                 return parseNumeric(jsonReader.getString());
+
             case STRING:
                 return new JsonPrimitive(jsonReader.getString());
+
             default:
                 throw new IllegalArgumentException("Unsupported JsonToken type: " + currentToken);
         }
@@ -77,7 +83,7 @@ public final class GsonJsonElementUtils {
      * @param value The string-based numeric value the JsonNumber will represent.
      * @throws NumberFormatException If the string is not a valid number.
      */
-    private static JsonPrimitive parseNumeric(String value) throws IllegalArgumentException {
+    private static JsonPrimitive parseNumeric(String value) {
         int length = value.length();
         boolean floatingPoint = false;
         boolean infinity = value.contains("Infinity");
@@ -180,17 +186,18 @@ public final class GsonJsonElementUtils {
      * @param jsonWriter The {@link JsonWriter} to write the {@link JsonElement} to.
      * @param jsonElement The {@link JsonElement} to write to the {@link JsonWriter}.
      * @return The {@link JsonWriter} after writing the {@link JsonElement}.
+     * @throws IllegalArgumentException If the {@link JsonElement} contains an unsupported type.
      * @throws IOException If an error occurs while writing the {@link JsonElement}.
      */
     public static JsonWriter writeJsonElement(JsonWriter jsonWriter, JsonElement jsonElement) throws IOException {
         if (jsonElement == null) {
             return jsonWriter.writeNull();
         } else if (jsonElement.isJsonArray()) {
-            return writeJsonArray(jsonWriter, (JsonArray) jsonElement);
+            return writeJsonArray(jsonWriter, jsonElement.getAsJsonArray());
         } else if (jsonElement.isJsonNull()) {
             return jsonWriter.writeNull();
         } else if (jsonElement.isJsonObject()) {
-            return writeJsonObject(jsonWriter, (JsonObject) jsonElement);
+            return writeJsonObject(jsonWriter, jsonElement.getAsJsonObject());
         } else if (jsonElement.isJsonPrimitive()) {
             JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
             if (jsonPrimitive.isBoolean()) {

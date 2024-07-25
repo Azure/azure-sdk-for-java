@@ -56,16 +56,22 @@ public final class JacksonJsonElementUtils {
         switch (currentToken) {
             case START_OBJECT:
                 return readObjectNode(jsonReader);
+
             case START_ARRAY:
                 return readArrayNode(jsonReader);
+
             case BOOLEAN:
                 return jsonReader.getBoolean() ? BooleanNode.TRUE : BooleanNode.FALSE;
+
             case NULL:
                 return NullNode.getInstance();
+
             case NUMBER:
                 return parseNumeric(jsonReader.getString());
+
             case STRING:
                 return new TextNode(jsonReader.getString());
+
             default:
                 throw new IllegalArgumentException("Unsupported JsonToken type: " + currentToken);
         }
@@ -90,7 +96,7 @@ public final class JacksonJsonElementUtils {
      * @param value The string-based numeric value the JsonNumber will represent.
      * @throws NumberFormatException If the string is not a valid number.
      */
-    private static NumericNode parseNumeric(String value) throws IllegalArgumentException {
+    private static NumericNode parseNumeric(String value) {
         int length = value.length();
         boolean floatingPoint = false;
         boolean infinity = value.contains("Infinity");
@@ -202,9 +208,9 @@ public final class JacksonJsonElementUtils {
     public static JsonWriter writeJsonNode(JsonWriter jsonWriter, JsonNode jsonNode) throws IOException {
         if (jsonNode == null) {
             return jsonWriter.writeNull();
-        } else if (jsonNode.isArray()) {
+        } else if (jsonNode instanceof ArrayNode) {
             return writeArrayNode(jsonWriter, (ArrayNode) jsonNode);
-        } else if (jsonNode.isBinary()) {
+        } else if (jsonNode instanceof BinaryNode) {
             return jsonWriter.writeBinary(((BinaryNode) jsonNode).binaryValue());
         } else if (jsonNode.isBoolean()) {
             return jsonWriter.writeBoolean(jsonNode.booleanValue());
@@ -212,7 +218,7 @@ public final class JacksonJsonElementUtils {
             return jsonWriter.writeNull();
         } else if (jsonNode.isNumber()) {
             return jsonWriter.writeNumber(jsonNode.numberValue());
-        } else if (jsonNode.isObject()) {
+        } else if (jsonNode instanceof ObjectNode) {
             return writeObjectNode(jsonWriter, (ObjectNode) jsonNode);
         } else if (jsonNode.isTextual()) {
             return jsonWriter.writeString(jsonNode.textValue());
