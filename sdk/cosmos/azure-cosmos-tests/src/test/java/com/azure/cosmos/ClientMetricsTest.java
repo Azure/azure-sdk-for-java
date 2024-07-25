@@ -1758,6 +1758,8 @@ public class ClientMetricsTest extends BatchTestBase {
             for (Tag tag : meterMatches.get(0).getId().getTags()) {
                 possibleTags.add(tag.getKey());
             }
+
+            List<Meter> metersMissingTags = new ArrayList<>();
             List<Meter> metersTagPresent = meterMatches
                 .stream()
                 .filter(meter -> {
@@ -1768,9 +1770,20 @@ public class ClientMetricsTest extends BatchTestBase {
                         }
                         numTags++;
                     }
+                    if (numTags != possibleTags.size()) {
+                        metersMissingTags.add(meter);
+                    }
                     return numTags == possibleTags.size();
                 } )
                 .collect(Collectors.toList());
+
+            if (metersMissingTags.size() > 0) {
+                System.out.println("There are meters missing tags with prefix " + prefix);
+                System.out.println("All possible tags " + possibleTags);
+                for (Meter meter : metersMissingTags) {
+                    System.out.println("Meters missing tags " + meter.getId().getName() + "------" + meter.getId().getTags());
+                }
+            }
             assertThat(metersTagPresent.size()).isEqualTo(meterMatches.size());
         }
     }
