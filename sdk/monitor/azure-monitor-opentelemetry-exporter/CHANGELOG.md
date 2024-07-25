@@ -1,14 +1,14 @@
 # Release History
 
-## 1.0.0-beta.26 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.26 (2024-07-24)
 
 ### Bugs Fixed
-
+- [Fix pre-aggregated standard HTTP server metric success calculation](https://github.com/Azure/azure-sdk-for-java/pull/40599)
+- [OOM error caused by AzureMonitorLogRecordExporter](https://github.com/Azure/azure-sdk-for-java/issues/40546)
+  
 ### Other Changes
+- [Update OpenTelemetry to 1.40.0](https://github.com/Azure/azure-sdk-for-java/pull/39843)
+- [Improve connection string message](https://github.com/Azure/azure-sdk-for-java/pull/40922)
 
 ## 1.0.0-beta.25 (2024-06-28)
 
