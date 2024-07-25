@@ -1837,7 +1837,7 @@ service
 <details>
 <summary> securitydevops </summary>
 
-* [package-2022-09-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/securitydevops/resource-manager#tag-package-2022-09-01-preview)
+* package-2022-09-01-preview
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-securitydevops/1.0.0-beta.1)
 </details>
 
