@@ -108,6 +108,8 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
         builder.buildProcessorClient();
 
+        verify(getSharedServiceBusClientBuilder(properties), times(1)).customEndpointAddress(customEndpoint);
+
         verify(builder, times(1)).topicName("test-topic");
         verify(builder, times(1)).subscriptionName("test-subscription");
         verify(builder, times(1)).receiveMode(ServiceBusReceiveMode.PEEK_LOCK);
@@ -121,7 +123,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
-    private static ServiceBusProcessorClientTestProperties getServiceBusProcessorClientTestProperties() {
+    private ServiceBusProcessorClientTestProperties getServiceBusProcessorClientTestProperties() {
         ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityName("test-topic");
@@ -134,6 +136,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         properties.setAutoComplete(false);
         properties.setMaxConcurrentCalls(10);
         properties.setMaxConcurrentSessions(20);
+        properties.setCustomEndpointAddress(this.customEndpoint);
         return properties;
     }
 

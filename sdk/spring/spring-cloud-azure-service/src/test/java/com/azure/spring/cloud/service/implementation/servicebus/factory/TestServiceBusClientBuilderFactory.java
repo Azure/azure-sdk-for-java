@@ -11,8 +11,7 @@ import static org.mockito.Mockito.mock;
 
 public class TestServiceBusClientBuilderFactory extends ServiceBusClientBuilderFactory {
     public TestServiceBusClientBuilderFactory(AzureProperties azureProperties) {
-
-        super((ServiceBusClientCommonProperties)azureProperties);
+        super((ServiceBusClientCommonProperties) azureProperties);
     }
 
     @Override

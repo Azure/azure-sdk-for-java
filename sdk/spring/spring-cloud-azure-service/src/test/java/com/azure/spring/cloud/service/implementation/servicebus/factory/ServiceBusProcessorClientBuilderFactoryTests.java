@@ -124,7 +124,7 @@ class ServiceBusProcessorClientBuilderFactoryTests extends AbstractServiceBusSub
         verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
-    private static ServiceBusProcessorClientTestProperties getServiceBusProcessorClientTestProperties() {
+    private ServiceBusProcessorClientTestProperties getServiceBusProcessorClientTestProperties() {
         ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityName("test-topic");
@@ -137,7 +137,7 @@ class ServiceBusProcessorClientBuilderFactoryTests extends AbstractServiceBusSub
         properties.setAutoComplete(false);
         properties.setMaxConcurrentCalls(10);
         properties.setMaxConcurrentSessions(20);
-        properties.setCustomEndpointAddress("https://custom.endpoint.com");
+        properties.setCustomEndpointAddress(this.customEndpoint);
         return properties;
     }
 

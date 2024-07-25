@@ -60,6 +60,8 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
         final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder = factory.build();
         builder.buildClient();
 
+        verify(getSharedServiceBusClientBuilder(properties), times(1)).customEndpointAddress(customEndpoint);
+
         verify(builder, times(1)).topicName("test-topic");
         verify(builder, times(1)).subscriptionName("test-subscription");
         verify(builder, times(1)).receiveMode(ServiceBusReceiveMode.PEEK_LOCK);
@@ -71,7 +73,7 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
         verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
-    private static ServiceBusReceiverClientTestProperties getServiceBusReceiverClientTestProperties() {
+    private ServiceBusReceiverClientTestProperties getServiceBusReceiverClientTestProperties() {
         ServiceBusReceiverClientTestProperties properties = new ServiceBusReceiverClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityName("test-topic");
@@ -82,6 +84,7 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
         properties.setPrefetchCount(100);
         properties.setMaxAutoLockRenewDuration(Duration.ofSeconds(5));
         properties.setAutoComplete(false);
+        properties.setCustomEndpointAddress(this.customEndpoint);
         return properties;
     }
 

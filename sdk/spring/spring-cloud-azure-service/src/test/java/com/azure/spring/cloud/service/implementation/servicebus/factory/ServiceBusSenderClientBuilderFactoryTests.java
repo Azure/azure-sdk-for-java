@@ -53,11 +53,13 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
         properties.setNamespace("test-namespace");
         properties.setEntityName("test-topic");
         properties.setEntityType(ServiceBusEntityType.TOPIC);
+        properties.setCustomEndpointAddress(this.customEndpoint);
 
         final ServiceBusSenderClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
         final ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = factory.build();
         builder.buildClient();
 
+        verify(getSharedServiceBusClientBuilder(properties), times(1)).customEndpointAddress(customEndpoint);
         verify(builder, times(1)).topicName("test-topic");
 
         verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
