@@ -167,7 +167,7 @@ public class PartitionControllerImplTests {
     }
 
 
-    @Test(groups = "unit")
+    @Test(groups = "unit", invocationCount = 1000)
     public void handleMerge() throws InterruptedException {
         LeaseContainer leaseContainer = Mockito.mock(LeaseContainer.class);
         when(leaseContainer.getOwnedLeases()).thenReturn(Flux.empty());
