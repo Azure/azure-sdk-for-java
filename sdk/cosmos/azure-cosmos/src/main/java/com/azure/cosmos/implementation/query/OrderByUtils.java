@@ -49,7 +49,7 @@ class OrderByUtils {
                                                        targetRangeToOrderByContinuationTokenMap,
                                                        consumeComparer.getSortOrders(), clientSideRequestStatistics))
                 .toArray(Flux[]::new);
-        return Flux.mergeOrdered(consumeComparer, fluxes);
+        return Flux.mergeOrdered(1, consumeComparer, fluxes);
     }
 
     private static Flux<OrderByRowResult<Document>> toOrderByQueryResultObservable(DocumentProducer<Document> producer,
