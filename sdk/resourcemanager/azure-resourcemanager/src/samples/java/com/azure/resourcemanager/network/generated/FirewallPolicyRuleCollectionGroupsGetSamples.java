@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyNatRuleCollectionGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicyNatRuleCollectionGroupGet.json
      */
     /**
      * Sample code: Get FirewallPolicyNatRuleCollectionGroup.
@@ -25,7 +26,8 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup With Web Categories.
@@ -42,7 +44,8 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyRuleCollectionGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicyRuleCollectionGroupGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup.
@@ -58,7 +61,8 @@ public final class FirewallPolicyRuleCollectionGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
      */
     /**
      * Sample code: Get FirewallPolicyRuleCollectionGroup With IpGroups.

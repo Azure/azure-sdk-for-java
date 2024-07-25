@@ -21,10 +21,10 @@ public final class ScaleInPolicy {
      * <br><br> **OldestVM** When a virtual machine scale set is being scaled-in, the oldest virtual machines that are
      * not protected from scale-in will be chosen for removal. For zonal virtual machine scale sets, the scale set will
      * first be balanced across zones. Within each zone, the oldest virtual machines that are not protected will be
-     * chosen for removal. <br><br> **NewestVM** When a virtual machine scale set is being scaled-in, the newest
-     * virtual machines that are not protected from scale-in will be chosen for removal. For zonal virtual machine
-     * scale sets, the scale set will first be balanced across zones. Within each zone, the newest virtual machines
-     * that are not protected will be chosen for removal. <br><br>
+     * chosen for removal. <br><br> **NewestVM** When a virtual machine scale set is being scaled-in, the newest virtual
+     * machines that are not protected from scale-in will be chosen for removal. For zonal virtual machine scale sets,
+     * the scale set will first be balanced across zones. Within each zone, the newest virtual machines that are not
+     * protected will be chosen for removal. <br><br>
      */
     @JsonProperty(value = "rules")
     private List<VirtualMachineScaleSetScaleInRules> rules;

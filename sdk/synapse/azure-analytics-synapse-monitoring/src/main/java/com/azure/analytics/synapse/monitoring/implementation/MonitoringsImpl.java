@@ -23,22 +23,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Monitorings. */
+/**
+ * An instance of this class provides access to all the operations defined in Monitorings.
+ */
 public final class MonitoringsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MonitoringsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MonitoringClientImpl client;
 
     /**
      * Initializes an instance of MonitoringsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MonitoringsImpl(MonitoringClientImpl client) {
-        this.service =
-                RestProxy.create(MonitoringsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MonitoringsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,177 +56,115 @@ public final class MonitoringsImpl {
     @ServiceInterface(name = "MonitoringClientMoni")
     public interface MonitoringsService {
         @Get("/monitoring/workloadTypes/spark/Applications")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SparkJobListViewResponse>> getSparkJobList(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") String xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SparkJobListViewResponse>> getSparkJobList(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") String xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/monitoring/workloadTypes/sql/querystring")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SqlQueryStringDataModel>> getSqlJobQueryString(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") String xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @QueryParam("filter") String filter,
-                @QueryParam("$orderby") String orderby,
-                @QueryParam("skip") String skip,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SqlQueryStringDataModel>> getSqlJobQueryString(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") String xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
+            @QueryParam("$orderby") String orderby, @QueryParam("skip") String skip,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get list of spark applications for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of spark applications for the workspace.
+     * @return list of spark applications for the workspace along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkJobListViewResponse>> getSparkJobListWithResponseAsync(String xMsClientRequestId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getSparkJobList(
-                                this.client.getEndpoint(),
-                                xMsClientRequestId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.getSparkJobList(this.client.getEndpoint(), xMsClientRequestId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Get list of spark applications for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of spark applications for the workspace.
+     * @return list of spark applications for the workspace along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SparkJobListViewResponse>> getSparkJobListWithResponseAsync(
-            String xMsClientRequestId, Context context) {
+    public Mono<Response<SparkJobListViewResponse>> getSparkJobListWithResponseAsync(String xMsClientRequestId,
+        Context context) {
         final String accept = "application/json";
-        return service.getSparkJobList(
-                this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, context);
+        return service.getSparkJobList(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Get list of spark applications for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of spark applications for the workspace.
+     * @return list of spark applications for the workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkJobListViewResponse> getSparkJobListAsync(String xMsClientRequestId) {
-        return getSparkJobListWithResponseAsync(xMsClientRequestId)
-                .flatMap(
-                        (Response<SparkJobListViewResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getSparkJobListWithResponseAsync(xMsClientRequestId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get list of spark applications for the workspace.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of spark applications for the workspace.
+     * @return list of spark applications for the workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkJobListViewResponse> getSparkJobListAsync() {
         final String xMsClientRequestId = null;
-        return getSparkJobListWithResponseAsync(xMsClientRequestId)
-                .flatMap(
-                        (Response<SparkJobListViewResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getSparkJobListWithResponseAsync(xMsClientRequestId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get list of spark applications for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of spark applications for the workspace.
+     * @return list of spark applications for the workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkJobListViewResponse> getSparkJobListAsync(String xMsClientRequestId, Context context) {
         return getSparkJobListWithResponseAsync(xMsClientRequestId, context)
-                .flatMap(
-                        (Response<SparkJobListViewResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get list of spark applications for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of spark applications for the workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SparkJobListViewResponse getSparkJobList(String xMsClientRequestId) {
-        return getSparkJobListAsync(xMsClientRequestId).block();
-    }
-
-    /**
-     * Get list of spark applications for the workspace.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of spark applications for the workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SparkJobListViewResponse getSparkJobList() {
-        final String xMsClientRequestId = null;
-        return getSparkJobListAsync(xMsClientRequestId).block();
-    }
-
-    /**
-     * Get list of spark applications for the workspace.
-     *
-     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of spark applications for the workspace.
+     * @return list of spark applications for the workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SparkJobListViewResponse> getSparkJobListWithResponse(String xMsClientRequestId, Context context) {
@@ -228,40 +172,59 @@ public final class MonitoringsImpl {
     }
 
     /**
-     * Get SQL OD/DW Query for the workspace.
-     *
+     * Get list of spark applications for the workspace.
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of spark applications for the workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SparkJobListViewResponse getSparkJobList(String xMsClientRequestId) {
+        return getSparkJobListWithResponse(xMsClientRequestId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get list of spark applications for the workspace.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of spark applications for the workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SparkJobListViewResponse getSparkJobList() {
+        final String xMsClientRequestId = null;
+        return getSparkJobListWithResponse(xMsClientRequestId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get SQL OD/DW Query for the workspace.
+     * 
+     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
+     * support.
      * @param filter The filter parameter.
      * @param orderby The orderby parameter.
      * @param skip The skip parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL OD/DW Query for the workspace.
+     * @return sQL OD/DW Query for the workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlQueryStringDataModel>> getSqlJobQueryStringWithResponseAsync(
-            String xMsClientRequestId, String filter, String orderby, String skip) {
+    public Mono<Response<SqlQueryStringDataModel>> getSqlJobQueryStringWithResponseAsync(String xMsClientRequestId,
+        String filter, String orderby, String skip) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getSqlJobQueryString(
-                                this.client.getEndpoint(),
-                                xMsClientRequestId,
-                                this.client.getApiVersion(),
-                                filter,
-                                orderby,
-                                skip,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.getSqlJobQueryString(this.client.getEndpoint(),
+            xMsClientRequestId, this.client.getApiVersion(), filter, orderby, skip, accept, context));
     }
 
     /**
      * Get SQL OD/DW Query for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
      * @param filter The filter parameter.
      * @param orderby The orderby parameter.
      * @param skip The skip parameter.
@@ -269,56 +232,42 @@ public final class MonitoringsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL OD/DW Query for the workspace.
+     * @return sQL OD/DW Query for the workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlQueryStringDataModel>> getSqlJobQueryStringWithResponseAsync(
-            String xMsClientRequestId, String filter, String orderby, String skip, Context context) {
+    public Mono<Response<SqlQueryStringDataModel>> getSqlJobQueryStringWithResponseAsync(String xMsClientRequestId,
+        String filter, String orderby, String skip, Context context) {
         final String accept = "application/json";
-        return service.getSqlJobQueryString(
-                this.client.getEndpoint(),
-                xMsClientRequestId,
-                this.client.getApiVersion(),
-                filter,
-                orderby,
-                skip,
-                accept,
-                context);
+        return service.getSqlJobQueryString(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(),
+            filter, orderby, skip, accept, context);
     }
 
     /**
      * Get SQL OD/DW Query for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
      * @param filter The filter parameter.
      * @param orderby The orderby parameter.
      * @param skip The skip parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL OD/DW Query for the workspace.
+     * @return sQL OD/DW Query for the workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlQueryStringDataModel> getSqlJobQueryStringAsync(
-            String xMsClientRequestId, String filter, String orderby, String skip) {
+    public Mono<SqlQueryStringDataModel> getSqlJobQueryStringAsync(String xMsClientRequestId, String filter,
+        String orderby, String skip) {
         return getSqlJobQueryStringWithResponseAsync(xMsClientRequestId, filter, orderby, skip)
-                .flatMap(
-                        (Response<SqlQueryStringDataModel> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get SQL OD/DW Query for the workspace.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL OD/DW Query for the workspace.
+     * @return sQL OD/DW Query for the workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlQueryStringDataModel> getSqlJobQueryStringAsync() {
@@ -327,21 +276,14 @@ public final class MonitoringsImpl {
         final String orderby = null;
         final String skip = null;
         return getSqlJobQueryStringWithResponseAsync(xMsClientRequestId, filter, orderby, skip)
-                .flatMap(
-                        (Response<SqlQueryStringDataModel> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get SQL OD/DW Query for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
      * @param filter The filter parameter.
      * @param orderby The orderby parameter.
      * @param skip The skip parameter.
@@ -349,27 +291,40 @@ public final class MonitoringsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL OD/DW Query for the workspace.
+     * @return sQL OD/DW Query for the workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlQueryStringDataModel> getSqlJobQueryStringAsync(
-            String xMsClientRequestId, String filter, String orderby, String skip, Context context) {
+    public Mono<SqlQueryStringDataModel> getSqlJobQueryStringAsync(String xMsClientRequestId, String filter,
+        String orderby, String skip, Context context) {
         return getSqlJobQueryStringWithResponseAsync(xMsClientRequestId, filter, orderby, skip, context)
-                .flatMap(
-                        (Response<SqlQueryStringDataModel> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get SQL OD/DW Query for the workspace.
-     *
+     * 
      * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
+     * support.
+     * @param filter The filter parameter.
+     * @param orderby The orderby parameter.
+     * @param skip The skip parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sQL OD/DW Query for the workspace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SqlQueryStringDataModel> getSqlJobQueryStringWithResponse(String xMsClientRequestId, String filter,
+        String orderby, String skip, Context context) {
+        return getSqlJobQueryStringWithResponseAsync(xMsClientRequestId, filter, orderby, skip, context).block();
+    }
+
+    /**
+     * Get SQL OD/DW Query for the workspace.
+     * 
+     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
+     * support.
      * @param filter The filter parameter.
      * @param orderby The orderby parameter.
      * @param skip The skip parameter.
@@ -379,14 +334,14 @@ public final class MonitoringsImpl {
      * @return sQL OD/DW Query for the workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlQueryStringDataModel getSqlJobQueryString(
-            String xMsClientRequestId, String filter, String orderby, String skip) {
-        return getSqlJobQueryStringAsync(xMsClientRequestId, filter, orderby, skip).block();
+    public SqlQueryStringDataModel getSqlJobQueryString(String xMsClientRequestId, String filter, String orderby,
+        String skip) {
+        return getSqlJobQueryStringWithResponse(xMsClientRequestId, filter, orderby, skip, Context.NONE).getValue();
     }
 
     /**
      * Get SQL OD/DW Query for the workspace.
-     *
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL OD/DW Query for the workspace.
@@ -397,26 +352,6 @@ public final class MonitoringsImpl {
         final String filter = null;
         final String orderby = null;
         final String skip = null;
-        return getSqlJobQueryStringAsync(xMsClientRequestId, filter, orderby, skip).block();
-    }
-
-    /**
-     * Get SQL OD/DW Query for the workspace.
-     *
-     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
-     *     support.
-     * @param filter The filter parameter.
-     * @param orderby The orderby parameter.
-     * @param skip The skip parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL OD/DW Query for the workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlQueryStringDataModel> getSqlJobQueryStringWithResponse(
-            String xMsClientRequestId, String filter, String orderby, String skip, Context context) {
-        return getSqlJobQueryStringWithResponseAsync(xMsClientRequestId, filter, orderby, skip, context).block();
+        return getSqlJobQueryStringWithResponse(xMsClientRequestId, filter, orderby, skip, Context.NONE).getValue();
     }
 }

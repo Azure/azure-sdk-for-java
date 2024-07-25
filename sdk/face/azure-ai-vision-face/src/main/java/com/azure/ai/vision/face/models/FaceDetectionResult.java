@@ -5,21 +5,23 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Response for detect API.
  */
 @Immutable
-public final class FaceDetectionResult {
+public final class FaceDetectionResult implements JsonSerializable<FaceDetectionResult> {
 
     /*
      * Unique faceId of the detected face, created by detection API and it will expire 24 hours after the detection
      * call. To return this, it requires 'returnFaceId' parameter to be true.
      */
     @Generated
-    @JsonProperty(value = "faceId")
     private String faceId;
 
     /*
@@ -27,14 +29,12 @@ public final class FaceDetectionResult {
      * explicitly set as true.
      */
     @Generated
-    @JsonProperty(value = "recognitionModel")
     private FaceRecognitionModel recognitionModel;
 
     /*
      * A rectangle area for the face location on image.
      */
     @Generated
-    @JsonProperty(value = "faceRectangle")
     private final FaceRectangle faceRectangle;
 
     /*
@@ -42,14 +42,12 @@ public final class FaceDetectionResult {
      * requires 'returnFaceLandmarks' parameter to be true.
      */
     @Generated
-    @JsonProperty(value = "faceLandmarks")
     private FaceLandmarks faceLandmarks;
 
     /*
      * Face attributes for detected face.
      */
     @Generated
-    @JsonProperty(value = "faceAttributes")
     private FaceAttributes faceAttributes;
 
     /**
@@ -58,8 +56,7 @@ public final class FaceDetectionResult {
      * @param faceRectangle the faceRectangle value to set.
      */
     @Generated
-    @JsonCreator
-    private FaceDetectionResult(@JsonProperty(value = "faceRectangle") FaceRectangle faceRectangle) {
+    private FaceDetectionResult(FaceRectangle faceRectangle) {
         this.faceRectangle = faceRectangle;
     }
 
@@ -114,5 +111,64 @@ public final class FaceDetectionResult {
     @Generated
     public FaceAttributes getFaceAttributes() {
         return this.faceAttributes;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("faceRectangle", this.faceRectangle);
+        jsonWriter.writeStringField("faceId", this.faceId);
+        jsonWriter.writeStringField("recognitionModel",
+            this.recognitionModel == null ? null : this.recognitionModel.toString());
+        jsonWriter.writeJsonField("faceLandmarks", this.faceLandmarks);
+        jsonWriter.writeJsonField("faceAttributes", this.faceAttributes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FaceDetectionResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FaceDetectionResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FaceDetectionResult.
+     */
+    @Generated
+    public static FaceDetectionResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FaceRectangle faceRectangle = null;
+            String faceId = null;
+            FaceRecognitionModel recognitionModel = null;
+            FaceLandmarks faceLandmarks = null;
+            FaceAttributes faceAttributes = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("faceRectangle".equals(fieldName)) {
+                    faceRectangle = FaceRectangle.fromJson(reader);
+                } else if ("faceId".equals(fieldName)) {
+                    faceId = reader.getString();
+                } else if ("recognitionModel".equals(fieldName)) {
+                    recognitionModel = FaceRecognitionModel.fromString(reader.getString());
+                } else if ("faceLandmarks".equals(fieldName)) {
+                    faceLandmarks = FaceLandmarks.fromJson(reader);
+                } else if ("faceAttributes".equals(fieldName)) {
+                    faceAttributes = FaceAttributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FaceDetectionResult deserializedFaceDetectionResult = new FaceDetectionResult(faceRectangle);
+            deserializedFaceDetectionResult.faceId = faceId;
+            deserializedFaceDetectionResult.recognitionModel = recognitionModel;
+            deserializedFaceDetectionResult.faceLandmarks = faceLandmarks;
+            deserializedFaceDetectionResult.faceAttributes = faceAttributes;
+            return deserializedFaceDetectionResult;
+        });
     }
 }

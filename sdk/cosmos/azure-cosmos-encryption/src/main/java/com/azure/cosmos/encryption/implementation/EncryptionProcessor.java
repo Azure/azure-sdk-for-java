@@ -260,6 +260,11 @@ public class EncryptionProcessor {
     }
 
     public Mono<byte[]> encrypt(JsonNode itemJObj) {
+
+        if (itemJObj != null) {
+            Utils.validateIdValue(itemJObj.get(Constants.PROPERTY_NAME_ID));
+        }
+
         return encryptObjectNode(itemJObj).map(
             encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(
                 CosmosItemSerializer.DEFAULT_SERIALIZER,

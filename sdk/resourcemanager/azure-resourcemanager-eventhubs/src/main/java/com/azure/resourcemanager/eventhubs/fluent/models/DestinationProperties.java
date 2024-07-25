@@ -5,16 +5,15 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.UUID;
 
-/** Properties describing the storage account, blob container and archive name format for capture destination. */
+/**
+ * Properties describing the storage account, blob container and archive name format for capture destination.
+ */
 @Fluent
 public final class DestinationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DestinationProperties.class);
-
     /*
      * Resource id of the storage account to be used to create the blobs
      */
@@ -29,9 +28,8 @@ public final class DestinationProperties {
 
     /*
      * Blob naming convention for archive, e.g.
-     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}.
-     * Here all the parameters (Namespace,EventHub .. etc) are mandatory
-     * irrespective of order
+     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters
+     * (Namespace,EventHub .. etc) are mandatory irrespective of order
      */
     @JsonProperty(value = "archiveNameFormat")
     private String archiveNameFormat;
@@ -53,6 +51,12 @@ public final class DestinationProperties {
      */
     @JsonProperty(value = "dataLakeFolderPath")
     private String dataLakeFolderPath;
+
+    /**
+     * Creates an instance of DestinationProperties class.
+     */
+    public DestinationProperties() {
+    }
 
     /**
      * Get the storageAccountResourceId property: Resource id of the storage account to be used to create the blobs.

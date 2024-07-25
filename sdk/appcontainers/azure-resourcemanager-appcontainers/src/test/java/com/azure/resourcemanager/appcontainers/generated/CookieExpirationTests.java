@@ -21,8 +21,9 @@ public final class CookieExpirationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CookieExpiration model = new CookieExpiration()
-            .withConvention(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED).withTimeToExpiration("dlwtgrhpdj");
+        CookieExpiration model
+            = new CookieExpiration().withConvention(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED)
+                .withTimeToExpiration("dlwtgrhpdj");
         model = BinaryData.fromObject(model).toObject(CookieExpiration.class);
         Assertions.assertEquals(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED, model.convention());
         Assertions.assertEquals("dlwtgrhpdj", model.timeToExpiration());

@@ -40,7 +40,7 @@ public final class StatelessAgentProfile extends AgentProfile {
      * {@inheritDoc}
      */
     @Override
-    public StatelessAgentProfile withResourcePredictions(Object resourcePredictions) {
+    public StatelessAgentProfile withResourcePredictions(ResourcePredictions resourcePredictions) {
         super.withResourcePredictions(resourcePredictions);
         return this;
     }
@@ -70,7 +70,7 @@ public final class StatelessAgentProfile extends AgentProfile {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("resourcePredictions", resourcePredictions());
+        jsonWriter.writeJsonField("resourcePredictions", resourcePredictions());
         jsonWriter.writeJsonField("resourcePredictionsProfile", resourcePredictionsProfile());
         jsonWriter.writeStringField("kind", this.kind);
         return jsonWriter.writeEndObject();
@@ -92,7 +92,7 @@ public final class StatelessAgentProfile extends AgentProfile {
                 reader.nextToken();
 
                 if ("resourcePredictions".equals(fieldName)) {
-                    deserializedStatelessAgentProfile.withResourcePredictions(reader.readUntyped());
+                    deserializedStatelessAgentProfile.withResourcePredictions(ResourcePredictions.fromJson(reader));
                 } else if ("resourcePredictionsProfile".equals(fieldName)) {
                     deserializedStatelessAgentProfile
                         .withResourcePredictionsProfile(ResourcePredictionsProfile.fromJson(reader));

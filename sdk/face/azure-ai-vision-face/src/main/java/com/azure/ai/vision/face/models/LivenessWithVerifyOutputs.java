@@ -5,34 +5,34 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The face verification output.
  */
 @Immutable
-public final class LivenessWithVerifyOutputs {
+public final class LivenessWithVerifyOutputs implements JsonSerializable<LivenessWithVerifyOutputs> {
 
     /*
      * The detail of face for verification.
      */
     @Generated
-    @JsonProperty(value = "verifyImage")
     private final LivenessWithVerifyImage verifyImage;
 
     /*
      * The target face liveness face and comparison image face verification confidence.
      */
     @Generated
-    @JsonProperty(value = "matchConfidence")
     private final double matchConfidence;
 
     /*
      * Whether the target liveness face and comparison image face match.
      */
     @Generated
-    @JsonProperty(value = "isIdentical")
     private final boolean isIdentical;
 
     /**
@@ -43,10 +43,8 @@ public final class LivenessWithVerifyOutputs {
      * @param isIdentical the isIdentical value to set.
      */
     @Generated
-    @JsonCreator
-    private LivenessWithVerifyOutputs(@JsonProperty(value = "verifyImage") LivenessWithVerifyImage verifyImage,
-        @JsonProperty(value = "matchConfidence") double matchConfidence,
-        @JsonProperty(value = "isIdentical") boolean isIdentical) {
+    private LivenessWithVerifyOutputs(LivenessWithVerifyImage verifyImage, double matchConfidence,
+        boolean isIdentical) {
         this.verifyImage = verifyImage;
         this.matchConfidence = matchConfidence;
         this.isIdentical = isIdentical;
@@ -81,5 +79,50 @@ public final class LivenessWithVerifyOutputs {
     @Generated
     public boolean isIdentical() {
         return this.isIdentical;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("verifyImage", this.verifyImage);
+        jsonWriter.writeDoubleField("matchConfidence", this.matchConfidence);
+        jsonWriter.writeBooleanField("isIdentical", this.isIdentical);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LivenessWithVerifyOutputs from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LivenessWithVerifyOutputs if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LivenessWithVerifyOutputs.
+     */
+    @Generated
+    public static LivenessWithVerifyOutputs fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LivenessWithVerifyImage verifyImage = null;
+            double matchConfidence = 0.0;
+            boolean isIdentical = false;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("verifyImage".equals(fieldName)) {
+                    verifyImage = LivenessWithVerifyImage.fromJson(reader);
+                } else if ("matchConfidence".equals(fieldName)) {
+                    matchConfidence = reader.getDouble();
+                } else if ("isIdentical".equals(fieldName)) {
+                    isIdentical = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new LivenessWithVerifyOutputs(verifyImage, matchConfidence, isIdentical);
+        });
     }
 }

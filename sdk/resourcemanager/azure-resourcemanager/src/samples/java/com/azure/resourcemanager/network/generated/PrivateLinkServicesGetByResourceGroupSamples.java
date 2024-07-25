@@ -9,7 +9,8 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PrivateLinkServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PrivateLinkServiceGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PrivateLinkServiceGet.json
      */
     /**
      * Sample code: Get private link service.

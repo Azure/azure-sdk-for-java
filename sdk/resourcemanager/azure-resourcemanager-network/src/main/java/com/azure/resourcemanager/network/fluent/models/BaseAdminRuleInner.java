@@ -31,7 +31,7 @@ public class BaseAdminRuleInner extends ChildResource {
      */
     @JsonTypeId
     @JsonProperty(value = "kind", required = true)
-    private AdminRuleKind kind;
+    private AdminRuleKind kind = AdminRuleKind.fromString("BaseAdminRule");
 
     /*
      * The system metadata related to this resource.
@@ -43,7 +43,6 @@ public class BaseAdminRuleInner extends ChildResource {
      * Creates an instance of BaseAdminRuleInner class.
      */
     public BaseAdminRuleInner() {
-        this.kind = AdminRuleKind.fromString("BaseAdminRule");
     }
 
     /**

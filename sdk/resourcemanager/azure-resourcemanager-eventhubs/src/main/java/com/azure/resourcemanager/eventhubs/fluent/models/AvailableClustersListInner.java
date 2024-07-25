@@ -5,23 +5,27 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.AvailableCluster;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The response of the List Available Clusters operation. */
+/**
+ * The response of the List Available Clusters operation.
+ */
 @Fluent
 public final class AvailableClustersListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableClustersListInner.class);
-
     /*
-     * The count of readily available and pre-provisioned Event Hubs Clusters
-     * per region.
+     * The count of readily available and pre-provisioned Event Hubs Clusters per region.
      */
     @JsonProperty(value = "value")
     private List<AvailableCluster> value;
+
+    /**
+     * Creates an instance of AvailableClustersListInner class.
+     */
+    public AvailableClustersListInner() {
+    }
 
     /**
      * Get the value property: The count of readily available and pre-provisioned Event Hubs Clusters per region.

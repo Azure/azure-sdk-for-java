@@ -387,6 +387,7 @@ public class HttpConstants {
 
         // client generated 400s
         public static final int CUSTOM_SERIALIZER_EXCEPTION = 10101;
+        public static final int INVALID_ID_VALUE = 10102;
 
         // 410: StatusCodeType_Gone: substatus
         // Merge or split share the same status code and subStatusCode
@@ -433,6 +434,8 @@ public class HttpConstants {
         public static final int TIMEOUT_GENERATED_410 = 20002;
         // Client generated operation timeout exception
         public static final int CLIENT_OPERATION_TIMEOUT = 20008;
+        // Sub-status code paired with 408 status code
+        public static final int TRANSIT_TIMEOUT = 20911;
 
         // IMPORTANT - below sub status codes have no corresponding .Net
         // version, because they are only applicable in Java

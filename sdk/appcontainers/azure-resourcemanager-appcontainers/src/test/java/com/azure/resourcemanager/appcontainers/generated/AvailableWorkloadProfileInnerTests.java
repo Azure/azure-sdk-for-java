@@ -27,9 +27,13 @@ public final class AvailableWorkloadProfileInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableWorkloadProfileInner model = new AvailableWorkloadProfileInner().withLocation("yocf").withProperties(
-            new AvailableWorkloadProfileProperties().withCategory("s").withApplicability(Applicability.CUSTOM)
-                .withCores(376493890).withMemoryGiB(666664165).withGpus(30564685).withDisplayName("uxh"));
+        AvailableWorkloadProfileInner model = new AvailableWorkloadProfileInner().withLocation("yocf")
+            .withProperties(new AvailableWorkloadProfileProperties().withCategory("s")
+                .withApplicability(Applicability.CUSTOM)
+                .withCores(376493890)
+                .withMemoryGiB(666664165)
+                .withGpus(30564685)
+                .withDisplayName("uxh"));
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfileInner.class);
         Assertions.assertEquals("yocf", model.location());
         Assertions.assertEquals("s", model.properties().category());
