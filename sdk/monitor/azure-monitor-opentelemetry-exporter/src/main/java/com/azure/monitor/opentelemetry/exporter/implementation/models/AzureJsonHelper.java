@@ -5,10 +5,10 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.json.JsonWriter;
+import com.azure.json.WriteValueCallback;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.function.Consumer;
 
 public final class AzureJsonHelper {
 
@@ -16,7 +16,7 @@ public final class AzureJsonHelper {
     // This method is used to write a map to a json writer.
     // The map is written as a json object with the key as the field name and the value as the field value.
     // The value is written using the writeValueCallback.
-    public static <T> void writeMap(Map<String, T> map, String fieldName, JsonWriter jsonWriter, Consumer<T> writeValueCallback) throws IOException {
+    public static <T> void writeMap(Map<String, T> map, String fieldName, JsonWriter jsonWriter, WriteValueCallback<JsonWriter, T> function) throws IOException {
         if (map == null) {
             return;
         }
@@ -28,11 +28,13 @@ public final class AzureJsonHelper {
                 continue;
             }
             jsonWriter.writeFieldName(entry.getKey());
-            writeValueCallback.accept(entry.getValue());
+            function.write(jsonWriter, entry.getValue());
         }
         jsonWriter.writeEndObject();
     }
 
     private AzureJsonHelper() {
     }
+
+
 }

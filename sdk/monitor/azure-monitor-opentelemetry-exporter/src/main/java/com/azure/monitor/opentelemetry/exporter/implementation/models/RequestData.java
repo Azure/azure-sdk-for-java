@@ -282,20 +282,8 @@ public final class RequestData extends MonitorDomain {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("url", this.url);
-        writeMap(this.properties, "properties", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeString(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        writeMap(this.measurements, "measurements", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeDouble(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
+        writeMap(this.measurements, "measurements", jsonWriter, JsonWriter::writeDouble);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -338,11 +326,9 @@ public final class RequestData extends MonitorDomain {
                 } else if ("url".equals(fieldName)) {
                     deserializedRequestData.url = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedRequestData.properties = properties;
+                    deserializedRequestData.properties = reader.readMap(JsonReader::getString);
                 } else if ("measurements".equals(fieldName)) {
-                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
-                    deserializedRequestData.measurements = measurements;
+                    deserializedRequestData.measurements = reader.readMap(JsonReader::getDouble);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

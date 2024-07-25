@@ -172,23 +172,11 @@ public final class TelemetryExceptionData extends MonitorDomain {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("ver", getVersion());
-        jsonWriter.writeArrayField("exceptions", this.exceptions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("exceptions", this.exceptions, JsonWriter::writeJson);
         jsonWriter.writeStringField("severityLevel", this.severityLevel == null ? null : this.severityLevel.toString());
         jsonWriter.writeStringField("problemId", this.problemId);
-        writeMap(this.properties, "properties", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeString(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        writeMap(this.measurements, "measurements", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeDouble(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
+        writeMap(this.measurements, "measurements", jsonWriter, JsonWriter::writeDouble);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -217,19 +205,15 @@ public final class TelemetryExceptionData extends MonitorDomain {
                 if ("ver".equals(fieldName)) {
                     deserializedTelemetryExceptionData.setVersion(reader.getInt());
                 } else if ("exceptions".equals(fieldName)) {
-                    List<TelemetryExceptionDetails> exceptions
-                        = reader.readArray(reader1 -> TelemetryExceptionDetails.fromJson(reader1));
-                    deserializedTelemetryExceptionData.exceptions = exceptions;
+                    deserializedTelemetryExceptionData.exceptions = reader.readArray(TelemetryExceptionDetails::fromJson);
                 } else if ("severityLevel".equals(fieldName)) {
                     deserializedTelemetryExceptionData.severityLevel = SeverityLevel.fromString(reader.getString());
                 } else if ("problemId".equals(fieldName)) {
                     deserializedTelemetryExceptionData.problemId = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedTelemetryExceptionData.properties = properties;
+                    deserializedTelemetryExceptionData.properties = reader.readMap(JsonReader::getString);
                 } else if ("measurements".equals(fieldName)) {
-                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
-                    deserializedTelemetryExceptionData.measurements = measurements;
+                    deserializedTelemetryExceptionData.measurements = reader.readMap(JsonReader::getDouble);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

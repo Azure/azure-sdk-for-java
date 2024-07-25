@@ -336,20 +336,8 @@ public final class PageViewPerfData extends MonitorDomain {
         jsonWriter.writeStringField("sentRequest", this.sentRequest);
         jsonWriter.writeStringField("receivedResponse", this.receivedResponse);
         jsonWriter.writeStringField("domProcessing", this.domProcessing);
-        writeMap(this.properties, "properties", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeString(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        writeMap(this.measurements, "measurements", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeDouble(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
+        writeMap(this.measurements, "measurements", jsonWriter, JsonWriter::writeDouble);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -396,11 +384,9 @@ public final class PageViewPerfData extends MonitorDomain {
                 } else if ("domProcessing".equals(fieldName)) {
                     deserializedPageViewPerfData.domProcessing = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedPageViewPerfData.properties = properties;
+                    deserializedPageViewPerfData.properties = reader.readMap(JsonReader::getString);
                 } else if ("measurements".equals(fieldName)) {
-                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
-                    deserializedPageViewPerfData.measurements = measurements;
+                    deserializedPageViewPerfData.measurements = reader.readMap(JsonReader::getDouble);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

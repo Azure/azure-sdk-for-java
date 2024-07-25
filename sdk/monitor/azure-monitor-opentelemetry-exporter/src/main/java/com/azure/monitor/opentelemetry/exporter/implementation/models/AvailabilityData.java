@@ -249,20 +249,8 @@ public final class AvailabilityData extends MonitorDomain {
         jsonWriter.writeBooleanField("success", this.success);
         jsonWriter.writeStringField("runLocation", this.runLocation);
         jsonWriter.writeStringField("message", this.message);
-        writeMap(this.properties, "properties", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeString(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        writeMap(this.measurements, "measurements", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeDouble(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
+        writeMap(this.measurements, "measurements", jsonWriter, JsonWriter::writeDouble);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -303,11 +291,9 @@ public final class AvailabilityData extends MonitorDomain {
                 } else if ("message".equals(fieldName)) {
                     deserializedAvailabilityData.message = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAvailabilityData.properties = properties;
+                    deserializedAvailabilityData.properties = reader.readMap(JsonReader::getString);
                 } else if ("measurements".equals(fieldName)) {
-                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
-                    deserializedAvailabilityData.measurements = measurements;
+                    deserializedAvailabilityData.measurements = reader.readMap(JsonReader::getDouble);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

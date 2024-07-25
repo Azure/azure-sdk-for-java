@@ -94,14 +94,8 @@ public final class MetricsData extends MonitorDomain {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("ver", getVersion());
-        jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
-        writeMap(this.properties, "properties", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeString(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        jsonWriter.writeArrayField("metrics", this.metrics, JsonWriter::writeJson);
+        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -130,11 +124,9 @@ public final class MetricsData extends MonitorDomain {
                 if ("ver".equals(fieldName)) {
                     deserializedMetricsData.setVersion(reader.getInt());
                 } else if ("metrics".equals(fieldName)) {
-                    List<MetricDataPoint> metrics = reader.readArray(reader1 -> MetricDataPoint.fromJson(reader1));
-                    deserializedMetricsData.metrics = metrics;
+                    deserializedMetricsData.metrics = reader.readArray(MetricDataPoint::fromJson);
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedMetricsData.properties = properties;
+                    deserializedMetricsData.properties = reader.readMap(JsonReader::getString);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();
