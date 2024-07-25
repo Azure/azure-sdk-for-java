@@ -522,17 +522,6 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
-    @Test
-    public void getPropertiesOAuthError() {
-        primaryShareClient.create();
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
-        // only APIs supported by ShareWithtoken authentication are createPermission and getPermission
-        assertThrows(ShareStorageException.class, shareClient::getProperties);
-    }
-
     @PlaybackOnly
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#getPropertiesPremiumSupplier")

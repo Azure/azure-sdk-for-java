@@ -183,6 +183,7 @@ public class DataLakeSasImplUtil {
      * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
      * @param context Additional context that is passed through the code when generating a SAS.
      * @return The string to sign that will be used to generate the signature for the SAS URL.
+     * @deprecated For debugging purposes only.
      */
     @Deprecated
     public String generateSasStringToSign(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
@@ -201,6 +202,7 @@ public class DataLakeSasImplUtil {
      * @param accountName The account name
      * @param context Additional context that is passed through the code when generating a SAS.
      * @return The string to sign that will be used to generate the signature for the SAS URL.
+     * @deprecated For debugging purposes only.
      */
     @Deprecated
     public String generateUserDelegationSasStringToSign(UserDelegationKey delegationKey, String accountName, Context context) {

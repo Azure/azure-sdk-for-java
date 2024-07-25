@@ -2000,6 +2000,7 @@ public class ShareDirectoryClient {
      * @param context Additional context that is passed through the code when generating a SAS.
      *
      * @return The string to sign that will be used to generate the signature for the SAS URL.
+     * @deprecated For debugging purposes only.
      */
     @Deprecated
     public String generateSasStringToSign(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
