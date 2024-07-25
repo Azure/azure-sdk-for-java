@@ -15,7 +15,7 @@
 
 #### Other Changes
 * Added metrics and tracing for ReadMany operations. - See [PR 41042](https://github.com/Azure/azure-sdk-for-java/pull/41042)
-* Added a `warn`-level log to capture when the `pkRangeId` in the user-passed session token and the `resolvedPartitionKeyRangeId` in the request doesn't match. -  See [PR 41268](https://github.com/Azure/azure-sdk-for-java/pull/41268)
+* Added a `warn`-level log to capture when the `pkRangeId` in the user-passed session token and the `resolvedPartitionKeyRangeId` in the request doesn't match. - See [PR 41268](https://github.com/Azure/azure-sdk-for-java/pull/41268)
 
 ### 4.62.0 (2024-07-02)
 
