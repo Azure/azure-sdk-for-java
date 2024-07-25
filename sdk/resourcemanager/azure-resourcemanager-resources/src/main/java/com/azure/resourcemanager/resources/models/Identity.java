@@ -5,38 +5,40 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
- * Identity for the resource.
+ * Identity for the resource. Policy assignments support a maximum of one identity. That is either a system assigned
+ * identity or a single user assigned identity.
  */
 @Fluent
-public final class Identity {
+public final class Identity implements JsonSerializable<Identity> {
     /*
-     * The principal ID of resource identity.
+     * The principal ID of the resource identity. This property will only be provided for a system assigned identity
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant ID of resource.
+     * The tenant ID of the resource identity. This property will only be provided for a system assigned identity
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The identity type.
+     * The identity type. This is the only required field when adding a system or user assigned identity to a resource.
      */
-    @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
-     * The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * The user identity associated with the policy. The user identity dictionary key references will be ARM resource
+     * ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, IdentityUserAssignedIdentitiesValue> userAssignedIdentities;
 
     /**
@@ -46,7 +48,8 @@ public final class Identity {
     }
 
     /**
-     * Get the principalId property: The principal ID of resource identity.
+     * Get the principalId property: The principal ID of the resource identity. This property will only be provided for
+     * a system assigned identity.
      * 
      * @return the principalId value.
      */
@@ -55,7 +58,8 @@ public final class Identity {
     }
 
     /**
-     * Get the tenantId property: The tenant ID of resource.
+     * Get the tenantId property: The tenant ID of the resource identity. This property will only be provided for a
+     * system assigned identity.
      * 
      * @return the tenantId value.
      */
@@ -64,7 +68,8 @@ public final class Identity {
     }
 
     /**
-     * Get the type property: The identity type.
+     * Get the type property: The identity type. This is the only required field when adding a system or user assigned
+     * identity to a resource.
      * 
      * @return the type value.
      */
@@ -73,7 +78,8 @@ public final class Identity {
     }
 
     /**
-     * Set the type property: The identity type.
+     * Set the type property: The identity type. This is the only required field when adding a system or user assigned
+     * identity to a resource.
      * 
      * @param type the type value to set.
      * @return the Identity object itself.
@@ -84,8 +90,8 @@ public final class Identity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities associated with the resource. The user
-     * identity dictionary key references will be ARM resource ids in the form:
+     * Get the userAssignedIdentities property: The user identity associated with the policy. The user identity
+     * dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @return the userAssignedIdentities value.
@@ -95,8 +101,8 @@ public final class Identity {
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities associated with the resource. The user
-     * identity dictionary key references will be ARM resource ids in the form:
+     * Set the userAssignedIdentities property: The user identity associated with the policy. The user identity
+     * dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
@@ -121,5 +127,51 @@ public final class Identity {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Identity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Identity if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Identity.
+     */
+    public static Identity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Identity deserializedIdentity = new Identity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedIdentity.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, IdentityUserAssignedIdentitiesValue> userAssignedIdentities
+                        = reader.readMap(reader1 -> IdentityUserAssignedIdentitiesValue.fromJson(reader1));
+                    deserializedIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentity;
+        });
     }
 }

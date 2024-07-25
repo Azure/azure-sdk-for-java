@@ -19,7 +19,8 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicyDefinitionAtManagementGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * createOrUpdatePolicyDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy definition at management group level.
