@@ -57,6 +57,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -530,9 +531,9 @@ public final class ModelHelper {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : tags.entrySet()) {
             try {
-                sb.append(URLEncoder.encode(entry.getKey(), Charset.defaultCharset().toString()));
+                sb.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.toString()));
                 sb.append("=");
-                sb.append(URLEncoder.encode(entry.getValue(), Charset.defaultCharset().toString()));
+                sb.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.toString()));
                 sb.append("&");
             } catch (UnsupportedEncodingException e) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(e));

@@ -105,7 +105,7 @@ public final class BlobContainerClient {
     /**
      * Special container name for the logs container in the Storage account.
      */
-    public static final String LOG_CONTAINER_NAME = "$logs";
+    public static final String LOG_CONTAINER_NAME = BlobContainerAsyncClient.LOG_CONTAINER_NAME;
     private static final ClientLogger LOGGER = new ClientLogger(BlobContainerClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
 

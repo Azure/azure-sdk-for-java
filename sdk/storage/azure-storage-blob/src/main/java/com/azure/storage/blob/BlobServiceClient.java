@@ -30,6 +30,7 @@ import com.azure.storage.blob.implementation.models.ServicesGetUserDelegationKey
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
@@ -431,23 +432,21 @@ public final class BlobServiceClient {
         throwOnAnonymousAccess();
         BiFunction<String, Integer, PagedResponse<BlobContainerItem>> pageRetriever = (marker, pageSize) -> {
             ListBlobContainersOptions finalOptions = options != null ? options : new ListBlobContainersOptions();
-
-            if (pageSize != null) {
-                finalOptions.setMaxResultsPerPage(pageSize);
-            }
-
-            return listBlobContainersSegment(marker, finalOptions, timeout);
+            Integer finalPageSize = pageSize != null ? pageSize : finalOptions.getMaxResultsPerPage();
+            return listBlobContainersSegment(marker, finalOptions.getDetails(), finalOptions.getPrefix(), finalPageSize,
+                timeout);
         };
         return new PagedIterable<>(pageSize -> pageRetriever.apply(null, pageSize), pageRetriever);
 
     }
 
-    private PagedResponse<BlobContainerItem> listBlobContainersSegment(String marker, ListBlobContainersOptions options, Duration timeout) {
+    private PagedResponse<BlobContainerItem> listBlobContainersSegment(String marker, BlobContainerListDetails details,
+        String prefix, Integer maxResultsPerPage, Duration timeout) {
         // Set up the include types based on the details provided in the options
-        List<ListBlobContainersIncludeType> include = ModelHelper.toIncludeTypes(options.getDetails());
+        List<ListBlobContainersIncludeType> include = ModelHelper.toIncludeTypes(details);
 
         Callable<PagedResponse<BlobContainerItem>> operation = () -> this.azureBlobStorage.getServices()
-            .listBlobContainersSegmentSinglePage(options.getPrefix(), marker, options.getMaxResultsPerPage(), include,
+            .listBlobContainersSegmentSinglePage(prefix, marker, maxResultsPerPage, include,
                 null, null, Context.NONE);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }

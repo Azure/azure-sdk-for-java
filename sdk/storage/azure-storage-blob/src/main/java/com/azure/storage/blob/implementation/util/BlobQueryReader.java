@@ -88,7 +88,7 @@ public class BlobQueryReader {
      */
     public InputStream readInputStream(InputStream inputStream) throws IOException {
         // Convert InputStream to Flux<ByteBuffer>
-        Flux<ByteBuffer> avroFlux = toFluxByteBuffer(inputStream);
+        Flux<ByteBuffer> avroFlux = FluxUtil.toFluxByteBuffer(inputStream);
 
         // Use existing read method to process the data
         Flux<ByteBuffer> processedData = new AvroReaderFactory().getAvroReader(avroFlux).read()
@@ -96,11 +96,6 @@ public class BlobQueryReader {
             .concatMap(this::parseRecord);
 
         return new FluxInputStream(processedData);
-    }
-
-    private Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
-        // Convert InputStream to Flux<ByteBuffer>, consider buffering if necessary
-        return FluxUtil.toFluxByteBuffer(inputStream);
     }
 
     /**
