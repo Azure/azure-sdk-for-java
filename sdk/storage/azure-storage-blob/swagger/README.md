@@ -404,7 +404,7 @@ directive:
 - rename-model:
     from: BlobPrefix
     to: BlobPrefixInternal
-
+    
 - from: swagger-document
   where: $.definitions
   transform: >

@@ -2,13 +2,15 @@
 
 ## 2.41.0-beta.1 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+- Changed type from `List<VirtualMachineExtensionInner>` to `List<String>` of `excludeExtensions` property in `SecurityPostureReference` class.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of DiskRP to `2024-03-02`.
 
 ## 2.40.0 (2024-06-24)
 

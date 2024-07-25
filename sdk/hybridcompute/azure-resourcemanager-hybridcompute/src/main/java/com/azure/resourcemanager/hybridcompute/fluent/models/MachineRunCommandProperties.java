@@ -5,94 +5,98 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcompute.models.MachineRunCommandInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.MachineRunCommandScriptSource;
 import com.azure.resourcemanager.hybridcompute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.hybridcompute.models.RunCommandManagedIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the properties of a run command.
  */
 @Fluent
-public final class MachineRunCommandProperties {
+public final class MachineRunCommandProperties implements JsonSerializable<MachineRunCommandProperties> {
     /*
      * The source of the run command script.
      */
-    @JsonProperty(value = "source")
     private MachineRunCommandScriptSource source;
 
     /*
      * The parameters used by the script.
      */
-    @JsonProperty(value = "parameters")
     private List<RunCommandInputParameter> parameters;
 
     /*
      * The parameters used by the script.
      */
-    @JsonProperty(value = "protectedParameters")
     private List<RunCommandInputParameter> protectedParameters;
 
     /*
-     * Optional. If set to true, provisioning will complete as soon as script starts and will not wait for script to complete.
+     * Optional. If set to true, provisioning will complete as soon as script starts and will not wait for script to
+     * complete.
      */
-    @JsonProperty(value = "asyncExecution")
     private Boolean asyncExecution;
 
     /*
      * Specifies the user account on the machine when executing the run command.
      */
-    @JsonProperty(value = "runAsUser")
     private String runAsUser;
 
     /*
      * Specifies the user account password on the machine when executing the run command.
      */
-    @JsonProperty(value = "runAsPassword")
     private String runAsPassword;
 
     /*
      * The timeout in seconds to execute the run command.
      */
-    @JsonProperty(value = "timeoutInSeconds")
     private Integer timeoutInSeconds;
 
     /*
-     * Specifies the Azure storage blob where script output stream will be uploaded. Use a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob. Refer outputBlobManagedIdentity parameter. 
+     * Specifies the Azure storage blob where script output stream will be uploaded. Use a SAS URI with read, append,
+     * create, write access OR use managed identity to provide the VM access to the blob. Refer
+     * outputBlobManagedIdentity parameter.
      */
-    @JsonProperty(value = "outputBlobUri")
     private String outputBlobUri;
 
     /*
-     * Specifies the Azure storage blob where script error stream will be uploaded. Use a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob. Refer errorBlobManagedIdentity parameter.
+     * Specifies the Azure storage blob where script error stream will be uploaded. Use a SAS URI with read, append,
+     * create, write access OR use managed identity to provide the VM access to the blob. Refer errorBlobManagedIdentity
+     * parameter.
      */
-    @JsonProperty(value = "errorBlobUri")
     private String errorBlobUri;
 
     /*
-     * User-assigned managed identity that has access to outputBlobUri storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged 
+     * User-assigned managed identity that has access to outputBlobUri storage blob. Use an empty object in case of
+     * system-assigned identity. Make sure managed identity has been given access to blob's container with 'Storage Blob
+     * Data Contributor' role assignment. In case of user-assigned identity, make sure you add it under VM's identity.
+     * For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and
+     * https://aka.ms/RunCommandManaged
      */
-    @JsonProperty(value = "outputBlobManagedIdentity")
     private RunCommandManagedIdentity outputBlobManagedIdentity;
 
     /*
-     * User-assigned managed identity that has access to errorBlobUri storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged 
+     * User-assigned managed identity that has access to errorBlobUri storage blob. Use an empty object in case of
+     * system-assigned identity. Make sure managed identity has been given access to blob's container with 'Storage Blob
+     * Data Contributor' role assignment. In case of user-assigned identity, make sure you add it under VM's identity.
+     * For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and
+     * https://aka.ms/RunCommandManaged
      */
-    @JsonProperty(value = "errorBlobManagedIdentity")
     private RunCommandManagedIdentity errorBlobManagedIdentity;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The machine run command instance view.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private MachineRunCommandInstanceView instanceView;
 
     /**
@@ -393,5 +397,83 @@ public final class MachineRunCommandProperties {
         if (instanceView() != null) {
             instanceView().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("protectedParameters", this.protectedParameters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("asyncExecution", this.asyncExecution);
+        jsonWriter.writeStringField("runAsUser", this.runAsUser);
+        jsonWriter.writeStringField("runAsPassword", this.runAsPassword);
+        jsonWriter.writeNumberField("timeoutInSeconds", this.timeoutInSeconds);
+        jsonWriter.writeStringField("outputBlobUri", this.outputBlobUri);
+        jsonWriter.writeStringField("errorBlobUri", this.errorBlobUri);
+        jsonWriter.writeJsonField("outputBlobManagedIdentity", this.outputBlobManagedIdentity);
+        jsonWriter.writeJsonField("errorBlobManagedIdentity", this.errorBlobManagedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MachineRunCommandProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MachineRunCommandProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MachineRunCommandProperties.
+     */
+    public static MachineRunCommandProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MachineRunCommandProperties deserializedMachineRunCommandProperties = new MachineRunCommandProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.source = MachineRunCommandScriptSource.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    List<RunCommandInputParameter> parameters
+                        = reader.readArray(reader1 -> RunCommandInputParameter.fromJson(reader1));
+                    deserializedMachineRunCommandProperties.parameters = parameters;
+                } else if ("protectedParameters".equals(fieldName)) {
+                    List<RunCommandInputParameter> protectedParameters
+                        = reader.readArray(reader1 -> RunCommandInputParameter.fromJson(reader1));
+                    deserializedMachineRunCommandProperties.protectedParameters = protectedParameters;
+                } else if ("asyncExecution".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.asyncExecution = reader.getNullable(JsonReader::getBoolean);
+                } else if ("runAsUser".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.runAsUser = reader.getString();
+                } else if ("runAsPassword".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.runAsPassword = reader.getString();
+                } else if ("timeoutInSeconds".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.timeoutInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("outputBlobUri".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.outputBlobUri = reader.getString();
+                } else if ("errorBlobUri".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.errorBlobUri = reader.getString();
+                } else if ("outputBlobManagedIdentity".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.outputBlobManagedIdentity
+                        = RunCommandManagedIdentity.fromJson(reader);
+                } else if ("errorBlobManagedIdentity".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.errorBlobManagedIdentity
+                        = RunCommandManagedIdentity.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.provisioningState = reader.getString();
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedMachineRunCommandProperties.instanceView
+                        = MachineRunCommandInstanceView.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMachineRunCommandProperties;
+        });
     }
 }

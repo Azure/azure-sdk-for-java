@@ -26,8 +26,10 @@ public final class PreBuildStepTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PreBuildStep model = new PreBuildStep().withDescription("iexpbtgiwbwo")
-            .withScripts(Arrays.asList("ashrt", "tkcnqxwb")).withHttpGet(new HttpGet().withUrl("kulpiujwaasi")
-                .withFileName("i").withHeaders(Arrays.asList("yuq", "rpqlp", "wcciuqgbdbu")));
+            .withScripts(Arrays.asList("ashrt", "tkcnqxwb"))
+            .withHttpGet(new HttpGet().withUrl("kulpiujwaasi")
+                .withFileName("i")
+                .withHeaders(Arrays.asList("yuq", "rpqlp", "wcciuqgbdbu")));
         model = BinaryData.fromObject(model).toObject(PreBuildStep.class);
         Assertions.assertEquals("iexpbtgiwbwo", model.description());
         Assertions.assertEquals("ashrt", model.scripts().get(0));

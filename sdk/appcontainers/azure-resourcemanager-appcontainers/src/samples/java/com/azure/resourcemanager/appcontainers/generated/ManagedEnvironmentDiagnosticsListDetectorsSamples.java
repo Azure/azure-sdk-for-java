@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ManagedEnvironmentDiagnosticsListDetectorsSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ManagedEnvironmentDiagnostics_List.json
      */
     /**
@@ -19,7 +19,7 @@ public final class ManagedEnvironmentDiagnosticsListDetectorsSamples {
      */
     public static void getTheListOfAvailableDiagnosticDataForAManagedEnvironments(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironmentDiagnostics().listDetectorsWithResponse("mikono-workerapp-test-rg", "mikonokubeenv",
-            com.azure.core.util.Context.NONE);
+        manager.managedEnvironmentDiagnostics()
+            .listDetectorsWithResponse("mikono-workerapp-test-rg", "mikonokubeenv", com.azure.core.util.Context.NONE);
     }
 }

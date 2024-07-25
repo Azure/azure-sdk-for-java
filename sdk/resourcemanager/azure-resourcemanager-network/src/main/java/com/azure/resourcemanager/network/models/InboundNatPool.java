@@ -21,7 +21,8 @@ public final class InboundNatPool extends SubResource {
     private InboundNatPoolPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of inbound NAT pools used by the load balancer. This name can be used to access the resource.
+     * The name of the resource that is unique within the set of inbound NAT pools used by the load balancer. This name
+     * can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;

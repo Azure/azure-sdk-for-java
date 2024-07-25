@@ -25,28 +25,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
-import com.azure.storage.blob.implementation.AzureBlobStorageImplBuilder;
-import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstructorProxy;
-import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
-import com.azure.storage.blob.implementation.models.BlobTag;
-import com.azure.storage.blob.implementation.models.BlobTags;
-import com.azure.storage.blob.implementation.models.BlobsCopyFromURLHeaders;
-import com.azure.storage.blob.implementation.models.BlobsCreateSnapshotHeaders;
-import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
-import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
-import com.azure.storage.blob.implementation.models.BlobsGetTagsHeaders;
-import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
-import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
-import com.azure.storage.blob.implementation.models.BlobsSetLegalHoldHeaders;
-import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
-import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.models.InternalBlobLegalHoldResult;
-import com.azure.storage.blob.implementation.models.QueryRequest;
-import com.azure.storage.blob.implementation.models.QuerySerialization;
-import com.azure.storage.blob.implementation.util.BlobQueryReader;
-import com.azure.storage.blob.implementation.util.BlobRequestConditionProperty;
-import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
+import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
@@ -93,7 +72,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -587,7 +565,7 @@ public class BlobClientBase {
         ByteBuffer initialRange = ByteBuffer.allocate(chunkSize);
         BlobProperties properties;
         BlobDownloadResponse response;
-        try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(initialRange)) {
+        try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(initialRange)) {
             response = this.downloadStreamWithResponse(dstStream,
                 new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
                 options.getRequestConditions(), false, null, context);

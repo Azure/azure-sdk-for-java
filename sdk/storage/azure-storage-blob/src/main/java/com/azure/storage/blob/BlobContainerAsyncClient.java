@@ -1467,9 +1467,7 @@ public final class BlobContainerAsyncClient {
             this.azureBlobStorage.getContainers().filterBlobsWithResponseAsync(containerName, null, null,
                 options.getQuery(), marker, options.getMaxResultsPerPage(), null, context), timeout)
             .map(response -> {
-                List<TaggedBlobItem> value = response.getValue().getBlobs() == null
-                    ? Collections.emptyList()
-                    : response.getValue().getBlobs().stream()
+                List<TaggedBlobItem> value = response.getValue().getBlobs().stream()
                     .map(ModelHelper::populateTaggedBlobItem)
                     .collect(Collectors.toList());
 

@@ -807,6 +807,23 @@ public class QueueAsyncApiTests extends QueueTestBase {
     }
 
     @Test
+    public void updateMessageWithBase64Client() {
+        String updateMsg = "Updated test message";
+        QueueAsyncClient encodingQueueClient = getBase64Client();
+        encodingQueueClient.create().block();
+        encodingQueueClient.sendMessage("test message before update").block();
+
+        QueueMessageItem dequeueMsg = encodingQueueClient.receiveMessage().block();
+
+        assertAsyncResponseStatusCode(encodingQueueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1)), 204);
+
+        StepVerifier.create(encodingQueueClient.peekMessage().delaySubscription(getMessageUpdateDelay(2000)))
+            .assertNext(peekedMessageItem -> assertEquals(updateMsg, peekedMessageItem.getMessageText()))
+            .verifyComplete();
+    }
+
+    @Test
     public void getQueueName() {
         assertEquals(queueName, queueAsyncClient.getQueueName());
     }
@@ -835,10 +852,15 @@ public class QueueAsyncApiTests extends QueueTestBase {
             assertEquals("2017-11-09", queuePropertiesResponse.getHeaders().getValue("x-ms-version"))).verifyComplete();
     }
 
+    private QueueAsyncClient getBase64Client() {
+        return queueServiceBuilderHelper().messageEncoding(QueueMessageEncoding.BASE64)
+            .buildAsyncClient().getQueueAsyncClient(queueName);
+    }
+
     @Test
     public void defaultAudience() {
         queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder()
             .audience(null) // should default to "https://storage.azure.com/"
             .queueName(queueAsyncClient.getQueueName())
             .buildAsyncClient();
@@ -851,7 +873,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
     @Test
     public void storageAccountAudience() {
         queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder()
             .audience(QueueAudience.createQueueServiceAccountAudience(queueAsyncClient.getAccountName()))
             .queueName(queueAsyncClient.getQueueName())
             .buildAsyncClient();
@@ -869,7 +891,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
      */
     public void audienceErrorBearerChallengeRetry() {
         queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder()
             .queueName(queueAsyncClient.getQueueName())
             .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
             .buildAsyncClient();
@@ -885,7 +907,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
         QueueAudience audience = QueueAudience.fromString(url);
 
         queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
+        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder()
             .audience(audience)
             .queueName(queueAsyncClient.getQueueName())
             .buildAsyncClient();

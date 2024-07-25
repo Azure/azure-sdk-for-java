@@ -3,6 +3,8 @@
 
 package com.azure.communication.chat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -18,9 +20,11 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,14 +52,7 @@ public class ChatResponseMocker {
                 .setId("000"))
             .setInvalidParticipants(invalidParticipants);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String body = null;
-        try {
-            body = mapper.writeValueAsString(result);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
+        final String body = serializeObject(result);
         return generateMockResponse(body, request, 201);
     }
 
@@ -67,14 +64,7 @@ public class ChatResponseMocker {
         MockAddChatParticipantsResult result = new MockAddChatParticipantsResult()
             .setInvalidParticipants(invalidParticipants);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String body = null;
-        try {
-            body = mapper.writeValueAsString(result);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
+        final String body = serializeObject(result);
         return generateMockResponse(body, request, 201);
     }
 
@@ -125,12 +115,10 @@ public class ChatResponseMocker {
         };
     }
 
-    static class MockCreateChatThreadResult {
+    static class MockCreateChatThreadResult implements JsonSerializable<MockCreateChatThreadResult> {
 
-        @JsonProperty(value = "chatThread")
         private ChatThreadProperties chatThread;
 
-        @JsonProperty(value = "invalidParticipants")
         private List<MockCommunicationError> invalidParticipants;
 
         public ChatThreadProperties getChatThread() {
@@ -150,11 +138,47 @@ public class ChatResponseMocker {
             this.invalidParticipants = invalidParticipants;
             return this;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeJsonField("chatThread", chatThread);
+            jsonWriter.writeArrayField("invalidParticipants", invalidParticipants, (writer, error) -> error.toJson(writer));
+            return jsonWriter.writeEndObject();
+        }
+
+        /**
+         * Reads an instance of MockCreateChatThreadResult from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MockCreateChatThreadResult if the JsonReader was pointing to an instance of it, or null
+         * if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MockCreateChatThreadResult.
+         */
+        public static MockCreateChatThreadResult fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                final MockCreateChatThreadResult result = new MockCreateChatThreadResult();
+                while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("chatThread".equals(fieldName)) {
+                        result.setChatThread(ChatThreadProperties.fromJson(jsonReader));
+                    } else if ("invalidParticipants".equals(fieldName)) {
+                        result.setInvalidParticipants(reader.readArray(MockCommunicationError::fromJson));
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return result;
+            });
+        }
     }
 
-    static class MockAddChatParticipantsResult {
+    static class MockAddChatParticipantsResult implements JsonSerializable<MockCommunicationError> {
 
-        @JsonProperty(value = "invalidParticipants")
         private List<MockCommunicationError> invalidParticipants;
 
         public List<MockCommunicationError> getInvalidParticipants() {
@@ -165,17 +189,48 @@ public class ChatResponseMocker {
             this.invalidParticipants = invalidParticipants;
             return this;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeArrayField("invalidParticipants", invalidParticipants, (writer, error) -> error.toJson(writer));
+            return jsonWriter.writeEndObject();
+        }
+
+        /**
+         * Reads an instance of MockAddChatParticipantsResult from the JsonReader.
+         *
+         * @param jsonReader The JsonReader being read.
+         * @return An instance of MockAddChatParticipantsResult if the JsonReader was pointing to an instance of it, or null
+         * if it was pointing to JSON null.
+         * @throws IOException If an error occurs while reading the MockAddChatParticipantsResult.
+         */
+        public static MockAddChatParticipantsResult fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                final MockAddChatParticipantsResult result = new MockAddChatParticipantsResult();
+                while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("invalidParticipants".equals(fieldName)) {
+                        result.setInvalidParticipants(reader.readArray(MockCommunicationError::fromJson));
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return result;
+            });
+        }
     }
 
-    static class MockCommunicationError {
+    static class MockCommunicationError implements JsonSerializable<MockCommunicationError> {
 
-        @JsonProperty(value = "code")
         private String code;
 
-        @JsonProperty(value = "message")
         private String message;
 
-        @JsonProperty(value = "target")
         private String target;
 
         public String getCode() {
@@ -204,6 +259,48 @@ public class ChatResponseMocker {
             this.target = target;
             return this;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("code", code);
+            jsonWriter.writeStringField("message", message);
+            jsonWriter.writeStringField("target", target);
+            return jsonWriter.writeEndObject();
+        }
+
+        public static MockCommunicationError fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                final MockCommunicationError error = new MockCommunicationError();
+                while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("code".equals(fieldName)) {
+                        error.setCode(reader.getString());
+                    } else if ("message".equals(fieldName)) {
+                        error.setMessage(reader.getString());
+                    } else if ("target".equals(fieldName)) {
+                        error.setTarget(reader.getString());
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return error;
+            });
+        }
     }
 
+    private static String serializeObject(JsonSerializable<?> o) {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            o.toJson(writer);
+            writer.flush();
+            return outputStream.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

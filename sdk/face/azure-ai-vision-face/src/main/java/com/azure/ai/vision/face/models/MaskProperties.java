@@ -5,27 +5,28 @@ package com.azure.ai.vision.face.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties describing the presence of a mask on a given face.
  */
 @Immutable
-public final class MaskProperties {
+public final class MaskProperties implements JsonSerializable<MaskProperties> {
 
     /*
      * A boolean value indicating whether nose and mouth are covered.
      */
     @Generated
-    @JsonProperty(value = "noseAndMouthCovered")
     private final boolean noseAndMouthCovered;
 
     /*
      * Type of the mask.
      */
     @Generated
-    @JsonProperty(value = "type")
     private final MaskType type;
 
     /**
@@ -35,9 +36,7 @@ public final class MaskProperties {
      * @param type the type value to set.
      */
     @Generated
-    @JsonCreator
-    private MaskProperties(@JsonProperty(value = "noseAndMouthCovered") boolean noseAndMouthCovered,
-        @JsonProperty(value = "type") MaskType type) {
+    private MaskProperties(boolean noseAndMouthCovered, MaskType type) {
         this.noseAndMouthCovered = noseAndMouthCovered;
         this.type = type;
     }
@@ -60,5 +59,46 @@ public final class MaskProperties {
     @Generated
     public MaskType getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("noseAndMouthCovered", this.noseAndMouthCovered);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaskProperties from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaskProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MaskProperties.
+     */
+    @Generated
+    public static MaskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean noseAndMouthCovered = false;
+            MaskType type = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("noseAndMouthCovered".equals(fieldName)) {
+                    noseAndMouthCovered = reader.getBoolean();
+                } else if ("type".equals(fieldName)) {
+                    type = MaskType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new MaskProperties(noseAndMouthCovered, type);
+        });
     }
 }

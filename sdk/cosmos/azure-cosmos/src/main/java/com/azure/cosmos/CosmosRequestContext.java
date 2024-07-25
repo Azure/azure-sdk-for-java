@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Getters for the common request context for operations in CosmosDB.
@@ -171,6 +172,15 @@ public final class CosmosRequestContext {
      */
     public String getQueryNameOrDefault(String defaultQueryName) {
         return requestOptions.getQueryNameOrDefault(defaultQueryName);
+    }
+
+    /**
+     * Gets the keyword identifiers.
+     *
+     * @return the keyword identifiers.
+     */
+    public Set<String> getKeywordIdentifiers() {
+        return requestOptions.getKeywordIdentifiers();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

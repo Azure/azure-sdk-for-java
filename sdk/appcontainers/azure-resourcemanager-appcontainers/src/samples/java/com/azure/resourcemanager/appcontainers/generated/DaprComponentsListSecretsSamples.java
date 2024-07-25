@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class DaprComponentsListSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/DaprComponents_ListSecrets.
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/DaprComponents_ListSecrets.
      * json
      */
     /**
@@ -20,7 +20,7 @@ public final class DaprComponentsListSecretsSamples {
      */
     public static void
         listContainerAppsSecrets(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.daprComponents().listSecretsWithResponse("examplerg", "myenvironment", "reddog",
-            com.azure.core.util.Context.NONE);
+        manager.daprComponents()
+            .listSecretsWithResponse("examplerg", "myenvironment", "reddog", com.azure.core.util.Context.NONE);
     }
 }

@@ -108,20 +108,20 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         }
 
         producer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .eventHubName(getEventHubName())
             .clientOptions(options)
             .buildAsyncProducerClient());
 
         consumer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .eventHubName(getEventHubName())
             .clientOptions(options)
             .consumerGroup("$Default")
             .buildAsyncConsumerClient());
 
         consumerSync = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .eventHubName(getEventHubName())
             .clientOptions(options)
             .consumerGroup("$Default")
@@ -284,7 +284,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.consume") || span.getName().equals("EventHubs.send"));
 
         EventHubBufferedProducerAsyncClient bufferedProducer = toClose(new EventHubBufferedProducerClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .onSendBatchFailed(failed -> fail("Exception occurred while sending messages." + failed.getThrowable()))
             .maxEventBufferLengthPerPartition(2)
             .maxWaitTime(Duration.ofSeconds(5))
@@ -413,7 +413,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
         processor = new EventProcessorClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .eventHubName(getEventHubName())
             .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
             .consumerGroup("$Default")
@@ -451,7 +451,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @SuppressWarnings("try")
     public void sendNotInstrumentedAndProcess() throws InterruptedException {
         EventHubProducerAsyncClient notInstrumentedProducer = toClose(new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .eventHubName(getEventHubName())
             .clientOptions(new ClientOptions().setTracingOptions(new TracingOptions().setEnabled(false)))
             .buildAsyncProducerClient());
@@ -474,7 +474,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         try (Scope scope = test.makeCurrent()) {
             processor = new EventProcessorClientBuilder()
-                .connectionString(getConnectionString())
+                .connectionString(TestUtils.getConnectionString())
                 .eventHubName(getEventHubName())
                 .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
                 .consumerGroup("$Default")
@@ -523,7 +523,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .verify(DEFAULT_TIMEOUT);
 
         processor = new EventProcessorClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .eventHubName(getEventHubName())
             .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
             .consumerGroup("$Default")
@@ -575,7 +575,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .verify(DEFAULT_TIMEOUT);
 
         processor = new EventProcessorClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .eventHubName(getEventHubName())
             .initialPartitionEventPosition(Collections.singletonMap(PARTITION_ID, EventPosition.fromEnqueuedTime(testStartTime)))
             .consumerGroup("$Default")

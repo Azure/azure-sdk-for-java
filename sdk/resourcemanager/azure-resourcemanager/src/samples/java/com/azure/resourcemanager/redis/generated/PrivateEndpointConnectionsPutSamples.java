@@ -8,31 +8,28 @@ import com.azure.resourcemanager.redis.fluent.models.PrivateEndpointConnectionIn
 import com.azure.resourcemanager.redis.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.redis.models.PrivateLinkServiceConnectionState;
 
-/** Samples for PrivateEndpointConnections Put. */
+/**
+ * Samples for PrivateEndpointConnections Put.
+ */
 public final class PrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCachePutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2024-03-01/examples/
+     * RedisCachePutPrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisCachePutPrivateEndpointConnection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCachePutPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .put(
-                "rgtest01",
-                "cachetest01",
-                "pectest01",
-                new PrivateEndpointConnectionInner()
-                    .withPrivateLinkServiceConnectionState(
-                        new PrivateLinkServiceConnectionState()
-                            .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                            .withDescription("Auto-Approved")),
+            .put("rgtest01", "cachetest01", "pectest01",
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("Auto-Approved")),
                 com.azure.core.util.Context.NONE);
     }
 }

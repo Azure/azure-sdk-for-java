@@ -547,7 +547,9 @@ public final class OpenAIClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param body Body parameter.
+     * @param embeddingsOptions The configuration information for an embeddings request.
+     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+     * recommendations, and other similar scenarios.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -560,11 +562,11 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Embeddings getEmbeddings(String deploymentOrModelName, EmbeddingsOptions body) {
+    public Embeddings getEmbeddings(String deploymentOrModelName, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEmbeddingsWithResponse(deploymentOrModelName, BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(Embeddings.class);
+        return getEmbeddingsWithResponse(deploymentOrModelName, BinaryData.fromObject(embeddingsOptions),
+            requestOptions).getValue().toObject(Embeddings.class);
     }
 
     /**
@@ -574,7 +576,9 @@ public final class OpenAIClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param body Body parameter.
+     * @param completionsOptions The configuration information for a completions request.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -587,11 +591,11 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Completions getCompletions(String deploymentOrModelName, CompletionsOptions body) {
+    public Completions getCompletions(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(Completions.class);
+        return getCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(completionsOptions),
+            requestOptions).getValue().toObject(Completions.class);
     }
 
     /**
@@ -1084,7 +1088,7 @@ public final class OpenAIClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param body Body parameter.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1095,11 +1099,11 @@ public final class OpenAIClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponse(String deploymentOrModelName,
-        BinaryData body, RequestOptions requestOptions) {
+        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'getAudioTranscriptionAsResponseObject' is 'multipart/form-data'
-        return this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponse(deploymentOrModelName, body,
-            requestOptions);
+        return this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponse(deploymentOrModelName,
+            audioTranscriptionOptions, requestOptions);
     }
 
     /**
@@ -1113,7 +1117,7 @@ public final class OpenAIClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param body Body parameter.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1123,12 +1127,12 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName, BinaryData body,
-        RequestOptions requestOptions) {
+    Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
+        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'getAudioTranscriptionAsPlainText' is 'multipart/form-data'
-        return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName, body,
-            requestOptions);
+        return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
+            audioTranscriptionOptions, requestOptions);
     }
 
     /**
@@ -1162,7 +1166,7 @@ public final class OpenAIClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param body Body parameter.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1173,12 +1177,12 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(String deploymentOrModelName, BinaryData body,
-        RequestOptions requestOptions) {
+    Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(String deploymentOrModelName,
+        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'getAudioTranslationAsResponseObject' is 'multipart/form-data'
-        return this.serviceClient.getAudioTranslationAsResponseObjectWithResponse(deploymentOrModelName, body,
-            requestOptions);
+        return this.serviceClient.getAudioTranslationAsResponseObjectWithResponse(deploymentOrModelName,
+            audioTranslationOptions, requestOptions);
     }
 
     /**
@@ -1191,7 +1195,7 @@ public final class OpenAIClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param body Body parameter.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1202,12 +1206,12 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName, BinaryData body,
-        RequestOptions requestOptions) {
+    Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
+        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'getAudioTranslationAsPlainText' is 'multipart/form-data'
-        return this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName, body,
-            requestOptions);
+        return this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
+            audioTranslationOptions, requestOptions);
     }
 
     /**
@@ -1313,6 +1317,39 @@ public final class OpenAIClient {
 
     /**
      * Creates an image given a prompt.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     *
+     * <pre>{@code
+     * {
+     *     model: String (Optional)
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024/1792x1024/1024x1792) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
+     *     quality: String(standard/hd) (Optional)
+     *     style: String(natural/vivid) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     *
+     * <pre>{@code
+     * {
+     *     created: long (Required)
+     *     data (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             b64_json: String (Optional)
+     *             revised_prompt: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1325,7 +1362,7 @@ public final class OpenAIClient {
      * @return the result of a successful image generation operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImageGenerations> getImageGenerationsWithResponse(String deploymentOrModelName,
+    public Response<ImageGenerations> getImageGenerationsWithResponse(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions, RequestOptions requestOptions) {
         Response<BinaryData> response = getImageGenerationsWithResponse(deploymentOrModelName,
             BinaryData.fromObject(imageGenerationOptions), requestOptions);
@@ -1337,7 +1374,7 @@ public final class OpenAIClient {
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param body Body parameter.
+     * @param imageGenerationOptions Represents the request data used to generate images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1348,12 +1385,12 @@ public final class OpenAIClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageGenerations getImageGenerations(String deploymentOrModelName, ImageGenerationOptions body) {
+    public ImageGenerations getImageGenerations(String deploymentOrModelName,
+        ImageGenerationOptions imageGenerationOptions) {
         // Generated convenience method for getImageGenerationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(body), requestOptions)
-            .getValue()
-            .toObject(ImageGenerations.class);
+        return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
+            requestOptions).getValue().toObject(ImageGenerations.class);
     }
 
     /**

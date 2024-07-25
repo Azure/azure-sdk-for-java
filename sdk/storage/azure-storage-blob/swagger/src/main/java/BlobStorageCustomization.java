@@ -189,7 +189,7 @@ public class BlobStorageCustomization extends Customization {
             clazz.getMethodsBySignature("toXml", "XmlWriter", "String").get(0)
                 .setBody(StaticJavaParser.parseBlock(
                     "{\n" +
-                        "rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;" +
+                    "rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;" +
                         "        xmlWriter.writeStartElement(rootElementName);\n" +
                         "        if (this.blobItems != null) {\n" +
                         "            for (BlobItemInternal element : this.blobItems) {\n" +
@@ -203,24 +203,24 @@ public class BlobStorageCustomization extends Customization {
             clazz.getMethodsBySignature("fromXml", "XmlReader", "String").get(0)
                 .setBody(StaticJavaParser.parseBlock(
                     "{\n" +
-                        "String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;\n" +
-                        "        return xmlReader.readObject(finalRootElementName, reader -> {\n" +
-                        "            BlobFlatListSegment deserializedBlobFlatListSegment = new BlobFlatListSegment();\n" +
-                        "            while (reader.nextElement() != XmlToken.END_ELEMENT) {\n" +
-                        "                QName elementName = reader.getElementName();\n" +
-                        "                if (\"Blob\".equals(elementName.getLocalPart())) {\n" +
-                        "                    if (deserializedBlobFlatListSegment.blobItems == null) {\n" +
-                        "                        deserializedBlobFlatListSegment.blobItems = new ArrayList<>();\n" +
-                        "                    }\n" +
-                        "                    deserializedBlobFlatListSegment.blobItems.add(BlobItemInternal.fromXml(reader, \"Blob\"));\n" +
-                        "                } else {\n" +
-                        "                    reader.skipElement();\n" +
-                        "                }\n" +
-                        "            }\n" +
-                        "\n" +
-                        "            return deserializedBlobFlatListSegment;\n" +
-                        "        });\n" +
-                        "}"
+                    "String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? \"Blobs\" : rootElementName;\n" +
+                    "        return xmlReader.readObject(finalRootElementName, reader -> {\n" +
+                    "            BlobFlatListSegment deserializedBlobFlatListSegment = new BlobFlatListSegment();\n" +
+                    "            while (reader.nextElement() != XmlToken.END_ELEMENT) {\n" +
+                    "                QName elementName = reader.getElementName();\n" +
+                    "                if (\"Blob\".equals(elementName.getLocalPart())) {\n" +
+                    "                    if (deserializedBlobFlatListSegment.blobItems == null) {\n" +
+                    "                        deserializedBlobFlatListSegment.blobItems = new ArrayList<>();\n" +
+                    "                    }\n" +
+                    "                    deserializedBlobFlatListSegment.blobItems.add(BlobItemInternal.fromXml(reader, \"Blob\"));\n" +
+                    "                } else {\n" +
+                    "                    reader.skipElement();\n" +
+                    "                }\n" +
+                    "            }\n" +
+                    "\n" +
+                    "            return deserializedBlobFlatListSegment;\n" +
+                    "        });\n" +
+                    "}"
                 ));
         });
     }

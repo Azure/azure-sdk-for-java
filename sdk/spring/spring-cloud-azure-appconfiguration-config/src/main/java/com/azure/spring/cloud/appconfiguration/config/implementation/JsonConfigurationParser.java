@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -44,10 +45,17 @@ final class JsonConfigurationParser {
     }
 
     static Map<String, Object> parseJsonSetting(ConfigurationSetting setting)
-        throws JsonProcessingException {
+        throws InvalidConfigurationPropertyValueException {
         Map<String, Object> settings = new HashMap<>();
-        JsonNode json = MAPPER.readTree(setting.getValue());
-        parseSetting(setting.getKey(), json, settings);
+        try {
+            JsonNode json = MAPPER.readTree(setting.getValue());
+            parseSetting(setting.getKey(), json, settings);
+        } catch (JsonProcessingException e) {
+            throw new InvalidConfigurationPropertyValueException(
+                setting.getKey(),
+                "<Redacted>",
+                "Expected type: JSON String, Number, Array, Object or token 'null', 'true' or 'false'");
+        }
         return settings;
     }
 

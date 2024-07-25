@@ -23,7 +23,8 @@ public final class ForwardProxyTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ForwardProxy model = new ForwardProxy().withConvention(ForwardProxyConvention.CUSTOM)
-            .withCustomHostHeaderName("yfsoppu").withCustomProtoHeaderName("esnzwde");
+            .withCustomHostHeaderName("yfsoppu")
+            .withCustomProtoHeaderName("esnzwde");
         model = BinaryData.fromObject(model).toObject(ForwardProxy.class);
         Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.convention());
         Assertions.assertEquals("yfsoppu", model.customHostHeaderName());

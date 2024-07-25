@@ -15,26 +15,21 @@ public final class NetworkProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkProfileInner model = BinaryData.fromString(
-            "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"knvudwtiukb\",\"ipAddressVersion\":\"ngkpocipazy\",\"subnet\":{\"addressPrefix\":\"gukgjnpiucgygevq\"}}]},{\"ipAddresses\":[{\"address\":\"pmr\",\"ipAddressVersion\":\"izcdrqjsd\",\"subnet\":{\"addressPrefix\":\"nfyhx\"}},{\"address\":\"oejzi\",\"ipAddressVersion\":\"ifsjttgzfbishcb\",\"subnet\":{\"addressPrefix\":\"jdeyeamdpha\"}},{\"address\":\"lpbuxwgipwhonowk\",\"ipAddressVersion\":\"hwankixzbinjepu\",\"subnet\":{\"addressPrefix\":\"rywn\"}},{\"address\":\"oqftiyqzrnkcq\",\"ipAddressVersion\":\"xlwhzlsicoh\",\"subnet\":{\"addressPrefix\":\"nwvlryavwhheunmm\"}}]}]}")
+            "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"kouknvudwtiu\",\"ipAddressVersion\":\"ldngkpoci\",\"subnet\":{\"addressPrefix\":\"yxoegukgjnp\"}},{\"address\":\"cgygev\",\"ipAddressVersion\":\"ntypmrbpizcdrqj\",\"subnet\":{\"addressPrefix\":\"ydnfyhxdeoejz\"}},{\"address\":\"w\",\"ipAddressVersion\":\"sjttgzfbish\",\"subnet\":{\"addressPrefix\":\"hajdeyeamdpha\"}}]}]}")
             .toObject(NetworkProfileInner.class);
-        Assertions.assertEquals("knvudwtiukb", model.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions.assertEquals("ngkpocipazy",
-            model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
+        Assertions.assertEquals("kouknvudwtiu", model.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("ldngkpoci", model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProfileInner model = new NetworkProfileInner().withNetworkInterfaces(Arrays.asList(
-            new NetworkInterface().withIpAddresses(
-                Arrays.asList(new IpAddress().withAddress("knvudwtiukb").withIpAddressVersion("ngkpocipazy"))),
-            new NetworkInterface()
-                .withIpAddresses(Arrays.asList(new IpAddress().withAddress("pmr").withIpAddressVersion("izcdrqjsd"),
-                    new IpAddress().withAddress("oejzi").withIpAddressVersion("ifsjttgzfbishcb"),
-                    new IpAddress().withAddress("lpbuxwgipwhonowk").withIpAddressVersion("hwankixzbinjepu"),
-                    new IpAddress().withAddress("oqftiyqzrnkcq").withIpAddressVersion("xlwhzlsicoh")))));
+        NetworkProfileInner model
+            = new NetworkProfileInner().withNetworkInterfaces(Arrays.asList(new NetworkInterface().withIpAddresses(
+                Arrays.asList(new IpAddress().withAddress("kouknvudwtiu").withIpAddressVersion("ldngkpoci"),
+                    new IpAddress().withAddress("cgygev").withIpAddressVersion("ntypmrbpizcdrqj"),
+                    new IpAddress().withAddress("w").withIpAddressVersion("sjttgzfbish")))));
         model = BinaryData.fromObject(model).toObject(NetworkProfileInner.class);
-        Assertions.assertEquals("knvudwtiukb", model.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions.assertEquals("ngkpocipazy",
-            model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
+        Assertions.assertEquals("kouknvudwtiu", model.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("ldngkpoci", model.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 }
