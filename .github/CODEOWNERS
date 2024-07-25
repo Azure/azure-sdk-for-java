@@ -660,9 +660,9 @@
 # ServiceLabel: %PostgreSQL
 # ServiceOwners:                                     @sunilagarwal @lfittl-msft @sr-msft @niklarin
 
-# ServiceLabel: %Data Map
-# PRLabel: %Data Map
-/sdk/purview/azure-analytics-purview-datamap/        @yifan-zhou922
+# ServiceLabel: %Purview
+# PRLabel: %Purview
+/sdk/purview/                                        @yifan-zhou922
 
 # PRLabel: %Azure Quantum
 /sdk/quantum/                                        @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
