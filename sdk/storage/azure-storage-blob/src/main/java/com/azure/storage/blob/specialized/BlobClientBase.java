@@ -821,35 +821,35 @@ public class BlobClientBase {
         final BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> syncActivationOperation =
-            (pollingContext) -> {
-                try {
-                    new URL(options.getSourceUrl());
-                } catch (MalformedURLException ex) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
-                }
-                ResponseBase<BlobsStartCopyFromURLHeaders, Void> response =
-                    azureBlobStorage.getBlobs().startCopyFromURLWithResponse(containerName, blobName,
-                        options.getSourceUrl(), null, options.getMetadata(), options.getTier(),
-                        options.getRehydratePriority(), sourceModifiedConditions.getIfModifiedSince(),
-                        sourceModifiedConditions.getIfUnmodifiedSince(), sourceModifiedConditions.getIfMatch(),
-                        sourceModifiedConditions.getIfNoneMatch(), sourceModifiedConditions.getTagsConditions(),
-                        destinationRequestConditions.getIfModifiedSince(),
-                        destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
-                        destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getTagsConditions(),
-                        destinationRequestConditions.getLeaseId(), null, ModelHelper.tagsToString(options.getTags()),
-                        options.isSealDestination(), immutabilityPolicy.getExpiryTime(),
-                        immutabilityPolicy.getPolicyMode(), options.isLegalHold(), Context.NONE);
+        Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> syncActivationOperation = (pollingContext) ->
+        {
+            try {
+                new URL(options.getSourceUrl());
+            } catch (MalformedURLException ex) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
+            }
+            ResponseBase<BlobsStartCopyFromURLHeaders, Void> response =
+                azureBlobStorage.getBlobs().startCopyFromURLWithResponse(containerName, blobName,
+                    options.getSourceUrl(), null, options.getMetadata(), options.getTier(),
+                    options.getRehydratePriority(), sourceModifiedConditions.getIfModifiedSince(),
+                    sourceModifiedConditions.getIfUnmodifiedSince(), sourceModifiedConditions.getIfMatch(),
+                    sourceModifiedConditions.getIfNoneMatch(), sourceModifiedConditions.getTagsConditions(),
+                    destinationRequestConditions.getIfModifiedSince(),
+                    destinationRequestConditions.getIfUnmodifiedSince(), destinationRequestConditions.getIfMatch(),
+                    destinationRequestConditions.getIfNoneMatch(), destinationRequestConditions.getTagsConditions(),
+                    destinationRequestConditions.getLeaseId(), null, ModelHelper.tagsToString(options.getTags()),
+                    options.isSealDestination(), immutabilityPolicy.getExpiryTime(),
+                    immutabilityPolicy.getPolicyMode(), options.isLegalHold(), Context.NONE);
 
-                BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
-                copyId.set(headers.getXMsCopyId());
+            BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
+            copyId.set(headers.getXMsCopyId());
 
-                return new PollResponse<>(
-                    LongRunningOperationStatus.IN_PROGRESS,
-                    new BlobCopyInfo(options.getSourceUrl(), headers.getXMsCopyId(), headers.getXMsCopyStatus(),
-                        headers.getETag(), headers.getLastModified(), ModelHelper.getErrorCode(response.getHeaders()),
-                        headers.getXMsVersionId())
-                );
+            return new PollResponse<>(
+                LongRunningOperationStatus.IN_PROGRESS,
+                new BlobCopyInfo(options.getSourceUrl(), headers.getXMsCopyId(), headers.getXMsCopyStatus(),
+                    headers.getETag(), headers.getLastModified(), ModelHelper.getErrorCode(response.getHeaders()),
+                    headers.getXMsVersionId())
+            );
         };
 
         Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> pollOperation = (pollingContext) ->
@@ -2480,7 +2480,6 @@ public class BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
         StorageImplUtils.assertNotNull("options", queryOptions);
-        //StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
         BlobRequestConditions requestConditions = queryOptions.getRequestConditions() == null
             ? new BlobRequestConditions() : queryOptions.getRequestConditions();
         QuerySerialization in = BlobQueryReader.transformInputSerialization(queryOptions.getInputSerialization(),
@@ -2596,40 +2595,35 @@ public class BlobClientBase {
             .setInputSerialization(in)
             .setOutputSerialization(out);
 
-        Callable<ResponseBase<BlobsQueryHeaders, InputStream>> operation = () ->
-            this.azureBlobStorage.getBlobs().queryWithResponse(containerName, blobName, getSnapshotId(), null,
-                requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, qr,
-                getCustomerProvidedKey(), finalContext);
-        try {
-            ResponseBase<BlobsQueryHeaders, InputStream> response = sendRequest(operation, timeout,
-                BlobStorageException.class);
+        Callable<ResponseBase<BlobsQueryHeaders, InputStream>> operation = () -> {
+            ResponseBase<BlobsQueryHeaders, InputStream> response = this.azureBlobStorage.getBlobs()
+                .queryWithResponse(containerName, blobName, getSnapshotId(), null, requestConditions.getLeaseId(),
+                    requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                    requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(),
+                    null, qr, getCustomerProvidedKey(), finalContext);
 
             InputStream avroInputStream = response.getValue();
             BlobQueryReader reader = new BlobQueryReader(null, queryOptions.getProgressConsumer(),
                 queryOptions.getErrorConsumer());
+            InputStream resultStream = reader.readInputStream(avroInputStream);
+            OutputStream outputStream = queryOptions.getOutputStream();
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = resultStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
 
-                InputStream resultStream = reader.readInputStream(avroInputStream);
-                OutputStream outputStream = queryOptions.getOutputStream();
+            return response;
+        };
 
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = resultStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
+        ResponseBase<BlobsQueryHeaders, InputStream> response = sendRequest(operation, timeout,
+            BlobStorageException.class);
 
-                BlobQueryAsyncResponse asyncResponse = new BlobQueryAsyncResponse(response.getRequest(),
-                    response.getStatusCode(), response.getHeaders(),
-                    /* Parse the avro reactive stream. */
-                    null,
-                    ModelHelper.transformQueryHeaders(response.getDeserializedHeaders(), response.getHeaders()));
+        BlobQueryAsyncResponse asyncResponse = new BlobQueryAsyncResponse(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), null,
+            ModelHelper.transformQueryHeaders(response.getDeserializedHeaders(), response.getHeaders()));
 
-                return new BlobQueryResponse(asyncResponse);
-
-        } catch (IOException e) {
-            throw new UncheckedIOException("Failed to read query results or write to the output stream", e);
-        }
+        return new BlobQueryResponse(asyncResponse);
     }
 
     /**

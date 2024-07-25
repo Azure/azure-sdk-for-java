@@ -764,11 +764,11 @@ public final class PageBlobClient extends BlobClientBase {
                 getCustomerProvidedKey(), encryptionScope, finalContext);
         ResponseBase<PageBlobsClearPagesHeaders, Void> response = sendRequest(operation, timeout,
             BlobStorageException.class);
-                PageBlobsClearPagesHeaders hd = response.getDeserializedHeaders();
-                PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), null,
-                    hd.getXMsBlobSequenceNumber());
-                return new SimpleResponse<>(response, item);
+        PageBlobsClearPagesHeaders hd = response.getDeserializedHeaders();
+        PageBlobItem item = new PageBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+            hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), null,
+            hd.getXMsBlobSequenceNumber());
+        return new SimpleResponse<>(response, item);
     }
 
     /**
@@ -943,7 +943,9 @@ public final class PageBlobClient extends BlobClientBase {
     }
 
     private List<PageRangeItem> parsePageRangeItems(PageList pageList) {
-        if (pageList == null) return Collections.emptyList();
+        if (pageList == null) {
+            return Collections.emptyList();
+        }
         return Stream.concat(
             pageList.getPageRange().stream().map(this::toPageBlobRange),
             pageList.getClearRange().stream().map(this::toPageBlobRange)

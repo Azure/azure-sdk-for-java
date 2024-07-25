@@ -84,7 +84,9 @@ public class BlobQueryReader {
      * a series of blocks of data). The Query Avro schema indicates that the objects being emitted from the parser can
      * either be a result data record, an end record, a progress record or an error record.
      *
+     * @param inputStream The input stream to read from.
      * @return The parsed query reactive stream.
+     * @throws IOException If an I/O error occurs.
      */
     public InputStream readInputStream(InputStream inputStream) throws IOException {
         // Convert InputStream to Flux<ByteBuffer>

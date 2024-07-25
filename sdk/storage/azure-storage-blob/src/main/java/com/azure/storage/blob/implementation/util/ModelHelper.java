@@ -38,6 +38,7 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
@@ -58,6 +59,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -529,18 +531,21 @@ public final class ModelHelper {
             return null;
         }
         StringBuilder sb = new StringBuilder();
+        boolean first = true;  // Flag to track if it's the first element in the loop
         for (Map.Entry<String, String> entry : tags.entrySet()) {
             try {
+                if (!first) {
+                    sb.append("&");  // Append the delimiter before the key-value pair, except for the first
+                } else {
+                    first = false;  // Update flag after processing the first entry
+                }
                 sb.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8.toString()));
                 sb.append("=");
                 sb.append(URLEncoder.encode(entry.getValue(), StandardCharsets.UTF_8.toString()));
-                sb.append("&");
             } catch (UnsupportedEncodingException e) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(e));
             }
         }
-
-        sb.deleteCharAt(sb.length() - 1); // Remove the last '&'
         return sb.toString();
     }
 
@@ -649,6 +654,29 @@ public final class ModelHelper {
             throw new IllegalArgumentException("PageRange's End value must be after the start.");
         }
         return "bytes=" + pageRange.getStart() + '-' + pageRange.getEnd();
+    }
+
+    public static List<BlobSignedIdentifier> truncateTimeForBlobSignedIdentifier(List<BlobSignedIdentifier> identifiers) {
+        if (identifiers == null) {
+            return null;
+        }
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        for (BlobSignedIdentifier identifier : identifiers) {
+            if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStartsOn() != null) {
+                identifier.getAccessPolicy().setStartsOn(
+                    identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
+            }
+            if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiresOn() != null) {
+                identifier.getAccessPolicy().setExpiresOn(
+                    identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+            }
+        }
+        return identifiers;
     }
 
     private ModelHelper() {

@@ -62,7 +62,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import java.net.URI;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -141,7 +140,7 @@ public final class BlobContainerClient {
      * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
      * {@code null} to allow the service to use its own encryption.
      */
-    BlobContainerClient( HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+    BlobContainerClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope) {
         this.azureBlobStorage = new AzureBlobStorageImplBuilder()
@@ -932,30 +931,12 @@ public final class BlobContainerClient {
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
-
-        /*
-        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
-        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
-        allows for proper serialization with no real detriment to users as sub-second precision on active time for
-        signed identifiers is not really necessary.
-         */
-        if (identifiers != null) {
-            for (BlobSignedIdentifier identifier : identifiers) {
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStartsOn() != null) {
-                    identifier.getAccessPolicy().setStartsOn(
-                        identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiresOn() != null) {
-                    identifier.getAccessPolicy().setExpiresOn(
-                        identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-            }
-        }
+        List<BlobSignedIdentifier> finalIdentifiers = ModelHelper.truncateTimeForBlobSignedIdentifier(identifiers);
         Context finalContext = context == null ? Context.NONE : context;
         Callable<Response<Void>> operation = () -> this.azureBlobStorage.getContainers()
             .setAccessPolicyNoCustomHeadersWithResponse(containerName, null, finalRequestConditions.getLeaseId(),
                 accessType, finalRequestConditions.getIfModifiedSince(),
-                finalRequestConditions.getIfUnmodifiedSince(), null, identifiers, finalContext);
+                finalRequestConditions.getIfUnmodifiedSince(), null, finalIdentifiers, finalContext);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
@@ -1080,8 +1061,8 @@ public final class BlobContainerClient {
                         containerName, finalOptions.getPrefix(), nextMarker, finalOptions.getMaxResultsPerPage(),
                         include, null, null, Context.NONE);
 
-                List<BlobItem> value = response.getValue().getSegment() == null ? Collections.emptyList() :
-                    response.getValue().getSegment().getBlobItems().stream()
+                List<BlobItem> value = response.getValue().getSegment() == null ? Collections.emptyList()
+                    : response.getValue().getSegment().getBlobItems().stream()
                         .map(ModelHelper::populateBlobItem)
                         .collect(Collectors.toList());
 

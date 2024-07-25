@@ -980,29 +980,12 @@ public final class BlobContainerAsyncClient {
                 new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
 
-        /*
-        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
-        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
-        allows for proper serialization with no real detriment to users as sub-second precision on active time for
-        signed identifiers is not really necessary.
-         */
-        if (identifiers != null) {
-            for (BlobSignedIdentifier identifier : identifiers) {
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getStartsOn() != null) {
-                    identifier.getAccessPolicy().setStartsOn(
-                        identifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-                if (identifier.getAccessPolicy() != null && identifier.getAccessPolicy().getExpiresOn() != null) {
-                    identifier.getAccessPolicy().setExpiresOn(
-                        identifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
-                }
-            }
-        }
+        List<BlobSignedIdentifier> finalIdentifiers = ModelHelper.truncateTimeForBlobSignedIdentifier(identifiers);
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getContainers().setAccessPolicyNoCustomHeadersWithResponseAsync(containerName,
             null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), null, identifiers, context);
+            requestConditions.getIfUnmodifiedSince(), null, finalIdentifiers, context);
     }
 
     /**
