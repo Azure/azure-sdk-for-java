@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
@@ -69,7 +70,6 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -157,7 +157,7 @@ public class ClientMetricsTest extends BatchTestBase {
         return meterRegistry;
     }
 
-    public Map.Entry<MeterRegistry, CosmosMicrometerMetricsOptions> beforeTestInputMetrics(
+    public Pair<MeterRegistry, CosmosMicrometerMetricsOptions> beforeTestInputMetrics(
         CosmosDiagnosticsThresholds thresholds,
         CosmosMetricCategory... metricCategories) {
         assertThat(this.client).isNull();
@@ -208,8 +208,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
 
         container = client.getDatabase(databaseId).getContainer(containerId);
-        Map.Entry<MeterRegistry, CosmosMicrometerMetricsOptions> entry = Map.entry(meterRegistry, inputMetricsOptions);
-        return entry;
+        return new Pair<>(meterRegistry, inputMetricsOptions);
     }
 
     public void afterTest(MeterRegistry meterRegistry) {
@@ -286,7 +285,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
         for (boolean disableLatencyMeter: disableLatencyMeterTestCases) {
 
-            Map.Entry<MeterRegistry, CosmosMicrometerMetricsOptions> entry = this.beforeTestInputMetrics(null, CosmosMetricCategory.DEFAULT);
+           Pair<MeterRegistry, CosmosMicrometerMetricsOptions> entry = this.beforeTestInputMetrics(null, CosmosMetricCategory.DEFAULT);
 
             if (disableLatencyMeter) {
                 entry.getValue()
@@ -365,7 +364,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
         for (boolean suppressConsistencyLevelTag: suppressConsistencyLevelTagTestCases) {
 
-            Map.Entry<MeterRegistry, CosmosMicrometerMetricsOptions> entry = this.beforeTestInputMetrics(null, CosmosMetricCategory.ALL);
+            Pair<MeterRegistry, CosmosMicrometerMetricsOptions> entry = this.beforeTestInputMetrics(null, CosmosMetricCategory.ALL);
             entry.getValue()
                 .configureDefaultTagNames(CosmosMetricTagName.ALL);
             MeterRegistry meterRegistry = entry.getKey();
@@ -1237,7 +1236,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void effectiveMetricCategoriesForAllLatebound() {
-        Map.Entry<MeterRegistry, CosmosMicrometerMetricsOptions> entry = this.beforeTestInputMetrics(null, CosmosMetricCategory.DEFAULT);
+        Pair<MeterRegistry, CosmosMicrometerMetricsOptions> entry = this.beforeTestInputMetrics(null, CosmosMetricCategory.DEFAULT);
         try {
 
             assertThat(this.getEffectiveMetricCategories().size()).isEqualTo(5);
