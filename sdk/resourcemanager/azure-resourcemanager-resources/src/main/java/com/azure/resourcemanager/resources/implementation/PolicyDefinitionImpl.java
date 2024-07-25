@@ -3,15 +3,17 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
+import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
+import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.ParameterType;
 import com.azure.resourcemanager.resources.models.PolicyDefinition;
 import com.azure.resourcemanager.resources.models.PolicyType;
-import com.azure.resourcemanager.resources.fluent.models.PolicyDefinitionInner;
-import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -31,9 +33,12 @@ final class PolicyDefinitionImpl extends
     private final PolicyDefinitionsClient innerCollection;
     private final ClientLogger logger = new ClientLogger(getClass());
 
+    private final SerializerAdapter serializerAdapter;
+
     PolicyDefinitionImpl(String name, PolicyDefinitionInner innerModel, PolicyDefinitionsClient innerCollection) {
         super(name, innerModel);
         this.innerCollection = innerCollection;
+        this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
     }
 
     @Override
@@ -104,7 +109,7 @@ final class PolicyDefinitionImpl extends
     @Override
     public PolicyDefinitionImpl withPolicyRuleJson(String policyRuleJson) {
         try {
-            innerModel().withPolicyRule(new ObjectMapper().readTree(policyRuleJson));
+            innerModel().withPolicyRule(serializerAdapter.deserialize(policyRuleJson, Object.class, SerializerEncoding.JSON));
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }

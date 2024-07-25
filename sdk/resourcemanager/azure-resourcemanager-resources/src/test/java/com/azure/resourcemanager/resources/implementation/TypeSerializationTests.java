@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.resources.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
@@ -13,7 +14,6 @@ import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.resources.models.Tags;
 import com.azure.resourcemanager.resources.models.TagsPatchOperation;
 import com.azure.resourcemanager.resources.models.TagsPatchResource;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -111,23 +111,20 @@ public class TypeSerializationTests {
     @Test
     public void testDeploymentSerialization() throws Exception {
         final String templateJson = "{ \"/subscriptions/<redacted>/resourceGroups/<redacted>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<redacted>\": {} }";
+        final String parametersJson = "{\"id1\": {\"type\": \"myParameterType\"}}";
 
         DeploymentImpl deployment = new DeploymentImpl(new DeploymentExtendedInner(), "", null);
         deployment.withTemplate(templateJson);
 
+        deployment.withParameters(parametersJson);
+
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         String deploymentJson = serializerAdapter.serialize(createRequestFromInner(deployment), SerializerEncoding.JSON);
         Assertions.assertTrue(deploymentJson.contains("Microsoft.ManagedIdentity"));
+        Assertions.assertTrue(deploymentJson.contains("myParameterType"));
     }
 
-    private static DeploymentInner createRequestFromInner(DeploymentImpl deployment) throws NoSuchFieldException, IllegalAccessException, IOException {
-        String parametersJson = SERIALIZER_ADAPTER.serialize(
-            deployment.parameters(),
-            SerializerEncoding.JSON);
-        Map<String, DeploymentParameter> parameters = SERIALIZER_ADAPTER.deserialize(
-            parametersJson,
-            TYPE_REFERENCE_MAP_DEPLOYMENT_PARAMETER.getType(),
-            SerializerEncoding.JSON);
+    private static DeploymentInner createRequestFromInner(DeploymentImpl deployment) throws NoSuchFieldException, IllegalAccessException {
 
         Field field = DeploymentImpl.class.getDeclaredField("deploymentCreateUpdateParameters");
         field.setAccessible(true);
@@ -138,7 +135,7 @@ public class TypeSerializationTests {
         inner.properties().withMode(deployment.mode());
         inner.properties().withTemplate(implInner.properties().template());
         inner.properties().withTemplateLink(deployment.templateLink());
-        inner.properties().withParameters(parameters);
+        inner.properties().withParameters(implInner.properties().parameters());
         inner.properties().withParametersLink(deployment.parametersLink());
         return inner;
     }
