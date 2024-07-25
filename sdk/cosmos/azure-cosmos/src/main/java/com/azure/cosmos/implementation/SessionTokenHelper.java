@@ -121,7 +121,7 @@ public class SessionTokenHelper {
 
                 String evaluationResult = "The session token : " + globalSessionToken + " for partition key range id : " + partitionKeyRangeId +
                     " and collection rid : " + request.requestContext.resolvedCollectionRid + " could not be evaluated, " +
-                    "the operation will fallback " +
+                    "the request will fallback " +
                     "to eventual consistency.";
 
                 sessionTokenEvaluationResults.add(evaluationResult);
