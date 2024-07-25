@@ -4,6 +4,7 @@
 
 ### Bugs Fixed
 - [Fix pre-aggregated standard HTTP server metric success calculation](https://github.com/Azure/azure-sdk-for-java/pull/40599)
+- [OOM error caused by AzureMonitorLogRecordExporter](https://github.com/Azure/azure-sdk-for-java/issues/40546)
   
 ### Other Changes
 - [Update OpenTelemetry to 1.40.0](https://github.com/Azure/azure-sdk-for-java/pull/39843)
