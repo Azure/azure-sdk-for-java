@@ -125,7 +125,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-appcontainers</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appcontainers;dependency} -->
+      <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appcontainers;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

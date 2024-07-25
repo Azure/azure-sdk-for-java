@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.generated;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import com.azure.resourcemanager.compute.models.ResourceSharingProfile;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +22,7 @@ public final class CapacityReservationGroupsCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create or update a capacity reservation group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateACapacityReservationGroup(com.azure.resourcemanager.AzureResourceManager azure) {

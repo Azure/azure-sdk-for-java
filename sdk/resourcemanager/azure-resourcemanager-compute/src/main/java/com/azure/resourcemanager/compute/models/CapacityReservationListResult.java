@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -37,7 +36,7 @@ public final class CapacityReservationListResult {
 
     /**
      * Get the value property: The list of capacity reservations.
-     *
+     * 
      * @return the value value.
      */
     public List<CapacityReservationInner> value() {
@@ -46,7 +45,7 @@ public final class CapacityReservationListResult {
 
     /**
      * Set the value property: The list of capacity reservations.
-     *
+     * 
      * @param value the value value to set.
      * @return the CapacityReservationListResult object itself.
      */
@@ -58,7 +57,7 @@ public final class CapacityReservationListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of capacity reservations. Call ListNext() with this URI
      * to fetch the next page of capacity reservations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -68,7 +67,7 @@ public final class CapacityReservationListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of capacity reservations. Call ListNext() with this URI
      * to fetch the next page of capacity reservations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CapacityReservationListResult object itself.
      */
@@ -79,7 +78,7 @@ public final class CapacityReservationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-appcontainers</artifactId>
-  <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appcontainers;current} -->
+  <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-appcontainers;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for ContainerAppsApi Management</name>

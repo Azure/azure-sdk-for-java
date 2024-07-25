@@ -211,7 +211,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -259,7 +259,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -483,7 +483,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -531,7 +531,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
         } else {
             diskEncryptionSet.validate();
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -746,7 +746,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
@@ -787,7 +787,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -880,7 +880,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -920,7 +920,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1099,7 +1099,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -1135,7 +1135,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1223,7 +1223,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1253,7 +1253,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1346,7 +1346,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAssociatedResources(this.client.getEndpoint(),
@@ -1389,7 +1389,7 @@ public final class DiskEncryptionSetsClientImpl implements InnerSupportsGet<Disk
             return Mono
                 .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        final String apiVersion = "2023-10-02";
+        final String apiVersion = "2024-03-02";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
