@@ -4,9 +4,6 @@
 
 package com.azure.storage.blob.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** Defines values for BlobCopySourceTags. */
 public enum BlobCopySourceTags {
     /** Enum value REPLACE. */
@@ -28,7 +25,6 @@ public enum BlobCopySourceTags {
      * @param value the serialized value to parse.
      * @return the parsed BlobCopySourceTags object, or null if unable to parse.
      */
-    @JsonCreator
     public static BlobCopySourceTags fromString(String value) {
         BlobCopySourceTags[] items = BlobCopySourceTags.values();
         for (BlobCopySourceTags item : items) {
@@ -39,7 +35,6 @@ public enum BlobCopySourceTags {
         return null;
     }
 
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

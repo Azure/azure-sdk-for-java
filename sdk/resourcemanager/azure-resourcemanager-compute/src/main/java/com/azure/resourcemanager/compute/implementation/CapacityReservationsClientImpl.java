@@ -37,10 +37,9 @@ import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceViewTypes;
 import com.azure.resourcemanager.compute.models.CapacityReservationListResult;
 import com.azure.resourcemanager.compute.models.CapacityReservationUpdate;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in CapacityReservationsClient.
@@ -58,7 +57,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * Initializes an instance of CapacityReservationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CapacityReservationsClientImpl(ComputeManagementClientImpl client) {
@@ -143,7 +142,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -194,7 +193,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -245,7 +244,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -269,7 +268,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -294,7 +293,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -317,7 +316,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -341,7 +340,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -361,7 +360,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -383,7 +382,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -403,7 +402,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -423,7 +422,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -473,7 +472,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -523,7 +522,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -546,7 +545,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -570,7 +569,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -591,7 +590,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -614,7 +613,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -634,7 +633,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -654,7 +653,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -673,7 +672,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -695,7 +694,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -740,7 +739,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -784,7 +783,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -806,7 +805,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -830,7 +829,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -850,7 +849,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -871,7 +870,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -891,7 +890,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -913,7 +912,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -930,7 +929,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -947,7 +946,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation that retrieves information about the capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -995,7 +994,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation that retrieves information about the capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -1042,7 +1041,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation that retrieves information about the capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -1061,7 +1060,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation that retrieves information about the capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -1084,7 +1083,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * The operation that retrieves information about the capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -1104,7 +1103,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
      * the response to get the next page of capacity reservations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1145,7 +1144,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
      * the response to get the next page of capacity reservations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param context The context to associate with this operation.
@@ -1187,7 +1186,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
      * the response to get the next page of capacity reservations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1206,7 +1205,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
      * the response to get the next page of capacity reservations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param context The context to associate with this operation.
@@ -1226,7 +1225,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
      * the response to get the next page of capacity reservations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1244,7 +1243,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
      * the response to get the next page of capacity reservations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param context The context to associate with this operation.
@@ -1262,7 +1261,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1290,7 +1289,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
