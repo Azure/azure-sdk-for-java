@@ -111,7 +111,7 @@ public class TypeSerializationTests {
     @Test
     public void testDeploymentSerialization() throws Exception {
         final String templateJson = "{ \"/subscriptions/<redacted>/resourceGroups/<redacted>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<redacted>\": {} }";
-        final String parametersJson = "{\"id1\": {\"type\": \"myParameterType\"}}";
+        final String parametersJson = "{\"id1\": {\"value\": \"myParameterType\"}}";
 
         DeploymentImpl deployment = new DeploymentImpl(new DeploymentExtendedInner(), "", null);
         deployment.withTemplate(templateJson);
