@@ -7,9 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusSenderClientTestProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
-import org.mockito.verification.VerificationMode;
 
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -46,26 +44,23 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
 
     @Override
     protected ServiceBusSenderClientBuilderFactory createClientBuilderFactoryWithMockBuilder(ServiceBusSenderClientTestProperties properties) {
-        ServiceBusClientBuilder clientBuilder = mock(ServiceBusClientBuilder.class);
-        return spy(new ServiceBusReceiverClientBuilderFactoryExt(clientBuilder, properties));
+        return spy(new ServiceBusReceiverClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties), properties));
     }
 
     @Override
-    void verifyServicePropertiesConfigured(boolean isShareServiceClientBuilder) {
+    void verifyServicePropertiesConfigured() {
         ServiceBusSenderClientTestProperties properties = new ServiceBusSenderClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityName("test-topic");
         properties.setEntityType(ServiceBusEntityType.TOPIC);
 
         final ServiceBusSenderClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
-        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         final ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = factory.build();
         builder.buildClient();
 
         verify(builder, times(1)).topicName("test-topic");
 
-        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
-        verify(factory.getServiceBusClientBuilder(), calledTimes).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
     @Override

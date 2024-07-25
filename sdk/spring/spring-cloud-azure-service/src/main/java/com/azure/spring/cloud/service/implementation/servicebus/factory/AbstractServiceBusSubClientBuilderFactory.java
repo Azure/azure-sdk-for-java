@@ -11,14 +11,11 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.cloud.core.implementation.credential.descriptor.NamedKeyAuthenticationDescriptor;
-import com.azure.spring.cloud.core.implementation.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.cloud.core.implementation.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusClientCommonProperties;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -29,7 +26,6 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
 
     private final P properties;
     private final ServiceBusClientBuilder serviceBusClientBuilder;
-    private final boolean shareServiceBusClientBuilder;
 
     /**
      * Create a {@link AbstractServiceBusSubClientBuilderFactory} instance with the properties.
@@ -53,51 +49,29 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         this.properties = properties;
         if (serviceBusClientBuilder != null) {
             this.serviceBusClientBuilder = serviceBusClientBuilder;
-            this.shareServiceBusClientBuilder = true;
         } else {
-            this.serviceBusClientBuilder = new ServiceBusClientBuilder();
-            this.shareServiceBusClientBuilder = false;
+            this.serviceBusClientBuilder = new ServiceBusClientBuilderFactory(properties).build();
         }
-    }
-
-    protected boolean isShareServiceBusClientBuilder() {
-        return shareServiceBusClientBuilder;
     }
 
     @Override
     protected BiConsumer<T, ProxyOptions> consumeProxyOptions() {
-        return (builder, proxy) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                this.serviceBusClientBuilder.proxyOptions(proxy);
-            }
-        };
+        return (builder, proxy) -> { };
     }
 
     @Override
     protected BiConsumer<T, AmqpTransportType> consumeAmqpTransportType() {
-        return (builder, t) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                this.serviceBusClientBuilder.transportType(t);
-            }
-        };
+        return (builder, t) -> { };
     }
 
     @Override
     protected BiConsumer<T, AmqpRetryOptions> consumeAmqpRetryOptions() {
-        return (builder, retry) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                this.serviceBusClientBuilder.retryOptions(retry);
-            }
-        };
+        return (builder, retry) -> { };
     }
 
     @Override
     protected BiConsumer<T, ClientOptions> consumeClientOptions() {
-        return (builder, client) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                this.serviceBusClientBuilder.clientOptions(client);
-            }
-        };
+        return (builder, client) -> { };
     }
 
     @Override
@@ -107,58 +81,26 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
-        return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(credential -> {
-                if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(credential);
-                }
-            }),
-            new SasAuthenticationDescriptor(credential -> {
-                if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(credential);
-                }
-            }),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> {
-                if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(credential);
-                }
-            })
-        );
+        return Collections.emptyList();
     }
 
     @Override
     protected BiConsumer<T, Configuration> consumeConfiguration() {
-        return (builder, configuration) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                this.serviceBusClientBuilder.configuration(configuration);
-            }
-        };
+        return (builder, configuration) -> { };
     }
 
     @Override
     protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, credential) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                this.serviceBusClientBuilder.credential(credential);
-            }
-        };
+        return (builder, credential) -> { };
     }
 
     @Override
     protected BiConsumer<T, String> consumeConnectionString() {
-        return (builder, connectionString) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                this.serviceBusClientBuilder.connectionString(connectionString);
-            }
-        };
+        return (builder, connectionString) -> { };
     }
 
     @Override
-    protected void configureService(T builder) {
-        if (!isShareServiceBusClientBuilder()) {
-            this.serviceBusClientBuilder.fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
-        }
-    }
+    protected void configureService(T builder) { }
 
     protected ServiceBusClientBuilder getServiceBusClientBuilder() {
         return serviceBusClientBuilder;

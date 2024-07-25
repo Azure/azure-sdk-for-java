@@ -10,11 +10,9 @@ import com.azure.spring.cloud.service.implementation.servicebus.properties.Servi
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusReceiverClientTestProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
-import org.mockito.verification.VerificationMode;
 
 import java.time.Duration;
 
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -51,25 +49,14 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
 
     @Override
     protected ServiceBusSessionReceiverClientBuilderFactory createClientBuilderFactoryWithMockBuilder(ServiceBusReceiverClientTestProperties properties) {
-        ServiceBusClientBuilder clientBuilder = mock(ServiceBusClientBuilder.class);
-        return spy(new ServiceBusSessionReceiverClientBuilderFactoryExt(clientBuilder, properties));
+        return spy(new ServiceBusSessionReceiverClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties), properties));
     }
 
     @Override
-    void verifyServicePropertiesConfigured(boolean isShareServiceClientBuilder) {
-        ServiceBusReceiverClientTestProperties properties = new ServiceBusReceiverClientTestProperties();
-        properties.setNamespace("test-namespace");
-        properties.setEntityName("test-topic");
-        properties.setEntityType(ServiceBusEntityType.TOPIC);
-        properties.setSubscriptionName("test-subscription");
-        properties.setReceiveMode(ServiceBusReceiveMode.PEEK_LOCK);
-        properties.setSubQueue(SubQueue.NONE);
-        properties.setPrefetchCount(100);
-        properties.setMaxAutoLockRenewDuration(Duration.ofSeconds(5));
-        properties.setAutoComplete(false);
+    void verifyServicePropertiesConfigured() {
+        ServiceBusReceiverClientTestProperties properties = getServiceBusReceiverClientTestProperties();
 
         final ServiceBusSessionReceiverClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
-        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder = factory.build();
         builder.buildClient();
 
@@ -81,8 +68,21 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
         verify(builder, times(1)).maxAutoLockRenewDuration(Duration.ofSeconds(5));
         verify(builder, times(1)).disableAutoComplete();
 
-        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
-        verify(factory.getServiceBusClientBuilder(), calledTimes).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+    }
+
+    private static ServiceBusReceiverClientTestProperties getServiceBusReceiverClientTestProperties() {
+        ServiceBusReceiverClientTestProperties properties = new ServiceBusReceiverClientTestProperties();
+        properties.setNamespace("test-namespace");
+        properties.setEntityName("test-topic");
+        properties.setEntityType(ServiceBusEntityType.TOPIC);
+        properties.setSubscriptionName("test-subscription");
+        properties.setReceiveMode(ServiceBusReceiveMode.PEEK_LOCK);
+        properties.setSubQueue(SubQueue.NONE);
+        properties.setPrefetchCount(100);
+        properties.setMaxAutoLockRenewDuration(Duration.ofSeconds(5));
+        properties.setAutoComplete(false);
+        return properties;
     }
 
     @Override

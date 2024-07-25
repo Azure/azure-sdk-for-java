@@ -13,12 +13,10 @@ import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessag
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.verification.VerificationMode;
 
 import java.time.Duration;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -84,7 +82,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
             messageListener,
             errorHandler);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> factory.build());
+        Assertions.assertThrows(IllegalArgumentException.class, factory::build);
     }
 
     @Override
@@ -99,26 +97,14 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     @Override
     protected ServiceBusSessionProcessorClientBuilderFactory createClientBuilderFactoryWithMockBuilder(ServiceBusProcessorClientTestProperties properties) {
-        return spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(mock(ServiceBusClientBuilder.class), properties));
+        return spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties), properties));
     }
 
     @Override
-    void verifyServicePropertiesConfigured(boolean isShareServiceClientBuilder) {
-        ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
-        properties.setNamespace("test-namespace");
-        properties.setEntityName("test-topic");
-        properties.setEntityType(ServiceBusEntityType.TOPIC);
-        properties.setSubscriptionName("test-subscription");
-        properties.setReceiveMode(ServiceBusReceiveMode.PEEK_LOCK);
-        properties.setSubQueue(SubQueue.NONE);
-        properties.setPrefetchCount(100);
-        properties.setMaxAutoLockRenewDuration(Duration.ofSeconds(5));
-        properties.setAutoComplete(false);
-        properties.setMaxConcurrentCalls(10);
-        properties.setMaxConcurrentSessions(20);
+    void verifyServicePropertiesConfigured() {
+        ServiceBusProcessorClientTestProperties properties = getServiceBusProcessorClientTestProperties();
 
         final ServiceBusSessionProcessorClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
-        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
         builder.buildProcessorClient();
 
@@ -132,8 +118,23 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         verify(builder, times(1)).maxConcurrentCalls(10);
         verify(builder, times(1)).maxConcurrentSessions(20);
 
-        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
-        verify(factory.getServiceBusClientBuilder(), calledTimes).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+    }
+
+    private static ServiceBusProcessorClientTestProperties getServiceBusProcessorClientTestProperties() {
+        ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
+        properties.setNamespace("test-namespace");
+        properties.setEntityName("test-topic");
+        properties.setEntityType(ServiceBusEntityType.TOPIC);
+        properties.setSubscriptionName("test-subscription");
+        properties.setReceiveMode(ServiceBusReceiveMode.PEEK_LOCK);
+        properties.setSubQueue(SubQueue.NONE);
+        properties.setPrefetchCount(100);
+        properties.setMaxAutoLockRenewDuration(Duration.ofSeconds(5));
+        properties.setAutoComplete(false);
+        properties.setMaxConcurrentCalls(10);
+        properties.setMaxConcurrentSessions(20);
+        return properties;
     }
 
     @Override

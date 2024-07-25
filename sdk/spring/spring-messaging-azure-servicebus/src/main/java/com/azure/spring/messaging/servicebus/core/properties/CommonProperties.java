@@ -29,6 +29,8 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
     private String entityName;
     private ServiceBusEntityType entityType;
 
+    private String customEndpointAddress;
+
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
             return null;
@@ -111,5 +113,18 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
      */
     public void setEntityType(ServiceBusEntityType entityType) {
         this.entityType = entityType;
+    }
+
+    @Override
+    public String getCustomEndpointAddress() {
+        return customEndpointAddress;
+    }
+
+    /**
+     * Set the custom endpoint address.
+     * @param customEndpointAddress the custom endpoint address.
+     */
+    public void setCustomEndpointAddress(String customEndpointAddress) {
+        this.customEndpointAddress = customEndpointAddress;
     }
 }

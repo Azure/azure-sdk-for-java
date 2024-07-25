@@ -89,10 +89,12 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
 
     @Test
     void customizerShouldBeCalledOnEachCreatedClient() {
+        AtomicInteger shareClientCalledTimes = new AtomicInteger();
         AtomicInteger noneSessionClientCalledTimes = new AtomicInteger();
         AtomicInteger sessionClientCalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
+        factory.addSharedBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer(builder -> noneSessionClientCalledTimes.getAndIncrement());
         factory.addSessionBuilderCustomizer(builder -> sessionClientCalledTimes.getAndIncrement());
 
@@ -120,16 +122,19 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         topic2ContainerProperties.setSessionEnabled(true);
         factory.createProcessor("topic-2", "sub-1", topic2ContainerProperties);
 
+        assertEquals(4, shareClientCalledTimes.get());
         assertEquals(2, noneSessionClientCalledTimes.get());
         assertEquals(2, sessionClientCalledTimes.get());
     }
 
     @Test
     void dedicatedCustomizerShouldBeCalledOnlyWhenMatchingClientsCreated() {
+        AtomicInteger shareClientCalledTimes = new AtomicInteger();
         AtomicInteger noneSessionClientCalledTimes = new AtomicInteger();
         AtomicInteger sessionClientCalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
+        factory.addSharedBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer("queue-1", null, builder -> noneSessionClientCalledTimes.getAndIncrement());
         factory.addSessionBuilderCustomizer("queue-1", null, builder -> sessionClientCalledTimes.getAndIncrement());
 
@@ -160,6 +165,7 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         topic2ContainerProperties.setSessionEnabled(true);
         factory.createProcessor("topic-2", "sub-1", topic2ContainerProperties);
 
+        assertEquals(4, shareClientCalledTimes.get());
         assertEquals(1, noneSessionClientCalledTimes.get());
         assertEquals(1, sessionClientCalledTimes.get());
     }
