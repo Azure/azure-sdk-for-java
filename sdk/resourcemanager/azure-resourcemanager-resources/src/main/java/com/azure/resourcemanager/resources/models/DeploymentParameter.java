@@ -17,14 +17,9 @@ import java.io.IOException;
 @Fluent
 public final class DeploymentParameter implements JsonSerializable<DeploymentParameter> {
     /*
-     * Input value to the parameter.
+     * Input value to the parameter .
      */
     private Object value;
-
-    /*
-     * Type of the value.
-     */
-    private String type;
 
     /*
      * Azure Key Vault parameter reference.
@@ -38,7 +33,7 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
     }
 
     /**
-     * Get the value property: Input value to the parameter.
+     * Get the value property: Input value to the parameter .
      * 
      * @return the value value.
      */
@@ -47,33 +42,13 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
     }
 
     /**
-     * Set the value property: Input value to the parameter.
+     * Set the value property: Input value to the parameter .
      * 
      * @param value the value value to set.
      * @return the DeploymentParameter object itself.
      */
     public DeploymentParameter withValue(Object value) {
         this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the type property: Type of the value.
-     * 
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: Type of the value.
-     * 
-     * @param type the type value to set.
-     * @return the DeploymentParameter object itself.
-     */
-    public DeploymentParameter withType(String type) {
-        this.type = type;
         return this;
     }
 
@@ -115,7 +90,6 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("value", this.value);
-        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("reference", this.reference);
         return jsonWriter.writeEndObject();
     }
@@ -137,8 +111,6 @@ public final class DeploymentParameter implements JsonSerializable<DeploymentPar
 
                 if ("value".equals(fieldName)) {
                     deserializedDeploymentParameter.value = reader.readUntyped();
-                } else if ("type".equals(fieldName)) {
-                    deserializedDeploymentParameter.type = reader.getString();
                 } else if ("reference".equals(fieldName)) {
                     deserializedDeploymentParameter.reference = KeyVaultParameterReference.fromJson(reader);
                 } else {

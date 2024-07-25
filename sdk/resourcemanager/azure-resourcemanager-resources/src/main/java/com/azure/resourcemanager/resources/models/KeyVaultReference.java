@@ -18,7 +18,7 @@ import java.io.IOException;
 @Fluent
 public final class KeyVaultReference implements JsonSerializable<KeyVaultReference> {
     /*
-     * Azure Key Vault resourceId.
+     * Azure Key Vault resource id.
      */
     private String id;
 
@@ -29,7 +29,7 @@ public final class KeyVaultReference implements JsonSerializable<KeyVaultReferen
     }
 
     /**
-     * Get the id property: Azure Key Vault resourceId.
+     * Get the id property: Azure Key Vault resource id.
      * 
      * @return the id value.
      */
@@ -38,7 +38,7 @@ public final class KeyVaultReference implements JsonSerializable<KeyVaultReferen
     }
 
     /**
-     * Set the id property: Azure Key Vault resourceId.
+     * Set the id property: Azure Key Vault resource id.
      * 
      * @param id the id value to set.
      * @return the KeyVaultReference object itself.

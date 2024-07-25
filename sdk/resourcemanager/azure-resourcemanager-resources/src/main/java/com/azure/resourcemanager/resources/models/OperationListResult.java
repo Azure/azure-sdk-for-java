@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Result of the request to list Microsoft.Features operations. It contains a list of operations and a URL link to get
+ * Result of the request to list Microsoft.Resources operations. It contains a list of operations and a URL link to get
  * the next set of results.
  */
 @Fluent
 public final class OperationListResult implements JsonSerializable<OperationListResult> {
     /*
-     * List of Microsoft.Features operations.
+     * List of Microsoft.Resources operations.
      */
     private List<OperationInner> value;
 
@@ -36,7 +36,7 @@ public final class OperationListResult implements JsonSerializable<OperationList
     }
 
     /**
-     * Get the value property: List of Microsoft.Features operations.
+     * Get the value property: List of Microsoft.Resources operations.
      * 
      * @return the value value.
      */
@@ -45,7 +45,7 @@ public final class OperationListResult implements JsonSerializable<OperationList
     }
 
     /**
-     * Set the value property: List of Microsoft.Features operations.
+     * Set the value property: List of Microsoft.Resources operations.
      * 
      * @param value the value value to set.
      * @return the OperationListResult object itself.

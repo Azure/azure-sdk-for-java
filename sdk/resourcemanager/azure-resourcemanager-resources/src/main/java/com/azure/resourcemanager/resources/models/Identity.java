@@ -13,29 +13,28 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Identity for the resource. Policy assignments support a maximum of one identity. That is either a system assigned
- * identity or a single user assigned identity.
+ * Identity for the resource.
  */
 @Fluent
 public final class Identity implements JsonSerializable<Identity> {
     /*
-     * The principal ID of the resource identity. This property will only be provided for a system assigned identity
+     * The principal ID of resource identity.
      */
     private String principalId;
 
     /*
-     * The tenant ID of the resource identity. This property will only be provided for a system assigned identity
+     * The tenant ID of resource.
      */
     private String tenantId;
 
     /*
-     * The identity type. This is the only required field when adding a system or user assigned identity to a resource.
+     * The identity type.
      */
     private ResourceIdentityType type;
 
     /*
-     * The user identity associated with the policy. The user identity dictionary key references will be ARM resource
-     * ids in the form:
+     * The list of user identities associated with the resource. The user identity dictionary key references will be ARM
+     * resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
      * userAssignedIdentities/{identityName}'.
      */
@@ -48,8 +47,7 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the principalId property: The principal ID of the resource identity. This property will only be provided for
-     * a system assigned identity.
+     * Get the principalId property: The principal ID of resource identity.
      * 
      * @return the principalId value.
      */
@@ -58,8 +56,7 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the tenantId property: The tenant ID of the resource identity. This property will only be provided for a
-     * system assigned identity.
+     * Get the tenantId property: The tenant ID of resource.
      * 
      * @return the tenantId value.
      */
@@ -68,8 +65,7 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the type property: The identity type. This is the only required field when adding a system or user assigned
-     * identity to a resource.
+     * Get the type property: The identity type.
      * 
      * @return the type value.
      */
@@ -78,8 +74,7 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Set the type property: The identity type. This is the only required field when adding a system or user assigned
-     * identity to a resource.
+     * Set the type property: The identity type.
      * 
      * @param type the type value to set.
      * @return the Identity object itself.
@@ -90,8 +85,8 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Get the userAssignedIdentities property: The user identity associated with the policy. The user identity
-     * dictionary key references will be ARM resource ids in the form:
+     * Get the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @return the userAssignedIdentities value.
@@ -101,8 +96,8 @@ public final class Identity implements JsonSerializable<Identity> {
     }
 
     /**
-     * Set the userAssignedIdentities property: The user identity associated with the policy. The user identity
-     * dictionary key references will be ARM resource ids in the form:
+     * Set the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.

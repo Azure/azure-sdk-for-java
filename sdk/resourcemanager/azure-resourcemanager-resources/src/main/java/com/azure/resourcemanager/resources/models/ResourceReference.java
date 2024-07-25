@@ -12,12 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The resourceId model.
+ * The resource Id model.
  */
 @Immutable
-public class ResourceReference implements JsonSerializable<ResourceReference> {
+public final class ResourceReference implements JsonSerializable<ResourceReference> {
     /*
-     * The resourceId of a resource managed by the deployment stack.
+     * The fully qualified resource Id.
      */
     private String id;
 
@@ -28,23 +28,12 @@ public class ResourceReference implements JsonSerializable<ResourceReference> {
     }
 
     /**
-     * Get the id property: The resourceId of a resource managed by the deployment stack.
+     * Get the id property: The fully qualified resource Id.
      * 
      * @return the id value.
      */
     public String id() {
         return this.id;
-    }
-
-    /**
-     * Set the id property: The resourceId of a resource managed by the deployment stack.
-     * 
-     * @param id the id value to set.
-     * @return the ResourceReference object itself.
-     */
-    ResourceReference withId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
