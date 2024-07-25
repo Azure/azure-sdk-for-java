@@ -1,14 +1,8 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## 1.2.0-beta.1 (2024-06-25)
 
