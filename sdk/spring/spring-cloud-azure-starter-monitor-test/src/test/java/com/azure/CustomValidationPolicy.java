@@ -6,6 +6,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.serializer.json.jackson.JacksonJsonProvider;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.fasterxml.jackson.databind.MappingIterator;
@@ -60,17 +61,22 @@ class CustomValidationPolicy implements HttpPipelinePolicy {
             while ((read = in.read(data, 0, data.length)) != -1) {
                 baos.write(data, 0, read);
             }
-            return new String(baos.toByteArray(), StandardCharsets.UTF_8);
+            return baos.toString(StandardCharsets.UTF_8);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    // TODO (heya) need to update this when a newer version of azure-monitor-opentelemetry-exporter with azure-json is released
+    // azure-sdk-for-java will always test against the source version of azure-monitor-opentelemetry-exporter in CI builds for backward compatibility.
+    // In order to bridge the gap between jackson serialization and azure-json, we need to provide a custom ObjectMapper that supports azure-json.
+    // JacksonJsonProvider provides a Jackson Databind modules that enables Jackson deserialization to hook into azure-json deserialization.
     private static ObjectMapper createObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         // handle JSR-310 (java 8) dates with Jackson by configuring ObjectMapper to use this
         // dependency and not (de)serialize Instant as timestamps that it does by default
         objectMapper.findAndRegisterModules().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.registerModule(JacksonJsonProvider.getJsonSerializableDatabindModule());
         return objectMapper;
     }
 }
