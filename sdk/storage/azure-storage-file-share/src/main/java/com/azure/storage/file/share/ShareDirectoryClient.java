@@ -31,7 +31,7 @@ import com.azure.storage.file.share.implementation.models.DirectoriesGetProperti
 import com.azure.storage.file.share.implementation.models.DirectoriesListHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;

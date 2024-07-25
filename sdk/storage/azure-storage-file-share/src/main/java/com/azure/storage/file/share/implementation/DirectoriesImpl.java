@@ -33,11 +33,11 @@ import com.azure.storage.file.share.implementation.models.DirectoriesListHandles
 import com.azure.storage.file.share.implementation.models.DirectoriesRenameHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;

@@ -25,7 +25,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
-import com.azure.storage.file.share.implementation.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
