@@ -117,11 +117,18 @@ public class SessionTokenHelper {
 
         if (highestSessionToken == null) {
             if (StringUtils.isNotEmpty(globalSessionToken)) {
-                logger.warn("The session token : {} for partition key range id : {} and collection rid : {} could not be evaluated, " +
-                        "the operation will fallback to eventual consistency.",
-                    globalSessionToken,
-                    partitionKeyRangeId,
-                    request.requestContext.resolvedCollectionRid);
+                Set<String> sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
+
+                String evaluationResult = "The session token : " + globalSessionToken + " for partition key range id : " + partitionKeyRangeId +
+                    " and collection rid : " + request.requestContext.resolvedCollectionRid + " could not be evaluated, " +
+                    "the operation will fallback " +
+                    "to eventual consistency.";
+
+                sessionTokenEvaluationResults.add(evaluationResult);
+
+                if (Configs.shouldLogIncorrectlyMappedSessionToken()) {
+                    logger.warn(evaluationResult);
+                }
             }
         }
 

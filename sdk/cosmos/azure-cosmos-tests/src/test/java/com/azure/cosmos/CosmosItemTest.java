@@ -870,6 +870,15 @@ public class CosmosItemTest extends TestSuiteBase {
             throw new SkipException("Test only targeting session consistency.");
         }
 
+        String connectionMode = ImplementationBridgeHelpers
+            .CosmosAsyncClientHelper
+            .getCosmosAsyncClientAccessor()
+            .getConnectionMode(client.asyncClient());
+
+        if (!connectionMode.equals(ConnectionMode.DIRECT.toString())) {
+            throw new SkipException("Test only targeting DIRECT connectivity mode.");
+        }
+
         String partitionKeyValue = UUID.randomUUID().toString();
         ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
 
@@ -892,15 +901,25 @@ public class CosmosItemTest extends TestSuiteBase {
             cosmosItemIdentities.add(cosmosItemIdentity);
         }
 
+        String actualPkRangeId = lastRecordedSessionToken.get().split(":")[0];
+
         String sessionTokenWithNonExistentPkRangeId
             = replacePkRangeIdInSessionToken(lastRecordedSessionToken.get(), nonExistentPKRangeId);
 
         try {
 
-            container.readMany(
+            FeedResponse<InternalObjectNode> response = container.readMany(
                 cosmosItemIdentities,
                 sessionTokenWithNonExistentPkRangeId,
                 InternalObjectNode.class);
+
+            assertThat(response).isNotNull();
+            CosmosDiagnostics diagnostics = response.getCosmosDiagnostics();
+            assertThat(diagnostics).isNotNull();
+
+            String diagnosticString = diagnostics.toString();
+            assertThat(diagnosticString.contains("The session token : " + sessionTokenWithNonExistentPkRangeId + " for partition key range id : " + actualPkRangeId))
+                .isTrue();
 
         } catch (Exception ex) {
             assertThat(ex instanceof CosmosException).isTrue();
@@ -908,6 +927,13 @@ public class CosmosItemTest extends TestSuiteBase {
 
             assertThat(cosmosException.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(cosmosException.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.UNKNOWN);
+
+            CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
+            assertThat(diagnostics).isNotNull();
+
+            String diagnosticString = diagnostics.toString();
+            assertThat(diagnosticString.contains("The session token : " + sessionTokenWithNonExistentPkRangeId + "for partition key range id : " + actualPkRangeId))
+                .isTrue();
         }
     }
 

@@ -242,6 +242,9 @@ public class Configs {
     private static final int DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = 10;
     private static final String CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS = "COSMOS.CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS";
 
+    private static final boolean DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN = true;
+    private static final String SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN = "COSMOS.SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN";
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -639,6 +642,17 @@ public class Configs {
                 firstNonNull(
                     emptyToNull(System.getenv().get(DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)),
                     String.valueOf(DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)));
+
+        return Boolean.parseBoolean(shouldSystemExit);
+    }
+
+    public static boolean shouldLogIncorrectlyMappedSessionToken() {
+        String shouldSystemExit =
+            System.getProperty(
+                SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN)),
+                    String.valueOf(DEFAULT_SHOULD_LOG_INCORRECTLY_MAPPED_SESSION_TOKEN)));
 
         return Boolean.parseBoolean(shouldSystemExit);
     }
