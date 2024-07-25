@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * Utility class that helps convert between GSON and Azure JSON models.
  */
-public final class GsonJsonElementUtils {
+final class GsonJsonElementUtils {
     /**
      * Reads a {@link JsonElement} from the {@link JsonReader}.
      * <p>

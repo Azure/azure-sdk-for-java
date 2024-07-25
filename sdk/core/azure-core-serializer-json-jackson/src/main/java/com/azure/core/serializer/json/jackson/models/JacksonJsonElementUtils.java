@@ -33,7 +33,7 @@ import java.util.Objects;
 /**
  * Utility class that helps convert between Jackson and Azure JSON models.
  */
-public final class JacksonJsonElementUtils {
+final class JacksonJsonElementUtils {
     /**
      * Reads a {@link JsonNode} from the {@link JsonReader}.
      * <p>
