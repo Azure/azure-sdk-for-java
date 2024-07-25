@@ -784,8 +784,8 @@ public class CosmosItemTest extends TestSuiteBase {
             throw new SkipException("Test only targeting session consistency.");
         }
 
-        int numDocuments = 25;
-        AtomicReference<String> lastRecordedSessionToken = new AtomicReference<>();
+        int numDocuments = 50;
+        Map<String, String> pkRangeIdToLastRecordedSessionToken = new HashMap<>();
 
         for (int i = 0; i < numDocuments; i++) {
 
@@ -795,7 +795,9 @@ public class CosmosItemTest extends TestSuiteBase {
             ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
 
             CosmosItemResponse<ObjectNode> response = container.createItem(document);
-            lastRecordedSessionToken.set(response.getSessionToken());
+            String sessionToken = response.getSessionToken();
+            String pkRangeId = sessionToken.split(":")[0];
+            pkRangeIdToLastRecordedSessionToken.put(pkRangeId, sessionToken);
         }
 
         List<FeedRange> feedRanges = container.getFeedRanges();
@@ -832,13 +834,18 @@ public class CosmosItemTest extends TestSuiteBase {
 
         assertThat(itemIdentities.size()).isEqualTo(3);
 
-        String bumpedUpSessionToken = bumpUpLsnInSessionToken(lastRecordedSessionToken.get());
+        StringBuilder bumpedUpUserProvidedSessionToken = new StringBuilder();
+
+        for (Map.Entry<String, String> pkRangeIdToSessionTokenEntry : pkRangeIdToLastRecordedSessionToken.entrySet()) {
+            bumpedUpUserProvidedSessionToken.append(bumpUpLsnInSessionToken(pkRangeIdToSessionTokenEntry.getValue()));
+            bumpedUpUserProvidedSessionToken.append(",");
+        }
 
         try {
 
             container.readMany(
                 itemIdentities,
-                bumpedUpSessionToken,
+                bumpedUpUserProvidedSessionToken.toString(),
                 InternalObjectNode.class);
 
             fail("Should have hit read session not available error.");
