@@ -12,7 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.computefleet.fluent.models.FleetInner;
-import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineScaleSetListResultInner;
+import com.azure.resourcemanager.computefleet.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.computefleet.models.FleetUpdate;
 
 /**
@@ -270,26 +270,26 @@ public interface FleetsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualMachineScaleSet list operation along with {@link Response}.
+     * @return the response of a VirtualMachineScaleSet list operation as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineScaleSetListResultInner> listVirtualMachineScaleSetsWithResponse(String resourceGroupName,
-        String name, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineScaleSetInner> listVirtualMachineScaleSets(String resourceGroupName, String name);
 
     /**
      * List VirtualMachineScaleSet resources by Fleet.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name The name of the Fleet.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a VirtualMachineScaleSet list operation.
+     * @return the response of a VirtualMachineScaleSet list operation as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineScaleSetListResultInner listVirtualMachineScaleSets(String resourceGroupName, String name);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<VirtualMachineScaleSetInner> listVirtualMachineScaleSets(String resourceGroupName, String name,
+        Context context);
 }

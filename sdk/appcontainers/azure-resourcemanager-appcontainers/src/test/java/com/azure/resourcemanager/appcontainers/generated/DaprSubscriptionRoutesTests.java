@@ -14,22 +14,24 @@ public final class DaprSubscriptionRoutesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprSubscriptionRoutes model = BinaryData.fromString(
-            "{\"rules\":[{\"match\":\"jcazt\",\"path\":\"snsqowxwcoml\"},{\"match\":\"ytwvczcswkacve\",\"path\":\"fdv\"}],\"default\":\"hbwrnfxtgddpqth\"}")
+            "{\"rules\":[{\"match\":\"b\",\"path\":\"qfblhkalehpa\"},{\"match\":\"wugiqjti\",\"path\":\"qgdm\"},{\"match\":\"i\",\"path\":\"teajohiyg\"},{\"match\":\"n\",\"path\":\"n\"}],\"default\":\"czykmktpvw\"}")
             .toObject(DaprSubscriptionRoutes.class);
-        Assertions.assertEquals("jcazt", model.rules().get(0).match());
-        Assertions.assertEquals("snsqowxwcoml", model.rules().get(0).path());
-        Assertions.assertEquals("hbwrnfxtgddpqth", model.defaultProperty());
+        Assertions.assertEquals("b", model.rules().get(0).match());
+        Assertions.assertEquals("qfblhkalehpa", model.rules().get(0).path());
+        Assertions.assertEquals("czykmktpvw", model.defaultProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprSubscriptionRoutes model = new DaprSubscriptionRoutes()
-            .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("jcazt").withPath("snsqowxwcoml"),
-                new DaprSubscriptionRouteRule().withMatch("ytwvczcswkacve").withPath("fdv")))
-            .withDefaultProperty("hbwrnfxtgddpqth");
+            .withRules(Arrays.asList(new DaprSubscriptionRouteRule().withMatch("b").withPath("qfblhkalehpa"),
+                new DaprSubscriptionRouteRule().withMatch("wugiqjti").withPath("qgdm"),
+                new DaprSubscriptionRouteRule().withMatch("i").withPath("teajohiyg"),
+                new DaprSubscriptionRouteRule().withMatch("n").withPath("n")))
+            .withDefaultProperty("czykmktpvw");
         model = BinaryData.fromObject(model).toObject(DaprSubscriptionRoutes.class);
-        Assertions.assertEquals("jcazt", model.rules().get(0).match());
-        Assertions.assertEquals("snsqowxwcoml", model.rules().get(0).path());
-        Assertions.assertEquals("hbwrnfxtgddpqth", model.defaultProperty());
+        Assertions.assertEquals("b", model.rules().get(0).match());
+        Assertions.assertEquals("qfblhkalehpa", model.rules().get(0).path());
+        Assertions.assertEquals("czykmktpvw", model.defaultProperty());
     }
 }

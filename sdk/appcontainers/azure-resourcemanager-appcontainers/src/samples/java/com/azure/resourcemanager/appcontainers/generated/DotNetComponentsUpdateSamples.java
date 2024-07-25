@@ -15,7 +15,7 @@ import java.util.Arrays;
  */
 public final class DotNetComponentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DotNetComponents_Patch_ServiceBind.json
      */
     /**
@@ -28,17 +28,19 @@ public final class DotNetComponentsUpdateSamples {
         DotNetComponent resource = manager.dotNetComponents()
             .getWithResponse("examplerg", "myenvironment", "mydotnetcomponent", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
+        resource.update()
+            .withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
             .withConfigurations(Arrays.asList(
                 new DotNetComponentConfigurationProperty().withPropertyName("dashboard-theme").withValue("dark")))
-            .withServiceBinds(Arrays.asList(new DotNetComponentServiceBind().withName("yellowcat").withServiceId(
-                "/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/yellowcat")))
+            .withServiceBinds(Arrays.asList(new DotNetComponentServiceBind().withName("yellowcat")
+                .withServiceId(
+                    "/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/dotNetComponents/yellowcat")))
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/DotNetComponents_Patch.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/DotNetComponents_Patch.json
      */
     /**
      * Sample code: Patch .NET Component.
@@ -49,7 +51,8 @@ public final class DotNetComponentsUpdateSamples {
         DotNetComponent resource = manager.dotNetComponents()
             .getWithResponse("examplerg", "myenvironment", "mydotnetcomponent", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
+        resource.update()
+            .withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
             .withConfigurations(Arrays.asList(
                 new DotNetComponentConfigurationProperty().withPropertyName("dashboard-theme").withValue("dark")))
             .apply();

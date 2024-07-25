@@ -8,7 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -19,20 +22,32 @@ public final class SnapshotInner extends ProxyResource {
     /*
      * Resource location
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * Snapshot Properties
      */
-    @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of SnapshotInner class.
@@ -79,9 +94,37 @@ public final class SnapshotInner extends ProxyResource {
     }
 
     /**
-     * Get the snapshotId property: snapshotId
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * UUID v4 used to identify the Snapshot.
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the snapshotId property: UUID v4 used to identify the Snapshot.
      * 
      * @return the snapshotId value.
      */
@@ -90,9 +133,7 @@ public final class SnapshotInner extends ProxyResource {
     }
 
     /**
-     * Get the created property: name
-     * 
-     * The creation date of the snapshot.
+     * Get the created property: The creation date of the snapshot.
      * 
      * @return the created value.
      */
@@ -125,4 +166,52 @@ public final class SnapshotInner extends ProxyResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SnapshotInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnapshotInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnapshotInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnapshotInner.
+     */
+    public static SnapshotInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnapshotInner deserializedSnapshotInner = new SnapshotInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSnapshotInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSnapshotInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSnapshotInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSnapshotInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSnapshotInner.innerProperties = SnapshotProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSnapshotInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnapshotInner;
+        });
+    }
 }

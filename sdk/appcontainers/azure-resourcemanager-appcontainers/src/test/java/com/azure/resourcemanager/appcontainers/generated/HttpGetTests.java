@@ -23,7 +23,8 @@ public final class HttpGetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpGet model = new HttpGet().withUrl("auvfbtkuwhhmhyk").withFileName("oxafn")
+        HttpGet model = new HttpGet().withUrl("auvfbtkuwhhmhyk")
+            .withFileName("oxafn")
             .withHeaders(Arrays.asList("pichkoymkcdy", "bpkkpwdre"));
         model = BinaryData.fromObject(model).toObject(HttpGet.class);
         Assertions.assertEquals("auvfbtkuwhhmhyk", model.url());

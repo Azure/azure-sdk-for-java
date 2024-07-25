@@ -32,16 +32,25 @@ public final class AvailableWorkloadProfilesCollectionTests {
         AvailableWorkloadProfilesCollection model = new AvailableWorkloadProfilesCollection().withValue(Arrays.asList(
             new AvailableWorkloadProfileInner().withLocation("dmoh")
                 .withProperties(new AvailableWorkloadProfileProperties().withCategory("qvudwxdndnvowgu")
-                    .withApplicability(Applicability.LOCATION_DEFAULT).withCores(247911704).withMemoryGiB(175400299)
-                    .withGpus(2105007169).withDisplayName("hslazjdyggdtj")),
+                    .withApplicability(Applicability.LOCATION_DEFAULT)
+                    .withCores(247911704)
+                    .withMemoryGiB(175400299)
+                    .withGpus(2105007169)
+                    .withDisplayName("hslazjdyggdtj")),
             new AvailableWorkloadProfileInner().withLocation("aamdect")
                 .withProperties(new AvailableWorkloadProfileProperties().withCategory("iqscjeypv")
-                    .withApplicability(Applicability.CUSTOM).withCores(902064602).withMemoryGiB(177141497)
-                    .withGpus(61185346).withDisplayName("refovgmkqsleyyvx")),
+                    .withApplicability(Applicability.CUSTOM)
+                    .withCores(902064602)
+                    .withMemoryGiB(177141497)
+                    .withGpus(61185346)
+                    .withDisplayName("refovgmkqsleyyvx")),
             new AvailableWorkloadProfileInner().withLocation("jvnysounqe")
                 .withProperties(new AvailableWorkloadProfileProperties().withCategory("oaeupfhyhltrpmo")
-                    .withApplicability(Applicability.CUSTOM).withCores(1490971149).withMemoryGiB(557848148)
-                    .withGpus(860799201).withDisplayName("thfuiuaodsfcpkvx"))));
+                    .withApplicability(Applicability.CUSTOM)
+                    .withCores(1490971149)
+                    .withMemoryGiB(557848148)
+                    .withGpus(860799201)
+                    .withDisplayName("thfuiuaodsfcpkvx"))));
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfilesCollection.class);
         Assertions.assertEquals("dmoh", model.value().get(0).location());
         Assertions.assertEquals("qvudwxdndnvowgu", model.value().get(0).properties().category());

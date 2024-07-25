@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines parameters for http connection pooling.
  */
 @Fluent
-public final class HttpConnectionPool {
+public final class HttpConnectionPool implements JsonSerializable<HttpConnectionPool> {
     /*
      * Maximum number of pending http1 requests allowed
      */
-    @JsonProperty(value = "http1MaxPendingRequests")
     private Integer http1MaxPendingRequests;
 
     /*
      * Maximum number of http2 requests allowed
      */
-    @JsonProperty(value = "http2MaxRequests")
     private Integer http2MaxRequests;
 
     /**
@@ -76,5 +78,44 @@ public final class HttpConnectionPool {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("http1MaxPendingRequests", this.http1MaxPendingRequests);
+        jsonWriter.writeNumberField("http2MaxRequests", this.http2MaxRequests);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpConnectionPool from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpConnectionPool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpConnectionPool.
+     */
+    public static HttpConnectionPool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpConnectionPool deserializedHttpConnectionPool = new HttpConnectionPool();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("http1MaxPendingRequests".equals(fieldName)) {
+                    deserializedHttpConnectionPool.http1MaxPendingRequests = reader.getNullable(JsonReader::getInt);
+                } else if ("http2MaxRequests".equals(fieldName)) {
+                    deserializedHttpConnectionPool.http2MaxRequests = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpConnectionPool;
+        });
     }
 }

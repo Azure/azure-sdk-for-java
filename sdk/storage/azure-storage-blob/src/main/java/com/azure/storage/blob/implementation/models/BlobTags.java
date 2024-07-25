@@ -5,56 +5,123 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** Blob tags. */
-@JacksonXmlRootElement(localName = "Tags")
+/**
+ * Blob tags.
+ */
 @Fluent
-public final class BlobTags {
-    private static final class TagSetWrapper {
-        @JacksonXmlProperty(localName = "Tag")
-        private final List<BlobTag> items;
-
-        @JsonCreator
-        private TagSetWrapper(@JacksonXmlProperty(localName = "Tag") List<BlobTag> items) {
-            this.items = items;
-        }
-    }
-
+public final class BlobTags implements XmlSerializable<BlobTags> {
     /*
      * The BlobTagSet property.
      */
-    @JsonProperty(value = "TagSet", required = true)
-    private TagSetWrapper blobTagSet;
+    private List<BlobTag> blobTagSet;
 
-    /** Creates an instance of BlobTags class. */
-    public BlobTags() {}
+    /**
+     * Creates an instance of BlobTags class.
+     */
+    public BlobTags() {
+    }
 
     /**
      * Get the blobTagSet property: The BlobTagSet property.
-     *
+     * 
      * @return the blobTagSet value.
      */
     public List<BlobTag> getBlobTagSet() {
         if (this.blobTagSet == null) {
-            this.blobTagSet = new TagSetWrapper(new ArrayList<BlobTag>());
+            this.blobTagSet = new ArrayList<>();
         }
-        return this.blobTagSet.items;
+        return this.blobTagSet;
     }
 
     /**
      * Set the blobTagSet property: The BlobTagSet property.
-     *
+     * 
      * @param blobTagSet the blobTagSet value to set.
      * @return the BlobTags object itself.
      */
     public BlobTags setBlobTagSet(List<BlobTag> blobTagSet) {
-        this.blobTagSet = new TagSetWrapper(blobTagSet);
+        this.blobTagSet = blobTagSet;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Tags" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        if (this.blobTagSet != null) {
+            xmlWriter.writeStartElement("TagSet");
+            for (BlobTag element : this.blobTagSet) {
+                xmlWriter.writeXml(element, "Tag");
+            }
+            xmlWriter.writeEndElement();
+        }
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of BlobTags from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of BlobTags if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     * XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobTags.
+     */
+    public static BlobTags fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of BlobTags from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of BlobTags if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     * XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the BlobTags.
+     */
+    public static BlobTags fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Tags" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            BlobTags deserializedBlobTags = new BlobTags();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("TagSet".equals(elementName.getLocalPart())) {
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        elementName = reader.getElementName();
+                        if ("Tag".equals(elementName.getLocalPart())) {
+                            if (deserializedBlobTags.blobTagSet == null) {
+                                deserializedBlobTags.blobTagSet = new ArrayList<>();
+                            }
+                            deserializedBlobTags.blobTagSet.add(BlobTag.fromXml(reader, "Tag"));
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedBlobTags;
+        });
     }
 }

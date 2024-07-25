@@ -11,17 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DotNetComponentServiceBindTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DotNetComponentServiceBind model = BinaryData.fromString("{\"name\":\"qipir\",\"serviceId\":\"wrq\"}")
-            .toObject(DotNetComponentServiceBind.class);
-        Assertions.assertEquals("qipir", model.name());
-        Assertions.assertEquals("wrq", model.serviceId());
+        DotNetComponentServiceBind model
+            = BinaryData.fromString("{\"name\":\"lpvmjcdoewbidy\",\"serviceId\":\"eowxvgpi\"}")
+                .toObject(DotNetComponentServiceBind.class);
+        Assertions.assertEquals("lpvmjcdoewbidy", model.name());
+        Assertions.assertEquals("eowxvgpi", model.serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DotNetComponentServiceBind model = new DotNetComponentServiceBind().withName("qipir").withServiceId("wrq");
+        DotNetComponentServiceBind model
+            = new DotNetComponentServiceBind().withName("lpvmjcdoewbidy").withServiceId("eowxvgpi");
         model = BinaryData.fromObject(model).toObject(DotNetComponentServiceBind.class);
-        Assertions.assertEquals("qipir", model.name());
-        Assertions.assertEquals("wrq", model.serviceId());
+        Assertions.assertEquals("lpvmjcdoewbidy", model.name());
+        Assertions.assertEquals("eowxvgpi", model.serviceId());
     }
 }
