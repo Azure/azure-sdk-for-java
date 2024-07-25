@@ -68,8 +68,6 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         }
     }
 
-//    private byte[]
-
     private void processStatusCode206(TelemetryPipelineRequest request, TelemetryPipelineResponse response) {
         Set<ResponseError> errors = response.getErrors();
         errors.forEach(error -> logger.verbose("Error in telemetry: {}", error));
