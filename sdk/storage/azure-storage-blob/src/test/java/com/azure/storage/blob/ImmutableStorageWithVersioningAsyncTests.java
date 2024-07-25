@@ -23,6 +23,8 @@ import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
@@ -57,8 +59,6 @@ import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,10 +70,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -104,7 +105,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     private BlobAsyncClient vlwBlob;
 
     @BeforeAll
-    public static void setupSpec() throws JsonProcessingException, MalformedURLException {
+    public static void setupSpec() throws IOException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = UUID.randomUUID().toString();
 
@@ -115,11 +116,12 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 .policies(CREDENTIAL_POLICY)
                 .build();
 
-            ImmutableStorageWithVersioning immutableStorageWithVersioning = new ImmutableStorageWithVersioning();
+            ImmutableStorageWithVersioningTests.ImmutableStorageWithVersioning immutableStorageWithVersioning =
+                new ImmutableStorageWithVersioningTests.ImmutableStorageWithVersioning();
             immutableStorageWithVersioning.setEnabled(true);
-            Properties properties = new Properties();
+            ImmutableStorageWithVersioningTests.Properties properties = new ImmutableStorageWithVersioningTests.Properties();
             properties.setImmutableStorageWithVersioning(immutableStorageWithVersioning);
-            Body body = new Body();
+            ImmutableStorageWithVersioningTests.Body body = new ImmutableStorageWithVersioningTests.Body();
             body.setId(String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
                     + "%s/blobServices/default/containers/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME,
                 vlwContainerName));
@@ -127,10 +129,13 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             body.setType("Microsoft.Storage/storageAccounts/blobServices/containers");
             body.setProperties(properties);
 
-            String serializedBody = new ObjectMapper().writeValueAsString(body);
+            ByteArrayOutputStream json = new ByteArrayOutputStream();
+            try (JsonWriter jsonWriter = JsonProviders.createWriter(json)) {
+                body.toJson(jsonWriter);
+            }
 
             HttpResponse response = httpPipeline.send(new HttpRequest(HttpMethod.PUT, new URL(url), new HttpHeaders(),
-                Flux.just(ByteBuffer.wrap(serializedBody.getBytes(StandardCharsets.UTF_8))))).block();
+                Flux.just(ByteBuffer.wrap(json.toByteArray())))).block();
             assertNotNull(response);
             if (response.getStatusCode() != 201) {
                 LOGGER.warning(response.getBodyAsString().block());
@@ -145,69 +150,6 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             testResourceNamer.recordValueFromConfig(vlwContainerName));
         vlwBlob = vlwContainer.getBlobAsyncClient(generateBlobName());
         vlwBlob.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null).block();
-    }
-
-    public static final class Body {
-        private String id;
-        private String name;
-        private String type;
-        private Properties properties;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public Properties getProperties() {
-            return properties;
-        }
-
-        public void setProperties(Properties properties) {
-            this.properties = properties;
-        }
-    }
-
-    public static final class Properties {
-        private ImmutableStorageWithVersioning immutableStorageWithVersioning;
-
-        public ImmutableStorageWithVersioning getImmutableStorageWithVersioning() {
-            return immutableStorageWithVersioning;
-        }
-
-        public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
-            this.immutableStorageWithVersioning = immutableStorageWithVersioning;
-        }
-    }
-
-    public static final class ImmutableStorageWithVersioning {
-        private boolean enabled;
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
     }
 
     @AfterAll

@@ -87,7 +87,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         assertThat(errorMessages.get("azure.cosmos.sink.containers.topicMap").size()).isGreaterThan(0);
     }
 
-    @Test(groups = "unit")
+    @Test(groups = "kafka-emulator")
     public void taskConfigs() {
         CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
         String connectorName = "test";

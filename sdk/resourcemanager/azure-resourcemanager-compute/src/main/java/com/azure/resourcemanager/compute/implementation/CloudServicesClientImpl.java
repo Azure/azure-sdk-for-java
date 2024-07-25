@@ -42,10 +42,9 @@ import com.azure.resourcemanager.compute.models.RoleInstances;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in CloudServicesClient.
@@ -64,7 +63,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Initializes an instance of CloudServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CloudServicesClientImpl(ComputeManagementClientImpl client) {
@@ -220,7 +219,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -261,7 +260,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -302,7 +301,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -322,7 +321,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -342,7 +341,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -364,7 +363,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -381,7 +380,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -399,7 +398,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -417,7 +416,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,7 +433,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -453,7 +452,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -469,7 +468,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -487,7 +486,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -528,7 +527,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -569,7 +568,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -589,7 +588,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -609,7 +608,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -631,7 +630,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -648,7 +647,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -666,7 +665,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -684,7 +683,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -701,7 +700,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -720,7 +719,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -736,7 +735,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -754,7 +753,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -790,7 +789,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -827,7 +826,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,7 +843,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -864,7 +863,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -879,7 +878,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -896,7 +895,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -912,7 +911,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -929,7 +928,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -943,7 +942,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -958,7 +957,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Display information about a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -995,7 +994,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Display information about a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1032,7 +1031,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Display information about a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1048,7 +1047,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Display information about a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1065,7 +1064,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Display information about a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1080,7 +1079,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Gets the status of a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1117,7 +1116,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Gets the status of a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1154,7 +1153,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Gets the status of a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1170,7 +1169,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Gets the status of a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1187,7 +1186,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Gets the status of a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1204,7 +1203,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of Cloud Services. Do this till nextLink is null to fetch all the
      * Cloud Services.
-     *
+     * 
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all cloud services in the subscription, regardless of the associated resource group along with
@@ -1234,7 +1233,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of Cloud Services. Do this till nextLink is null to fetch all the
      * Cloud Services.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1264,7 +1263,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of Cloud Services. Do this till nextLink is null to fetch all the
      * Cloud Services.
-     *
+     * 
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all cloud services in the subscription, regardless of the associated resource group as
@@ -1279,7 +1278,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of Cloud Services. Do this till nextLink is null to fetch all the
      * Cloud Services.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1297,7 +1296,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of Cloud Services. Do this till nextLink is null to fetch all the
      * Cloud Services.
-     *
+     * 
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all cloud services in the subscription, regardless of the associated resource group as
@@ -1312,7 +1311,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of Cloud Services. Do this till nextLink is null to fetch all the
      * Cloud Services.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1328,7 +1327,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
      * page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1363,7 +1362,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
      * page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1400,7 +1399,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
      * page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1416,7 +1415,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
      * page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1433,7 +1432,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
      * page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1448,7 +1447,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
      * page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1463,7 +1462,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1499,7 +1498,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1536,7 +1535,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1553,7 +1552,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1573,7 +1572,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1588,7 +1587,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1605,7 +1604,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1621,7 +1620,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1638,7 +1637,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1652,7 +1651,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1668,7 +1667,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1706,7 +1705,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1744,7 +1743,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1762,7 +1761,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1783,7 +1782,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1799,7 +1798,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1817,7 +1816,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1834,7 +1833,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1852,7 +1851,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1867,7 +1866,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -1882,7 +1881,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1923,7 +1922,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1964,7 +1963,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1984,7 +1983,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2003,7 +2002,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2025,7 +2024,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2041,7 +2040,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2059,7 +2058,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2076,7 +2075,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2093,7 +2092,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2112,7 +2111,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2127,7 +2126,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2143,7 +2142,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2184,7 +2183,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2225,7 +2224,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2245,7 +2244,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2264,7 +2263,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2286,7 +2285,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2302,7 +2301,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2320,7 +2319,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2337,7 +2336,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2354,7 +2353,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2373,7 +2372,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2388,7 +2387,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2406,7 +2405,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2449,7 +2448,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2492,7 +2491,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2514,7 +2513,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2535,7 +2534,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2559,7 +2558,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2577,7 +2576,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2597,7 +2596,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2616,7 +2615,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2635,7 +2634,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2656,7 +2655,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2673,7 +2672,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2689,7 +2688,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2730,7 +2729,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2771,7 +2770,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2791,7 +2790,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2811,7 +2810,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2833,7 +2832,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2849,7 +2848,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2867,7 +2866,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2885,7 +2884,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2902,7 +2901,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2921,7 +2920,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2936,7 +2935,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -2953,7 +2952,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2979,7 +2978,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3005,7 +3004,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -3030,7 +3029,7 @@ public final class CloudServicesClientImpl implements InnerSupportsGet<CloudServ
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
