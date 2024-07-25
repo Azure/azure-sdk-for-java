@@ -33,8 +33,5 @@ public final class AzureJsonHelper {
         jsonWriter.writeEndObject();
     }
 
-    private AzureJsonHelper() {
-    }
-
-
+    private AzureJsonHelper() {}
 }

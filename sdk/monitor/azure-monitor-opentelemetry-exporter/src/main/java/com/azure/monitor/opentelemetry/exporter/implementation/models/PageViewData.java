@@ -228,20 +228,7 @@ public final class PageViewData extends MonitorDomain {
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("duration", this.duration);
         jsonWriter.writeStringField("referredUri", this.referredUri);
-        writeMap(this.properties, "properties", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeString(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        writeMap(this.measurements, "measurements", jsonWriter, (element) -> {
-            try {
-                jsonWriter.writeDouble(element);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -280,11 +267,9 @@ public final class PageViewData extends MonitorDomain {
                 } else if ("referredUri".equals(fieldName)) {
                     deserializedPageViewData.referredUri = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
-                    deserializedPageViewData.properties = properties;
+                    deserializedPageViewData.properties = reader.readMap(JsonReader::getString);
                 } else if ("measurements".equals(fieldName)) {
-                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
-                    deserializedPageViewData.measurements = measurements;
+                    deserializedPageViewData.measurements = reader.readMap(JsonReader::getDouble);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

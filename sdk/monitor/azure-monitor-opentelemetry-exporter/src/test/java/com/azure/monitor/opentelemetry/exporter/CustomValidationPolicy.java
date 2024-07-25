@@ -22,6 +22,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
+
 final class CustomValidationPolicy implements HttpPipelinePolicy {
 
     private final CountDownLatch countDown;
@@ -41,12 +43,15 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
                 .map(CustomValidationPolicy::ungzip);
         asyncBytes.subscribe(
             value -> {
-                try (JsonReader jsonReader = JsonProviders.createReader(value)) {
-                    actualTelemetryItems.add(TelemetryItem.fromJson(jsonReader));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    countDown.countDown();
+                List<byte[]> splitBytesByNewline = splitBytesByNewline(value.getBytes());
+                for (byte[] bytes : splitBytesByNewline) {
+                    try (JsonReader jsonReader = JsonProviders.createReader(bytes)) {
+                        actualTelemetryItems.add(TelemetryItem.fromJson(jsonReader));
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    } finally {
+                        countDown.countDown();
+                    }
                 }
             });
         return next.process();
