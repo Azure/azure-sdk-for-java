@@ -15,7 +15,7 @@ import java.io.IOException;
  * The resource Id model.
  */
 @Immutable
-public final class ResourceReference implements JsonSerializable<ResourceReference> {
+public class ResourceReference implements JsonSerializable<ResourceReference> {
     /*
      * The fully qualified resource Id.
      */
@@ -29,7 +29,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Get the id property: The fully qualified resource Id.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -38,7 +38,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -55,7 +55,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Reads an instance of ResourceReference from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResourceReference if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
