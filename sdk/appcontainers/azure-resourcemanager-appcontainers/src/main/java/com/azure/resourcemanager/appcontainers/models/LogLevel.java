@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class LogLevel extends ExpandableStringEnum<LogLevel> {
      * @param name a name to look for.
      * @return the corresponding LogLevel.
      */
-    @JsonCreator
     public static LogLevel fromString(String name) {
         return fromString(name, LogLevel.class);
     }

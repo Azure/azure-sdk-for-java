@@ -6,35 +6,35 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Workload profile to scope container app execution.
  */
 @Fluent
-public final class WorkloadProfile {
+public final class WorkloadProfile implements JsonSerializable<WorkloadProfile> {
     /*
      * Workload profile type for the workloads to run on.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Workload profile type for the workloads to run on.
      */
-    @JsonProperty(value = "workloadProfileType", required = true)
     private String workloadProfileType;
 
     /*
      * The minimum capacity.
      */
-    @JsonProperty(value = "minimumCount")
     private Integer minimumCount;
 
     /*
      * The maximum capacity.
      */
-    @JsonProperty(value = "maximumCount")
     private Integer maximumCount;
 
     /**
@@ -130,14 +130,61 @@ public final class WorkloadProfile {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model WorkloadProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model WorkloadProfile"));
         }
         if (workloadProfileType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property workloadProfileType in model WorkloadProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property workloadProfileType in model WorkloadProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("workloadProfileType", this.workloadProfileType);
+        jsonWriter.writeNumberField("minimumCount", this.minimumCount);
+        jsonWriter.writeNumberField("maximumCount", this.maximumCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkloadProfile.
+     */
+    public static WorkloadProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadProfile deserializedWorkloadProfile = new WorkloadProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedWorkloadProfile.name = reader.getString();
+                } else if ("workloadProfileType".equals(fieldName)) {
+                    deserializedWorkloadProfile.workloadProfileType = reader.getString();
+                } else if ("minimumCount".equals(fieldName)) {
+                    deserializedWorkloadProfile.minimumCount = reader.getNullable(JsonReader::getInt);
+                } else if ("maximumCount".equals(fieldName)) {
+                    deserializedWorkloadProfile.maximumCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadProfile;
+        });
+    }
 }

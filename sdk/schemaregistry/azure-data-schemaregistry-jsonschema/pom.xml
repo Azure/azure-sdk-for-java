@@ -41,7 +41,7 @@
       --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
-      --add-opens com.azure.data.schemaregistry.jsonschema/com.azure.data.schemaregistry.jsonschema=ALL-UNNAMED
+      --add-opens com.azure.data.schemaregistry.jsonschema/com.azure.data.schemaregistry.jsonschema=com.fasterxml.jackson.databind,ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 

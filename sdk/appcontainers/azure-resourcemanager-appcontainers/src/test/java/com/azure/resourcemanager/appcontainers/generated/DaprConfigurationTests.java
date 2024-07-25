@@ -10,7 +10,8 @@ import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
 public final class DaprConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DaprConfiguration model = BinaryData.fromString("{\"version\":\"jed\"}").toObject(DaprConfiguration.class);
+        DaprConfiguration model
+            = BinaryData.fromString("{\"version\":\"yuicdhzbdy\"}").toObject(DaprConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

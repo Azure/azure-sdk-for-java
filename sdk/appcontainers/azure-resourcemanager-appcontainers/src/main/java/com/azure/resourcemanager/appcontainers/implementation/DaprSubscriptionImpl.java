@@ -99,14 +99,16 @@ public final class DaprSubscriptionImpl
     }
 
     public DaprSubscription create() {
-        this.innerObject = serviceManager.serviceClient().getDaprSubscriptions()
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprSubscriptions()
             .createOrUpdateWithResponse(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public DaprSubscription create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDaprSubscriptions()
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprSubscriptions()
             .createOrUpdateWithResponse(resourceGroupName, environmentName, name, this.innerModel(), context)
             .getValue();
         return this;
@@ -123,14 +125,16 @@ public final class DaprSubscriptionImpl
     }
 
     public DaprSubscription apply() {
-        this.innerObject = serviceManager.serviceClient().getDaprSubscriptions()
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprSubscriptions()
             .createOrUpdateWithResponse(resourceGroupName, environmentName, name, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public DaprSubscription apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDaprSubscriptions()
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprSubscriptions()
             .createOrUpdateWithResponse(resourceGroupName, environmentName, name, this.innerModel(), context)
             .getValue();
         return this;
@@ -146,14 +150,18 @@ public final class DaprSubscriptionImpl
     }
 
     public DaprSubscription refresh() {
-        this.innerObject = serviceManager.serviceClient().getDaprSubscriptions()
-            .getWithResponse(resourceGroupName, environmentName, name, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprSubscriptions()
+            .getWithResponse(resourceGroupName, environmentName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DaprSubscription refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getDaprSubscriptions()
-            .getWithResponse(resourceGroupName, environmentName, name, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDaprSubscriptions()
+            .getWithResponse(resourceGroupName, environmentName, name, context)
+            .getValue();
         return this;
     }
 
