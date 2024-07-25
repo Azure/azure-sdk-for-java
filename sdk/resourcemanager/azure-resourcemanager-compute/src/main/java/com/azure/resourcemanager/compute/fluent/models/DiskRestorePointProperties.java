@@ -124,6 +124,13 @@ public final class DiskRestorePointProperties {
     @JsonProperty(value = "securityProfile")
     private DiskSecurityProfile securityProfile;
 
+    /*
+     * Logical sector size in bytes for disk restore points of UltraSSD_LRS and PremiumV2_LRS disks. Supported values
+     * are 512 and 4096. 4096 is the default.
+     */
+    @JsonProperty(value = "logicalSectorSize", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer logicalSectorSize;
+
     /**
      * Creates an instance of DiskRestorePointProperties class.
      */
@@ -387,6 +394,16 @@ public final class DiskRestorePointProperties {
     public DiskRestorePointProperties withSecurityProfile(DiskSecurityProfile securityProfile) {
         this.securityProfile = securityProfile;
         return this;
+    }
+
+    /**
+     * Get the logicalSectorSize property: Logical sector size in bytes for disk restore points of UltraSSD_LRS and
+     * PremiumV2_LRS disks. Supported values are 512 and 4096. 4096 is the default.
+     * 
+     * @return the logicalSectorSize value.
+     */
+    public Integer logicalSectorSize() {
+        return this.logicalSectorSize;
     }
 
     /**

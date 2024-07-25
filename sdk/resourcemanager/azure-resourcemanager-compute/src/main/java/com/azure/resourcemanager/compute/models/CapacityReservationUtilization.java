@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -36,7 +35,7 @@ public final class CapacityReservationUtilization {
     /**
      * Get the currentCapacity property: The value provides the current capacity of the VM size which was reserved
      * successfully and for which the customer is getting billed. Minimum api-version: 2022-08-01.
-     *
+     * 
      * @return the currentCapacity value.
      */
     public Integer currentCapacity() {
@@ -46,7 +45,7 @@ public final class CapacityReservationUtilization {
     /**
      * Get the virtualMachinesAllocated property: A list of all virtual machines resource ids allocated against the
      * capacity reservation.
-     *
+     * 
      * @return the virtualMachinesAllocated value.
      */
     public List<SubResourceReadOnly> virtualMachinesAllocated() {
@@ -55,7 +54,7 @@ public final class CapacityReservationUtilization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
