@@ -61,7 +61,7 @@ com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.15;1.0.0-beta.16
 com.azure:azure-analytics-synapse-spark;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.5;1.0.0-beta.6
-com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.3;1.0.0-beta.4
+com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-aot-graalvm-support;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-aot-graalvm-support-netty;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-aot-graalvm-samples;1.0.0-beta.1;1.0.0-beta.1
