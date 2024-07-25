@@ -329,23 +329,24 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // wait for callConnected
             CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnected);
-            
+        
             // hold the participant
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
             callMediaAsync.hold(receiver).block();
             
             sleepIfRunningAgainstService(3000);
-            callMediaAsync.unhold(receiver);
+            CallConnectionAsync callConnectionAsync = callerAsyncClient.getCallConnectionAsync(callerConnectionId);
 
-            CallParticipant participantResult = createCallResult.getCallConnectionAsync().getParticipant(receiver).block();
+            CallParticipant participantResult = callConnectionAsync.getParticipant(receiver).block();
             assertNotNull(participantResult);
             assertTrue(participantResult.isOnHold());
 
             // unhold the participant
-            callMediaAsync.unhold(receiver);
+            callMediaAsync.unhold(receiver).block();
 
             sleepIfRunningAgainstService(3000);
-            participantResult = createCallResult.getCallConnection().getParticipant(receiver);
+            participantResult = callConnectionAsync.getParticipant(receiver).block();
+            assertNotNull(participantResult);
             assertFalse(participantResult.isOnHold());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);

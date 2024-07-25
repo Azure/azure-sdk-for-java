@@ -49,7 +49,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -185,11 +188,18 @@ public final class CallConnectionAsync {
             context = context == null ? Context.NONE : context;
 
             String participantMri = targetParticipant.getRawId();
-            return callConnectionInternal.getParticipantWithResponseAsync(callConnectionId, participantMri, context)
+            
+            String escapedParticipantMri = participantMri;
+            try {
+                escapedParticipantMri = URLEncoder.encode(participantMri, StandardCharsets.UTF_8.toString());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            return callConnectionInternal.getParticipantWithResponseAsync(callConnectionId, escapedParticipantMri, context)
                 .map(response ->
                     new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+                return monoError(logger, ex);
         }
     }
 
