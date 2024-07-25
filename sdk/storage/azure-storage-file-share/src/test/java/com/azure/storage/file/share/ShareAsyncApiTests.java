@@ -108,7 +108,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             });
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void createShareOAuth() {
         ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
@@ -245,7 +245,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void deleteShareOAuth() {
         ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
@@ -308,7 +308,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void getPropertiesOAuth() {
         ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
@@ -371,7 +371,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void setPropertiesOAuth() {
         ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
@@ -414,7 +414,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             assertEquals(metadataAfterSet, it.getMetadata())).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void setMetadataOAuth() {
         ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceAsyncClient(new ShareServiceClientBuilder()

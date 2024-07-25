@@ -281,7 +281,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void listSharesOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -377,7 +377,7 @@ public class FileServiceApiTests extends FileShareTestBase {
             Arguments.of(INVALID_ALLOWED_METHOD, 400, ShareErrorCode.INVALID_XML_NODE_VALUE));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @ResourceLock("ServiceProperties")
     @Test
     public void setAndGetPropertiesOAuth() {
@@ -429,7 +429,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         restoredShareClient.getFileClient(fileName).exists();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void restoreShareOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()

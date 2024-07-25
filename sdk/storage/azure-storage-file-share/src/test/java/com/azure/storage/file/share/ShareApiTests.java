@@ -168,7 +168,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertTrue(e.getServiceMessage().contains("AuthenticationErrorDetail"));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void createShareOAuth() {
         ShareServiceClient oAuthServiceClient = getOAuthServiceClient(new ShareServiceClientBuilder()
@@ -370,7 +370,7 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(primaryShareClient.deleteWithResponse(null, null), 202);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void deleteShareOAuth() {
         primaryShareClient.create();
@@ -518,7 +518,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(getPropertiesResponse.getValue().getQuota(), 1);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void getPropertiesOAuth() {
         primaryShareClient.createWithResponse(testMetadata, 1, null, null);
@@ -613,7 +613,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(primaryShareClient.getAccessPolicy().iterator().next().getId(), "0000");
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void setAccessPolicyOAuth() {
         primaryShareClient.create();
@@ -714,7 +714,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(id.getAccessPolicy().getPermissions(), identifier.getAccessPolicy().getPermissions());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void getAccessPolicyOAuth() {
         primaryShareClient.create();
@@ -834,7 +834,7 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void setPropertiesOAuth() {
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
@@ -863,7 +863,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(metadataAfterSet, getMetadataAfterResponse.getMetadata());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
     @Test
     public void setMetadataOAuth() {
         primaryShareClient.createWithResponse(testMetadata, null, null, null);
