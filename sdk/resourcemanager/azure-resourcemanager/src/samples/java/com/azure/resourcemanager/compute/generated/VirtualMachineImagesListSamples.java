@@ -19,8 +19,12 @@ public final class VirtualMachineImagesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineImageListMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listWithResponse("aaaaaaa",
-            "aaaaaaaaaaa", "aaaaaaaaaa", "aaaaaa", null, null, null, com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listWithResponse("aaaaaaa", "aaaaaaaaaaa", "aaaaaaaaaa", "aaaaaa", null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,8 +38,11 @@ public final class VirtualMachineImagesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineImageListMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineImages().listWithResponse("aaaaaaaaaaaaaaa",
-            "aaaaaa", "aaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaa", 18, "aa",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineImages()
+            .listWithResponse("aaaaaaaaaaaaaaa", "aaaaaa", "aaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaaaaa", 18, "aa", com.azure.core.util.Context.NONE);
     }
 }

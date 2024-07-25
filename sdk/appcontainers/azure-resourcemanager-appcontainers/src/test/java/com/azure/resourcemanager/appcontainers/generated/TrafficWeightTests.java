@@ -12,22 +12,24 @@ public final class TrafficWeightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficWeight model = BinaryData.fromString(
-            "{\"revisionName\":\"ipaslthaqfxssmwu\",\"weight\":1363759065,\"latestRevision\":false,\"label\":\"ezpdrhneu\"}")
+            "{\"revisionName\":\"wspughftqsxhqx\",\"weight\":318834407,\"latestRevision\":true,\"label\":\"dxdigr\"}")
             .toObject(TrafficWeight.class);
-        Assertions.assertEquals("ipaslthaqfxssmwu", model.revisionName());
-        Assertions.assertEquals(1363759065, model.weight());
-        Assertions.assertEquals(false, model.latestRevision());
-        Assertions.assertEquals("ezpdrhneu", model.label());
+        Assertions.assertEquals("wspughftqsxhqx", model.revisionName());
+        Assertions.assertEquals(318834407, model.weight());
+        Assertions.assertEquals(true, model.latestRevision());
+        Assertions.assertEquals("dxdigr", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficWeight model = new TrafficWeight().withRevisionName("ipaslthaqfxssmwu").withWeight(1363759065)
-            .withLatestRevision(false).withLabel("ezpdrhneu");
+        TrafficWeight model = new TrafficWeight().withRevisionName("wspughftqsxhqx")
+            .withWeight(318834407)
+            .withLatestRevision(true)
+            .withLabel("dxdigr");
         model = BinaryData.fromObject(model).toObject(TrafficWeight.class);
-        Assertions.assertEquals("ipaslthaqfxssmwu", model.revisionName());
-        Assertions.assertEquals(1363759065, model.weight());
-        Assertions.assertEquals(false, model.latestRevision());
-        Assertions.assertEquals("ezpdrhneu", model.label());
+        Assertions.assertEquals("wspughftqsxhqx", model.revisionName());
+        Assertions.assertEquals(318834407, model.weight());
+        Assertions.assertEquals(true, model.latestRevision());
+        Assertions.assertEquals("dxdigr", model.label());
     }
 }

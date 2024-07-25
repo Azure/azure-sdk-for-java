@@ -71,8 +71,7 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -81,8 +80,7 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the DiskRestorePointInner object itself.
@@ -264,8 +262,8 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the completionPercent property: Percentage complete for the background copy of disk restore point when
-     * source resource is from a different region.
+     * Get the completionPercent property: Percentage complete for the background copy of disk restore point when source
+     * resource is from a different region.
      * 
      * @return the completionPercent value.
      */
@@ -274,8 +272,8 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the completionPercent property: Percentage complete for the background copy of disk restore point when
-     * source resource is from a different region.
+     * Set the completionPercent property: Percentage complete for the background copy of disk restore point when source
+     * resource is from a different region.
      * 
      * @param completionPercent the completionPercent value to set.
      * @return the DiskRestorePointInner object itself.
@@ -329,6 +327,16 @@ public final class DiskRestorePointInner extends ProxyOnlyResource {
         }
         this.innerProperties().withSecurityProfile(securityProfile);
         return this;
+    }
+
+    /**
+     * Get the logicalSectorSize property: Logical sector size in bytes for disk restore points of UltraSSD_LRS and
+     * PremiumV2_LRS disks. Supported values are 512 and 4096. 4096 is the default.
+     * 
+     * @return the logicalSectorSize value.
+     */
+    public Integer logicalSectorSize() {
+        return this.innerProperties() == null ? null : this.innerProperties().logicalSectorSize();
     }
 
     /**

@@ -20,7 +20,10 @@ public final class VirtualMachineExtensionImagesListTypesSamples {
      */
     public static void
         virtualMachineExtensionImageListTypesMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensionImages()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensionImages()
             .listTypesWithResponse("aaaa", "aa", com.azure.core.util.Context.NONE);
     }
 
@@ -36,7 +39,11 @@ public final class VirtualMachineExtensionImagesListTypesSamples {
      */
     public static void
         virtualMachineExtensionImageListTypesMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineExtensionImages().listTypesWithResponse(
-            "aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineExtensionImages()
+            .listTypesWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 }

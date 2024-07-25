@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class DiskAccessesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
      * DiskAccess_Get.json
      */
     /**
@@ -19,13 +19,16 @@ public final class DiskAccessesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getInformationAboutADiskAccessResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
             .getByResourceGroupWithResponse("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
      * DiskAccess_Get_WithPrivateEndpoints.json
      */
     /**
@@ -35,7 +38,10 @@ public final class DiskAccessesGetByResourceGroupSamples {
      */
     public static void getInformationAboutADiskAccessResourceWithPrivateEndpoints(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
             .getByResourceGroupWithResponse("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

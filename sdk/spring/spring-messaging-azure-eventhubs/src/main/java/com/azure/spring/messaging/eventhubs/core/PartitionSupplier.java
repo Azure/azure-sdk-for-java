@@ -9,6 +9,13 @@ package com.azure.spring.messaging.eventhubs.core;
  *
  */
 public class PartitionSupplier {
+
+    /**
+     * Create an instance of {@link PartitionSupplier}.
+     */
+    public PartitionSupplier() {
+    }
+
     private String partitionKey;
 
     private String partitionId;

@@ -100,8 +100,8 @@ public final class DiskProperties {
     private String provisioningState;
 
     /*
-     * The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between
-     * 4k and 256k bytes.
+     * The number of IOPS allowed for this disk; only settable for UltraSSD disks. One operation can transfer between 4k
+     * and 256k bytes.
      */
     @JsonProperty(value = "diskIOPSReadWrite")
     private Long diskIopsReadWrite;
@@ -222,8 +222,8 @@ public final class DiskProperties {
     private DataAccessAuthMode dataAccessAuthMode;
 
     /*
-     * Setting this property to true improves reliability and performance of data disks that are frequently (more than
-     * 5 times a day) by detached from one virtual machine and attached to another. This property should not be set for
+     * Setting this property to true improves reliability and performance of data disks that are frequently (more than 5
+     * times a day) by detached from one virtual machine and attached to another. This property should not be set for
      * disks that are not detached and attached frequently as it causes the disks to not align with the fault domain of
      * the virtual machine.
      */
@@ -273,8 +273,7 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @return the hyperVGeneration value.
      */
@@ -283,8 +282,7 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the DiskProperties object itself.
@@ -339,8 +337,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the creationData property: Disk source information. CreationData information cannot be changed after the
-     * disk has been created.
+     * Get the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
      * 
      * @return the creationData value.
      */
@@ -349,8 +347,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the creationData property: Disk source information. CreationData information cannot be changed after the
-     * disk has been created.
+     * Set the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
      * 
      * @param creationData the creationData value to set.
      * @return the DiskProperties object itself.
@@ -405,8 +403,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption,
-     * can contain multiple encryption settings per disk or snapshot.
+     * Get the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
      * 
      * @return the encryptionSettingsCollection value.
      */
@@ -415,8 +413,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption,
-     * can contain multiple encryption settings per disk or snapshot.
+     * Set the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
      * 
      * @param encryptionSettingsCollection the encryptionSettingsCollection value to set.
      * @return the DiskProperties object itself.
@@ -557,8 +555,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
-     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
      * 
      * @return the maxShares value.
      */
@@ -567,8 +565,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
-     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
+     * than one indicates a disk that can be mounted on multiple VMs at the same time.
      * 
      * @param maxShares the maxShares value to set.
      * @return the DiskProperties object itself.
@@ -660,8 +658,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
-     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
+     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
      * 
      * @return the burstingEnabled value.
      */
@@ -670,8 +668,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
-     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
+     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
      * 
      * @param burstingEnabled the burstingEnabled value to set.
      * @return the DiskProperties object itself.
@@ -773,8 +771,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @return the dataAccessAuthMode value.
      */
@@ -783,8 +781,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
-     * disk or snapshot.
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
+     * or snapshot.
      * 
      * @param dataAccessAuthMode the dataAccessAuthMode value to set.
      * @return the DiskProperties object itself.
@@ -797,8 +795,8 @@ public final class DiskProperties {
     /**
      * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes
-     * the disks to not align with the fault domain of the virtual machine.
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
      * 
      * @return the optimizedForFrequentAttach value.
      */
@@ -809,8 +807,8 @@ public final class DiskProperties {
     /**
      * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes
-     * the disks to not align with the fault domain of the virtual machine.
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
+     * disks to not align with the fault domain of the virtual machine.
      * 
      * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
      * @return the DiskProperties object itself.
@@ -844,8 +842,8 @@ public final class DiskProperties {
             supportedCapabilities().validate();
         }
         if (creationData() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property creationData in model DiskProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property creationData in model DiskProperties"));
         } else {
             creationData().validate();
         }

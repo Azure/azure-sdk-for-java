@@ -14,8 +14,8 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class LastPatchInstallationSummary {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-     * At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At
+     * that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
@@ -47,8 +47,7 @@ public final class LastPatchInstallationSummary {
     private Integer excludedPatchCount;
 
     /*
-     * The number of all available patches expected to be installed over the course of the patch installation
-     * operation.
+     * The number of all available patches expected to be installed over the course of the patch installation operation.
      */
     @JsonProperty(value = "pendingPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer pendingPatchCount;
@@ -121,8 +120,8 @@ public final class LastPatchInstallationSummary {
     }
 
     /**
-     * Get the notSelectedPatchCount property: The number of all available patches but not going to be installed
-     * because it didn't match a classification or inclusion list entry.
+     * Get the notSelectedPatchCount property: The number of all available patches but not going to be installed because
+     * it didn't match a classification or inclusion list entry.
      * 
      * @return the notSelectedPatchCount value.
      */

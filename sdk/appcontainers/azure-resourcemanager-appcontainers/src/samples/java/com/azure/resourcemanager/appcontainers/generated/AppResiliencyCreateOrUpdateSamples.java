@@ -19,7 +19,7 @@ import java.util.Arrays;
 public final class AppResiliencyCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/AppResiliency_CreateOrUpdate
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/AppResiliency_CreateOrUpdate
      * .json
      */
     /**
@@ -29,19 +29,26 @@ public final class AppResiliencyCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateAppResiliency(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.appResiliencies().define("resiliency-policy-1").withExistingContainerApp("rg", "testcontainerApp0")
+        manager.appResiliencies()
+            .define("resiliency-policy-1")
+            .withExistingContainerApp("rg", "testcontainerApp0")
             .withTimeoutPolicy(new TimeoutPolicy().withResponseTimeoutInSeconds(15).withConnectionTimeoutInSeconds(5))
-            .withHttpRetryPolicy(new HttpRetryPolicy().withMaxRetries(5).withInitialDelayInMilliseconds(1000L)
-                .withMaxIntervalInMilliseconds(10000L)
-                .withHeaders(
-                    Arrays.asList(new HeaderMatch().withHeaderProperty("X-Content-Type").withPrefixMatch("GOATS")))
-                .withHttpStatusCodes(Arrays.asList(502, 503)).withErrors(
-                    Arrays.asList("5xx", "connect-failure", "reset", "retriable-headers", "retriable-status-codes")))
+            .withHttpRetryPolicy(
+                new HttpRetryPolicy().withMaxRetries(5)
+                    .withInitialDelayInMilliseconds(1000L)
+                    .withMaxIntervalInMilliseconds(10000L)
+                    .withHeaders(
+                        Arrays.asList(new HeaderMatch().withHeaderProperty("X-Content-Type").withPrefixMatch("GOATS")))
+                    .withHttpStatusCodes(Arrays.asList(502, 503))
+                    .withErrors(Arrays.asList("5xx", "connect-failure", "reset", "retriable-headers",
+                        "retriable-status-codes")))
             .withTcpRetryPolicy(new TcpRetryPolicy().withMaxConnectAttempts(3))
-            .withCircuitBreakerPolicy(new CircuitBreakerPolicy().withConsecutiveErrors(5).withIntervalInSeconds(10)
+            .withCircuitBreakerPolicy(new CircuitBreakerPolicy().withConsecutiveErrors(5)
+                .withIntervalInSeconds(10)
                 .withMaxEjectionPercent(50))
             .withHttpConnectionPool(
                 new HttpConnectionPool().withHttp1MaxPendingRequests(1024).withHttp2MaxRequests(1024))
-            .withTcpConnectionPool(new TcpConnectionPool().withMaxConnections(100)).create();
+            .withTcpConnectionPool(new TcpConnectionPool().withMaxConnections(100))
+            .create();
     }
 }

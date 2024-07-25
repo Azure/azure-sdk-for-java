@@ -26,7 +26,7 @@ public class QueueExceptionSamples {
      */
     public static void main(String[] args) {
         // Create a queue service client.
-        String queueServiceURL = String.format("https://%s.queue.core.windows.net/%s", ACCOUNT_NAME, SAS_TOKEN);
+        String queueServiceURL = String.format("https://%s.queue.core.windows.net/?%s", ACCOUNT_NAME, SAS_TOKEN);
         QueueServiceClient queueServiceClient = new QueueServiceClientBuilder().endpoint(queueServiceURL).buildClient();
 
         // Create queue client.

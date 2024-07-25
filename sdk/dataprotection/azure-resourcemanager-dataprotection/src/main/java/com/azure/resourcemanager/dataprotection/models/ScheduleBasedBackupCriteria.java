@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -16,45 +19,42 @@ import java.util.List;
  * 
  * Schedule based backup criteria.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("ScheduleBasedBackupCriteria")
 @Fluent
 public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     /*
-     * it contains absolute values like "AllBackup"\ / "FirstOfDay"\ / "FirstOfWeek"\ / "FirstOfMonth"
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "ScheduleBasedBackupCriteria";
+
+    /*
+     * it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" / "FirstOfMonth"
      * and should be part of AbsoluteMarker enum
      */
-    @JsonProperty(value = "absoluteCriteria")
     private List<AbsoluteMarker> absoluteCriteria;
 
     /*
      * This is day of the month from 1 to 28 other wise last of month
      */
-    @JsonProperty(value = "daysOfMonth")
     private List<Day> daysOfMonth;
 
     /*
      * It should be Sunday/Monday/T..../Saturday
      */
-    @JsonProperty(value = "daysOfTheWeek")
     private List<DayOfWeek> daysOfTheWeek;
 
     /*
      * It should be January/February/....../December
      */
-    @JsonProperty(value = "monthsOfYear")
     private List<Month> monthsOfYear;
 
     /*
      * List of schedule times for backup
      */
-    @JsonProperty(value = "scheduleTimes")
     private List<OffsetDateTime> scheduleTimes;
 
     /*
      * It should be First/Second/Third/Fourth/Last
      */
-    @JsonProperty(value = "weeksOfTheMonth")
     private List<WeekNumber> weeksOfTheMonth;
 
     /**
@@ -64,8 +64,18 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     }
 
     /**
-     * Get the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ /
-     * "FirstOfWeek"\ / "FirstOfMonth"
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Get the absoluteCriteria property: it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" /
+     * "FirstOfMonth"
      * and should be part of AbsoluteMarker enum.
      * 
      * @return the absoluteCriteria value.
@@ -75,8 +85,8 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
     }
 
     /**
-     * Set the absoluteCriteria property: it contains absolute values like "AllBackup"\ / "FirstOfDay"\ /
-     * "FirstOfWeek"\ / "FirstOfMonth"
+     * Set the absoluteCriteria property: it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" /
+     * "FirstOfMonth"
      * and should be part of AbsoluteMarker enum.
      * 
      * @param absoluteCriteria the absoluteCriteria value to set.
@@ -198,5 +208,74 @@ public final class ScheduleBasedBackupCriteria extends BackupCriteria {
         if (daysOfMonth() != null) {
             daysOfMonth().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeArrayField("absoluteCriteria", this.absoluteCriteria,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("daysOfMonth", this.daysOfMonth, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("daysOfTheWeek", this.daysOfTheWeek,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("monthsOfYear", this.monthsOfYear,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("scheduleTimes", this.scheduleTimes, (writer, element) -> writer
+            .writeString(element == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(element)));
+        jsonWriter.writeArrayField("weeksOfTheMonth", this.weeksOfTheMonth,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleBasedBackupCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleBasedBackupCriteria if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleBasedBackupCriteria.
+     */
+    public static ScheduleBasedBackupCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleBasedBackupCriteria deserializedScheduleBasedBackupCriteria = new ScheduleBasedBackupCriteria();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedScheduleBasedBackupCriteria.objectType = reader.getString();
+                } else if ("absoluteCriteria".equals(fieldName)) {
+                    List<AbsoluteMarker> absoluteCriteria
+                        = reader.readArray(reader1 -> AbsoluteMarker.fromString(reader1.getString()));
+                    deserializedScheduleBasedBackupCriteria.absoluteCriteria = absoluteCriteria;
+                } else if ("daysOfMonth".equals(fieldName)) {
+                    List<Day> daysOfMonth = reader.readArray(reader1 -> Day.fromJson(reader1));
+                    deserializedScheduleBasedBackupCriteria.daysOfMonth = daysOfMonth;
+                } else if ("daysOfTheWeek".equals(fieldName)) {
+                    List<DayOfWeek> daysOfTheWeek
+                        = reader.readArray(reader1 -> DayOfWeek.fromString(reader1.getString()));
+                    deserializedScheduleBasedBackupCriteria.daysOfTheWeek = daysOfTheWeek;
+                } else if ("monthsOfYear".equals(fieldName)) {
+                    List<Month> monthsOfYear = reader.readArray(reader1 -> Month.fromString(reader1.getString()));
+                    deserializedScheduleBasedBackupCriteria.monthsOfYear = monthsOfYear;
+                } else if ("scheduleTimes".equals(fieldName)) {
+                    List<OffsetDateTime> scheduleTimes = reader.readArray(reader1 -> reader1
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedScheduleBasedBackupCriteria.scheduleTimes = scheduleTimes;
+                } else if ("weeksOfTheMonth".equals(fieldName)) {
+                    List<WeekNumber> weeksOfTheMonth
+                        = reader.readArray(reader1 -> WeekNumber.fromString(reader1.getString()));
+                    deserializedScheduleBasedBackupCriteria.weeksOfTheMonth = weeksOfTheMonth;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleBasedBackupCriteria;
+        });
     }
 }

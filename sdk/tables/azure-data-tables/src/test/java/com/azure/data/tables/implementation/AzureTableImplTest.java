@@ -17,7 +17,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -111,13 +110,14 @@ public class AzureTableImplTest extends TestProxyTestBase {
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_MINIMALMETADATA);
 
-        azureTable.getTables().queryWithResponseAsync(testResourceNamer.randomUuid(), null, queryOptions, Context.NONE)
-            .map(ResponseBase::getValue)
-            .map(TableQueryResponse::getValue)
-            .flatMapIterable(tableResponseProperties -> tableResponseProperties)
-            .flatMap(tableResponseProperties ->
-                azureTable.getTables().deleteWithResponseAsync(tableResponseProperties.getTableName(),
-                testResourceNamer.randomUuid(), Context.NONE)).blockLast();
+        TableQueryResponse tableQueryResponse = azureTable.getTables()
+            .queryWithResponse(testResourceNamer.randomUuid(), null, queryOptions, Context.NONE).getValue();
+
+        if (tableQueryResponse != null && tableQueryResponse.getValue() != null) {
+            tableQueryResponse.getValue().forEach(tableResponseProperties ->
+                azureTable.getTables().deleteWithResponse(tableResponseProperties.getTableName(),
+                    testResourceNamer.randomUuid(), Context.NONE));
+        }
     }
 
     void createTable(String tableName) {
