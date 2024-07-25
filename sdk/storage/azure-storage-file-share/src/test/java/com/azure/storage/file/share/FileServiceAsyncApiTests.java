@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share;
 
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
