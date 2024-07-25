@@ -12,9 +12,11 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppInner;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
 import com.azure.resourcemanager.appcontainers.models.ContainerApp;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppAuthToken;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppPropertiesPatchingConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.CustomHostnameAnalysisResult;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
+import com.azure.resourcemanager.appcontainers.models.Kind;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.SecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.Template;
@@ -64,6 +66,10 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return this.innerModel().managedBy();
     }
 
+    public Kind kind() {
+        return this.innerModel().kind();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
@@ -82,6 +88,10 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
 
     public String workloadProfileName() {
         return this.innerModel().workloadProfileName();
+    }
+
+    public ContainerAppPropertiesPatchingConfiguration patchingConfiguration() {
+        return this.innerModel().patchingConfiguration();
     }
 
     public String latestRevisionName() {
@@ -151,14 +161,16 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
     }
 
     public ContainerApp create() {
-        this.innerObject = serviceManager.serviceClient().getContainerApps().createOrUpdate(resourceGroupName,
-            containerAppName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerApps()
+            .createOrUpdate(resourceGroupName, containerAppName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ContainerApp create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getContainerApps().createOrUpdate(resourceGroupName,
-            containerAppName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerApps()
+            .createOrUpdate(resourceGroupName, containerAppName, this.innerModel(), context);
         return this;
     }
 
@@ -173,14 +185,16 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
     }
 
     public ContainerApp apply() {
-        this.innerObject = serviceManager.serviceClient().getContainerApps().update(resourceGroupName, containerAppName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerApps()
+            .update(resourceGroupName, containerAppName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ContainerApp apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getContainerApps().update(resourceGroupName, containerAppName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerApps()
+            .update(resourceGroupName, containerAppName, this.innerModel(), context);
         return this;
     }
 
@@ -193,21 +207,25 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
     }
 
     public ContainerApp refresh() {
-        this.innerObject = serviceManager.serviceClient().getContainerApps()
-            .getByResourceGroupWithResponse(resourceGroupName, containerAppName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerApps()
+            .getByResourceGroupWithResponse(resourceGroupName, containerAppName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ContainerApp refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getContainerApps()
-            .getByResourceGroupWithResponse(resourceGroupName, containerAppName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContainerApps()
+            .getByResourceGroupWithResponse(resourceGroupName, containerAppName, context)
+            .getValue();
         return this;
     }
 
     public Response<CustomHostnameAnalysisResult> listCustomHostnameAnalysisWithResponse(String customHostname,
         Context context) {
-        return serviceManager.containerApps().listCustomHostnameAnalysisWithResponse(resourceGroupName,
-            containerAppName, customHostname, context);
+        return serviceManager.containerApps()
+            .listCustomHostnameAnalysisWithResponse(resourceGroupName, containerAppName, customHostname, context);
     }
 
     public CustomHostnameAnalysisResult listCustomHostnameAnalysis() {
@@ -276,6 +294,11 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
         return this;
     }
 
+    public ContainerAppImpl withKind(Kind kind) {
+        this.innerModel().withKind(kind);
+        return this;
+    }
+
     public ContainerAppImpl withManagedEnvironmentId(String managedEnvironmentId) {
         this.innerModel().withManagedEnvironmentId(managedEnvironmentId);
         return this;
@@ -288,6 +311,12 @@ public final class ContainerAppImpl implements ContainerApp, ContainerApp.Defini
 
     public ContainerAppImpl withWorkloadProfileName(String workloadProfileName) {
         this.innerModel().withWorkloadProfileName(workloadProfileName);
+        return this;
+    }
+
+    public ContainerAppImpl
+        withPatchingConfiguration(ContainerAppPropertiesPatchingConfiguration patchingConfiguration) {
+        this.innerModel().withPatchingConfiguration(patchingConfiguration);
         return this;
     }
 

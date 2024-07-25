@@ -214,13 +214,13 @@ Licensed under the MIT License.
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
       <scope>test</scope>
-      <version>2.13.5</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-blackbird</artifactId>
       <scope>test</scope>
-      <version>2.13.5</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-blackbird;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-blackbird;external_dependency} -->
     </dependency>
   </dependencies>
 

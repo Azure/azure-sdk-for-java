@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class DotNetComponentsGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DotNetComponents_Get_ServiceBind.json
      */
     /**
@@ -19,13 +19,13 @@ public final class DotNetComponentsGetSamples {
      */
     public static void
         getNETComponentWithServiceBinds(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.dotNetComponents().getWithResponse("examplerg", "myenvironment", "mydotnetcomponent",
-            com.azure.core.util.Context.NONE);
+        manager.dotNetComponents()
+            .getWithResponse("examplerg", "myenvironment", "mydotnetcomponent", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/DotNetComponents_Get.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/DotNetComponents_Get.json
      */
     /**
      * Sample code: Get .NET Component.
@@ -33,7 +33,7 @@ public final class DotNetComponentsGetSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void getNETComponent(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.dotNetComponents().getWithResponse("examplerg", "myenvironment", "mydotnetcomponent",
-            com.azure.core.util.Context.NONE);
+        manager.dotNetComponents()
+            .getWithResponse("examplerg", "myenvironment", "mydotnetcomponent", com.azure.core.util.Context.NONE);
     }
 }

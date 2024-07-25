@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -37,7 +36,7 @@ public final class CapacityReservationGroupListResult {
 
     /**
      * Get the value property: The list of capacity reservation groups.
-     *
+     * 
      * @return the value value.
      */
     public List<CapacityReservationGroupInner> value() {
@@ -46,7 +45,7 @@ public final class CapacityReservationGroupListResult {
 
     /**
      * Set the value property: The list of capacity reservation groups.
-     *
+     * 
      * @param value the value value to set.
      * @return the CapacityReservationGroupListResult object itself.
      */
@@ -58,7 +57,7 @@ public final class CapacityReservationGroupListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of capacity reservation groups. Call ListNext() with
      * this URI to fetch the next page of capacity reservation groups.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -68,7 +67,7 @@ public final class CapacityReservationGroupListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of capacity reservation groups. Call ListNext() with
      * this URI to fetch the next page of capacity reservation groups.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CapacityReservationGroupListResult object itself.
      */
@@ -79,7 +78,7 @@ public final class CapacityReservationGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

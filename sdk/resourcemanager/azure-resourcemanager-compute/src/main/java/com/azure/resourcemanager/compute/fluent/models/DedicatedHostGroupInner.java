@@ -10,7 +10,6 @@ import com.azure.resourcemanager.compute.models.DedicatedHostGroupInstanceView;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupPropertiesAdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +42,7 @@ public final class DedicatedHostGroupInner extends Resource {
 
     /**
      * Get the innerProperties property: Dedicated Host Group Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DedicatedHostGroupProperties innerProperties() {
@@ -54,7 +53,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * Get the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
      * be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
      * enforces each host in the group to be in the same zone.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -65,7 +64,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * Set the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
      * be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
      * enforces each host in the group to be in the same zone.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the DedicatedHostGroupInner object itself.
      */
@@ -94,7 +93,7 @@ public final class DedicatedHostGroupInner extends Resource {
 
     /**
      * Get the platformFaultDomainCount property: Number of fault domains that the host group can span.
-     *
+     * 
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
@@ -103,7 +102,7 @@ public final class DedicatedHostGroupInner extends Resource {
 
     /**
      * Set the platformFaultDomainCount property: Number of fault domains that the host group can span.
-     *
+     * 
      * @param platformFaultDomainCount the platformFaultDomainCount value to set.
      * @return the DedicatedHostGroupInner object itself.
      */
@@ -117,7 +116,7 @@ public final class DedicatedHostGroupInner extends Resource {
 
     /**
      * Get the hosts property: A list of references to all dedicated hosts in the dedicated host group.
-     *
+     * 
      * @return the hosts value.
      */
     public List<SubResourceReadOnly> hosts() {
@@ -127,7 +126,7 @@ public final class DedicatedHostGroupInner extends Resource {
     /**
      * Get the instanceView property: The dedicated host group instance view, which has the list of instance view of the
      * dedicated hosts under the dedicated host group.
-     *
+     * 
      * @return the instanceView value.
      */
     public DedicatedHostGroupInstanceView instanceView() {
@@ -139,7 +138,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
      * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
      * not provided. Minimum api-version: 2020-06-01.
-     *
+     * 
      * @return the supportAutomaticPlacement value.
      */
     public Boolean supportAutomaticPlacement() {
@@ -151,7 +150,7 @@ public final class DedicatedHostGroupInner extends Resource {
      * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
      * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
      * not provided. Minimum api-version: 2020-06-01.
-     *
+     * 
      * @param supportAutomaticPlacement the supportAutomaticPlacement value to set.
      * @return the DedicatedHostGroupInner object itself.
      */
@@ -166,7 +165,7 @@ public final class DedicatedHostGroupInner extends Resource {
     /**
      * Get the additionalCapabilities property: Enables or disables a capability on the dedicated host group. Minimum
      * api-version: 2022-03-01.
-     *
+     * 
      * @return the additionalCapabilities value.
      */
     public DedicatedHostGroupPropertiesAdditionalCapabilities additionalCapabilities() {
@@ -176,7 +175,7 @@ public final class DedicatedHostGroupInner extends Resource {
     /**
      * Set the additionalCapabilities property: Enables or disables a capability on the dedicated host group. Minimum
      * api-version: 2022-03-01.
-     *
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the DedicatedHostGroupInner object itself.
      */
@@ -191,7 +190,7 @@ public final class DedicatedHostGroupInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

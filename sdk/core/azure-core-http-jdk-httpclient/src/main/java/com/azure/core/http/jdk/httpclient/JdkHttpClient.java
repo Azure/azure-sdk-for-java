@@ -9,7 +9,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.jdk.httpclient.implementation.AzureJdkHttpRequest;
 import com.azure.core.http.jdk.httpclient.implementation.ByteArrayTimeoutResponseSubscriber;
-import com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseAsync;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync;
 import com.azure.core.implementation.util.HttpUtils;
@@ -18,7 +17,6 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Set;
@@ -132,11 +130,9 @@ class JdkHttpClient implements HttpClient {
                 return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
                     fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
             } else {
-                java.net.http.HttpResponse.BodyHandler<InputStream> bodyHandler = getResponseHandler(hasReadTimeout,
-                    readTimeout, java.net.http.HttpResponse.BodyHandlers::ofInputStream,
-                    InputStreamTimeoutResponseSubscriber::new);
-
-                return new JdkHttpResponseSync(request, jdkHttpClient.send(jdkRequest, bodyHandler));
+                return new JdkHttpResponseSync(request,
+                    jdkHttpClient.send(jdkRequest, java.net.http.HttpResponse.BodyHandlers.ofInputStream()),
+                    readTimeout);
             }
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));

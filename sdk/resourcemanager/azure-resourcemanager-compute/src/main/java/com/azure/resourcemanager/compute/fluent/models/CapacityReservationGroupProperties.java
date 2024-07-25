@@ -9,7 +9,6 @@ import com.azure.resourcemanager.compute.models.CapacityReservationGroupInstance
 import com.azure.resourcemanager.compute.models.ResourceSharingProfile;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -55,7 +54,7 @@ public final class CapacityReservationGroupProperties {
     /**
      * Get the capacityReservations property: A list of all capacity reservation resource ids that belong to capacity
      * reservation group.
-     *
+     * 
      * @return the capacityReservations value.
      */
     public List<SubResourceReadOnly> capacityReservations() {
@@ -65,7 +64,7 @@ public final class CapacityReservationGroupProperties {
     /**
      * Get the virtualMachinesAssociated property: A list of references to all virtual machines associated to the
      * capacity reservation group.
-     *
+     * 
      * @return the virtualMachinesAssociated value.
      */
     public List<SubResourceReadOnly> virtualMachinesAssociated() {
@@ -75,7 +74,7 @@ public final class CapacityReservationGroupProperties {
     /**
      * Get the instanceView property: The capacity reservation group instance view which has the list of instance views
      * for all the capacity reservations that belong to the capacity reservation group.
-     *
+     * 
      * @return the instanceView value.
      */
     public CapacityReservationGroupInstanceView instanceView() {
@@ -88,7 +87,7 @@ public final class CapacityReservationGroupProperties {
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
      * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
-     *
+     * 
      * @return the sharingProfile value.
      */
     public ResourceSharingProfile sharingProfile() {
@@ -101,7 +100,7 @@ public final class CapacityReservationGroupProperties {
      * across subscriptions belonging to a single azure AAD tenant or cross AAD tenant if there is a trust relationship
      * established between the AAD tenants. **Note:** Minimum api-version: 2024-03-01. Please refer to
      * https://aka.ms/computereservationsharing for more details.
-     *
+     * 
      * @param sharingProfile the sharingProfile value to set.
      * @return the CapacityReservationGroupProperties object itself.
      */
@@ -112,7 +111,7 @@ public final class CapacityReservationGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

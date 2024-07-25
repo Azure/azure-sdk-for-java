@@ -4,21 +4,28 @@
 
 package com.azure.storage.blob.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for BlobImmutabilityPolicyMode. */
+/**
+ * Defines values for BlobImmutabilityPolicyMode.
+ */
 public enum BlobImmutabilityPolicyMode {
-    /** Enum value Mutable. */
+    /**
+     * Enum value Mutable.
+     */
     MUTABLE("Mutable"),
 
-    /** Enum value Unlocked. */
+    /**
+     * Enum value Unlocked.
+     */
     UNLOCKED("Unlocked"),
 
-    /** Enum value Locked. */
+    /**
+     * Enum value Locked.
+     */
     LOCKED("Locked");
 
-    /** The actual serialized value for a BlobImmutabilityPolicyMode instance. */
+    /**
+     * The actual serialized value for a BlobImmutabilityPolicyMode instance.
+     */
     private final String value;
 
     BlobImmutabilityPolicyMode(String value) {
@@ -27,11 +34,10 @@ public enum BlobImmutabilityPolicyMode {
 
     /**
      * Parses a serialized value to a BlobImmutabilityPolicyMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed BlobImmutabilityPolicyMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static BlobImmutabilityPolicyMode fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum BlobImmutabilityPolicyMode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;
