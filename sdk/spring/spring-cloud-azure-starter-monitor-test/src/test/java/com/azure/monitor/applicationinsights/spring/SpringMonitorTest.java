@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
+// TODO (jean) do you want to reconsider this test since azure-sdk CI build will always use the source version of azure-monitor-opentelemetry-exporter not the one from maven central
 @SpringBootTest(
     classes = {Application.class, SpringMonitorTest.TestConfig.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -70,6 +71,7 @@ class SpringMonitorTest {
         }
     }
 
+    @Disabled
     @Test
     public void shouldMonitor() throws InterruptedException, MalformedURLException {
 
