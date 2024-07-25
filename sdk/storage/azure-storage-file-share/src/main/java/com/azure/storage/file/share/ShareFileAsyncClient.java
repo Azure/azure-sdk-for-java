@@ -398,8 +398,8 @@ public class ShareFileAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
-    FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-    Map<String, String> metadata) {
+        FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
+        Map<String, String> metadata) {
         return createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, filePermissionFormat, metadata, null);
     }
 
