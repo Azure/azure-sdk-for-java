@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.spark.OperationContext;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -29,12 +31,16 @@ class ChangeFeedQueryImpl<T> {
     ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
         ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
 
+    private final static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedRequestOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+
     private static final int INITIAL_TOP_VALUE = -1;
 
     private final RxDocumentClientImpl client;
     private final DiagnosticsClientContext clientContext;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final String documentsLink;
+    private final String collectionLink;
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final Class<T> klass;
     private final CosmosChangeFeedRequestOptions options;
@@ -72,6 +78,7 @@ class ChangeFeedQueryImpl<T> {
         this.client = client;
         this.resourceType = resourceType;
         this.klass = klass;
+        this.collectionLink = collectionLink;
         this.documentsLink = Utils.joinPath(collectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         this.options = requestOptions;
         this.itemSerializer = client.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
@@ -110,7 +117,7 @@ class ChangeFeedQueryImpl<T> {
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()
                 .getOperationContext(this.options)
-            );
+        );
     }
 
     private RxDocumentServiceRequest createDocumentServiceRequest() {
@@ -139,6 +146,9 @@ class ChangeFeedQueryImpl<T> {
 
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+            request.requestContext.setFeedOperationContext(
+                new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collectionLink));
         }
 
         return request;
@@ -146,8 +156,9 @@ class ChangeFeedQueryImpl<T> {
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
-            return client.readFeed(request)
-                .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass));
+            return handlePartitionLevelCircuitBreakingPrerequisites(request)
+                .flatMap(client::readFeed)
+                .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics()));
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
             final OperationContext operationContext = operationContextAndListener.getOperationContext();
@@ -156,31 +167,71 @@ class ChangeFeedQueryImpl<T> {
                 .put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
             listener.requestListener(operationContext, request);
 
-            return client.readFeed(request)
-                         .map(rsp -> {
-                             listener.responseListener(operationContext, rsp);
+            return handlePartitionLevelCircuitBreakingPrerequisites(request)
+                .flatMap(client::readFeed)
+                .map(rsp -> {
+                    listener.responseListener(operationContext, rsp);
 
-                             final FeedResponse<T> feedResponse = feedResponseAccessor.createChangeFeedResponse(
-                                 rsp, this.itemSerializer, klass);
+                    final FeedResponse<T> feedResponse = feedResponseAccessor.createChangeFeedResponse(
+                        rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics());
 
-                             Map<String, String> rspHeaders = feedResponse.getResponseHeaders();
-                             String requestPkRangeId = null;
-                             if (!rspHeaders.containsKey(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID) &&
-                                 (requestPkRangeId = request
-                                     .getHeaders()
-                                     .get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) != null) {
+                    Map<String, String> rspHeaders = feedResponse.getResponseHeaders();
+                    String requestPkRangeId = null;
+                    if (!rspHeaders.containsKey(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID) &&
+                        (requestPkRangeId = request
+                            .getHeaders()
+                            .get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) != null) {
 
-                                 rspHeaders.put(
-                                     HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID,
-                                     requestPkRangeId
-                                 );
-                             }
-                             listener.feedResponseReceivedListener(operationContext, feedResponse);
+                        rspHeaders.put(
+                            HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID,
+                            requestPkRangeId
+                        );
+                    }
+                    listener.feedResponseReceivedListener(operationContext, feedResponse);
 
-                             return feedResponse;
-                         })
-                         .doOnError(ex -> listener.exceptionListener(operationContext, ex)
-            );
+                    return feedResponse;
+                })
+                .doOnError(ex -> listener.exceptionListener(operationContext, ex));
+        }
+    }
+
+    private Mono<RxDocumentServiceRequest> handlePartitionLevelCircuitBreakingPrerequisites(RxDocumentServiceRequest request) {
+
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
+            = client.getGlobalPartitionEndpointManagerForCircuitBreaker();
+
+        checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "Argument 'globalPartitionEndpointManagerForCircuitBreaker' must not be null!");
+
+        if (globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+            return Mono.just(request)
+                .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
+                .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
+                    .flatMap(documentCollectionValueHolder -> {
+
+                        checkNotNull(documentCollectionValueHolder, "Argument 'documentCollectionValueHolder' cannot be null!");
+                        checkNotNull(documentCollectionValueHolder.v, "Argument 'documentCollectionValueHolder.v' cannot be null!");
+
+                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null)
+                            .flatMap(collectionRoutingMapValueHolder -> {
+
+                                checkNotNull(collectionRoutingMapValueHolder, "Argument 'collectionRoutingMapValueHolder' cannot be null!");
+                                checkNotNull(collectionRoutingMapValueHolder.v, "Argument 'collectionRoutingMapValueHolder.v' cannot be null!");
+
+                                changeFeedRequestOptionsAccessor.setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
+                                changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
+
+                                client.addPartitionLevelUnavailableRegionsForChangeFeedRequest(req, options, collectionRoutingMapValueHolder.v);
+
+                                if (req.requestContext.getClientRetryPolicySupplier() != null) {
+                                    DocumentClientRetryPolicy documentClientRetryPolicy = req.requestContext.getClientRetryPolicySupplier().get();
+                                    documentClientRetryPolicy.onBeforeSendRequest(req);
+                                }
+
+                                return Mono.just(req);
+                            });
+                    }));
+        } else {
+            return Mono.just(request);
         }
     }
 }

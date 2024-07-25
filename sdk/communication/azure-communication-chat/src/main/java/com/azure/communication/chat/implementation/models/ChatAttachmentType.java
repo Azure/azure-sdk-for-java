@@ -5,7 +5,6 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ChatAttachmentType extends ExpandableStringEnum<ChatAttachmen
      * @param name a name to look for.
      * @return the corresponding ChatAttachmentType.
      */
-    @JsonCreator
     public static ChatAttachmentType fromString(String name) {
         return fromString(name, ChatAttachmentType.class);
     }

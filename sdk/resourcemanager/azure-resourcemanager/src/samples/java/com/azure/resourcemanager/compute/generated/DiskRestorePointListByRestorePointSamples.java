@@ -18,7 +18,10 @@ public final class DiskRestorePointListByRestorePointSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAnIncrementalDiskRestorePointResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskRestorePoints().listByRestorePoint("myResourceGroup",
-            "rpc", "vmrp", com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskRestorePoints()
+            .listByRestorePoint("myResourceGroup", "rpc", "vmrp", com.azure.core.util.Context.NONE);
     }
 }

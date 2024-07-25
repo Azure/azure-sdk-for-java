@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the feature flag prefix `.appconfig.featureflag/` before the input key. ([#33332](https://github.com/Azure/azure-sdk-for-java/issues/33332))
+
 ### Other Changes
 
 ## 1.6.2 (2024-06-25)

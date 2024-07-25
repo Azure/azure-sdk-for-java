@@ -104,16 +104,17 @@ public final class GalleryImageIdentifier {
      */
     public void validate() {
         if (publisher() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property publisher in model GalleryImageIdentifier"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publisher in model GalleryImageIdentifier"));
         }
         if (offer() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property offer in model GalleryImageIdentifier"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property offer in model GalleryImageIdentifier"));
         }
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sku in model GalleryImageIdentifier"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model GalleryImageIdentifier"));
         }
     }
 

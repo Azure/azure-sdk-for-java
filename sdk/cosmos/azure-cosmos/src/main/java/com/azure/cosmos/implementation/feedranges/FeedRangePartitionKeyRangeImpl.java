@@ -149,7 +149,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
             .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
             .map(effectiveRange -> {
                 request.setEffectiveRange(effectiveRange);
-
+                request.setHasFeedRangeFilteringBeenApplied(true);
                 return request;
             });
     }

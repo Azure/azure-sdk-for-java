@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Monthly Schedule properties.
  */
 @Fluent
-public final class MonthlySchedule {
+public final class MonthlySchedule implements JsonSerializable<MonthlySchedule> {
     /*
      * Monthly snapshot count to keep
      */
-    @JsonProperty(value = "snapshotsToKeep")
     private Integer snapshotsToKeep;
 
     /*
      * Indicates which days of the month snapshot should be taken. A comma delimited string.
      */
-    @JsonProperty(value = "daysOfMonth")
     private String daysOfMonth;
 
     /*
      * Indicates which hour in UTC timezone a snapshot should be taken
      */
-    @JsonProperty(value = "hour")
     private Integer hour;
 
     /*
      * Indicates which minute snapshot should be taken
      */
-    @JsonProperty(value = "minute")
     private Integer minute;
 
     /*
      * Resource size in bytes, current storage usage for the volume in bytes
      */
-    @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
     /**
@@ -156,5 +155,53 @@ public final class MonthlySchedule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("snapshotsToKeep", this.snapshotsToKeep);
+        jsonWriter.writeStringField("daysOfMonth", this.daysOfMonth);
+        jsonWriter.writeNumberField("hour", this.hour);
+        jsonWriter.writeNumberField("minute", this.minute);
+        jsonWriter.writeNumberField("usedBytes", this.usedBytes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonthlySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonthlySchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonthlySchedule.
+     */
+    public static MonthlySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonthlySchedule deserializedMonthlySchedule = new MonthlySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("snapshotsToKeep".equals(fieldName)) {
+                    deserializedMonthlySchedule.snapshotsToKeep = reader.getNullable(JsonReader::getInt);
+                } else if ("daysOfMonth".equals(fieldName)) {
+                    deserializedMonthlySchedule.daysOfMonth = reader.getString();
+                } else if ("hour".equals(fieldName)) {
+                    deserializedMonthlySchedule.hour = reader.getNullable(JsonReader::getInt);
+                } else if ("minute".equals(fieldName)) {
+                    deserializedMonthlySchedule.minute = reader.getNullable(JsonReader::getInt);
+                } else if ("usedBytes".equals(fieldName)) {
+                    deserializedMonthlySchedule.usedBytes = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonthlySchedule;
+        });
     }
 }

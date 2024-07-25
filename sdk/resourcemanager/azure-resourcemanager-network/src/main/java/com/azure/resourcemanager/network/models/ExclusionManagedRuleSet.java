@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -41,7 +40,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Get the ruleSetType property: Defines the rule set type to use.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -50,7 +49,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Set the ruleSetType property: Defines the rule set type to use.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ExclusionManagedRuleSet object itself.
      */
@@ -61,7 +60,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Get the ruleSetVersion property: Defines the version of the rule set to use.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -70,7 +69,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Set the ruleSetVersion property: Defines the version of the rule set to use.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ExclusionManagedRuleSet object itself.
      */
@@ -81,7 +80,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Get the ruleGroups property: Defines the rule groups to apply to the rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ExclusionManagedRuleGroup> ruleGroups() {
@@ -90,7 +89,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Set the ruleGroups property: Defines the rule groups to apply to the rule set.
-     *
+     * 
      * @param ruleGroups the ruleGroups value to set.
      * @return the ExclusionManagedRuleSet object itself.
      */
@@ -101,7 +100,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

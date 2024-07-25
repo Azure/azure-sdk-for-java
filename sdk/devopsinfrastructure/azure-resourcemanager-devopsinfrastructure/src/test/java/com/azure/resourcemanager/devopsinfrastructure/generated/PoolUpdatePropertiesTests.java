@@ -10,6 +10,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.FabricProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.OrganizationProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolUpdateProperties;
 import com.azure.resourcemanager.devopsinfrastructure.models.ProvisioningState;
+import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictions;
 import com.azure.resourcemanager.devopsinfrastructure.models.ResourcePredictionsProfile;
 import org.junit.jupiter.api.Assertions;
 
@@ -17,25 +18,25 @@ public final class PoolUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolUpdateProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"maximumConcurrency\":1555681942,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":\"datadxkqpx\",\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ionpimexg\"}")
+            "{\"provisioningState\":\"Deleting\",\"maximumConcurrency\":648028383,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"twnpzaoqvuhrhcf\"}")
             .toObject(PoolUpdateProperties.class);
         Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
-        Assertions.assertEquals(1555681942, model.maximumConcurrency());
-        Assertions.assertEquals("ionpimexg", model.devCenterProjectResourceId());
+        Assertions.assertEquals(648028383, model.maximumConcurrency());
+        Assertions.assertEquals("twnpzaoqvuhrhcf", model.devCenterProjectResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PoolUpdateProperties model = new PoolUpdateProperties().withProvisioningState(ProvisioningState.DELETING)
-            .withMaximumConcurrency(1555681942)
+            .withMaximumConcurrency(648028383)
             .withOrganizationProfile(new OrganizationProfile())
-            .withAgentProfile(new AgentProfile().withResourcePredictions("datadxkqpx")
+            .withAgentProfile(new AgentProfile().withResourcePredictions(new ResourcePredictions())
                 .withResourcePredictionsProfile(new ResourcePredictionsProfile()))
             .withFabricProfile(new FabricProfile())
-            .withDevCenterProjectResourceId("ionpimexg");
+            .withDevCenterProjectResourceId("twnpzaoqvuhrhcf");
         model = BinaryData.fromObject(model).toObject(PoolUpdateProperties.class);
         Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
-        Assertions.assertEquals(1555681942, model.maximumConcurrency());
-        Assertions.assertEquals("ionpimexg", model.devCenterProjectResourceId());
+        Assertions.assertEquals(648028383, model.maximumConcurrency());
+        Assertions.assertEquals("twnpzaoqvuhrhcf", model.devCenterProjectResourceId());
     }
 }

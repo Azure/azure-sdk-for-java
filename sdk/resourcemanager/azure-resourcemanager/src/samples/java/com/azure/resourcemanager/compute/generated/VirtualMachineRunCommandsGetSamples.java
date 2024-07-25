@@ -19,7 +19,10 @@ public final class VirtualMachineRunCommandsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineRunCommandGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineRunCommands()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineRunCommands()
             .getWithResponse("SoutheastAsia", "RunPowerShellScript", com.azure.core.util.Context.NONE);
     }
 }

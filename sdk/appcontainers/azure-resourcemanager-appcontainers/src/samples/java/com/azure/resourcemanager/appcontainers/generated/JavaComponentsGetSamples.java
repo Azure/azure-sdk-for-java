@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JavaComponentsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/JavaComponents_Get.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/JavaComponents_Get.json
      */
     /**
      * Sample code: Get Java Component.
@@ -18,12 +18,12 @@ public final class JavaComponentsGetSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void getJavaComponent(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.javaComponents().getWithResponse("examplerg", "myenvironment", "myjavacomponent",
-            com.azure.core.util.Context.NONE);
+        manager.javaComponents()
+            .getWithResponse("examplerg", "myenvironment", "myjavacomponent", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * JavaComponents_Get_ServiceBind.json
      */
     /**
@@ -33,7 +33,7 @@ public final class JavaComponentsGetSamples {
      */
     public static void
         getJavaComponentWithServiceBinds(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.javaComponents().getWithResponse("examplerg", "myenvironment", "myjavacomponent",
-            com.azure.core.util.Context.NONE);
+        manager.javaComponents()
+            .getWithResponse("examplerg", "myenvironment", "myjavacomponent", com.azure.core.util.Context.NONE);
     }
 }

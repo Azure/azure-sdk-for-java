@@ -32,9 +32,9 @@ public final class VirtualMachineExtensionImageProperties {
     private String handlerSchema;
 
     /*
-     * Whether the extension can be used on xRP VMScaleSets. By default existing extensions are usable on scalesets,
-     * but there might be cases where a publisher wants to explicitly indicate the extension is only enabled for CRP
-     * VMs but not VMSS.
+     * Whether the extension can be used on xRP VMScaleSets. By default existing extensions are usable on scalesets, but
+     * there might be cases where a publisher wants to explicitly indicate the extension is only enabled for CRP VMs but
+     * not VMSS.
      */
     @JsonProperty(value = "vmScaleSetEnabled")
     private Boolean vmScaleSetEnabled;
@@ -164,16 +164,19 @@ public final class VirtualMachineExtensionImageProperties {
      */
     public void validate() {
         if (operatingSystem() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property operatingSystem in model VirtualMachineExtensionImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operatingSystem in model VirtualMachineExtensionImageProperties"));
         }
         if (computeRole() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property computeRole in model VirtualMachineExtensionImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property computeRole in model VirtualMachineExtensionImageProperties"));
         }
         if (handlerSchema() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property handlerSchema in model VirtualMachineExtensionImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property handlerSchema in model VirtualMachineExtensionImageProperties"));
         }
     }
 

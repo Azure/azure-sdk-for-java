@@ -31,10 +31,7 @@ public class PowershellManager {
     public Mono<String> runCommand(String input) {
         return Mono.fromCallable(() -> {
             try {
-                String[] command = Platform.isWindows()
-                    ? new String[]{powershellPath, "-Command", input}
-                    : new String[]{"/bin/bash", "-c", String.format("%s -Command '%s'", powershellPath, input)};
-
+                String[] command = getCommandLine(input);
 
                 ProcessBuilder processBuilder = new ProcessBuilder(command);
                 processBuilder.redirectErrorStream(true);
@@ -53,5 +50,11 @@ public class PowershellManager {
                 throw LOGGER.logExceptionAsError(new CredentialUnavailableException("PowerShell command failure.", e));
             }
         });
+    }
+
+    String[] getCommandLine(String input) {
+        return Platform.isWindows()
+            ? new String[]{powershellPath, "-Command", "-NoProfile", input}
+            : new String[]{"/bin/bash", "-c", String.format("%s -NoProfile -Command '%s'", powershellPath, input)};
     }
 }

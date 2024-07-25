@@ -5,17 +5,16 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
-/** The response from the List namespace operation. */
+/**
+ * The response from the List namespace operation.
+ */
 @Fluent
 public final class AuthorizationRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationRuleListResult.class);
-
     /*
      * Result of the List Authorization Rules operation.
      */
@@ -23,11 +22,16 @@ public final class AuthorizationRuleListResult {
     private List<AuthorizationRuleInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains an
-     * incomplete list of Authorization Rules
+     * Link to the next set of results. Not empty if Value contains an incomplete list of Authorization Rules
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /**
+     * Creates an instance of AuthorizationRuleListResult class.
+     */
+    public AuthorizationRuleListResult() {
+    }
 
     /**
      * Get the value property: Result of the List Authorization Rules operation.

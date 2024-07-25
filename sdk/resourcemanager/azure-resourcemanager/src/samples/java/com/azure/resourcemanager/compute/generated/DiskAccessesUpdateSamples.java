@@ -23,9 +23,13 @@ public final class DiskAccessesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateADiskAccessResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDiskAccesses().update("myResourceGroup", "myDiskAccess",
-            new DiskAccessUpdate().withTags(mapOf("department", "Development", "project", "PrivateEndpoints")),
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDiskAccesses()
+            .update("myResourceGroup", "myDiskAccess",
+                new DiskAccessUpdate().withTags(mapOf("department", "Development", "project", "PrivateEndpoints")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

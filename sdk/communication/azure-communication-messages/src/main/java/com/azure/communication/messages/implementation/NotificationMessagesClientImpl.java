@@ -161,7 +161,8 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> send(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData notificationContent, RequestOptions requestOptions,
+            Context context);
 
         @Post("/messages/notifications:send")
         @ExpectedResponses({ 202 })
@@ -171,7 +172,8 @@ public final class NotificationMessagesClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> sendSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData notificationContent, RequestOptions requestOptions,
+            Context context);
 
         @Get("/messages/streams/{id}")
         @ExpectedResponses({ 200 })
@@ -230,7 +232,7 @@ public final class NotificationMessagesClientImpl {
      * }
      * }</pre>
      * 
-     * @param body Body parameter.
+     * @param notificationContent Details of the message to send.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -240,7 +242,8 @@ public final class NotificationMessagesClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> sendWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> sendWithResponseAsync(BinaryData notificationContent,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -257,7 +260,7 @@ public final class NotificationMessagesClientImpl {
             }
         });
         return FluxUtil.withContext(context -> service.send(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, body, requestOptionsLocal, context));
+            accept, notificationContent, requestOptionsLocal, context));
     }
 
     /**
@@ -296,7 +299,7 @@ public final class NotificationMessagesClientImpl {
      * }
      * }</pre>
      * 
-     * @param body Body parameter.
+     * @param notificationContent Details of the message to send.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -305,7 +308,7 @@ public final class NotificationMessagesClientImpl {
      * @return result of the send message operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> sendWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> sendWithResponse(BinaryData notificationContent, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.addRequestCallback(requestLocal -> {
@@ -321,7 +324,7 @@ public final class NotificationMessagesClientImpl {
                         DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
-        return service.sendSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, body,
+        return service.sendSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, notificationContent,
             requestOptionsLocal, Context.NONE);
     }
 

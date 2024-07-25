@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pre-provisioned and readily available Event Hubs Cluster count per region. */
+/**
+ * Pre-provisioned and readily available Event Hubs Cluster count per region.
+ */
 @Fluent
 public final class AvailableCluster {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableCluster.class);
-
     /*
      * Location fo the Available Cluster
      */
@@ -21,8 +19,14 @@ public final class AvailableCluster {
     private String location;
 
     /**
+     * Creates an instance of AvailableCluster class.
+     */
+    public AvailableCluster() {
+    }
+
+    /**
      * Get the location property: Location fo the Available Cluster.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -31,7 +35,7 @@ public final class AvailableCluster {
 
     /**
      * Set the location property: Location fo the Available Cluster.
-     *
+     * 
      * @param location the location value to set.
      * @return the AvailableCluster object itself.
      */
@@ -42,7 +46,7 @@ public final class AvailableCluster {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

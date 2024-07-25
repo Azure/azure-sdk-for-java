@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 
 public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(MultivariateAnomalyDetectorClientTest.class);
-    private AnomalyDetectorClient getClient() {
-        return getClientBuilder().buildClient();
+    private MultivariateClient getClient() {
+        return getClientBuilder().buildMultivariateClient();
     }
 
-    private static void getModelList(AnomalyDetectorClient client, Integer skip, Integer top) {
+    private static void getModelList(MultivariateClient client, Integer skip, Integer top) {
         PagedIterable<AnomalyDetectionModel> response = client.listMultivariateModels(skip, top);
 
         LOGGER.info("ModelList: ");
@@ -26,7 +26,7 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
     @Test
     public void testDetect() {
         testDetectEntireSeriesWithResponse(request -> {
-            AnomalyDetectorClient client = getClient();
+            MultivariateClient client = getClient();
 
             Integer skip = 0;
             Integer top = 5;

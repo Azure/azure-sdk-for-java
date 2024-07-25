@@ -20,8 +20,11 @@ public final class DedicatedHostGroupsListByResourceGroupSamples {
      */
     public static void
         dedicatedHostGroupListByResourceGroupMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().listByResourceGroup("rgcompute",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .listByResourceGroup("rgcompute", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +39,10 @@ public final class DedicatedHostGroupsListByResourceGroupSamples {
      */
     public static void
         dedicatedHostGroupListByResourceGroupMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getDedicatedHostGroups().listByResourceGroup("rgcompute",
-            com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHostGroups()
+            .listByResourceGroup("rgcompute", com.azure.core.util.Context.NONE);
     }
 }

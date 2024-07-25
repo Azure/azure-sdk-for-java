@@ -3,6 +3,7 @@
 
 package com.azure.mixedreality.remoterendering;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.remoterendering.implementation.models.ErrorResponseException;
@@ -92,7 +93,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionNoAccess");
 
-        ErrorResponseException ex = assertThrows(ErrorResponseException.class, () -> client.beginConversion(conversionId, conversionOptions));
+        HttpResponseException ex = assertThrows(HttpResponseException.class, () -> client.beginConversion(conversionId, conversionOptions));
 
         assertTrue(ex.getMessage().contains(RESPONSE_CODE_403));
 
@@ -138,7 +139,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         RemoteRenderingClient client = getClient(httpClient);
         BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
 
-        String sessionId = getRandomId("sessionTest");
+        String sessionId = getRandomId("sessionTest2");
 
         SyncPoller<RenderingSession, RenderingSession> sessionPoller = setSyncPollerPollInterval(client
             .beginSession(sessionId, options));
