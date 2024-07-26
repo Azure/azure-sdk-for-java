@@ -109,7 +109,7 @@ public class JsonObject extends JsonElement {
 
         if (token != JsonToken.START_OBJECT) {
             throw new IllegalStateException(
-                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
+                "JsonReader is pointing to an invalid token for deserialization. Token was: " + token + ".");
         }
 
         return new JsonObject(jsonReader.readMap(JsonElement::fromJson));
