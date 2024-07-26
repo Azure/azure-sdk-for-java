@@ -14,7 +14,7 @@ public enum LogsIngestionServiceVersion implements ServiceVersion {
      */
     V2023_01_01("2023-01-01");
 
-    final String version;
+    String version;
 
     /**
      * The service version.

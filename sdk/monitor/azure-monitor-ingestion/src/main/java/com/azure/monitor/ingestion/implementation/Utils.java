@@ -17,6 +17,7 @@ import java.util.zip.GZIPOutputStream;
 
 public final class Utils {
     public static final long MAX_REQUEST_PAYLOAD_SIZE = 1024 * 1024; // 1 MB
+    public static final String CONTENT_ENCODING = "Content-Encoding";
     public static final String GZIP = "gzip";
 
     private static final ClientLogger LOGGER = new ClientLogger(Utils.class);
@@ -57,7 +58,9 @@ public final class Utils {
      * @return {@link ExecutorService} instance.
      */
     public static ExecutorService createThreadPool() {
-        return new ThreadPoolExecutor(0, MAX_CONCURRENCY, 60L, TimeUnit.SECONDS, new SynchronousQueue<>());
+
+        return new ThreadPoolExecutor(0, MAX_CONCURRENCY,
+            60L, TimeUnit.SECONDS, new SynchronousQueue<>());
     }
 
     /**
