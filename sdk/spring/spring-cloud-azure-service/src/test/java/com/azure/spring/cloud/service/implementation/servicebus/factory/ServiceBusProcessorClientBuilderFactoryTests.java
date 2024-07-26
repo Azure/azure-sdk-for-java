@@ -150,8 +150,7 @@ class ServiceBusProcessorClientBuilderFactoryTests extends AbstractServiceBusSub
     static class ServiceBusProcessorClientBuilderFactoryExt extends ServiceBusProcessorClientBuilderFactory {
         private ServiceBusClientBuilder serviceBusClientBuilder;
         private final ServiceBusProcessorClientTestProperties properties;
-        private
-        ServiceBusProcessorClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
+        private ServiceBusProcessorClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
                                                    ServiceBusProcessorClientTestProperties properties) {
 
             this(serviceBusClientBuilder, properties, (ServiceBusRecordMessageListener) messageContext -> { }, errorContext -> { });

@@ -18,7 +18,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
 
 #### Features Added
-- Support share the 'ServiceBusClientBuilder' for sender client and processor client creation [#41279](https://github.com/Azure/azure-sdk-for-java/pull/41279).
+- Support share the 'ServiceBusClientBuilder' for sender client and processor clients creation [#41279](https://github.com/Azure/azure-sdk-for-java/pull/41279).
 
 #### Bugs Fixed
 - Fix bug: DLQ reason and description not work in spring-cloud-azure-stream-binder-servicebus. [40951](https://github.com/Azure/azure-sdk-for-java/issues/40951).
