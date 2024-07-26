@@ -3,11 +3,11 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -46,6 +46,11 @@ public final class ClasspathCertificates implements AzureCertificates {
     private final Map<String, Certificate> certificates = new HashMap<>();
 
     /**
+     * Stores the certificate chains by alias.
+     */
+    private final Map<String, Certificate[]> certificateChains = new HashMap<>();
+
+    /**
      * Stores the certificate keys by alias.
      */
     private final Map<String, Key> certificateKeys = new HashMap<>();
@@ -69,6 +74,15 @@ public final class ClasspathCertificates implements AzureCertificates {
     }
 
     /**
+     * Get certificate chains.
+     * @return certificate chains
+     */
+    @Override
+    public Map<String, Certificate[]> getCertificateChains() {
+        return certificateChains;
+    }
+
+    /**
      * Get certificate keys.
      * @return certificate keys
      */
@@ -86,6 +100,7 @@ public final class ClasspathCertificates implements AzureCertificates {
         if (!aliases.contains(alias)) {
             aliases.add(alias);
             certificates.put(alias, certificate);
+            certificateChains.put(alias, new Certificate[]{certificate});
         }
     }
 
@@ -98,6 +113,7 @@ public final class ClasspathCertificates implements AzureCertificates {
         aliases.remove(alias);
         certificates.remove(alias);
         certificateKeys.remove(alias);
+        certificateChains.remove(alias);
     }
 
     /**

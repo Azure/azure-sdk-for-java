@@ -41,6 +41,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import static com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.getLoginUri;
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadCertificates;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_VERSION_POSTFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.HTTPS_PREFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
@@ -300,6 +301,33 @@ public class KeyVaultClient {
         LOGGER.exiting("KeyVaultClient", "getCertificate", certificate);
 
         return certificate;
+    }
+
+    /**
+     * Get the certificate chain.
+     *
+     * @param alias The alias.
+     *
+     * @return The certificate chain, or null if not found.
+     */
+    public Certificate[] getCertificateChain(String alias) {
+        LOGGER.entering("KeyVaultClient", "getCertificateChain", alias);
+        LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getAccessToken());
+        String uri = keyVaultUri + "secrets/" + alias + API_VERSION_POSTFIX;
+        String response = HttpUtil.get(uri, headers);
+        SecretBundle secretBundle = (SecretBundle) JsonConverterUtil.fromJson(response, SecretBundle.class);
+
+        Certificate[] certificates = new Certificate[0];
+        try {
+            certificates = loadCertificates(secretBundle.getValue());
+        } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
+            LOGGER.log(WARNING, "Unable to decode certificate chain", e);
+        }
+        LOGGER.exiting("KeyVaultClient", "getCertificate", alias);
+        return certificates;
     }
 
     /**

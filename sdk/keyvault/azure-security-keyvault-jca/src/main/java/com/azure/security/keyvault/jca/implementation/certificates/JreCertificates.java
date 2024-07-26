@@ -4,16 +4,18 @@
 package com.azure.security.keyvault.jca.implementation.certificates;
 
 import com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory;
+
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.Certificate;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.HashMap;
 import java.util.logging.Logger;
+
 import static java.util.logging.Level.WARNING;
 
 /**
@@ -34,6 +36,11 @@ public final class JreCertificates implements AzureCertificates {
      * Stores the jre key store certificates.
      */
     private final  Map<String, Certificate> certs;
+
+    /**
+     * Stores the certificate chains by alias.
+     */
+    private final Map<String, Certificate[]> certificateChains;
 
     /**
      * Stores the jre key store keys
@@ -71,6 +78,17 @@ public final class JreCertificates implements AzureCertificates {
                     }
                 },
                 HashMap::putAll);
+        certificateChains = aliases.stream()
+            .collect(
+                HashMap::new,
+                (m, v) -> {
+                    try {
+                        m.put(v, new Certificate[]{jreKeyStore.getCertificate(v)});
+                    } catch (KeyStoreException e) {
+                        LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
+                    }
+                },
+                HashMap::putAll);
         keys = Collections.emptyMap();
     }
 
@@ -91,6 +109,11 @@ public final class JreCertificates implements AzureCertificates {
     @Override
     public Map<String, Certificate> getCertificates() {
         return certs;
+    }
+
+    @Override
+    public Map<String, Certificate[]> getCertificateChains() {
+        return certificateChains;
     }
 
     @Override

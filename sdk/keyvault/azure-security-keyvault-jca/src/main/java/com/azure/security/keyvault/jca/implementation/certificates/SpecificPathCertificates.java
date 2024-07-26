@@ -3,8 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.certificates;
 
-import static java.util.logging.Level.INFO;
-import static java.util.logging.Level.WARNING;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -26,7 +25,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import org.apache.commons.codec.digest.DigestUtils;
+
+import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
 
 /**
  * Store certificates loaded from file system.
@@ -51,6 +52,11 @@ public final class SpecificPathCertificates implements AzureCertificates {
     private final Map<String, Certificate> certificates = new HashMap<>();
 
     /**
+     * Stores the certificate chains by alias.
+     */
+    private final Map<String, Certificate[]> certificateChains = new HashMap<>();
+
+    /**
      * Stores the specific path certificate keys by alias.
      */
     private final Map<String, Key> certificateKeys = new HashMap<>();
@@ -67,6 +73,15 @@ public final class SpecificPathCertificates implements AzureCertificates {
         return certificates;
     }
 
+    /**
+     * Get certificate chains.
+     * @return certificate chains
+     */
+    @Override
+    public Map<String, Certificate[]> getCertificateChains() {
+        return certificateChains;
+    }
+
     @Override
     public Map<String, Key> getCertificateKeys() {
         return certificateKeys;
@@ -76,6 +91,7 @@ public final class SpecificPathCertificates implements AzureCertificates {
     public void deleteEntry(String alias) {
         aliases.remove(alias);
         certificates.remove(alias);
+        certificateChains.remove(alias);
         certificateKeys.remove(alias);
     }
 
@@ -103,12 +119,13 @@ public final class SpecificPathCertificates implements AzureCertificates {
         }
         aliases.add(alias);
         certificates.put(alias, certificate);
+        certificateChains.put(alias, new Certificate[]{certificate});
     }
 
     /**
      * If the file can be parsed into a certificate, add it to the list
      *
-     * @param file file which try to parsed into a certificate
+     * @param file file which try to parse into a certificate
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     private void setCertificateByFile(File file) throws IOException {
