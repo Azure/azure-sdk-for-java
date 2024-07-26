@@ -133,7 +133,6 @@ public class JacksonJsonSerializerTests {
 
     private static final class PersonDeserializer extends JsonDeserializer<Person> {
 
-        @SuppressWarnings("deprecation")
         @Override
         public Person deserialize(JsonParser parser, DeserializationContext context) throws IOException {
             String name = "John Doe";

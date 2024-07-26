@@ -1,34 +1,42 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+package com.azure.core.serializer.json.gson.models;
 
-package com.azure.json.models;
-
-import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.json.implementation.StringBuilderWriter;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Objects;
 
 /**
- * Class representing the JSON object type.
+ * Implementation of {@link com.azure.json.models.JsonElement} which is backed by GSON's {@link JsonObject}.
+ * <p>
+ * This allows for using GSON's {@link JsonObject} in places where {@link com.azure.json.models.JsonObject} is required,
+ * meaning the GSON {@link JsonObject} doesn't need to be converted to azure-json's
+ * {@link com.azure.json.models.JsonObject}.
  */
-public class JsonObject extends JsonElement {
-    private final Map<String, JsonElement> properties;
+public final class GsonJsonObject extends com.azure.json.models.JsonElement {
+    private final JsonObject object;
 
     /**
-     * Default constructor.
+     * Creates a new {@link GsonJsonObject} using the default {@link JsonObject#JsonObject()}.
      */
-    public JsonObject() {
-        this.properties = new LinkedHashMap<>();
+    public GsonJsonObject() {
+        this(new JsonObject());
     }
 
-    private JsonObject(Map<String, JsonElement> properties) {
-        this.properties = properties;
+    /**
+     * Creates a new {@link GsonJsonObject} using the provided {@link JsonObject}.
+     *
+     * @param object The {@link JsonObject} to use as the backing object.
+     * @throws NullPointerException If {@code object} is null.
+     */
+    public GsonJsonObject(JsonObject object) {
+        this.object = Objects.requireNonNull(object, "'object' cannot be null.");
     }
 
     /**
@@ -38,7 +46,7 @@ public class JsonObject extends JsonElement {
      * @return The JsonElement value corresponding to the specified key, or null if the property doesn't exist.
      */
     public JsonElement getProperty(String key) {
-        return properties.get(key);
+        return object.get(key);
     }
 
     /**
@@ -47,11 +55,11 @@ public class JsonObject extends JsonElement {
      *
      * @param key The key of the property to set.
      * @param element The JsonElement value to set the property to.
-     * @return The updated JsonObject object.
+     * @return The updated GsonJsonObject object.
      * @throws NullPointerException If the {@code key} or {@code element} is null.
      */
-    public JsonObject setProperty(String key, JsonElement element) {
-        properties.put(key, nullCheck(element));
+    public GsonJsonObject setProperty(String key, JsonElement element) {
+        object.add(key, nullCheck(element));
         return this;
     }
 
@@ -64,7 +72,19 @@ public class JsonObject extends JsonElement {
      * @throws NullPointerException If the {@code key} is null.
      */
     public JsonElement removeProperty(String key) {
-        return properties.remove(key);
+        return object.remove(key);
+    }
+
+    /**
+     * Checks that the JsonElement isn't null.
+     * <p>
+     * In structured JSON nullness must be represented by {@link JsonNull} and not {@code null}.
+     *
+     * @throws NullPointerException If the {@code element} is null.
+     */
+    private static JsonElement nullCheck(JsonElement element) {
+        return Objects.requireNonNull(element,
+            "The JsonElement cannot be null. If null must be represented in JSON, use JsonNull.");
     }
 
     /**
@@ -73,17 +93,17 @@ public class JsonObject extends JsonElement {
      * @return The number of properties in the JSON object.
      */
     public int size() {
-        return properties.size();
+        return object.size();
     }
 
     @Override
-    public final boolean isObject() {
+    public boolean isObject() {
         return true;
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeMap(properties, JsonWriter::writeJson);
+        return GsonJsonElementUtils.writeJsonObject(jsonWriter, object);
     }
 
     /**
@@ -101,7 +121,7 @@ public class JsonObject extends JsonElement {
      * @throws IOException If an error occurs while deserializing the JSON object.
      * @throws IllegalStateException If the current token is not {@link JsonToken#START_OBJECT}.
      */
-    public static JsonObject fromJson(JsonReader jsonReader) throws IOException {
+    public static GsonJsonObject fromJson(JsonReader jsonReader) throws IOException {
         JsonToken token = jsonReader.currentToken();
         if (token == null) {
             token = jsonReader.nextToken();
@@ -112,54 +132,6 @@ public class JsonObject extends JsonElement {
                 "JsonReader is pointing to an invalid token for deserialization. Token was: " + token + ".");
         }
 
-        return new JsonObject(jsonReader.readMap(JsonElement::fromJson));
-    }
-
-    @Override
-    public String toJsonString() throws IOException {
-        // TODO (alzimmer): This could be cached and reset each time the array is mutated.
-        StringBuilderWriter writer = new StringBuilderWriter();
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
-            toJson(jsonWriter).flush();
-            return writer.toString();
-        }
-    }
-
-    /**
-     * Checks that the JsonElement isn't null.
-     * <p>
-     * In structured JSON nullness must be represented by {@link JsonNull} and not {@code null}.
-     *
-     * @throws NullPointerException If the {@code element} is null.
-     */
-    private static JsonElement nullCheck(JsonElement element) {
-        return Objects.requireNonNull(element,
-            "The JsonElement cannot be null. If null must be represented in JSON, use JsonNull.");
-    }
-
-    // Following methods are overridden as final to prevent subtypes from changing the behavior.
-    @Override
-    public final boolean isArray() {
-        return false;
-    }
-
-    @Override
-    public final boolean isBoolean() {
-        return false;
-    }
-
-    @Override
-    public final boolean isNull() {
-        return false;
-    }
-
-    @Override
-    public final boolean isNumber() {
-        return false;
-    }
-
-    @Override
-    public final boolean isString() {
-        return false;
+        return new GsonJsonObject(GsonJsonElementUtils.readJsonObject(jsonReader));
     }
 }
