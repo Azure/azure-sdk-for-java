@@ -30,24 +30,28 @@ import com.azure.resourcemanager.authorization.fluent.models.ProviderOperationsM
 import com.azure.resourcemanager.authorization.models.ProviderOperationsMetadataListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProviderOperationsMetadatasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProviderOperationsMetadatasClient.
+ */
 public final class ProviderOperationsMetadatasClientImpl implements ProviderOperationsMetadatasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProviderOperationsMetadatasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of ProviderOperationsMetadatasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProviderOperationsMetadatasClientImpl(AuthorizationManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ProviderOperationsMetadatasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ProviderOperationsMetadatasService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,79 +62,65 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
     public interface ProviderOperationsMetadatasService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Authorization/providerOperations/{resourceProviderNamespace}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderOperationsMetadataInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ProviderOperationsMetadataInner>> get(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceProviderNamespace", encoded = true) String resourceProviderNamespace,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Authorization/providerOperations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProviderOperationsMetadataListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProviderOperationsMetadataListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProviderOperationsMetadataListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand Specifies whether to expand the values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provider operations metadata for the specified resource provider along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProviderOperationsMetadataInner>> getWithResponseAsync(
-        String resourceProviderNamespace, String expand) {
+    public Mono<Response<ProviderOperationsMetadataInner>> getWithResponseAsync(String resourceProviderNamespace,
+        String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(this.client.getEndpoint(), resourceProviderNamespace, apiVersion, expand, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceProviderNamespace, apiVersion,
+                expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand Specifies whether to expand the values.
      * @param context The context to associate with this operation.
@@ -138,22 +128,18 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provider operations metadata for the specified resource provider along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProviderOperationsMetadataInner>> getWithResponseAsync(
-        String resourceProviderNamespace, String expand, Context context) {
+    private Mono<Response<ProviderOperationsMetadataInner>> getWithResponseAsync(String resourceProviderNamespace,
+        String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter resourceProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null."));
         }
         final String apiVersion = "2022-04-01";
         final String accept = "application/json";
@@ -163,13 +149,13 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
 
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for the specified resource provider on successful completion of {@link
-     *     Mono}.
+     * @return provider operations metadata for the specified resource provider on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderOperationsMetadataInner> getAsync(String resourceProviderNamespace) {
@@ -179,7 +165,7 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
 
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand Specifies whether to expand the values.
      * @param context The context to associate with this operation.
@@ -189,14 +175,14 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
      * @return provider operations metadata for the specified resource provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProviderOperationsMetadataInner> getWithResponse(
-        String resourceProviderNamespace, String expand, Context context) {
+    public Response<ProviderOperationsMetadataInner> getWithResponse(String resourceProviderNamespace, String expand,
+        Context context) {
         return getWithResponseAsync(resourceProviderNamespace, expand, context).block();
     }
 
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -211,76 +197,57 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
      * @param expand Specifies whether to expand the values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provider operations metadata for all resource providers along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderOperationsMetadataInner>> listSinglePageAsync(String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, expand, accept, context))
-            .<PagedResponse<ProviderOperationsMetadataInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ProviderOperationsMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
      * @param expand Specifies whether to expand the values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provider operations metadata for all resource providers along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderOperationsMetadataInner>> listSinglePageAsync(String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2022-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, expand, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, expand, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
      * @param expand Specifies whether to expand the values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -294,7 +261,7 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provider operations metadata for all resource providers as paginated response with {@link PagedFlux}.
@@ -307,7 +274,7 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
      * @param expand Specifies whether to expand the values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,13 +284,13 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProviderOperationsMetadataInner> listAsync(String expand, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(expand, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(expand, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provider operations metadata for all resource providers as paginated response with {@link PagedIterable}.
@@ -336,7 +303,7 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
      * @param expand Specifies whether to expand the values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,14 +318,13 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata list along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return provider operations metadata list along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProviderOperationsMetadataInner>> listNextSinglePageAsync(String nextLink) {
@@ -366,62 +332,41 @@ public final class ProviderOperationsMetadatasClientImpl implements ProviderOper
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProviderOperationsMetadataInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProviderOperationsMetadataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata list along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return provider operations metadata list along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProviderOperationsMetadataInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ProviderOperationsMetadataInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

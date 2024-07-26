@@ -33,26 +33,28 @@ import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentSched
 import com.azure.resourcemanager.authorization.models.RoleAssignmentScheduleRequestListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoleAssignmentScheduleRequestsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoleAssignmentScheduleRequestsClient.
+ */
 public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssignmentScheduleRequestsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RoleAssignmentScheduleRequestsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of RoleAssignmentScheduleRequestsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RoleAssignmentScheduleRequestsClientImpl(AuthorizationManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    RoleAssignmentScheduleRequestsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(RoleAssignmentScheduleRequestsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,93 +65,73 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
     public interface RoleAssignmentScheduleRequestsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentScheduleRequestInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoleAssignmentScheduleRequestInner>> create(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleAssignmentScheduleRequestName") String roleAssignmentScheduleRequestName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RoleAssignmentScheduleRequestInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentScheduleRequestInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoleAssignmentScheduleRequestInner>> get(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleAssignmentScheduleRequestName") String roleAssignmentScheduleRequestName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentScheduleRequestListResult>> listForScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RoleAssignmentScheduleRequestListResult>> listForScope(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}/cancel")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}/cancel")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> cancel(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> cancel(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleAssignmentScheduleRequestName") String roleAssignmentScheduleRequestName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}/validate")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests/{roleAssignmentScheduleRequestName}/validate")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentScheduleRequestInner>> validate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RoleAssignmentScheduleRequestInner>> validate(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleAssignmentScheduleRequestName") String roleAssignmentScheduleRequestName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RoleAssignmentScheduleRequestInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentScheduleRequestListResult>> listForScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
+     * instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     * for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
-     *     different for each role assignment.
+     * different for each role assignment.
      * @param parameters Parameters for the role assignment schedule request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -157,22 +139,18 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignmentScheduleRequestInner>> createWithResponseAsync(
-        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
+    public Mono<Response<RoleAssignmentScheduleRequestInner>> createWithResponseAsync(String scope,
+        String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleAssignmentScheduleRequestName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -182,30 +160,21 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            scope,
-                            roleAssignmentScheduleRequestName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), scope, roleAssignmentScheduleRequestName,
+                apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
+     * instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     * for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
-     *     different for each role assignment.
+     * different for each role assignment.
      * @param parameters Parameters for the role assignment schedule request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,25 +183,18 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleAssignmentScheduleRequestInner>> createWithResponseAsync(
-        String scope,
-        String roleAssignmentScheduleRequestName,
-        RoleAssignmentScheduleRequestInner parameters,
-        Context context) {
+    private Mono<Response<RoleAssignmentScheduleRequestInner>> createWithResponseAsync(String scope,
+        String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleAssignmentScheduleRequestName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -242,27 +204,20 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                scope,
-                roleAssignmentScheduleRequestName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), scope, roleAssignmentScheduleRequestName, apiVersion,
+            parameters, accept, context);
     }
 
     /**
      * Creates a role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
+     * instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     * for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
-     *     different for each role assignment.
+     * different for each role assignment.
      * @param parameters Parameters for the role assignment schedule request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -270,22 +225,22 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignmentScheduleRequestInner> createAsync(
-        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
+    public Mono<RoleAssignmentScheduleRequestInner> createAsync(String scope, String roleAssignmentScheduleRequestName,
+        RoleAssignmentScheduleRequestInner parameters) {
         return createWithResponseAsync(scope, roleAssignmentScheduleRequestName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
+     * instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     * for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
-     *     different for each role assignment.
+     * different for each role assignment.
      * @param parameters Parameters for the role assignment schedule request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -294,24 +249,21 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentScheduleRequestInner> createWithResponse(
-        String scope,
-        String roleAssignmentScheduleRequestName,
-        RoleAssignmentScheduleRequestInner parameters,
-        Context context) {
+    public Response<RoleAssignmentScheduleRequestInner> createWithResponse(String scope,
+        String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters, Context context) {
         return createWithResponseAsync(scope, roleAssignmentScheduleRequestName, parameters, context).block();
     }
 
     /**
      * Creates a role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request to create. The scope can be any REST resource
-     *     instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
+     * instance. For example, use '/subscriptions/{subscription-id}/' for a subscription,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+     * for a resource.
      * @param roleAssignmentScheduleRequestName A GUID for the role assignment to create. The name must be unique and
-     *     different for each role assignment.
+     * different for each role assignment.
      * @param parameters Parameters for the role assignment schedule request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -319,59 +271,47 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentScheduleRequestInner create(
-        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
+    public RoleAssignmentScheduleRequestInner create(String scope, String roleAssignmentScheduleRequestName,
+        RoleAssignmentScheduleRequestInner parameters) {
         return createWithResponse(scope, roleAssignmentScheduleRequestName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the specified role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request.
      * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified role assignment schedule request along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignmentScheduleRequestInner>> getWithResponseAsync(
-        String scope, String roleAssignmentScheduleRequestName) {
+    public Mono<Response<RoleAssignmentScheduleRequestInner>> getWithResponseAsync(String scope,
+        String roleAssignmentScheduleRequestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleAssignmentScheduleRequestName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            scope,
-                            roleAssignmentScheduleRequestName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), scope, roleAssignmentScheduleRequestName,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the specified role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request.
      * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
      * @param context The context to associate with this operation.
@@ -379,36 +319,32 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified role assignment schedule request along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleAssignmentScheduleRequestInner>> getWithResponseAsync(
-        String scope, String roleAssignmentScheduleRequestName, Context context) {
+    private Mono<Response<RoleAssignmentScheduleRequestInner>> getWithResponseAsync(String scope,
+        String roleAssignmentScheduleRequestName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleAssignmentScheduleRequestName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), scope, roleAssignmentScheduleRequestName, apiVersion, accept, context);
+        return service.get(this.client.getEndpoint(), scope, roleAssignmentScheduleRequestName, apiVersion, accept,
+            context);
     }
 
     /**
      * Get the specified role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request.
      * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,7 +360,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
     /**
      * Get the specified role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request.
      * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
      * @param context The context to associate with this operation.
@@ -434,14 +370,14 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return the specified role assignment schedule request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentScheduleRequestInner> getWithResponse(
-        String scope, String roleAssignmentScheduleRequestName, Context context) {
+    public Response<RoleAssignmentScheduleRequestInner> getWithResponse(String scope,
+        String roleAssignmentScheduleRequestName, Context context) {
         return getWithResponseAsync(scope, roleAssignmentScheduleRequestName, context).block();
     }
 
     /**
      * Get the specified role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment schedule request.
      * @param roleAssignmentScheduleRequestName The name (guid) of the role assignment schedule request to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -456,28 +392,26 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
     /**
      * Gets role assignment schedule requests for a scope.
-     *
+     * 
      * @param scope The scope of the role assignments schedule requests.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule
-     *     requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule
-     *     requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all
-     *     role assignment schedule requests requested by the current user. Use $filter=asTarget() to return all role
-     *     assignment schedule requests created for the current user. Use $filter=asApprover() to return all role
-     *     assignment schedule requests where the current user is an approver.
+     * requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule requests
+     * at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role assignment
+     * schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule
+     * requests created for the current user. Use $filter=asApprover() to return all role assignment schedule requests
+     * where the current user is an approver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role assignment schedule requests for a scope along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleAssignmentScheduleRequestInner>> listForScopeSinglePageAsync(
-        String scope, String filter) {
+    private Mono<PagedResponse<RoleAssignmentScheduleRequestInner>> listForScopeSinglePageAsync(String scope,
+        String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -487,43 +421,34 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         return FluxUtil
             .withContext(
                 context -> service.listForScope(this.client.getEndpoint(), scope, filter, apiVersion, accept, context))
-            .<PagedResponse<RoleAssignmentScheduleRequestInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RoleAssignmentScheduleRequestInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets role assignment schedule requests for a scope.
-     *
+     * 
      * @param scope The scope of the role assignments schedule requests.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule
-     *     requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule
-     *     requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all
-     *     role assignment schedule requests requested by the current user. Use $filter=asTarget() to return all role
-     *     assignment schedule requests created for the current user. Use $filter=asApprover() to return all role
-     *     assignment schedule requests where the current user is an approver.
+     * requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule requests
+     * at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role assignment
+     * schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule
+     * requests created for the current user. Use $filter=asApprover() to return all role assignment schedule requests
+     * where the current user is an approver.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role assignment schedule requests for a scope along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleAssignmentScheduleRequestInner>> listForScopeSinglePageAsync(
-        String scope, String filter, Context context) {
+    private Mono<PagedResponse<RoleAssignmentScheduleRequestInner>> listForScopeSinglePageAsync(String scope,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -531,29 +456,21 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listForScope(this.client.getEndpoint(), scope, filter, apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listForScope(this.client.getEndpoint(), scope, filter, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets role assignment schedule requests for a scope.
-     *
+     * 
      * @param scope The scope of the role assignments schedule requests.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule
-     *     requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule
-     *     requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all
-     *     role assignment schedule requests requested by the current user. Use $filter=asTarget() to return all role
-     *     assignment schedule requests created for the current user. Use $filter=asApprover() to return all role
-     *     assignment schedule requests where the current user is an approver.
+     * requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule requests
+     * at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role assignment
+     * schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule
+     * requests created for the current user. Use $filter=asApprover() to return all role assignment schedule requests
+     * where the current user is an approver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -561,13 +478,13 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentScheduleRequestInner> listForScopeAsync(String scope, String filter) {
-        return new PagedFlux<>(
-            () -> listForScopeSinglePageAsync(scope, filter), nextLink -> listForScopeNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope, filter),
+            nextLink -> listForScopeNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets role assignment schedule requests for a scope.
-     *
+     * 
      * @param scope The scope of the role assignments schedule requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -577,20 +494,20 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentScheduleRequestInner> listForScopeAsync(String scope) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listForScopeSinglePageAsync(scope, filter), nextLink -> listForScopeNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope, filter),
+            nextLink -> listForScopeNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets role assignment schedule requests for a scope.
-     *
+     * 
      * @param scope The scope of the role assignments schedule requests.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule
-     *     requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule
-     *     requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all
-     *     role assignment schedule requests requested by the current user. Use $filter=asTarget() to return all role
-     *     assignment schedule requests created for the current user. Use $filter=asApprover() to return all role
-     *     assignment schedule requests where the current user is an approver.
+     * requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule requests
+     * at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role assignment
+     * schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule
+     * requests created for the current user. Use $filter=asApprover() to return all role assignment schedule requests
+     * where the current user is an approver.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -598,16 +515,15 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role assignment schedule requests for a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RoleAssignmentScheduleRequestInner> listForScopeAsync(
-        String scope, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listForScopeSinglePageAsync(scope, filter, context),
+    private PagedFlux<RoleAssignmentScheduleRequestInner> listForScopeAsync(String scope, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listForScopeSinglePageAsync(scope, filter, context),
             nextLink -> listForScopeNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets role assignment schedule requests for a scope.
-     *
+     * 
      * @param scope The scope of the role assignments schedule requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -622,14 +538,14 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
     /**
      * Gets role assignment schedule requests for a scope.
-     *
+     * 
      * @param scope The scope of the role assignments schedule requests.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule
-     *     requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule
-     *     requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all
-     *     role assignment schedule requests requested by the current user. Use $filter=asTarget() to return all role
-     *     assignment schedule requests created for the current user. Use $filter=asApprover() to return all role
-     *     assignment schedule requests where the current user is an approver.
+     * requests at or above the scope. Use $filter=principalId eq {id} to return all role assignment schedule requests
+     * at, above or below the scope for the specified principal. Use $filter=asRequestor() to return all role assignment
+     * schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule
+     * requests created for the current user. Use $filter=asApprover() to return all role assignment schedule requests
+     * where the current user is an approver.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -637,14 +553,14 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role assignment schedule requests for a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignmentScheduleRequestInner> listForScope(
-        String scope, String filter, Context context) {
+    public PagedIterable<RoleAssignmentScheduleRequestInner> listForScope(String scope, String filter,
+        Context context) {
         return new PagedIterable<>(listForScopeAsync(scope, filter, context));
     }
 
     /**
      * Cancels a pending role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to cancel.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to cancel.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -655,39 +571,27 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(String scope, String roleAssignmentScheduleRequestName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleAssignmentScheduleRequestName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            scope,
-                            roleAssignmentScheduleRequestName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), scope, roleAssignmentScheduleRequestName,
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancels a pending role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to cancel.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to cancel.
      * @param context The context to associate with this operation.
@@ -697,33 +601,29 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelWithResponseAsync(
-        String scope, String roleAssignmentScheduleRequestName, Context context) {
+    private Mono<Response<Void>> cancelWithResponseAsync(String scope, String roleAssignmentScheduleRequestName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleAssignmentScheduleRequestName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancel(this.client.getEndpoint(), scope, roleAssignmentScheduleRequestName, apiVersion, accept, context);
+        return service.cancel(this.client.getEndpoint(), scope, roleAssignmentScheduleRequestName, apiVersion, accept,
+            context);
     }
 
     /**
      * Cancels a pending role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to cancel.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to cancel.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -738,7 +638,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
     /**
      * Cancels a pending role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to cancel.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to cancel.
      * @param context The context to associate with this operation.
@@ -754,7 +654,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
     /**
      * Cancels a pending role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to cancel.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to cancel.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -768,7 +668,7 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
 
     /**
      * Validates a new role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to validate.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to validate.
      * @param parameters Parameters for the role assignment schedule request.
@@ -778,22 +678,18 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignmentScheduleRequestInner>> validateWithResponseAsync(
-        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
+    public Mono<Response<RoleAssignmentScheduleRequestInner>> validateWithResponseAsync(String scope,
+        String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleAssignmentScheduleRequestName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -803,23 +699,14 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validate(
-                            this.client.getEndpoint(),
-                            scope,
-                            roleAssignmentScheduleRequestName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.validate(this.client.getEndpoint(), scope,
+                roleAssignmentScheduleRequestName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validates a new role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to validate.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to validate.
      * @param parameters Parameters for the role assignment schedule request.
@@ -830,25 +717,18 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleAssignmentScheduleRequestInner>> validateWithResponseAsync(
-        String scope,
-        String roleAssignmentScheduleRequestName,
-        RoleAssignmentScheduleRequestInner parameters,
-        Context context) {
+    private Mono<Response<RoleAssignmentScheduleRequestInner>> validateWithResponseAsync(String scope,
+        String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         if (roleAssignmentScheduleRequestName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter roleAssignmentScheduleRequestName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -858,20 +738,13 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
         final String apiVersion = "2020-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validate(
-                this.client.getEndpoint(),
-                scope,
-                roleAssignmentScheduleRequestName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.validate(this.client.getEndpoint(), scope, roleAssignmentScheduleRequestName, apiVersion,
+            parameters, accept, context);
     }
 
     /**
      * Validates a new role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to validate.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to validate.
      * @param parameters Parameters for the role assignment schedule request.
@@ -881,15 +754,15 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignmentScheduleRequestInner> validateAsync(
-        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
+    public Mono<RoleAssignmentScheduleRequestInner> validateAsync(String scope,
+        String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
         return validateWithResponseAsync(scope, roleAssignmentScheduleRequestName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Validates a new role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to validate.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to validate.
      * @param parameters Parameters for the role assignment schedule request.
@@ -900,17 +773,14 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentScheduleRequestInner> validateWithResponse(
-        String scope,
-        String roleAssignmentScheduleRequestName,
-        RoleAssignmentScheduleRequestInner parameters,
-        Context context) {
+    public Response<RoleAssignmentScheduleRequestInner> validateWithResponse(String scope,
+        String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters, Context context) {
         return validateWithResponseAsync(scope, roleAssignmentScheduleRequestName, parameters, context).block();
     }
 
     /**
      * Validates a new role assignment schedule request.
-     *
+     * 
      * @param scope The scope of the role assignment request to validate.
      * @param roleAssignmentScheduleRequestName The name of the role assignment request to validate.
      * @param parameters Parameters for the role assignment schedule request.
@@ -920,21 +790,20 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
      * @return role Assignment schedule request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentScheduleRequestInner validate(
-        String scope, String roleAssignmentScheduleRequestName, RoleAssignmentScheduleRequestInner parameters) {
+    public RoleAssignmentScheduleRequestInner validate(String scope, String roleAssignmentScheduleRequestName,
+        RoleAssignmentScheduleRequestInner parameters) {
         return validateWithResponse(scope, roleAssignmentScheduleRequestName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role assignment schedule request list operation result along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentScheduleRequestInner>> listForScopeNextSinglePageAsync(String nextLink) {
@@ -942,62 +811,42 @@ public final class RoleAssignmentScheduleRequestsClientImpl implements RoleAssig
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listForScopeNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RoleAssignmentScheduleRequestInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RoleAssignmentScheduleRequestInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role assignment schedule request list operation result along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleAssignmentScheduleRequestInner>> listForScopeNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RoleAssignmentScheduleRequestInner>> listForScopeNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listForScopeNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listForScopeNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
