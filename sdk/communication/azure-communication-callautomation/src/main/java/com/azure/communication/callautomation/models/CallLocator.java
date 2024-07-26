@@ -12,7 +12,11 @@ public abstract class CallLocator {
      */
     private final CallLocatorKind kind;
     
-    /** Creates an instance of CallLocator class. */
+    /**
+     * Creates an instance of CallLocator class.
+     *
+     * @param kind a kind of the call locator.
+    */
     public CallLocator(CallLocatorKind kind) {
         this.kind = kind;
     }
@@ -22,7 +26,7 @@ public abstract class CallLocator {
      *
      * @return the kind value.
      */
-    public CallLocatorKind getKind(){
+    public CallLocatorKind getKind() {
         return this.kind;
     }
 }

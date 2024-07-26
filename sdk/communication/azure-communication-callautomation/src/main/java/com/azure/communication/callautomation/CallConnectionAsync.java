@@ -199,7 +199,7 @@ public final class CallConnectionAsync {
                 .map(response ->
                     new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())));
         } catch (RuntimeException ex) {
-                return monoError(logger, ex);
+            return monoError(logger, ex);
         }
     }
 

@@ -284,7 +284,6 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             //Connect call
             String serverCallId = answerCallResult.getCallConnectionProperties().getServerCallId();
             ServerCallLocator serverCallLocator = new ServerCallLocator(serverCallId);
-            System.out.println("serverCallLocator kind --> " +serverCallLocator.getKind());
             ConnectCallOptions connectCallOptions = new ConnectCallOptions(serverCallLocator, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
             ConnectCallResult connectCallResult = Objects.requireNonNull(connectAsyncClient.connectCallWithResponse(connectCallOptions).block()).getValue();
             String callConnectionId = connectCallResult.getCallConnectionProperties().getCallConnectionId();

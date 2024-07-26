@@ -46,7 +46,6 @@ import com.azure.core.test.TestMode;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import com.azure.core.test.annotation.DoNotRecord;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -289,13 +288,13 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             CommunicationUserIdentifier receiver = identityAsyncClient.createUser().block();
 
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("HoldUnholdParticipantInACallTest", next))
+                .addPolicy((context, next) -> logHeaders("holdUnholdParticipantInACallTest", next))
                 .sourceIdentity(caller)
                 .buildAsyncClient();
 
             // Create call automation client for receivers.
             CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("HoldUnholdParticipantInACallTest", next))
+                .addPolicy((context, next) -> logHeaders("holdUnholdParticipantInACallTest", next))
                 .buildAsyncClient();
 
             String uniqueId = serviceBusWithNewCall(caller, receiver);

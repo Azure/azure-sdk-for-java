@@ -33,7 +33,7 @@ public class StreamingDataParserUnitTests {
             + "\"data\": \"AQIDBAU=\""
             + "}"
             + "}";
-        AudioData audioData = (AudioData)StreamingDataParser.parse(audioJson.getBytes());
+        AudioData audioData = (AudioData) StreamingDataParser.parse(audioJson.getBytes());
         assertNotNull(audioData);
         checkAudioDataNoParticipant(audioData);
     }
@@ -133,17 +133,17 @@ public class StreamingDataParserUnitTests {
         assertEquals(TextFormat.DISPLAY, transcription.getFormat());
         assertEquals(0.98d, transcription.getConfidence());
         assertEquals(1, transcription.getOffset());
-        assertEquals(2*100, transcription.getDuration().getNano());
+        assertEquals(2 * 100, transcription.getDuration().getNano());
 
         // validate individual words
         List<WordData> words = transcription.getTranscripeWords();
         assertEquals(2, words.size());
         assertEquals("Hello", words.get(0).getText());
         assertEquals(1, words.get(0).getOffset());
-        assertEquals(1*100, words.get(0).getDuration().getNano());
+        assertEquals(1 * 100, words.get(0).getDuration().getNano());
         assertEquals("World", words.get(1).getText());
         assertEquals(6, words.get(1).getOffset());
-        assertEquals(1*100, words.get(0).getDuration().getNano());
+        assertEquals(1 * 100, words.get(0).getDuration().getNano());
 
         assertNotNull(transcription.getParticipant());
         assertEquals("abc12345", transcription.getParticipant().getRawId());
