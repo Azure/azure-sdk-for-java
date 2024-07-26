@@ -36,11 +36,6 @@
       <Class name="com.azure.storage.blob.implementation.models.FilterBlobSegment" />
       <Class name="com.azure.storage.blob.implementation.models.PageListCollection" />
       <Class name="com.azure.storage.blob.implementation.models.PageListSegment" />
-      <Class name="com.azure.storage.blob.implementation.models.ArrowConfiguration" />
-      <Class name="com.azure.storage.blob.implementation.models.BlobContainersSegment" />
-      <Class name="com.azure.storage.blob.implementation.models.BlobSignedIdentifierWrapper" />
-      <Class name="com.azure.storage.blob.implementation.models.BlobTags" />
-      <Class name="com.azure.storage.blob.implementation.models.FilterBlobSegment" />
       <Class name="com.azure.storage.blob.models.BlobContainerAccessPolicies" />
       <Class name="com.azure.storage.blob.models.BlobContainerItem" />
       <Class name="com.azure.storage.blob.models.BlobContainerProperties" />
@@ -51,8 +46,6 @@
       <Class name="com.azure.storage.blob.models.BlockLookupList" />
       <Class name="com.azure.storage.blob.models.PageList" />
       <Class name="com.azure.storage.blob.models.TaggedBlobItem" />
-      <Class name="com.azure.storage.blob.models.BlobServiceProperties" />
-      <Class name="com.azure.storage.blob.models.BlockList" />
       <Class name="com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions" />
       <Class name="com.azure.storage.blob.options.AppendBlobCreateOptions" />
       <Class name="com.azure.storage.blob.options.AppendBlobSealOptions" />
@@ -120,8 +113,6 @@
       <Class name="com.azure.storage.blob.models.BlockLookupList" />
       <Class name="com.azure.storage.blob.models.PageList" />
       <Class name="com.azure.storage.blob.models.TaggedBlobItem" />
-      <Class name="com.azure.storage.blob.models.BlobServiceProperties" />
-      <Class name="com.azure.storage.blob.models.BlockList" />
       <Class name="com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions" />
       <Class name="com.azure.storage.blob.options.AppendBlobCreateOptions" />
       <Class name="com.azure.storage.blob.options.AppendBlobSealOptions" />
