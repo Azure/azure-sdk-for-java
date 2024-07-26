@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -36,6 +37,7 @@ public final class RecordingStateInternal extends ExpandableStringEnum<Recording
      * @param name a name to look for.
      * @return the corresponding RecordingStateInternal.
      */
+    @JsonCreator
     public static RecordingStateInternal fromString(String name) {
         return fromString(name, RecordingStateInternal.class);
     }

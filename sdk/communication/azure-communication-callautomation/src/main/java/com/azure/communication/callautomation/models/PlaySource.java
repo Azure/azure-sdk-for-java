@@ -4,14 +4,15 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonSerializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PlaySource model. */
 @Fluent
-public abstract class PlaySource implements JsonSerializable<PlaySource> {
+public abstract class PlaySource {
     /*
      * Defines the identifier to be used for caching related media
      */
+    @JsonProperty(value = "playSourceCacheId")
     private String playSourceCacheId;
 
     /**

@@ -5,31 +5,30 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The RecognitionChoiceInternal model.
  */
 @Fluent
-public final class RecognitionChoiceInternal implements JsonSerializable<RecognitionChoiceInternal> {
+public final class RecognitionChoiceInternal {
     /*
      * Identifier for a given choice
      */
+    @JsonProperty(value = "label", required = true)
     private String label;
 
     /*
      * List of phrases to recognize
      */
+    @JsonProperty(value = "phrases", required = true)
     private List<String> phrases;
 
     /*
      * The tone property.
      */
+    @JsonProperty(value = "tone")
     private DtmfToneInternal tone;
 
     /**
@@ -96,49 +95,5 @@ public final class RecognitionChoiceInternal implements JsonSerializable<Recogni
     public RecognitionChoiceInternal setTone(DtmfToneInternal tone) {
         this.tone = tone;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("label", this.label);
-        jsonWriter.writeArrayField("phrases", this.phrases, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("tone", this.tone == null ? null : this.tone.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RecognitionChoiceInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RecognitionChoiceInternal if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RecognitionChoiceInternal.
-     */
-    public static RecognitionChoiceInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RecognitionChoiceInternal deserializedRecognitionChoiceInternal = new RecognitionChoiceInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("label".equals(fieldName)) {
-                    deserializedRecognitionChoiceInternal.label = reader.getString();
-                } else if ("phrases".equals(fieldName)) {
-                    List<String> phrases = reader.readArray(reader1 -> reader1.getString());
-                    deserializedRecognitionChoiceInternal.phrases = phrases;
-                } else if ("tone".equals(fieldName)) {
-                    deserializedRecognitionChoiceInternal.tone = DtmfToneInternal.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedRecognitionChoiceInternal;
-        });
     }
 }

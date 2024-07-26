@@ -18,10 +18,9 @@ public class ModelGenerator {
                 .setId(userId));
     }
 
-    static CallParticipantInternal generateAcsCallParticipantInternal(String callerId, boolean isMuted, boolean isHold) {
+    static CallParticipantInternal generateAcsCallParticipantInternal(String callerId, boolean isMuted) {
         return new CallParticipantInternal()
             .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId))
-            .setIsMuted(isMuted)
-            .setIsOnHold(isHold);
+            .setIsMuted(isMuted);
     }
 }
