@@ -189,6 +189,6 @@ public class SimpleTokenCache {
     }
 
     void setRefreshDelay(Duration refreshDelay) {
-        this.REFRESH_DELAY = refreshDelay;
+        REFRESH_DELAY = refreshDelay;
     }
 }

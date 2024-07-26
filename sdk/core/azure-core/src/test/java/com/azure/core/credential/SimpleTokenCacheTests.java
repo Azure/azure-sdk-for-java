@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.core.credential;
 
-import com.azure.core.implementation.AccessTokenCache;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -11,14 +10,14 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static java.lang.Thread.sleep;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link SimpleTokenCache}.
  */
 public class SimpleTokenCacheTests {
-
 
     public static void main(String[] args) {
         AtomicLong refreshes = new AtomicLong(0);
@@ -32,9 +31,7 @@ public class SimpleTokenCacheTests {
 
         cache.setRefreshDelay(Duration.ofSeconds(0));
 
-        StepVerifier.create(cache.getToken()
-            .delayElement(Duration.ofMillis(2000))
-            .flatMap(ignored -> cache.getToken()))
+        StepVerifier.create(cache.getToken().delayElement(Duration.ofMillis(2000)).flatMap(ignored -> cache.getToken()))
             .assertNext(token -> {
                 assertEquals("testToken", token.getToken());
                 assertEquals(2, refreshes.get());
@@ -71,9 +68,7 @@ public class SimpleTokenCacheTests {
 
         cache.setRefreshDelay(Duration.ofSeconds(0));
 
-        StepVerifier.create(cache.getToken()
-                .delayElement(Duration.ofMillis(2000))
-                .flatMap(ignored -> cache.getToken()))
+        StepVerifier.create(cache.getToken().delayElement(Duration.ofMillis(2000)).flatMap(ignored -> cache.getToken()))
             .assertNext(token -> {
                 assertEquals("testToken", token.getToken());
                 assertEquals(2, refreshes.get());
@@ -94,9 +89,7 @@ public class SimpleTokenCacheTests {
 
         cache.setRefreshDelay(Duration.ofSeconds(0));
 
-        StepVerifier.create(cache.getToken()
-                .delayElement(Duration.ofMillis(2000))
-                .flatMap(ignored -> cache.getToken()))
+        StepVerifier.create(cache.getToken().delayElement(Duration.ofMillis(2000)).flatMap(ignored -> cache.getToken()))
             .assertNext(token -> {
                 assertEquals("testToken", token.getToken());
                 assertEquals(1, refreshes.get());
