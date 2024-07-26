@@ -3,11 +3,6 @@
  * Licensed under the MIT License.
  *
  */
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- *
- */
 
 package com.azure.cosmos;
 
@@ -629,7 +624,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "fast" })
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readAllItems() throws Exception {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {
