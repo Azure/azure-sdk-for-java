@@ -369,7 +369,7 @@ public final class AzureMonitorExporterBuilder {
     // in StatsbeatModule for testing only. We might need to revisit this approach later.
     private void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
-            HttpPipeline httpPipeline = createHttpPipeline();
+            this.httpPipeline = createHttpPipeline();
             statsbeatModule = initStatsbeatModule(configProperties);
             File tempDir =
                 TempDirs.getApplicationInsightsTempDir(
