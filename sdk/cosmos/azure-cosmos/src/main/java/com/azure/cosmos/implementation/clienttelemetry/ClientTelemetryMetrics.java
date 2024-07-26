@@ -376,7 +376,7 @@ public final class ClientTelemetryMetrics {
         if (metricTagNames.contains(TagName.RegionName)) {
             effectiveTags.add(Tag.of(
                 TagName.RegionName.toString(),
-                contactedRegions != null && contactedRegions.size() > 0
+                contactedRegions != null && !contactedRegions.isEmpty()
                     ? String.join(", ", contactedRegions) : "NONE"
             ));
         }
