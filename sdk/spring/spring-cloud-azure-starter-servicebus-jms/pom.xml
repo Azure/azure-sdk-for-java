@@ -95,7 +95,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-jms;external_dependency} -->
+      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-jms;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.qpid</groupId>
