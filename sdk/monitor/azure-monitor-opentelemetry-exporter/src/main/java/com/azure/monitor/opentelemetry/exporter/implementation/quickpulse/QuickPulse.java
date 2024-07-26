@@ -68,6 +68,10 @@ public class QuickPulse {
     }
 
     public boolean isEnabled() {
+        if(collector == null) {
+            System.out.println("QuickPulse is disabled because collector is null");
+            return false;
+        }
         return collector.isEnabled();
     }
 
