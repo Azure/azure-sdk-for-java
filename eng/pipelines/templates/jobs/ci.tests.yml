@@ -106,11 +106,11 @@ jobs:
         parameters:
           runProxy: true
 
-      - pwsh: |
-          dotnet tool install --global JetBrains.dotTrace.GlobalTools
-          dottrace attach $(PROXY_PID) --profiling-type=Sampling --save-to="$(Build.ArtifactStagingDirectory)/dotTraceSnapshot.dtp"
-        displayName: Start Profiler
-  
+      # - pwsh: |
+      #     dotnet tool install --global JetBrains.dotTrace.GlobalTools
+      #     dottrace attach $(PROXY_PID) --profiling-type=Sampling --save-to="$(Build.ArtifactStagingDirectory)/dotTraceSnapshot.dtp"
+      #   displayName: Start Profiler
+
       # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
       # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 17 but we're testing against
       # Java 18), then install the latest Java version and use that to run a full build for validation of the latest
@@ -152,8 +152,8 @@ jobs:
       # steps on windows
       - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
 
-      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-        parameters:
-          ArtifactName: 'test_profile_$(System.JobName)'
-          ArtifactPath: '$(Build.ArtifactStagingDirectory)'
-          SbomEnabled: false
+      # - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      #   parameters:
+      #     ArtifactName: 'test_profile_$(System.JobName)'
+      #     ArtifactPath: '$(Build.ArtifactStagingDirectory)'
+      #     SbomEnabled: false
