@@ -47,7 +47,7 @@ com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-openai;1.0.0-beta.10;1.0.0-beta.11
 com.azure:azure-ai-openai-assistants;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-ai-textanalytics;5.4.7;5.5.0-beta.1
+com.azure:azure-ai-textanalytics;5.4.7;5.5.0
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-translation-text;1.0.0;1.1.0-beta.1
 com.azure:azure-ai-translation-document;1.0.0-beta.2;1.0.0-beta.3
