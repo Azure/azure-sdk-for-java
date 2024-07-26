@@ -37,10 +37,9 @@ import com.azure.resourcemanager.compute.fluent.models.RoleInstanceViewInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RoleInstanceListResult;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in CloudServiceRoleInstancesClient.
@@ -58,7 +57,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Initializes an instance of CloudServiceRoleInstancesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CloudServiceRoleInstancesClientImpl(ComputeManagementClientImpl client) {
@@ -165,7 +164,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -207,7 +206,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -249,7 +248,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -269,7 +268,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -291,7 +290,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -308,7 +307,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -326,7 +325,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -343,7 +342,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -362,7 +361,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -377,7 +376,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Deletes a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -393,7 +392,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -437,7 +436,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -481,7 +480,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -500,7 +499,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -519,7 +518,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a role instance from a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -536,7 +535,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -579,7 +578,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -622,7 +621,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -640,7 +639,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -658,7 +657,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Retrieves information about the run-time state of a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -677,7 +676,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -719,7 +718,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -762,7 +761,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -781,7 +780,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -799,7 +798,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -819,7 +818,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -836,7 +835,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * Gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
      * page of role instances. Do this till nextLink is null to fetch all the role instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param expand The expand expression to apply to the operation. 'UserData' is not supported for cloud services.
@@ -854,7 +853,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -896,7 +895,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -938,7 +937,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -958,7 +957,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -980,7 +979,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -997,7 +996,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1015,7 +1014,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1032,7 +1031,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1051,7 +1050,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1066,7 +1065,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * The Reboot Role Instance asynchronous operation requests a reboot of a role instance in the cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1083,7 +1082,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1126,7 +1125,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1169,7 +1168,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1190,7 +1189,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1213,7 +1212,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1231,7 +1230,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1250,7 +1249,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1268,7 +1267,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1288,7 +1287,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1304,7 +1303,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
     /**
      * The Reimage Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1322,7 +1321,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1366,7 +1365,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1410,7 +1409,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1432,7 +1431,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1456,7 +1455,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1475,7 +1474,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1495,7 +1494,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1514,7 +1513,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1535,7 +1534,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1552,7 +1551,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
      * The Rebuild Role Instance asynchronous operation reinstalls the operating system on instances of web roles or
      * worker roles and initializes the storage resources that are used by them. If you do not want to initialize
      * storage resources, you can use Reimage Role Instance.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1568,7 +1567,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1611,7 +1610,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1654,7 +1653,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1672,7 +1671,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1691,7 +1690,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Gets a remote desktop file for a role instance in a cloud service.
-     *
+     * 
      * @param roleInstanceName Name of the role instance.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -1708,7 +1707,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1733,7 +1732,7 @@ public final class CloudServiceRoleInstancesClientImpl implements CloudServiceRo
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

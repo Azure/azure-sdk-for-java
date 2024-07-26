@@ -40,13 +40,13 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -127,7 +127,7 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -143,13 +143,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -230,9 +230,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
