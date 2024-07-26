@@ -12,7 +12,7 @@ schema identifiers rather than full schemas.
 
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Azure Subscription][azure_subscription]
-- An [Event Hubs schema registry][event_hubs_namespace]
+- An [Event Hubs namespace][event_hubs_namespace]
 
 ### Include the package
 
@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
-  <version>1.4.0</version>
+  <version>1.4.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,7 +75,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 
@@ -205,7 +205,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_portal]: https://portal.azure.com
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
-[event_hubs_namespace]: https://learn.microsoft.com/azure/event-hubs/create-schema-registry
+[event_hubs_namespace]: https://docs.microsoft.com/azure/event-hubs/event-hubs-about
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [product_documentation]: https://aka.ms/schemaregistry
 [custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
