@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -16,11 +15,6 @@ public final class DotNetComponentType extends ExpandableStringEnum<DotNetCompon
      * Static value AspireDashboard for DotNetComponentType.
      */
     public static final DotNetComponentType ASPIRE_DASHBOARD = fromString("AspireDashboard");
-
-    /**
-     * Static value AspireResourceServerApi for DotNetComponentType.
-     */
-    public static final DotNetComponentType ASPIRE_RESOURCE_SERVER_API = fromString("AspireResourceServerApi");
 
     /**
      * Creates a new instance of DotNetComponentType value.
@@ -37,7 +31,6 @@ public final class DotNetComponentType extends ExpandableStringEnum<DotNetCompon
      * @param name a name to look for.
      * @return the corresponding DotNetComponentType.
      */
-    @JsonCreator
     public static DotNetComponentType fromString(String name) {
         return fromString(name, DotNetComponentType.class);
     }

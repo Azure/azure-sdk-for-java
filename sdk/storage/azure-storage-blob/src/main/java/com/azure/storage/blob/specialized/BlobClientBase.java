@@ -18,6 +18,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.util.ByteBufferBackedOutputStreamUtil;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
@@ -60,7 +61,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -413,7 +413,7 @@ public class BlobClientBase {
         ByteBuffer initialRange = ByteBuffer.allocate(chunkSize);
         BlobProperties properties;
         BlobDownloadResponse response;
-        try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(initialRange)) {
+        try (ByteBufferBackedOutputStreamUtil dstStream = new ByteBufferBackedOutputStreamUtil(initialRange)) {
             response = this.downloadStreamWithResponse(dstStream,
                 new BlobRange(initialPosition, (long) initialRange.remaining()), null /*downloadRetryOptions*/,
                 options.getRequestConditions(), false, null, context);

@@ -16,30 +16,28 @@ public final class DotNetComponentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DotNetComponentInner model = BinaryData.fromString(
-            "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"rx\",\"value\":\"sojklinhmdptys\"},{\"propertyName\":\"qsgnzxojpsl\",\"value\":\"jgpliuf\"},{\"propertyName\":\"woyxqvapcohhou\",\"value\":\"pqojxcx\"}],\"serviceBinds\":[{\"name\":\"cgdz\",\"serviceId\":\"nr\"},{\"name\":\"cawetzqddt\",\"serviceId\":\"fljhznamtua\"},{\"name\":\"zwcjjncqtj\",\"serviceId\":\"izvg\"}]},\"id\":\"atzuuv\",\"name\":\"xngre\",\"type\":\"wggahttzlswvaj\"}")
+            "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"InProgress\",\"configurations\":[{\"propertyName\":\"hxogjggsvoujkxi\",\"value\":\"afhrkmdyomk\"},{\"propertyName\":\"bv\",\"value\":\"hd\"}],\"serviceBinds\":[{\"name\":\"pwpgddei\",\"serviceId\":\"wzovgk\"}]},\"id\":\"muikjcjcaztbws\",\"name\":\"sqowxwc\",\"type\":\"mlikytw\"}")
             .toObject(DotNetComponentInner.class);
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, model.componentType());
-        Assertions.assertEquals("rx", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("sojklinhmdptys", model.configurations().get(0).value());
-        Assertions.assertEquals("cgdz", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("nr", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("hxogjggsvoujkxi", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("afhrkmdyomk", model.configurations().get(0).value());
+        Assertions.assertEquals("pwpgddei", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("wzovgk", model.serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DotNetComponentInner model = new DotNetComponentInner().withComponentType(DotNetComponentType.ASPIRE_DASHBOARD)
             .withConfigurations(Arrays.asList(
-                new DotNetComponentConfigurationProperty().withPropertyName("rx").withValue("sojklinhmdptys"),
-                new DotNetComponentConfigurationProperty().withPropertyName("qsgnzxojpsl").withValue("jgpliuf"),
-                new DotNetComponentConfigurationProperty().withPropertyName("woyxqvapcohhou").withValue("pqojxcx")))
-            .withServiceBinds(Arrays.asList(new DotNetComponentServiceBind().withName("cgdz").withServiceId("nr"),
-                new DotNetComponentServiceBind().withName("cawetzqddt").withServiceId("fljhznamtua"),
-                new DotNetComponentServiceBind().withName("zwcjjncqtj").withServiceId("izvg")));
+                new DotNetComponentConfigurationProperty().withPropertyName("hxogjggsvoujkxi").withValue("afhrkmdyomk"),
+                new DotNetComponentConfigurationProperty().withPropertyName("bv").withValue("hd")))
+            .withServiceBinds(
+                Arrays.asList(new DotNetComponentServiceBind().withName("pwpgddei").withServiceId("wzovgk")));
         model = BinaryData.fromObject(model).toObject(DotNetComponentInner.class);
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, model.componentType());
-        Assertions.assertEquals("rx", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("sojklinhmdptys", model.configurations().get(0).value());
-        Assertions.assertEquals("cgdz", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("nr", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("hxogjggsvoujkxi", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("afhrkmdyomk", model.configurations().get(0).value());
+        Assertions.assertEquals("pwpgddei", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("wzovgk", model.serviceBinds().get(0).serviceId());
     }
 }

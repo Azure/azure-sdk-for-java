@@ -51,4 +51,14 @@
     <Class name="com.azure.core.serializer.json.jackson.implementation.ObjectMapperShim" />
     <Method name="&lt;init&gt;" />
   </Match>
+
+  <Match>
+    <Bug pattern="SE_INNER_CLASS" />
+    <Class name="com.azure.core.serializer.json.jackson.implementation.JacksonDatabind212$1$1" />
+  </Match>
+
+  <Match>
+    <Bug pattern="SE_NO_SERIALVERSIONID" />
+    <Class name="com.azure.core.serializer.json.jackson.implementation.OptionPropertiesModifier" />
+  </Match>
 </FindBugsFilter>
