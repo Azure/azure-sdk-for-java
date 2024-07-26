@@ -235,6 +235,12 @@ public class BlobNioTestBase extends TestProxyTestBase {
         }
     }
 
+    private static void dumpBufferContents(byte[] buffer1, byte[] buffer2) {
+        System.err.println("Buffers do not match at position: ");
+        System.err.println("Buffer1: " + Arrays.toString(buffer1));
+        System.err.println("Buffer2: " + Arrays.toString(buffer2));
+    }
+
     protected static void compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         long pos = 0L;
         int defaultReadBuffer = 128 * Constants.KB;
@@ -251,6 +257,8 @@ public class BlobNioTestBase extends TestProxyTestBase {
                 int readCount1 = s1.read(buffer1);
                 int readCount2 = s2.read(buffer2);
 
+                dumpBufferContents(buffer1, buffer2);
+
                 // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
                 assertEquals(readCount1, readCount2);
                 assertArraysEqual(buffer1, buffer2);
@@ -265,6 +273,7 @@ public class BlobNioTestBase extends TestProxyTestBase {
             throw new UncheckedIOException(ex);
         }
     }
+
 
     protected String rootNameToContainerName(String root) {
         return root.substring(0, root.length() - 1);
