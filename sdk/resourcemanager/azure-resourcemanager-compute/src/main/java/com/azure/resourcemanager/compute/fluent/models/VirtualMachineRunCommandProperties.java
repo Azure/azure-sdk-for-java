@@ -5,59 +5,56 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandManagedIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandScriptSource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the properties of a Virtual Machine run command.
  */
 @Fluent
-public final class VirtualMachineRunCommandProperties {
+public final class VirtualMachineRunCommandProperties implements JsonSerializable<VirtualMachineRunCommandProperties> {
     /*
      * The source of the run command script.
      */
-    @JsonProperty(value = "source")
     private VirtualMachineRunCommandScriptSource source;
 
     /*
      * The parameters used by the script.
      */
-    @JsonProperty(value = "parameters")
     private List<RunCommandInputParameter> parameters;
 
     /*
      * The parameters used by the script.
      */
-    @JsonProperty(value = "protectedParameters")
     private List<RunCommandInputParameter> protectedParameters;
 
     /*
      * Optional. If set to true, provisioning will complete as soon as the script starts and will not wait for script to
      * complete.
      */
-    @JsonProperty(value = "asyncExecution")
     private Boolean asyncExecution;
 
     /*
      * Specifies the user account on the VM when executing the run command.
      */
-    @JsonProperty(value = "runAsUser")
     private String runAsUser;
 
     /*
      * Specifies the user account password on the VM when executing the run command.
      */
-    @JsonProperty(value = "runAsPassword")
     private String runAsPassword;
 
     /*
      * The timeout in seconds to execute the run command.
      */
-    @JsonProperty(value = "timeoutInSeconds")
     private Integer timeoutInSeconds;
 
     /*
@@ -65,7 +62,6 @@ public final class VirtualMachineRunCommandProperties {
      * create, write access OR use managed identity to provide the VM access to the blob. Refer
      * outputBlobManagedIdentity parameter.
      */
-    @JsonProperty(value = "outputBlobUri")
     private String outputBlobUri;
 
     /*
@@ -73,7 +69,6 @@ public final class VirtualMachineRunCommandProperties {
      * create, write access OR use managed identity to provide the VM access to the blob. Refer errorBlobManagedIdentity
      * parameter.
      */
-    @JsonProperty(value = "errorBlobUri")
     private String errorBlobUri;
 
     /*
@@ -83,7 +78,6 @@ public final class VirtualMachineRunCommandProperties {
      * For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and
      * https://aka.ms/RunCommandManaged
      */
-    @JsonProperty(value = "outputBlobManagedIdentity")
     private RunCommandManagedIdentity outputBlobManagedIdentity;
 
     /*
@@ -93,7 +87,6 @@ public final class VirtualMachineRunCommandProperties {
      * For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and
      * https://aka.ms/RunCommandManaged
      */
-    @JsonProperty(value = "errorBlobManagedIdentity")
     private RunCommandManagedIdentity errorBlobManagedIdentity;
 
     /*
@@ -104,13 +97,11 @@ public final class VirtualMachineRunCommandProperties {
      * See instance view of run command in case of script failures to see executionMessage, output, error:
      * https://aka.ms/runcommandmanaged#get-execution-status-and-results
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The virtual machine run command instance view.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineRunCommandInstanceView instanceView;
 
     /*
@@ -120,7 +111,6 @@ public final class VirtualMachineRunCommandProperties {
      * run command in case of script failures to see executionMessage, output, error:
      * https://aka.ms/runcommandmanaged#get-execution-status-and-results
      */
-    @JsonProperty(value = "treatFailureAsDeploymentFailure")
     private Boolean treatFailureAsDeploymentFailure;
 
     /**
@@ -454,5 +444,91 @@ public final class VirtualMachineRunCommandProperties {
         if (instanceView() != null) {
             instanceView().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("protectedParameters", this.protectedParameters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("asyncExecution", this.asyncExecution);
+        jsonWriter.writeStringField("runAsUser", this.runAsUser);
+        jsonWriter.writeStringField("runAsPassword", this.runAsPassword);
+        jsonWriter.writeNumberField("timeoutInSeconds", this.timeoutInSeconds);
+        jsonWriter.writeStringField("outputBlobUri", this.outputBlobUri);
+        jsonWriter.writeStringField("errorBlobUri", this.errorBlobUri);
+        jsonWriter.writeJsonField("outputBlobManagedIdentity", this.outputBlobManagedIdentity);
+        jsonWriter.writeJsonField("errorBlobManagedIdentity", this.errorBlobManagedIdentity);
+        jsonWriter.writeBooleanField("treatFailureAsDeploymentFailure", this.treatFailureAsDeploymentFailure);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineRunCommandProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineRunCommandProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineRunCommandProperties.
+     */
+    public static VirtualMachineRunCommandProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineRunCommandProperties deserializedVirtualMachineRunCommandProperties
+                = new VirtualMachineRunCommandProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.source
+                        = VirtualMachineRunCommandScriptSource.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    List<RunCommandInputParameter> parameters
+                        = reader.readArray(reader1 -> RunCommandInputParameter.fromJson(reader1));
+                    deserializedVirtualMachineRunCommandProperties.parameters = parameters;
+                } else if ("protectedParameters".equals(fieldName)) {
+                    List<RunCommandInputParameter> protectedParameters
+                        = reader.readArray(reader1 -> RunCommandInputParameter.fromJson(reader1));
+                    deserializedVirtualMachineRunCommandProperties.protectedParameters = protectedParameters;
+                } else if ("asyncExecution".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.asyncExecution
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("runAsUser".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.runAsUser = reader.getString();
+                } else if ("runAsPassword".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.runAsPassword = reader.getString();
+                } else if ("timeoutInSeconds".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.timeoutInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("outputBlobUri".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.outputBlobUri = reader.getString();
+                } else if ("errorBlobUri".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.errorBlobUri = reader.getString();
+                } else if ("outputBlobManagedIdentity".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.outputBlobManagedIdentity
+                        = RunCommandManagedIdentity.fromJson(reader);
+                } else if ("errorBlobManagedIdentity".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.errorBlobManagedIdentity
+                        = RunCommandManagedIdentity.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.provisioningState = reader.getString();
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.instanceView
+                        = VirtualMachineRunCommandInstanceView.fromJson(reader);
+                } else if ("treatFailureAsDeploymentFailure".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.treatFailureAsDeploymentFailure
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineRunCommandProperties;
+        });
     }
 }
