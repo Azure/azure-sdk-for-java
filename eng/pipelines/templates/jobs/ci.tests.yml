@@ -102,7 +102,7 @@ jobs:
         parameters:
           CheckoutRecordings: true
 
-      - template: /eng/common/testproxy/test-proxy-tool.yml
+      - template: /eng/common/testproxy/test-proxy-standalone-tool.yml
         parameters:
           runProxy: true
 
