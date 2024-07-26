@@ -1293,9 +1293,7 @@ public final class BlobContainerClient {
         ResponseBase<ContainersFilterBlobsHeaders, FilterBlobSegment> response =
             StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
-        List<TaggedBlobItem> value = response.getValue().getBlobs() == null
-            ? Collections.emptyList()
-            : response.getValue().getBlobs().stream()
+        List<TaggedBlobItem> value = response.getValue().getBlobs().stream()
             .map(ModelHelper::populateTaggedBlobItem)
             .collect(Collectors.toList());
 

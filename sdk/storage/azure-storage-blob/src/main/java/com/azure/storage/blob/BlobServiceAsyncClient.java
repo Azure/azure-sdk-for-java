@@ -819,13 +819,11 @@ public final class BlobServiceAsyncClient {
             }
 
             // CORS
-            if (properties.getCors() != null) {
-                List<BlobCorsRule> corsRules = new ArrayList<>();
-                for (BlobCorsRule rule : properties.getCors()) {
-                    corsRules.add(ModelHelper.validatedCorsRule(rule));
-                }
-                finalProperties.setCors(corsRules);
+            List<BlobCorsRule> corsRules = new ArrayList<>();
+            for (BlobCorsRule rule : properties.getCors()) {
+                corsRules.add(ModelHelper.validatedCorsRule(rule));
             }
+            finalProperties.setCors(corsRules);
 
             // Default Service Version
             finalProperties.setDefaultServiceVersion(properties.getDefaultServiceVersion());

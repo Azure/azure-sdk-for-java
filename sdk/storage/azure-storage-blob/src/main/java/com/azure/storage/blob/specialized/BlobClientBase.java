@@ -181,10 +181,32 @@ public class BlobClientBase {
      * @param client the async blob client
      */
     protected BlobClientBase(BlobAsyncClientBase client) {
-        this(client, client.getHttpPipeline(), client.getAccountUrl(), client.getServiceVersion(),
-            client.getAccountName(), client.getContainerName(), client.getBlobName(), client.getSnapshotId(),
-            client.getCustomerProvidedKey(), new EncryptionScope().setEncryptionScope(client.getEncryptionScope()),
-            client.getVersionId());
+        if (client.getSnapshotId() != null && client.getVersionId() != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
+        }
+        this.client = client;
+        this.azureBlobStorage = new AzureBlobStorageImplBuilder()
+            .pipeline(client.getHttpPipeline())
+            .url(client.getAccountUrl())
+            .version(client.getServiceVersion().getVersion())
+            .buildClient();
+        this.serviceVersion = client.getServiceVersion();
+
+        this.accountName = client.getAccountName();
+        this.containerName = client.getContainerName();
+        this.blobName = client.getBlobName();
+        this.snapshot = client.getSnapshotId();
+        this.customerProvidedKey = client.getCustomerProvidedKey();
+        this.encryptionScope = new EncryptionScope().setEncryptionScope(client.getEncryptionScope());
+        this.versionId = client.getVersionId();
+        /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
+           when the sas token has already been applied. */
+        try {
+            URI.create(getBlobUrl());
+        } catch (IllegalArgumentException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
     }
 
     /**
@@ -258,7 +280,6 @@ public class BlobClientBase {
         return new BlobClientBase(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(),
             encryptionScope, versionId);
-        //return new BlobClientBase(client.getVersionClient(versionId));
     }
 
     /**
@@ -275,7 +296,6 @@ public class BlobClientBase {
         return new BlobClientBase(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(),
             finalEncryptionScope, getVersionId());
-        //return new BlobClientBase(client.getEncryptionScopeAsyncClient(encryptionScope));
     }
 
     /**
@@ -296,7 +316,6 @@ public class BlobClientBase {
         return new BlobClientBase(this.client, getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getContainerName(), getBlobName(), snapshot, finalCustomerProvidedKey, encryptionScope,
             getVersionId());
-        //return new BlobClientBase(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
     }
 
     /**
@@ -313,7 +332,7 @@ public class BlobClientBase {
      *
      * @return the URL.
      */
-    public String getBlobUrl() {
+    public final String getBlobUrl() {
         String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + Utility.urlEncode(blobName);
         if (this.isSnapshot()) {
             blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
@@ -322,7 +341,6 @@ public class BlobClientBase {
             blobUrl = Utility.appendQueryParameter(blobUrl, "versionid", getVersionId());
         }
         return blobUrl;
-        //return client.getBlobUrl();
     }
 
     /**
@@ -821,8 +839,7 @@ public class BlobClientBase {
         final BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> syncActivationOperation = (pollingContext) ->
-        {
+        Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> syncActivationOperation = (pollingContext) -> {
             try {
                 new URL(options.getSourceUrl());
             } catch (MalformedURLException ex) {

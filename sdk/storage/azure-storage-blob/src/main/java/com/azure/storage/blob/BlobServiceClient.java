@@ -517,9 +517,7 @@ public final class BlobServiceClient {
         ResponseBase<ServicesFilterBlobsHeaders, FilterBlobSegment> response =
             StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
 
-        List<TaggedBlobItem> value = response.getValue().getBlobs() == null
-            ? Collections.emptyList()
-            : response.getValue().getBlobs().stream()
+        List<TaggedBlobItem> value = response.getValue().getBlobs().stream()
             .map(ModelHelper::populateTaggedBlobItem)
             .collect(Collectors.toList());
 
@@ -721,13 +719,11 @@ public final class BlobServiceClient {
             }
 
             // CORS
-            if (properties.getCors() != null) {
-                List<BlobCorsRule> corsRules = new ArrayList<>();
-                for (BlobCorsRule rule : properties.getCors()) {
-                    corsRules.add(ModelHelper.validatedCorsRule(rule));
-                }
-                finalProperties.setCors(corsRules);
+            List<BlobCorsRule> corsRules = new ArrayList<>();
+            for (BlobCorsRule rule : properties.getCors()) {
+                corsRules.add(ModelHelper.validatedCorsRule(rule));
             }
+            finalProperties.setCors(corsRules);
 
             // Default Service Version
             finalProperties.setDefaultServiceVersion(properties.getDefaultServiceVersion());
