@@ -64,10 +64,6 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationemail
       ServiceDirectory: communication
-    - name: azure-monitor-ingestion
-      groupId: com.azure
-      safeName: azuremonitoringestion
-      ServiceDirectory: monitor
     - name: azure-mixedreality-remoterendering
       groupId: com.azure
       safeName: azuremixedrealityremoterendering
