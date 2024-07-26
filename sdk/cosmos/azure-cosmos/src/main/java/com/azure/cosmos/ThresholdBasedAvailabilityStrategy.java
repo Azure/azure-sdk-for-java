@@ -6,7 +6,17 @@ package com.azure.cosmos;
 import java.time.Duration;
 
 /**
- * The type Threshold based retry availability strategy.
+ * <p>
+ *  {@code ThresholdBasedAvailabilityStrategy} is a type which captures settings
+ *  concerning the {@code threshold} and {@code thresholdStep}. What these settings
+ *  enforce is the time after which the Cosmos DB SDK reaches out to a different region
+ *  (enforced by the {@link CosmosClientBuilder#getPreferredRegions()} property) in case the first
+ *  preferred region didn't respond in time.
+ * </p>
+ *
+ * <p>
+ *
+ * </p>
  */
 public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy {
     private static final Duration DEFAULT_THRESHOLD = Duration.ofMillis(500);
