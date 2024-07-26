@@ -17,6 +17,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +29,15 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
     private String rgName = "";
     private Region region = Region.US_WEST2;
     private final String vmssName = "javavmss";
+    private ResourceGroup resourceGroup;
     VirtualMachineScaleSetSkuTypes virtualMachineScaleSetSkuTypes = VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier("Standard_D2s_v3", "Standard");
+
+    @BeforeEach
+    public void initResources() {
+        // Create a resource group
+        rgName = generateRandomResourceName("java-emsi-c-rg", 15);
+        resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+    }
 
     @Override
     protected void cleanUpResources() {
@@ -37,12 +46,9 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
     @Test
     public void canCreateUpdateVirtualMachineScaleSetWithEMSI() throws Exception {
-        rgName = generateRandomResourceName("java-ems-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String identityName2 = generateRandomResourceName("msi-id", 15);
         String networkName = generateRandomResourceName("nw", 10);
-
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create a virtual network to which we will assign "EMSI" with reader access
         //
@@ -300,13 +306,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
     @Test
     public void canCreateVirtualMachineScaleSetWithLMSIAndEMSI() throws Exception {
-        rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String networkName = generateRandomResourceName("nw", 10);
-
-        // Create a resource group
-        //
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create a virtual network to which we will assign "EMSI" with reader access
         //
@@ -453,13 +454,8 @@ public class VirtualMachineScaleSetEMSILMSIOperationsTests extends ComputeManage
 
     @Test
     public void canUpdateVirtualMachineScaleSetWithEMSIAndLMSI() throws Exception {
-        rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id-1", 15);
         String identityName2 = generateRandomResourceName("msi-id-2", 15);
-
-        // Create a resource group
-        //
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
         // Create a virtual network for VMSS
         //

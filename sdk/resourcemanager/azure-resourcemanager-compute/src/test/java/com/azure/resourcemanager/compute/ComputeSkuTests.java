@@ -15,8 +15,11 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ComputeSkuTests extends ComputeManagementTest {
     @Override
@@ -100,12 +103,12 @@ public class ComputeSkuTests extends ComputeManagementTest {
     @Test
     public void canListSkusByRegion() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
-        PagedIterable<ComputeSku> skus = this.computeManager.computeSkus().listByRegion(Region.US_EAST2);
+        List<ComputeSku> skus = this.computeManager.computeSkus().listByRegion(Region.US_EAST2).stream().collect(Collectors.toCollection(LinkedList::new));
         for (ComputeSku sku : skus) {
             Assertions.assertTrue(sku.regions().contains(Region.US_EAST2));
         }
 
-        skus = this.computeManager.computeSkus().listByRegion(Region.fromName("Unknown"));
+        skus = this.computeManager.computeSkus().listByRegion(Region.fromName("Unknown")).stream().collect(Collectors.toCollection(LinkedList::new));
         Assertions.assertEquals(0, TestUtilities.getSize(skus));
     }
 
@@ -125,11 +128,12 @@ public class ComputeSkuTests extends ComputeManagementTest {
     @Test
     public void canListSkusByRegionAndResourceType() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
-        PagedIterable<ComputeSku> skus =
+        List<ComputeSku> skus =
             this
                 .computeManager
                 .computeSkus()
-                .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.VIRTUALMACHINES);
+                .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.VIRTUALMACHINES)
+                .stream().collect(Collectors.toCollection(LinkedList::new));
         for (ComputeSku sku : skus) {
             Assertions.assertTrue(sku.resourceType().equals(ComputeResourceType.VIRTUALMACHINES));
             Assertions.assertTrue(sku.regions().contains(Region.US_EAST2));
@@ -139,7 +143,8 @@ public class ComputeSkuTests extends ComputeManagementTest {
             this
                 .computeManager
                 .computeSkus()
-                .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.fromString("Unknown"));
+                .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.fromString("Unknown"))
+                .stream().collect(Collectors.toCollection(LinkedList::new));
         Assertions.assertNotNull(skus);
         Assertions.assertEquals(0, TestUtilities.getSize(skus));
     }
