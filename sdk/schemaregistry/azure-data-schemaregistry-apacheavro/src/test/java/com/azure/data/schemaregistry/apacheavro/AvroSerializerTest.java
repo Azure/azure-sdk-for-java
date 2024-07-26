@@ -16,10 +16,13 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 import org.apache.avro.message.RawMessageEncoder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -43,6 +46,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AvroSerializerTest {
     private final EncoderFactory encoderFactory = EncoderFactory.get();
     private final DecoderFactory decoderFactory = DecoderFactory.get();
+
+    private AutoCloseable mocksCloseable;
+
+    @BeforeEach
+    public void beforeEach() {
+        mocksCloseable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void afterEach() throws Exception {
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
+    }
 
     /**
      * Tests that the correct exceptions are thrown when constructing an instance with null.
