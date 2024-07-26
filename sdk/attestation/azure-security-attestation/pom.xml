@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-attestation</artifactId>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-attestation;current} -->
+  <version>1.1.25</version> <!-- {x-version-update;com.azure:azure-security-attestation;current} -->
 
   <name>Microsoft Azure SDK for Attestation</name>
   <description>This package contains Microsoft Azure SDK for the Microsoft Azure Attestation service.</description>
@@ -44,13 +44,8 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-json</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
@@ -70,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -82,19 +77,19 @@
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.38.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-exporter-logging</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
+      <version>1.38.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.40.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.38.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -118,19 +113,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -160,9 +149,9 @@
             <bannedDependencies>
               <includes>
                 <include>com.nimbusds:nimbus-jose-jwt:[9.37.3]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-api:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-sdk:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.40.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.38.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-sdk:[1.38.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.38.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -170,21 +159,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java12plus</id>
-      <activation>
-        <jdk>[12,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>
