@@ -50,7 +50,7 @@ class AzureServiceBusConsumerClientConfiguration {
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers,
-            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder>> receiveCustomizers) {
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder>> receiverCustomizers) {
 
             ServiceBusReceiverClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
@@ -62,7 +62,7 @@ class AzureServiceBusConsumerClientConfiguration {
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
             customizers.orderedStream().forEach(factory::addClientBuilderCustomizer);
-            receiveCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
+            receiverCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
         }
 
