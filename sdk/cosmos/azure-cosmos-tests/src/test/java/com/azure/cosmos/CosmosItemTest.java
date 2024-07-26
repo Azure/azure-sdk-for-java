@@ -918,7 +918,7 @@ public class CosmosItemTest extends TestSuiteBase {
             assertThat(diagnostics).isNotNull();
 
             String diagnosticString = diagnostics.toString();
-            assertThat(diagnosticString.contains("The session token : " + sessionTokenWithNonExistentPkRangeId + " for partition key range id : " + actualPkRangeId))
+            assertThat(diagnosticString.contains("The session token : " + sessionTokenWithNonExistentPkRangeId + " for pkRangeId : " + actualPkRangeId))
                 .isTrue();
 
         } catch (Exception ex) {
@@ -932,7 +932,7 @@ public class CosmosItemTest extends TestSuiteBase {
             assertThat(diagnostics).isNotNull();
 
             String diagnosticString = diagnostics.toString();
-            assertThat(diagnosticString.contains("The session token : " + sessionTokenWithNonExistentPkRangeId + "for partition key range id : " + actualPkRangeId))
+            assertThat(diagnosticString.contains("The session token : " + sessionTokenWithNonExistentPkRangeId + "for pkRangeId : " + actualPkRangeId))
                 .isTrue();
         }
     }
