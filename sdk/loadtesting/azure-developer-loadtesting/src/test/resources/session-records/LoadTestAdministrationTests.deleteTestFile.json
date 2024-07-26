@@ -1,0 +1,42 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.eastus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "2cfbf31f-4234-4d08-86b3-9ebce3e7c9ac"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "4a878aff-4bc1-4cf6-aa63-dc6afa57c91a",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Sun, 18 Dec 2022 18:58:25 GMT",
+      "x-ms-correlation-request-id" : "77a82109-648b-44ae-9a68-86ba9d2aaeb2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.eastus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/sample-JMX-file.jmx?api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d802b48c-bbba-4025-8de0-a704ffc15aad"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "dfcd6c85-9911-4d11-9c41-91f126f3bc9a",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Sun, 18 Dec 2022 18:58:25 GMT",
+      "x-ms-correlation-request-id" : "69424850-2eb4-41db-9be6-8df0e63fa3c1"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
