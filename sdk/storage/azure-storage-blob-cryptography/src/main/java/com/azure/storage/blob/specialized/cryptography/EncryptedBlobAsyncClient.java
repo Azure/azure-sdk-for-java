@@ -12,6 +12,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
@@ -37,16 +39,17 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.security.GeneralSecurityException;
@@ -675,10 +678,12 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     private Flux<ByteBuffer> prepareToSendEncryptedRequest(Flux<ByteBuffer> plainText,
         Map<String, String> metadata) {
         return this.encryptBlob(plainText).flatMapMany(encryptedBlob -> {
-            try {
-                metadata.put(ENCRYPTION_DATA_KEY, encryptedBlob.getEncryptionData().toJsonString());
+            try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeJson(encryptedBlob.getEncryptionData()).flush();
+                metadata.put(ENCRYPTION_DATA_KEY, outputStream.toString(StandardCharsets.UTF_8.name()));
                 return encryptedBlob.getCiphertextFlux();
-            } catch (JsonProcessingException e) {
+            } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
             }
         });
