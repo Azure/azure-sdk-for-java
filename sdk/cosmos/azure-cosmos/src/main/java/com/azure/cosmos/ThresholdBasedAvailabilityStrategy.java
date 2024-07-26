@@ -7,14 +7,15 @@ import java.time.Duration;
 
 /**
  * <p>
- *  {@code ThresholdBasedAvailabilityStrategy} provides functionality for a data plane operation
- *  to be routed in a best effort basis to the next preferred regions - (see {@link CosmosClientBuilder#getPreferredRegions()})
+ *  {@link ThresholdBasedAvailabilityStrategy} provides functionality for a data plane operation
+ *  to be routed to the next preferred regions - (see {@link CosmosClientBuilder#getPreferredRegions()})
  *  defined for the Cosmos DB account if a given region did not respond in time. The response in case of a success is from
- *  the fastest responding region.
+ *  the fastest responding region. This way the tail latency improves in case of transient delays from a particular region
+ *  or even the availability improves if a particular replica or a partition is unhealthy in a particular region.
  *  </p>
  *
  * <p>
- *  This type captures settings concerning the {@code threshold} and {@code thresholdStep}. What these settings
+ *  {@link ThresholdBasedAvailabilityStrategy} captures settings concerning the {@code threshold} and {@code thresholdStep}. What these settings
  *  enforce is the time after which the Cosmos DB SDK reaches out to a different region
  *  (enforced by the {@link CosmosClientBuilder#getPreferredRegions()} property) in case the first
  *  preferred region didn't respond in time. Regions can be excluded here though {@link CosmosClientBuilder#getExcludedRegions()}.
@@ -33,13 +34,24 @@ import java.time.Duration;
  * <p>
  *  It can so happen that the first preferred region responds with a non-transient error like a 400s, 401s, 403s, 404s, 405s, 409s, 412s, then
  *  the operation as a whole fails since at this point it is not a Cosmos DB service health issue which can be bypassed by sending an operation
- *  to a different region but more on the parameters of the operation.
+ *  to a different region but more on the parameters of the operation and the service explicitly failing the operation with a status code which
+ *  the Cosmos DB SDK deems as non-retriable.
  * </p>
  *
  * <p>
- *  In order for threshold-based availability strategy to work for point write operations (create, upsert, replace, patch, delete), non-idempotent write
+ *  NOTE: In order for {@link ThresholdBasedAvailabilityStrategy} to work for point write operations (create, upsert, replace, patch, delete), non-idempotent write
  *  retry policy has to be opted into - see {@link CosmosClientBuilder#nonIdempotentWriteRetryOptions(NonIdempotentWriteRetryOptions)}.
  * </p>
+ *
+ *  <p>
+ *  NOTE: {@link ThresholdBasedAvailabilityStrategy} applies to multi-region accounts in case of reads and multi-write accounts for reads and writes to leverage
+ *  the benefit from multiple regions for the account.
+ *  </p>
+ *
+ *  <p>
+ *  NOTE: Since multiple regions could be contacted, this could increase the aggregate RU utilized at an operation level and
+ *  increase load on client-side compute as a tradeoff for tail latency and availability.
+ *  </p>
  */
 public final class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy {
     private static final Duration DEFAULT_THRESHOLD = Duration.ofMillis(500);
