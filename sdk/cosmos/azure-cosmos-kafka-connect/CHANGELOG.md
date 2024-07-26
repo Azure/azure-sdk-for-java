@@ -1,14 +1,9 @@
 ## Release History
 
-### 1.0.0-beta.4 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 1.0.0-beta.4 (2024-07-26)
 
 #### Bugs Fixed
-
-#### Other Changes
+* Changed to fail `CosmosSinkConnector` and `CosmosSourceConnector` when incorrect container name provided. - See [PR 41160](https://github.com/Azure/azure-sdk-for-java/pull/41160)
 
 ### 1.0.0-beta.3 (2024-06-24)
 
