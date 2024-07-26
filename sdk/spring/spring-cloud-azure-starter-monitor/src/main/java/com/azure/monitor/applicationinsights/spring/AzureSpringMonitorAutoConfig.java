@@ -5,7 +5,10 @@ package com.azure.monitor.applicationinsights.spring;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.LiveMetricsSpanProcessor;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulse;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
+import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvider;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.logs.ConfigurableLogRecordExporterProvider;
 import io.opentelemetry.sdk.autoconfigure.spi.metrics.ConfigurableMetricExporterProvider;
@@ -152,6 +155,17 @@ public class AzureSpringMonitorAutoConfig {
             return null;
         }
         return azureMonitorExporterBuilderOpt.get().buildLogRecordExporter();
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Bean
+    AutoConfigurationCustomizerProvider otelCustomizer() {
+        return customizer ->
+            customizer.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> sdkTracerProviderBuilder.addSpanProcessor(
+                azureMonitorExporterBuilderOpt.get().buildLiveMetricsSpanProcessor()));
     }
 
 

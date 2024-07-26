@@ -17,14 +17,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorSpanExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
-import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
+import com.azure.monitor.opentelemetry.exporter.implementation.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.StatsbeatConnectionString;
@@ -32,6 +25,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.heartbeat.Heartbe
 import com.azure.monitor.opentelemetry.exporter.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.QuickPulse;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.Feature;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorHelper;
@@ -251,6 +245,26 @@ public final class AzureMonitorExporterBuilder {
         internalBuildAndFreeze(defaultConfig);
         // TODO (trask) how to pass along configuration properties?
         return buildTraceExporter(defaultConfig);
+    }
+
+    /**
+     * toto
+     * @return toto
+     */
+    public LiveMetricsSpanProcessor buildLiveMetricsSpanProcessor() {
+        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
+        internalBuildAndFreeze(defaultConfig);
+        boolean useNormalizedValueForNonNormalizedCpuPercentage = true;
+        QuickPulse quickPulse = QuickPulse.create(
+            httpPipeline,
+            () -> connectionString.getLiveEndpoint(),
+            () -> connectionString.getInstrumentationKey(),
+            "roleName",
+            "roleInstance",
+            useNormalizedValueForNonNormalizedCpuPercentage,
+            "sdkVersion");
+        SpanDataMapper spanDataMapper = createSpanDataMapper(defaultConfig);
+        return new LiveMetricsSpanProcessor(quickPulse, spanDataMapper);
     }
 
     /**

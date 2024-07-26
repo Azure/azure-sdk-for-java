@@ -78,6 +78,7 @@ class QuickPulsePingSender {
     QuickPulseHeaderInfo ping(String redirectedEndpoint) {
         String instrumentationKey = getInstrumentationKey();
         if (Strings.isNullOrEmpty(instrumentationKey)) {
+            System.out.println("QuickPulsePingSender.ping. Missing instrumentation key");
             // Quick Pulse Ping uri will be null when the instrumentation key is null. When that happens,
             // turn off quick pulse.
             return new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF);
@@ -99,6 +100,9 @@ class QuickPulsePingSender {
         HttpResponse response = null;
         try {
             request.setBody(buildPingEntity(currentDate.getTime()));
+            if(httpPipeline == null) {
+                return new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF);
+            }
             response = httpPipeline.send(request).block();
             if (response == null) {
                 // this shouldn't happen, the mono should complete with a response or a failure
