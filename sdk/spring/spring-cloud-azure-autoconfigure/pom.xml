@@ -85,13 +85,13 @@
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
-      <version>3.2.1</version> <!-- {x-version-update;springboot3_org.springframework.kafka:spring-kafka;external_dependency} -->
+      <version>3.2.2</version> <!-- {x-version-update;springboot3_org.springframework.kafka:spring-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-stream-kafka</artifactId>
-      <version>4.1.2</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+      <version>4.1.3</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Spring Data -->
@@ -105,13 +105,13 @@
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-redis</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-redis;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.data:spring-data-redis;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-tx;external_dependency} -->
+      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -127,7 +127,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-jms;external_dependency} -->
+      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -283,25 +283,25 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-autoconfigure</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
-      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
+      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-actuator-autoconfigure</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -370,37 +370,37 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
-      <version>2.17.1</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+      <version>2.17.2</version> <!-- {x-version-update;springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -408,19 +408,19 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core-test</artifactId>
-      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-core-test;external_dependency} -->
+      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-core-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-metadata</artifactId>
-      <version>3.3.1</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-configuration-metadata;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -436,13 +436,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.17</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- used to test AzureJdbcAutoConfiguration -->
@@ -463,7 +463,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>6.1.10</version> <!-- {x-version-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
+      <version>6.1.11</version> <!-- {x-version-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -558,12 +558,12 @@
             <bannedDependencies>
               <includes>
                 <include>com.mysql:mysql-connector-j:[8.3.0]</include> <!-- {x-include-update;springboot3_com.mysql:mysql-connector-j;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-core:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
-                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.17.1]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+                <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
+                <include>com.fasterxml.jackson.module:jackson-module-afterburner:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
                 <include>io.lettuce:lettuce-core:[6.3.2.RELEASE]</include> <!-- {x-include-update;springboot3_io.lettuce:lettuce-core;external_dependency} -->
                 <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;springboot3_jakarta.servlet:jakarta.servlet-api;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;springboot3_jakarta.validation:jakarta.validation-api;external_dependency} -->
@@ -571,20 +571,20 @@
                 <include>org.hibernate.validator:hibernate-validator:[8.0.1.Final]</include> <!-- {x-include-update;springboot3_org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.messaginghub:pooled-jms:[3.1.6]</include> <!-- {x-include-update;springboot3_org.messaginghub:pooled-jms;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.7.3]</include> <!-- {x-include-update;springboot3_org.postgresql:postgresql;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-configuration-processor:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.1.2]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
-                <include>org.springframework.data:spring-data-redis:[3.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-redis;external_dependency} -->
-                <include>org.springframework.kafka:spring-kafka:[3.2.1]</include> <!-- {x-include-update;springboot3_org.springframework.kafka:spring-kafka;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[4.1.3]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+                <include>org.springframework.data:spring-data-redis:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.data:spring-data-redis;external_dependency} -->
+                <include>org.springframework.kafka:spring-kafka:[3.2.2]</include> <!-- {x-include-update;springboot3_org.springframework.kafka:spring-kafka;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-client:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-client;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-jose:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-resource-server:[6.3.1]</include> <!-- {x-include-update;springboot3_org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
-                <include>org.springframework:spring-context-support:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
-                <include>org.springframework:spring-jdbc:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
-                <include>org.springframework:spring-jms:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jms;external_dependency} -->
-                <include>org.springframework:spring-tx:[6.1.10]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework:spring-context-support:[6.1.11]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context-support;external_dependency} -->
+                <include>org.springframework:spring-jdbc:[6.1.11]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jdbc;external_dependency} -->
+                <include>org.springframework:spring-jms:[6.1.11]</include> <!-- {x-include-update;springboot3_org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-tx:[6.1.11]</include> <!-- {x-include-update;springboot3_org.springframework:spring-tx;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
