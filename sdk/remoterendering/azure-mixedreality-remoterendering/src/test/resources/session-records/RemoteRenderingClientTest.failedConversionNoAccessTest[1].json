@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/failedConversionNoAccess?api-version=2021-01-01",
+    "Headers" : {
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "vhDL90YIgki+jldWpaADzg.0",
+      "retry-after" : "0",
+      "Content-Length" : "206",
+      "StatusCode" : "403",
+      "Body" : "{\"error\":{\"code\":\"DelegatedResourceAccessError\",\"message\":\"Error accessing connected storage account due to insufficient permissions. Check if the Mixed Reality resource has correct permissions assigned.\"}}",
+      "Date" : "Mon, 08 Feb 2021 12:38:45 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
