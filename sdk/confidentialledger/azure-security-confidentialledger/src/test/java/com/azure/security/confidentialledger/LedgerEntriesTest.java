@@ -10,59 +10,74 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Isolated;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-@Isolated("There is an assumption in post ledger entries that checks it is latest entry.")
 public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
     @Test
     public void testPostLedgerEntryTests() throws Exception {
-        // Arrange
+        BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
         RequestOptions requestOptions = new RequestOptions();
-        String transactionId = postLedgerEntry();
+        Response<BinaryData> response = confidentialLedgerClient.createLedgerEntryWithResponse(entry, requestOptions);
+
+        String transactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
+
+        BinaryData parsedResponse = response.getValue();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode responseBodyJson = null;
+
+        responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
+
+        Assertions.assertEquals(responseBodyJson.get("collectionId").asText(), "subledger:0");
 
         Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
 
-        JsonNode transactionResponseBodyJson = OBJECT_MAPPER.readTree(transactionResponse.getValue().toBytes());
+        JsonNode transactionResponseBodyJson = null;
 
-        assertEquals(transactionResponseBodyJson.get(TRANSACTION_ID).asText(), transactionId);
+        try {
+            transactionResponseBodyJson = objectMapper.readTree(transactionResponse.getValue().toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
 
-        int statusCode = transactionResponse.getStatusCode();
-        assertTrue(200 == statusCode || 406 == statusCode, "Expected 200, or 206. Actual: " + statusCode);
+        Assertions.assertEquals(transactionResponseBodyJson.get("transactionId").asText(), transactionId);
+        Assertions.assertTrue(200 == transactionResponse.getStatusCode() || 406 == transactionResponse.getStatusCode());
 
-        // Act
         Response<BinaryData> currentResponse = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
 
-        // Assert
-        JsonNode currentResponseBodyJson = OBJECT_MAPPER.readTree(currentResponse.getValue().toBytes());
+        JsonNode currentResponseBodyJson = null;
 
-        assertTrue(200 == currentResponse.getStatusCode() || 406 == currentResponse.getStatusCode());
+        try {
+            
+            currentResponseBodyJson = objectMapper.readTree(currentResponse.getValue().toBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assertions.assertTrue(false);
+        }
+
+        Assertions.assertTrue(200 == currentResponse.getStatusCode() || 406 == currentResponse.getStatusCode());
 
         if (200 == currentResponse.getStatusCode()) {
-            // we assume no one has created an entry since we created this entry.
-            assertTrue(currentResponseBodyJson.get(TRANSACTION_ID).asDouble() <= Double.parseDouble(transactionId));
+            // we assume no one else is using this test ledger
+            Assertions.assertTrue(currentResponseBodyJson.get("transactionId").asDouble() <= Double.parseDouble(transactionId));
         }
     }
 
     @Test
     public void testGetCollectionIdsTests() throws Exception {
-        postLedgerEntry();
-
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> pagedIterableResponse = confidentialLedgerClient.listCollections(requestOptions);
 
         List<String> collectionKeys = new ArrayList<>();
 
         pagedIterableResponse.streamByPage().forEach(resp -> {
-            assertEquals(200, resp.getStatusCode());
+            Assertions.assertEquals(200, resp.getStatusCode());
             resp.getValue().forEach(item -> {
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode responseBodyJson = null;
@@ -71,15 +86,14 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
                     responseBodyJson = objectMapper.readTree(item.toBytes());
                 } catch (IOException e) {
                     e.printStackTrace();
-                    assertTrue(false);
+                    Assertions.assertTrue(false);
                 }
 
-                Assertions.assertNotNull(responseBodyJson.get(COLLECTION_ID));
-                collectionKeys.add(responseBodyJson.get(COLLECTION_ID).asText());
+                Assertions.assertNotNull(responseBodyJson.get("collectionId"));
+                collectionKeys.add(responseBodyJson.get("collectionId").asText());
             });
 
-            boolean exists = collectionKeys.stream().anyMatch((item) -> item.contains("subledger:0"));
-            assertTrue(exists, "Did not find matching collection.");
+            collectionKeys.stream().anyMatch((item) -> item.contains("subledger:0"));
         });
     }
 }

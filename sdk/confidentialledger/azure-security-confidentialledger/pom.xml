@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-confidentialledger</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-confidentialledger;current} -->
+  <version>1.0.21</version> <!-- {x-version-update;com.azure:azure-security-confidentialledger;current} -->
 
   <name>Microsoft Azure client library for Confidential Ledger</name>
   <description>This package contains Microsoft Azure Confidential Ledger client library.</description>
@@ -32,10 +32,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javaModulesSurefireArgLine>
-      --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
-      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-
       --add-exports com.azure.http.netty/com.azure.core.http.netty=com.azure.security.confidentialledger
 
       --add-reads com.azure.security.confidentialledger=com.azure.http.netty
@@ -46,12 +43,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -64,19 +61,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.4.14</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.4.13</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
