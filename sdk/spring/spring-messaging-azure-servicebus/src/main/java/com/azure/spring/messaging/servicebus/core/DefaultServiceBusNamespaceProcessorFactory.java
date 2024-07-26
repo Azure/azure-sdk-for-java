@@ -173,33 +173,25 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 processorProperties.setSubscriptionName(k.getGroup());
             }
 
-            ServiceBusClientBuilder sharedClientBuilder = new ServiceBusClientBuilderFactory(processorProperties).build();
+            ServiceBusClientBuilderFactory clientBuilderFactory = new ServiceBusClientBuilderFactory(processorProperties);
+            clientBuilderFactory.setDefaultTokenCredential(this.defaultCredential);
+            clientBuilderFactory.setTokenCredentialResolver(this.tokenCredentialResolver);
+            clientBuilderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+            ServiceBusClientBuilder sharedClientBuilder = clientBuilderFactory.build();
             customizeClientBuilder(sharedClientBuilder);
+
             ServiceBusProcessorClient client;
             if (Boolean.TRUE.equals(processorProperties.getSessionEnabled())) {
-
                 ServiceBusSessionProcessorClientBuilderFactory factory =
                     new ServiceBusSessionProcessorClientBuilderFactory(sharedClientBuilder, processorProperties, messageListener, errorHandler);
-
-                factory.setDefaultTokenCredential(this.defaultCredential);
-                factory.setTokenCredentialResolver(this.tokenCredentialResolver);
-                factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
-
                 ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
                 customizeClientBuilder(name, subscription, builder);
-
                 client = builder.buildProcessorClient();
             } else {
                 ServiceBusProcessorClientBuilderFactory factory =
                     new ServiceBusProcessorClientBuilderFactory(sharedClientBuilder, processorProperties, messageListener, errorHandler);
-
-                factory.setDefaultTokenCredential(this.defaultCredential);
-                factory.setTokenCredentialResolver(this.tokenCredentialResolver);
-                factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
-
                 ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = factory.build();
                 customizeClientBuilder(name, subscription, builder);
-
                 client = builder.buildProcessorClient();
             }
 

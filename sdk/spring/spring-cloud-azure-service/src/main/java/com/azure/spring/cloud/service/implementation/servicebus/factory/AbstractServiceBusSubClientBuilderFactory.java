@@ -10,11 +10,18 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
+import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusClientCommonProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -24,8 +31,16 @@ import java.util.function.BiConsumer;
  */
 abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBusClientCommonProperties> extends AbstractAzureAmqpClientBuilderFactory<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceBusSubClientBuilderFactory.class);
+
     private final P properties;
-    private final ServiceBusClientBuilder serviceBusClientBuilder;
+
+    private final ServiceBusClientBuilderFactory clientBuilderFactory;
+    private ServiceBusClientBuilder serviceBusClientBuilder;
+    private final boolean shareServiceBusClientBuilder;
+    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers = new ArrayList<>();
+    private ServiceConnectionStringProvider<?> connectionStringProvider;
+    private String springIdentifier;
 
     /**
      * Create a {@link AbstractServiceBusSubClientBuilderFactory} instance with the properties.
@@ -48,9 +63,63 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
                                               P properties) {
         this.properties = properties;
         if (serviceBusClientBuilder != null) {
+            this.clientBuilderFactory = null;
             this.serviceBusClientBuilder = serviceBusClientBuilder;
+            this.shareServiceBusClientBuilder = true;
         } else {
-            this.serviceBusClientBuilder = new ServiceBusClientBuilderFactory(properties).build();
+            this.clientBuilderFactory = new ServiceBusClientBuilderFactory(properties);
+            this.shareServiceBusClientBuilder = false;
+        }
+    }
+
+    protected boolean isShareServiceBusClientBuilder() {
+        return shareServiceBusClientBuilder;
+    }
+
+    public void addClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> clientBuilderCustomizer) {
+        if (!isShareServiceBusClientBuilder()) {
+            this.clientBuilderCustomizers.add(clientBuilderCustomizer);
+        }
+    }
+
+    @Override
+    public void setSpringIdentifier(String springIdentifier) {
+        if (!isShareServiceBusClientBuilder()) {
+            if (!StringUtils.hasText(springIdentifier)) {
+                LOGGER.warn("SpringIdentifier is null or empty, skip for non-shared ServiceBusClientBuilderFactory.");
+                return;
+            }
+
+            this.springIdentifier = springIdentifier;
+        }
+    }
+
+    @Override
+    public void setDefaultTokenCredential(TokenCredential defaultTokenCredential) {
+        if (!isShareServiceBusClientBuilder()) {
+            if (defaultTokenCredential != null) {
+                this.defaultTokenCredential = defaultTokenCredential;
+            } else {
+                LOGGER.debug("Will ignore the 'null' default token credential, skip for non-shared ServiceBusClientBuilderFactory.");
+            }
+        }
+    }
+
+    @Override
+    public void setConnectionStringProvider(ServiceConnectionStringProvider<?> connectionStringProvider) {
+        if (!isShareServiceBusClientBuilder()) {
+            this.connectionStringProvider = connectionStringProvider;
+        }
+    }
+
+    @Override
+    public void setTokenCredentialResolver(AzureCredentialResolver<TokenCredential> tokenCredentialResolver) {
+        if (!isShareServiceBusClientBuilder()) {
+            if (tokenCredentialResolver != null) {
+                this.tokenCredentialResolver = tokenCredentialResolver;
+            } else {
+                LOGGER.debug("Will ignore the 'null' token credential resolver, skip for non-shared ServiceBusClientBuilderFactory..");
+            }
         }
     }
 
@@ -103,6 +172,16 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
     protected void configureService(T builder) { }
 
     protected ServiceBusClientBuilder getServiceBusClientBuilder() {
-        return serviceBusClientBuilder;
+        if (!this.isShareServiceBusClientBuilder() && this.serviceBusClientBuilder == null) {
+            LOGGER.debug("Build the non-shared ServiceBusClientBuilder for {}.", this.getClass().getName());
+            assert this.clientBuilderFactory != null;
+            this.clientBuilderFactory.setSpringIdentifier(this.springIdentifier);
+            this.clientBuilderFactory.setDefaultTokenCredential(this.defaultTokenCredential);
+            this.clientBuilderFactory.setConnectionStringProvider(this.connectionStringProvider);
+            this.clientBuilderFactory.setTokenCredentialResolver(this.tokenCredentialResolver);
+            this.clientBuilderCustomizers.forEach(this.clientBuilderFactory::addBuilderCustomizer);
+            this.serviceBusClientBuilder = this.clientBuilderFactory.build();
+        }
+        return this.serviceBusClientBuilder;
     }
 }

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -52,14 +53,15 @@ class ServiceBusReceiverClientBuilderFactoryTests
     }
 
     @Override
-    void verifyServicePropertiesConfigured() {
-        ServiceBusReceiverClientTestProperties properties = getServiceBusReceiverClientTestProperties();
+    void verifyServicePropertiesConfigured(boolean isShareServiceClientBuilder) {
+        ServiceBusReceiverClientTestProperties properties = getServiceBusReceiverClientTestProperties(isShareServiceClientBuilder);
 
         final ServiceBusReceiverClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
+        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder = factory.build();
         builder.buildClient();
 
-        verify(getSharedServiceBusClientBuilder(properties), times(1)).customEndpointAddress(customEndpoint);
+        verify(factory.getServiceBusClientBuilder(), times(1)).customEndpointAddress(customEndpoint);
 
         verify(builder, times(1)).topicName("test-topic");
         verify(builder, times(1)).subscriptionName("test-subscription");
@@ -72,7 +74,7 @@ class ServiceBusReceiverClientBuilderFactoryTests
         verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
-    private ServiceBusReceiverClientTestProperties getServiceBusReceiverClientTestProperties() {
+    private ServiceBusReceiverClientTestProperties getServiceBusReceiverClientTestProperties(boolean isShareServiceClientBuilder) {
         ServiceBusReceiverClientTestProperties properties = new ServiceBusReceiverClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityName("test-topic");
@@ -84,6 +86,7 @@ class ServiceBusReceiverClientBuilderFactoryTests
         properties.setMaxAutoLockRenewDuration(Duration.ofSeconds(5));
         properties.setAutoComplete(false);
         properties.setCustomEndpointAddress(this.customEndpoint);
+        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
         return properties;
     }
 
@@ -93,14 +96,29 @@ class ServiceBusReceiverClientBuilderFactoryTests
     }
 
     static class ServiceBusReceiverClientBuilderFactoryExt extends ServiceBusReceiverClientBuilderFactory {
+        private ServiceBusClientBuilder serviceBusClientBuilder;
+        private final ServiceBusReceiverClientTestProperties properties;
         ServiceBusReceiverClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
                                                   ServiceBusReceiverClientTestProperties properties) {
             super(serviceBusClientBuilder, properties);
+            this.properties = properties;
+            if (properties.isShareServiceBusClientBuilder() && serviceBusClientBuilder != null) {
+                this.serviceBusClientBuilder = serviceBusClientBuilder;
+            }
         }
 
         @Override
         public ServiceBusClientBuilder.ServiceBusReceiverClientBuilder createBuilderInstance() {
             return mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
+        }
+
+        @Override
+        protected ServiceBusClientBuilder getServiceBusClientBuilder() {
+            if (!this.isShareServiceBusClientBuilder() && this.serviceBusClientBuilder == null) {
+                TestServiceBusClientBuilderFactory clientBuilderFactory = spy(new TestServiceBusClientBuilderFactory(properties));
+                this.serviceBusClientBuilder = clientBuilderFactory.build();
+            }
+            return this.serviceBusClientBuilder;
         }
     }
 }

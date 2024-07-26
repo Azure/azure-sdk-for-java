@@ -111,15 +111,15 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
             ProducerProperties producerProperties = parentMerger.merge(properties, this.namespaceProperties);
             producerProperties.setEntityName(entityName);
 
-            ServiceBusClientBuilder sharedClientBuilder = new ServiceBusClientBuilderFactory(producerProperties).build();
+            ServiceBusClientBuilderFactory clientBuilderFactory = new ServiceBusClientBuilderFactory(producerProperties);
+            clientBuilderFactory.setDefaultTokenCredential(this.defaultCredential);
+            clientBuilderFactory.setTokenCredentialResolver(this.tokenCredentialResolver);
+            clientBuilderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+            ServiceBusClientBuilder sharedClientBuilder = clientBuilderFactory.build();
             customizeClientBuilder(sharedClientBuilder);
 
             ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(sharedClientBuilder, producerProperties);
-
-            factory.setDefaultTokenCredential(this.defaultCredential);
-            factory.setTokenCredentialResolver(this.tokenCredentialResolver);
-            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
-
+            this.clientBuilderCustomizers.forEach(factory::addClientBuilderCustomizer);
             ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = factory.build();
             customizeBuilder(name, builder);
             ServiceBusSenderAsyncClient producerClient = builder.buildAsyncClient();

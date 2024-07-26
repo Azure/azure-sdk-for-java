@@ -63,7 +63,8 @@ class AzureServiceBusProcessorClientConfiguration {
             ServiceBusErrorHandler errorHandler,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> customizers) {
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorCustomizers) {
 
             ServiceBusProcessorClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
@@ -81,7 +82,8 @@ class AzureServiceBusProcessorClientConfiguration {
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-            customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+            customizers.orderedStream().forEach(factory::addClientBuilderCustomizer);
+            processorCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
         }
 
@@ -113,7 +115,8 @@ class AzureServiceBusProcessorClientConfiguration {
             ServiceBusErrorHandler errorHandler,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> customizers) {
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorCustomizers) {
 
             ServiceBusSessionProcessorClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
@@ -130,7 +133,8 @@ class AzureServiceBusProcessorClientConfiguration {
             }
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
-            customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+            customizers.orderedStream().forEach(factory::addClientBuilderCustomizer);
+            sessionProcessorCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
         }
 
