@@ -16,7 +16,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-phonenumbers</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+  <version>1.1.14</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
 
   <name>Microsoft Azure client phone numbers library for communication</name>
   <description>
@@ -49,13 +49,12 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.66</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.phonenumbers/com.azure.communication.phonenumbers=ALL-UNNAMED
-      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -63,12 +62,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.3.4</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
+      <version>1.3.3</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -103,7 +102,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -129,19 +128,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -155,15 +148,6 @@
         <configuration>
           <includes>
             <include>com/azure/communication/phonenumbers/*.class</include>
-            <include>com/azure/communication/phonenumbers/implementation/*.class</include>
-            <include>com/azure/communication/phonenumbers/implementation/converters/*.class</include>
-            <include>com/azure/communication/phonenumbers/implementation/models/*.class</include>
-            <include>com/azure/communication/phonenumbers/models/*.class</include>
-            <include>com/azure/communication/phonenumbers/siprouting/*.class</include>
-            <include>com/azure/communication/phonenumbers/siprouting/implementation/*.class</include>
-            <include>com/azure/communication/phonenumbers/siprouting/implementation/converters/*.class</include>
-            <include>com/azure/communication/phonenumbers/siprouting/implementation/models/*.class</include>
-            <include>com/azure/communication/phonenumbers/siprouting/models/*.class</include>
           </includes>
         </configuration>
         <executions>
@@ -192,21 +176,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java12plus</id>
-      <activation>
-        <jdk>[12,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>
