@@ -17,6 +17,7 @@ import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Util used to load certificate from pem file.
@@ -25,16 +26,16 @@ public final class CertificateUtil {
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
 
-    public static Certificate[] loadCertificates(String string)
+    public static Certificate[] loadCertificatesFromSecretBundleValue(String string)
         throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException {
         if (string.contains(BEGIN_CERTIFICATE)) {
-            return loadCertificatesFromPem(string);
+            return loadCertificatesFromSecretBundleValuePem(string);
         } else {
-            return loadCertificatesFromPKCS12(string);
+            return loadCertificatesFromSecretBundleValuePKCS12(string);
         }
     }
 
-    public static Certificate[] loadCertificatesFromPem(InputStream inputStream)
+    public static Certificate[] loadCertificatesFromSecretBundleValuePem(InputStream inputStream)
         throws IOException, CertificateException {
         List<Certificate> certificates = new ArrayList<>();
         StringBuilder builder = new StringBuilder();
@@ -55,12 +56,12 @@ public final class CertificateUtil {
         return certificates.toArray(new Certificate[0]);
     }
 
-    public static Certificate[] loadCertificatesFromPem(String string) throws IOException, CertificateException {
+    public static Certificate[] loadCertificatesFromSecretBundleValuePem(String string) throws IOException, CertificateException {
         InputStream inputStream = new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8));
-        return loadCertificatesFromPem(inputStream);
+        return loadCertificatesFromSecretBundleValuePem(inputStream);
     }
 
-    public static Certificate[] loadCertificatesFromPKCS12(InputStream inputStream)
+    public static Certificate[] loadCertificatesFromSecretBundleValuePKCS12(InputStream inputStream)
         throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
         KeyStore keyStore = KeyStore.getInstance("PKCS12");
         keyStore.load(inputStream, "".toCharArray());
@@ -68,9 +69,22 @@ public final class CertificateUtil {
         return keyStore.getCertificateChain(alias);
     }
 
-    public static Certificate[] loadCertificatesFromPKCS12(String string)
+    public static Certificate[] loadCertificatesFromSecretBundleValuePKCS12(String string)
         throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
         InputStream inputStream = new ByteArrayInputStream(Base64.getDecoder().decode(string));
-        return loadCertificatesFromPKCS12(inputStream);
+        return loadCertificatesFromSecretBundleValuePKCS12(inputStream);
+    }
+
+    public static Certificate loadX509CertificateFromFile(InputStream inputStream) throws CertificateException {
+        CertificateFactory factory = CertificateFactory.getInstance("X.509");
+        return factory.generateCertificate(inputStream);
+    }
+
+    public static Certificate[] loadX509CertificatesFromFile(InputStream inputStream) throws CertificateException {
+        CertificateFactory factory = CertificateFactory.getInstance("X.509");
+        return factory.generateCertificates(inputStream).stream()
+            .map(o -> (Certificate) o)
+            .collect(Collectors.toList())
+            .toArray(new Certificate[0]);
     }
 }

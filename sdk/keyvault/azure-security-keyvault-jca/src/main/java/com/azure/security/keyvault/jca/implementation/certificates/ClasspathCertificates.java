@@ -4,8 +4,6 @@
 package com.azure.security.keyvault.jca.implementation.certificates;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -13,8 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +18,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificateFromFile;
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificatesFromFile;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -129,12 +127,10 @@ public final class ClasspathCertificates implements AzureCertificates {
                         if (alias.lastIndexOf('.') != -1) {
                             alias = alias.substring(0, alias.lastIndexOf('.'));
                         }
-                        byte[] bytes = readAllBytes(inputStream);
                         try {
-                            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-                            X509Certificate certificate = (X509Certificate) cf.generateCertificate(
-                                new ByteArrayInputStream(bytes));
+                            Certificate certificate = loadX509CertificateFromFile(inputStream);
                             setCertificateEntry(alias, certificate);
+                            certificateChains.put(alias, loadX509CertificatesFromFile(inputStream));
                             LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
                                 new Object[]{alias, filename});
                         } catch (CertificateException e) {
@@ -146,30 +142,6 @@ public final class ClasspathCertificates implements AzureCertificates {
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to determine certificates to side-load", ioe);
         }
-    }
-
-
-    /**
-     * Read all the bytes for a given input stream.
-     *
-     * @param inputStream the input stream.
-     * @return the byte-array.
-     * @throws IOException when an I/O error occurs.
-     */
-    private byte[] readAllBytes(InputStream inputStream) throws IOException {
-        byte[] bytes;
-        try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream()) {
-            byte[] buffer = new byte[1024];
-            while (true) {
-                int r = inputStream.read(buffer);
-                if (r == -1) {
-                    break;
-                }
-                byteOutput.write(buffer, 0, r);
-            }
-            bytes = byteOutput.toByteArray();
-        }
-        return bytes;
     }
 
     /**

@@ -41,7 +41,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 import static com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil.getLoginUri;
-import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadCertificates;
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadCertificatesFromSecretBundleValue;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.API_VERSION_POSTFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.HTTPS_PREFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
@@ -322,7 +322,7 @@ public class KeyVaultClient {
 
         Certificate[] certificates = new Certificate[0];
         try {
-            certificates = loadCertificates(secretBundle.getValue());
+            certificates = loadCertificatesFromSecretBundleValue(secretBundle.getValue());
         } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
             LOGGER.log(WARNING, "Unable to decode certificate chain", e);
         }

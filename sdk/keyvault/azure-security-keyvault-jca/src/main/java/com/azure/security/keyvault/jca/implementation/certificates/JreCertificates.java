@@ -83,7 +83,7 @@ public final class JreCertificates implements AzureCertificates {
                 HashMap::new,
                 (m, v) -> {
                     try {
-                        m.put(v, new Certificate[]{jreKeyStore.getCertificate(v)});
+                        m.put(v, jreKeyStore.getCertificateChain(v));
                     } catch (KeyStoreException e) {
                         LOGGER.log(WARNING, "Unable to get the jre key store certificate.", e);
                     }

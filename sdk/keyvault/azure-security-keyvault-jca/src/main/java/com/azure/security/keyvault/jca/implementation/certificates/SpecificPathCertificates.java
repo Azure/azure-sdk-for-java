@@ -5,7 +5,6 @@ package com.azure.security.keyvault.jca.implementation.certificates;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,8 +13,6 @@ import java.security.Key;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,6 +23,8 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificateFromFile;
+import static com.azure.security.keyvault.jca.implementation.utils.CertificateUtil.loadX509CertificatesFromFile;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
@@ -129,14 +128,13 @@ public final class SpecificPathCertificates implements AzureCertificates {
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     private void setCertificateByFile(File file) throws IOException {
-        X509Certificate certificate;
-        try (InputStream inputStream = new FileInputStream(file);
-            BufferedInputStream bytes = new BufferedInputStream(inputStream)) {
+        Certificate certificate;
+        try (InputStream inputStream = new FileInputStream(file)) {
             String alias = toCertificateAlias(file);
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            certificate = (X509Certificate) cf.generateCertificate(bytes);
+            certificate = loadX509CertificateFromFile(inputStream);
             if (certificate != null) {
                 setCertificateEntry(alias, certificate);
+                certificateChains.put(alias, loadX509CertificatesFromFile(inputStream));
                 LOGGER.log(INFO, "Load certificate from specific path. alias = {0}, thumbprint = {1}, file = {2}",
                     new Object[]{alias, getThumbprint(certificate), file.getName()});
             }
