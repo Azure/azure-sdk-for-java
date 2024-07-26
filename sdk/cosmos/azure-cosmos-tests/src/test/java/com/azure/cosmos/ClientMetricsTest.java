@@ -14,7 +14,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
@@ -32,6 +31,8 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -48,6 +49,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import io.micrometer.core.instrument.Measurement;
 import io.micrometer.core.instrument.Meter;
@@ -105,6 +107,18 @@ public class ClientMetricsTest extends BatchTestBase {
     public Triple<MeterRegistry, CosmosMicrometerMetricsOptions, CosmosClient> beforeTest(
         CosmosDiagnosticsThresholds thresholds,
         CosmosMetricCategory... metricCategories) {
+        CosmosClient client = getClientBuilder()
+            .buildClient();
+        this.databaseId = "ClientMetricsTest-" + UUID.randomUUID();
+        this.containerId = UUID.randomUUID().toString();
+
+        client.createDatabase(databaseId);
+        client.asyncClient().getDatabase(databaseId).createContainer(
+            new CosmosContainerProperties(containerId, "/mypk"),
+            ThroughputProperties.createManualThroughput(10100),
+            new CosmosContainerRequestOptions()
+        ).block();
+        client.close();
 
         MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
         assertThat(meterRegistry).isNotNull();
@@ -129,11 +143,9 @@ public class ClientMetricsTest extends BatchTestBase {
             inputMetricsOptions.applyDiagnosticThresholdsForTransportLevelMeters(true);
         }
 
-        CosmosClient client = getClientBuilder()
+        client = getClientBuilder()
             .clientTelemetryConfig(inputClientTelemetryConfig)
             .buildClient();
-        logger.info("Client created beforeTest: {}", client);
-
 
         assertThat(
             ImplementationBridgeHelpers
@@ -149,9 +161,6 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(writeRegions).isNotNull().isNotEmpty();
         this.preferredRegion = writeRegions.iterator().next();
 
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(client.asyncClient());
-        databaseId = asyncContainer.getDatabase().getId();
-        containerId = asyncContainer.getId();
 
         container = client.getDatabase(databaseId).getContainer(containerId);
         return new Triple<>(meterRegistry, inputMetricsOptions, client);
@@ -160,6 +169,7 @@ public class ClientMetricsTest extends BatchTestBase {
     public void afterTest(MeterRegistry meterRegistry, CosmosClient client) {
         this.container = null;
         if (client != null) {
+            client.getDatabase(databaseId).delete();
             client.close();
         }
 
@@ -319,7 +329,8 @@ public class ClientMetricsTest extends BatchTestBase {
             MeterRegistry meterRegistry = testSetup.getFirst();
             CosmosMicrometerMetricsOptions cosmosMicrometerMetricsOptions = testSetup.getSecond();
             CosmosClient client = testSetup.getThird();
-
+            cosmosMicrometerMetricsOptions
+                .configureDefaultTagNames(CosmosMetricTagName.ALL);
             if (suppressConsistencyLevelTag) {
                 cosmosMicrometerMetricsOptions
                     .configureMeter(
