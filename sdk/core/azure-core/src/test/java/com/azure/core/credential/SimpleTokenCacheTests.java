@@ -2,20 +2,46 @@
 // Licensed under the MIT License.
 package com.azure.core.credential;
 
+import com.azure.core.implementation.AccessTokenCache;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.concurrent.atomic.AtomicLong;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static java.lang.Thread.sleep;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests {@link SimpleTokenCache}.
  */
 public class SimpleTokenCacheTests {
+
+
+    public static void main(String[] args) {
+        AtomicLong refreshes = new AtomicLong(0);
+
+        TokenCredential dummyCred = request -> {
+            refreshes.incrementAndGet();
+            return Mono.just(new TokenCacheTests.Token("testToken", 30000, 1000));
+        };
+
+        SimpleTokenCache cache = new SimpleTokenCache(() -> dummyCred.getToken(new TokenRequestContext()));
+
+        cache.setRefreshDelay(Duration.ofSeconds(0));
+
+        StepVerifier.create(cache.getToken()
+            .delayElement(Duration.ofMillis(2000))
+            .flatMap(ignored -> cache.getToken()))
+            .assertNext(token -> {
+                assertEquals("testToken", token.getToken());
+                assertEquals(2, refreshes.get());
+            })
+            .verifyComplete();
+    }
+
     @Test
     public void wipResetsOnCancel() {
         SimpleTokenCache simpleTokenCache
@@ -30,5 +56,28 @@ public class SimpleTokenCacheTests {
             .verify();
 
         assertNull(simpleTokenCache.getWipValue());
+    }
+
+    @Test
+    public void testRefreshOnFlow() throws InterruptedException {
+        AtomicLong refreshes = new AtomicLong(0);
+
+        TokenCredential dummyCred = request -> {
+            refreshes.incrementAndGet();
+            return Mono.just(new TokenCacheTests.Token("testToken", 30000, 1000));
+        };
+
+        SimpleTokenCache cache = new SimpleTokenCache(() -> dummyCred.getToken(new TokenRequestContext()));
+
+        cache.setRefreshDelay(Duration.ofSeconds(0));
+
+        StepVerifier.create(cache.getToken()
+                .delayElement(Duration.ofMillis(2000))
+                .flatMap(ignored -> cache.getToken()))
+            .assertNext(token -> {
+                assertEquals("testToken", token.getToken());
+                assertEquals(2, refreshes.get());
+            })
+            .verifyComplete();
     }
 }
