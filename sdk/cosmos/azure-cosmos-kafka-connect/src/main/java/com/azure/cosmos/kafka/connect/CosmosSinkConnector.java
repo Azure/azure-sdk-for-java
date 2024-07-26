@@ -3,9 +3,12 @@
 
 package com.azure.cosmos.kafka.connect;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
+import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkContainersConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTaskConfig;
 import org.apache.kafka.common.config.Config;
@@ -22,6 +25,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.kafka.connect.implementation.CosmosContainerUtils.validateContainers;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateCosmosAccountAuthConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateWriteConfig;
@@ -41,6 +45,11 @@ public final class CosmosSinkConnector extends SinkConnector {
         LOGGER.info("Starting the kafka cosmos sink connector");
         this.sinkConfig = new CosmosSinkConfig(props);
         this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
+        CosmosSinkContainersConfig containersConfig = this.sinkConfig.getContainersConfig();
+        CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
+        validateContainers(new ArrayList<>(containersConfig.getTopicToContainerMap().values()), cosmosAsyncClient,
+            containersConfig.getDatabaseName());
+        cosmosAsyncClient.close();
     }
 
     @Override

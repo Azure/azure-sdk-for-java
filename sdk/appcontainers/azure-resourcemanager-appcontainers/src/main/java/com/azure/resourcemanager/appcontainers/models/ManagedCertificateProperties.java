@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Certificate resource specific properties.
  */
 @Fluent
-public final class ManagedCertificateProperties {
+public final class ManagedCertificateProperties implements JsonSerializable<ManagedCertificateProperties> {
     /*
      * Provisioning state of the certificate.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateProvisioningState provisioningState;
 
     /*
      * Subject name of the certificate.
      */
-    @JsonProperty(value = "subjectName")
     private String subjectName;
 
     /*
      * Any error occurred during the certificate provision.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private String error;
 
     /*
      * Selected type of domain control validation for managed certificates.
      */
-    @JsonProperty(value = "domainControlValidation")
     private ManagedCertificateDomainControlValidation domainControlValidation;
 
     /*
      * A TXT token used for DNS TXT domain control validation when issuing this type of managed certificates.
      */
-    @JsonProperty(value = "validationToken", access = JsonProperty.Access.WRITE_ONLY)
     private String validationToken;
 
     /**
@@ -123,5 +122,53 @@ public final class ManagedCertificateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subjectName", this.subjectName);
+        jsonWriter.writeStringField("domainControlValidation",
+            this.domainControlValidation == null ? null : this.domainControlValidation.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedCertificateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedCertificateProperties.
+     */
+    public static ManagedCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedCertificateProperties deserializedManagedCertificateProperties = new ManagedCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedCertificateProperties.provisioningState
+                        = CertificateProvisioningState.fromString(reader.getString());
+                } else if ("subjectName".equals(fieldName)) {
+                    deserializedManagedCertificateProperties.subjectName = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedManagedCertificateProperties.error = reader.getString();
+                } else if ("domainControlValidation".equals(fieldName)) {
+                    deserializedManagedCertificateProperties.domainControlValidation
+                        = ManagedCertificateDomainControlValidation.fromString(reader.getString());
+                } else if ("validationToken".equals(fieldName)) {
+                    deserializedManagedCertificateProperties.validationToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedCertificateProperties;
+        });
     }
 }

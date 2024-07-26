@@ -7,5 +7,5 @@ module com.azure.data.schemaregistry.jsonschema {
 
     exports com.azure.data.schemaregistry.jsonschema;
 
-    opens com.azure.data.schemaregistry.jsonschema to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.data.schemaregistry.jsonschema to com.azure.core;
 }

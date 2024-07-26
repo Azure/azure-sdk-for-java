@@ -20,7 +20,7 @@ public final class BuilderCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BuilderCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"environmentId\":\"wvlqdqgb\",\"containerRegistries\":[{\"containerRegistryServer\":\"lihkaetcktvfc\",\"identityResourceId\":\"vf\"},{\"containerRegistryServer\":\"nkymuctqhjfbebrj\",\"identityResourceId\":\"xerf\"},{\"containerRegistryServer\":\"wutttxfvjrbi\",\"identityResourceId\":\"phxepcyvahf\"}]},\"identity\":{\"principalId\":\"847b4663-757a-41a8-a56a-bef3059e77aa\",\"tenantId\":\"df774d78-50b5-4a1d-adac-338d71865837\",\"type\":\"None\",\"userAssignedIdentities\":{\"uujqgidokgjljyo\":{\"principalId\":\"a7fee7c7-290a-4bae-94d9-fb07083e5965\",\"clientId\":\"0889cb62-fb77-4fdb-b1c8-2b173c8fc2be\"},\"cltbgsncghkjesz\":{\"principalId\":\"164d1a09-5a25-463b-b558-f2efc8364f6b\",\"clientId\":\"2ffaa11d-2317-4fec-86d8-1d93bf776f8a\"},\"ijhtxf\":{\"principalId\":\"3951829e-34d2-4e98-bf40-5a758a45d0e8\",\"clientId\":\"96279c01-3539-4642-84b5-ebccf5e05ff1\"},\"bfs\":{\"principalId\":\"728f80c3-ede8-4470-87e4-fe11de510296\",\"clientId\":\"8b1c2b8d-f2f2-4209-8f41-3f8c230b516b\"}}},\"location\":\"nehmpvecx\",\"tags\":{\"ukgri\":\"ebfqkkrbm\",\"fbxzpuzycisp\":\"flz\",\"y\":\"qzahmgkbrp\",\"rgvtqag\":\"hibnuqqkpika\"},\"id\":\"buynhijggm\",\"name\":\"bfs\",\"type\":\"arbu\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"environmentId\":\"pnazzm\",\"containerRegistries\":[{\"containerRegistryServer\":\"unmpxttd\",\"identityResourceId\":\"hrbnlankxmyskpbh\"},{\"containerRegistryServer\":\"nbtkcxywnytnr\",\"identityResourceId\":\"yn\"}]},\"identity\":{\"principalId\":\"99dac99b-6165-4414-8858-081afadffaee\",\"tenantId\":\"9e9e4442-9e55-454f-9121-dfd87c468189\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"zfcl\":{\"principalId\":\"97be5077-94a1-473d-baa0-da7633d0826c\",\"clientId\":\"2099c3f0-e4d9-420c-9d5b-85bace4a931d\"},\"xdbabphlwr\":{\"principalId\":\"f0472d36-d7b8-4ded-a1c3-7b4b6ccccb2a\",\"clientId\":\"e147659a-84e8-472b-80fd-0d82d0663c31\"}}},\"location\":\"fkts\",\"tags\":{\"nyyazttbtwwrqpue\":\"ucoc\",\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"},{\"properties\":{\"provisioningState\":\"Creating\",\"environmentId\":\"lwzbhvgyugu\",\"containerRegistries\":[{\"containerRegistryServer\":\"mkfssxqukkfplgm\",\"identityResourceId\":\"sxnkjzkdeslpvlo\"},{\"containerRegistryServer\":\"wiyighxpkdw\",\"identityResourceId\":\"baiuebbaumny\"},{\"containerRegistryServer\":\"upedeojnabckhs\",\"identityResourceId\":\"txp\"}]},\"identity\":{\"principalId\":\"f84befd7-75fa-49a4-abee-cfbabdc853d1\",\"tenantId\":\"85643d46-bb48-41b8-ad99-9bc5fea1ab84\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"esap\":{\"principalId\":\"a98a3a00-f04d-4aec-bdad-24e8cea65ea8\",\"clientId\":\"5a3b38f1-76b5-4b45-ba9e-61ef317d599a\"},\"dqmh\":{\"principalId\":\"656b7cd5-d2b0-4edf-b482-37215064e168\",\"clientId\":\"c8bb6d30-8937-448a-97a2-c4ff7d398651\"},\"htldwk\":{\"principalId\":\"dd5064b4-3820-4423-834c-29b659c662b6\",\"clientId\":\"d75b71f7-777c-4b86-9fa1-82c28fab3b0d\"},\"uutkncw\":{\"principalId\":\"c059546f-c78c-47cf-9cfa-5cafa7a16def\",\"clientId\":\"7de0cf22-8535-493e-86f6-03a477389d01\"}}},\"location\":\"wsvlxotogtwrupqs\",\"tags\":{\"notyfjfcnjbkcn\":\"micykvceoveilo\"},\"id\":\"dhbt\",\"name\":\"kphywpnvjto\",\"type\":\"nermcl\"}],\"nextLink\":\"lphox\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"environmentId\":\"wvlqdqgb\",\"containerRegistries\":[{\"containerRegistryServer\":\"lihkaetcktvfc\",\"identityResourceId\":\"vf\"},{\"containerRegistryServer\":\"nkymuctqhjfbebrj\",\"identityResourceId\":\"xerf\"},{\"containerRegistryServer\":\"wutttxfvjrbi\",\"identityResourceId\":\"phxepcyvahf\"}]},\"identity\":{\"principalId\":\"6116c058-eba5-4061-b3ae-7455b5556991\",\"tenantId\":\"c2af2442-ae1e-4167-9d39-74e1a14da5ab\",\"type\":\"None\",\"userAssignedIdentities\":{\"uujqgidokgjljyo\":{\"principalId\":\"a757718b-710f-466f-a30f-34b2659a9f95\",\"clientId\":\"463419ed-90f1-430b-94e7-baabff4ae2be\"},\"cltbgsncghkjesz\":{\"principalId\":\"f17519cf-2614-42f6-9fba-d0243096e68c\",\"clientId\":\"c157b6a4-a13c-4a3e-b350-8b92761d5039\"},\"ijhtxf\":{\"principalId\":\"f35079d3-e5c8-4f08-9b6d-50bc235723b1\",\"clientId\":\"38672513-c5c0-4fc4-bcb6-4096d70df526\"},\"bfs\":{\"principalId\":\"7c6feed8-2369-4cdb-a641-9501acb7369e\",\"clientId\":\"4c8e71e2-1dec-41d8-9471-9e49cc5633ca\"}}},\"location\":\"nehmpvecx\",\"tags\":{\"ukgri\":\"ebfqkkrbm\",\"fbxzpuzycisp\":\"flz\",\"y\":\"qzahmgkbrp\",\"rgvtqag\":\"hibnuqqkpika\"},\"id\":\"buynhijggm\",\"name\":\"bfs\",\"type\":\"arbu\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"environmentId\":\"pnazzm\",\"containerRegistries\":[{\"containerRegistryServer\":\"unmpxttd\",\"identityResourceId\":\"hrbnlankxmyskpbh\"},{\"containerRegistryServer\":\"nbtkcxywnytnr\",\"identityResourceId\":\"yn\"}]},\"identity\":{\"principalId\":\"8c4f8cad-95be-43fc-9af1-3891f19eed5f\",\"tenantId\":\"f300bc32-5687-40c4-a6db-9a281e441b8f\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"zfcl\":{\"principalId\":\"a6c038a9-68b3-4ad5-ab1b-28fb2a913980\",\"clientId\":\"3835975b-60f8-426c-baa1-12f6aeaa8e77\"},\"xdbabphlwr\":{\"principalId\":\"a163ac13-9b44-4267-9c02-e4b0f39578a6\",\"clientId\":\"ac02da76-d879-4da8-8f06-fbac643020fa\"}}},\"location\":\"fkts\",\"tags\":{\"nyyazttbtwwrqpue\":\"ucoc\",\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"},{\"properties\":{\"provisioningState\":\"Creating\",\"environmentId\":\"lwzbhvgyugu\",\"containerRegistries\":[{\"containerRegistryServer\":\"mkfssxqukkfplgm\",\"identityResourceId\":\"sxnkjzkdeslpvlo\"},{\"containerRegistryServer\":\"wiyighxpkdw\",\"identityResourceId\":\"baiuebbaumny\"},{\"containerRegistryServer\":\"upedeojnabckhs\",\"identityResourceId\":\"txp\"}]},\"identity\":{\"principalId\":\"ff2c8f4c-6e73-442a-bf3f-ecf542250681\",\"tenantId\":\"a0772b03-a106-40b8-a71c-7aa7cefafea6\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"esap\":{\"principalId\":\"82ef2278-0f8f-41a1-bf62-298f329aeec9\",\"clientId\":\"811e26e6-b5ac-4853-b68b-e43b570864e8\"},\"dqmh\":{\"principalId\":\"9a44ee5d-214d-4fe7-89f7-f4dc411e09ff\",\"clientId\":\"715c181e-35aa-4cb1-ba06-2aa063a2a5b0\"},\"htldwk\":{\"principalId\":\"a7295eb3-b065-4af9-8956-d3ad80ed4300\",\"clientId\":\"e22adda0-5402-4e0a-b092-6271f0e44450\"},\"uutkncw\":{\"principalId\":\"58dfdcfd-ea8b-46a4-a7aa-fb5115d79b67\",\"clientId\":\"b5a3c6eb-d44a-44c4-a301-a7e23ea5dd67\"}}},\"location\":\"wsvlxotogtwrupqs\",\"tags\":{\"notyfjfcnjbkcn\":\"micykvceoveilo\"},\"id\":\"dhbt\",\"name\":\"kphywpnvjto\",\"type\":\"nermcl\"}],\"nextLink\":\"lphox\"}")
             .toObject(BuilderCollection.class);
         Assertions.assertEquals("nehmpvecx", model.value().get(0).location());
         Assertions.assertEquals("ebfqkkrbm", model.value().get(0).tags().get("ukgri"));
@@ -37,51 +37,51 @@ public final class BuilderCollectionTests {
         BuilderCollection model
             = new BuilderCollection()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new BuilderResourceInner().withLocation("nehmpvecx")
-                                .withTags(mapOf("ukgri", "ebfqkkrbm", "fbxzpuzycisp", "flz", "y", "qzahmgkbrp",
-                                    "rgvtqag", "hibnuqqkpika"))
-                                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-                                    .withUserAssignedIdentities(mapOf("uujqgidokgjljyo", new UserAssignedIdentity(),
-                                        "cltbgsncghkjesz", new UserAssignedIdentity(), "ijhtxf",
-                                        new UserAssignedIdentity(), "bfs", new UserAssignedIdentity())))
-                                .withEnvironmentId("wvlqdqgb")
-                                .withContainerRegistries(Arrays.asList(
-                                    new ContainerRegistry().withContainerRegistryServer("lihkaetcktvfc")
-                                        .withIdentityResourceId("vf"),
-                                    new ContainerRegistry().withContainerRegistryServer("nkymuctqhjfbebrj")
-                                        .withIdentityResourceId("xerf"),
-                                    new ContainerRegistry().withContainerRegistryServer("wutttxfvjrbi")
-                                        .withIdentityResourceId("phxepcyvahf"))),
-                            new BuilderResourceInner().withLocation("fkts")
-                                .withTags(mapOf("nyyazttbtwwrqpue", "ucoc", "xibxujwbhqwalm", "ckzywbiexzfeyue", "ux",
-                                    "zyoxaepdkzjan", "zt", "hdwbavxbniwdjs"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf("zfcl", new UserAssignedIdentity(),
-                                            "xdbabphlwr", new UserAssignedIdentity())))
-                                .withEnvironmentId("pnazzm")
-                                .withContainerRegistries(Arrays.asList(
-                                    new ContainerRegistry().withContainerRegistryServer("unmpxttd")
-                                        .withIdentityResourceId("hrbnlankxmyskpbh"),
-                                    new ContainerRegistry().withContainerRegistryServer("nbtkcxywnytnr")
-                                        .withIdentityResourceId("yn"))),
-                            new BuilderResourceInner().withLocation("wsvlxotogtwrupqs")
-                                .withTags(mapOf("notyfjfcnjbkcn", "micykvceoveilo"))
-                                .withIdentity(new ManagedServiceIdentity()
+                    Arrays.asList(
+                        new BuilderResourceInner().withLocation("nehmpvecx")
+                            .withTags(mapOf("ukgri", "ebfqkkrbm", "fbxzpuzycisp", "flz", "y", "qzahmgkbrp", "rgvtqag",
+                                "hibnuqqkpika"))
+                            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                                .withUserAssignedIdentities(mapOf("uujqgidokgjljyo", new UserAssignedIdentity(),
+                                    "cltbgsncghkjesz", new UserAssignedIdentity(), "ijhtxf", new UserAssignedIdentity(),
+                                    "bfs", new UserAssignedIdentity())))
+                            .withEnvironmentId("wvlqdqgb")
+                            .withContainerRegistries(Arrays.asList(
+                                new ContainerRegistry().withContainerRegistryServer("lihkaetcktvfc")
+                                    .withIdentityResourceId("vf"),
+                                new ContainerRegistry().withContainerRegistryServer("nkymuctqhjfbebrj")
+                                    .withIdentityResourceId("xerf"),
+                                new ContainerRegistry().withContainerRegistryServer("wutttxfvjrbi")
+                                    .withIdentityResourceId("phxepcyvahf"))),
+                        new BuilderResourceInner().withLocation("fkts")
+                            .withTags(mapOf("nyyazttbtwwrqpue", "ucoc", "xibxujwbhqwalm", "ckzywbiexzfeyue", "ux",
+                                "zyoxaepdkzjan", "zt", "hdwbavxbniwdjs"))
+                            .withIdentity(
+                                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                                    .withUserAssignedIdentities(mapOf("zfcl", new UserAssignedIdentity(), "xdbabphlwr",
+                                        new UserAssignedIdentity())))
+                            .withEnvironmentId("pnazzm")
+                            .withContainerRegistries(Arrays.asList(
+                                new ContainerRegistry().withContainerRegistryServer("unmpxttd")
+                                    .withIdentityResourceId("hrbnlankxmyskpbh"),
+                                new ContainerRegistry().withContainerRegistryServer("nbtkcxywnytnr")
+                                    .withIdentityResourceId("yn"))),
+                        new BuilderResourceInner().withLocation("wsvlxotogtwrupqs")
+                            .withTags(mapOf("notyfjfcnjbkcn", "micykvceoveilo"))
+                            .withIdentity(
+                                new ManagedServiceIdentity()
                                     .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                                     .withUserAssignedIdentities(mapOf("esap", new UserAssignedIdentity(), "dqmh",
                                         new UserAssignedIdentity(), "htldwk", new UserAssignedIdentity(), "uutkncw",
                                         new UserAssignedIdentity())))
-                                .withEnvironmentId("lwzbhvgyugu")
-                                .withContainerRegistries(Arrays.asList(
-                                    new ContainerRegistry().withContainerRegistryServer("mkfssxqukkfplgm")
-                                        .withIdentityResourceId("sxnkjzkdeslpvlo"),
-                                    new ContainerRegistry().withContainerRegistryServer("wiyighxpkdw")
-                                        .withIdentityResourceId("baiuebbaumny"),
-                                    new ContainerRegistry().withContainerRegistryServer("upedeojnabckhs")
-                                        .withIdentityResourceId("txp")))))
+                            .withEnvironmentId("lwzbhvgyugu")
+                            .withContainerRegistries(Arrays.asList(
+                                new ContainerRegistry().withContainerRegistryServer("mkfssxqukkfplgm")
+                                    .withIdentityResourceId("sxnkjzkdeslpvlo"),
+                                new ContainerRegistry().withContainerRegistryServer("wiyighxpkdw")
+                                    .withIdentityResourceId("baiuebbaumny"),
+                                new ContainerRegistry().withContainerRegistryServer("upedeojnabckhs")
+                                    .withIdentityResourceId("txp")))))
                 .withNextLink("lphox");
         model = BinaryData.fromObject(model).toObject(BuilderCollection.class);
         Assertions.assertEquals("nehmpvecx", model.value().get(0).location());

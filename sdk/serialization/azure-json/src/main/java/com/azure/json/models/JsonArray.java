@@ -145,7 +145,7 @@ public class JsonArray extends JsonElement {
 
         if (token != JsonToken.START_ARRAY) {
             throw new IllegalStateException(
-                "JsonReader is pointing to an invalid token for deserialization. " + "Token was: " + token + ".");
+                "JsonReader is pointing to an invalid token for deserialization. Token was: " + token + ".");
         }
 
         return new JsonArray(jsonReader.readArray(JsonElement::fromJson));
