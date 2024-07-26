@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -30,9 +29,9 @@ import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.SampleName;
-import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
+import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlActiveDirectoryAdministrator;
@@ -58,6 +57,7 @@ import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -71,6 +71,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,9 +86,19 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private static final String SQL_FIREWALLRULE_NAME = "firewallrule1";
     private static final String START_IPADDRESS = "10.102.1.10";
     private static final String END_IPADDRESS = "10.102.1.12";
+    private static final List<String> REGION_CAPABILITY_METHOD_NAMES = Arrays.asList("canGetSqlServerCapabilitiesAndCreateIdentity", "testRandomSku", "generateSku");
+    private RegionCapabilities regionCapabilities;
 
     // Only one sync database is allowed per region per subscription
     // canCRUDSqlSyncMember and canCRUDSqlSyncGroup need to be in 2 different region
+
+    @BeforeEach
+    public void initRegionCapabilities() {
+        if (regionCapabilities == null
+            && REGION_CAPABILITY_METHOD_NAMES.contains(this.testContextManager.getTestName())) {
+            regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
+        }
+    }
 
     @Test
     public void canCRUDSqlSyncMember() throws Exception {
@@ -584,14 +595,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    @LiveOnly
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
 
-        RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
         Assertions.assertNotNull(regionCapabilities);
         Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
         Assertions
@@ -1654,7 +1663,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    @LiveOnly
     public void testRandomSku() {
         // LiveOnly because "test timing out after latest test proxy update"
         // "M" series is not supported in this region
@@ -1663,21 +1671,21 @@ public class SqlServerOperationsTests extends SqlServerTest {
         List<ElasticPoolSku> elasticPoolSkus = ElasticPoolSku.getAll().stream().filter(sku -> !"M".equals(sku.toSku().family())).collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(elasticPoolSkus);
 
-        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
+        regionCapabilities.supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
-                    edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
-                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT || "M".equals(serviceObjective.sku().family())) {
-                            databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku()));
-                        }
-                    });
+                    edition.supportedServiceLevelObjectives()
+                        .stream().filter(serviceObjective ->
+                            (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT)
+                                || "M".equals(serviceObjective.sku().family()))
+                        .forEach(serviceObjective -> databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku())));
                 });
                 serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
-                    edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
-                        if (performance.status() != CapabilityStatus.AVAILABLE && performance.status() != CapabilityStatus.DEFAULT || "M".equals(performance.sku().family())) {
-                            elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku()));
-                        }
-                    });
+                    edition.supportedElasticPoolPerformanceLevels()
+                        .stream().filter(performance ->
+                            (performance.status() != CapabilityStatus.AVAILABLE && performance.status() != CapabilityStatus.DEFAULT)
+                                || "M".equals(performance.sku().family()))
+                        .forEach(performance -> elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku())));
                 });
             });
 
@@ -1704,7 +1712,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void generateSku() throws IOException {
         StringBuilder databaseSkuBuilder = new StringBuilder();
         StringBuilder elasticPoolSkuBuilder = new StringBuilder();
-        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
+        regionCapabilities.supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
                     if (edition.name().equalsIgnoreCase("System")) {
