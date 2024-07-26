@@ -47,7 +47,7 @@ com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-openai;1.0.0-beta.10;1.0.0-beta.11
 com.azure:azure-ai-openai-assistants;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-ai-textanalytics;5.4.7;5.5.0
+com.azure:azure-ai-textanalytics;5.5.0;5.6.0-beta.1
 com.azure:azure-ai-textanalytics-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-translation-text;1.0.0;1.1.0-beta.1
 com.azure:azure-ai-translation-document;1.0.0-beta.2;1.0.0-beta.3
@@ -115,7 +115,7 @@ com.azure.cosmos.spark:azure-cosmos-spark-account-data-resolver-sample;1.0.0-bet
 com.azure:azure-cosmos-test;1.0.0-beta.7;1.0.0-beta.8
 com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure.cosmos.kafka:azure-cosmos-kafka-connect;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-data-appconfiguration;1.6.2;1.7.0-beta.1
+com.azure:azure-data-appconfiguration;1.6.2;1.6.3
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-data-schemaregistry;1.4.7;1.5.0-beta.1
 com.azure:azure-data-schemaregistry-apacheavro;1.1.18;1.2.0-beta.2
@@ -483,6 +483,8 @@ io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 unreleased_com.azure:azure-identity;1.14.0-beta.1
+
+unreleased_com.azure:azure-json;1.2.0-beta.1
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
