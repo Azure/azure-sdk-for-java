@@ -276,6 +276,8 @@ public final class ClientTelemetryMetrics {
         if (registryRefCount
             .computeIfAbsent(registry, (meterRegistry) -> new AtomicLong(0))
             .incrementAndGet() == 1L) {
+
+            System.out.println("Adding new meter registry, total registries  " + registryRefCount.size());
             ClientTelemetryMetrics
                 .compositeRegistry
                 .add(registry);
@@ -289,6 +291,8 @@ public final class ClientTelemetryMetrics {
 
             // reset the cached flag whether any actual meter registry is available
             lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
+        } else {
+            System.out.println("Adding new meter registry is skipped");
         }
     }
 
@@ -373,13 +377,11 @@ public final class ClientTelemetryMetrics {
             ));
         }
 
-        if (contactedRegions != null &&
-            contactedRegions.size() > 0 &&
-            metricTagNames.contains(TagName.RegionName)) {
-
+        if (metricTagNames.contains(TagName.RegionName)) {
             effectiveTags.add(Tag.of(
                 TagName.RegionName.toString(),
-                String.join(", ", contactedRegions)
+                contactedRegions != null && contactedRegions.size() > 0
+                    ? String.join(", ", contactedRegions) : "NONE"
             ));
         }
 
@@ -761,6 +763,12 @@ public final class ClientTelemetryMetrics {
 
             if (metricTagNames.contains(TagName.RequestOperationType)) {
                 effectiveTags.add(QUERYPLAN_TAG);
+            }
+            if (metricTagNames.contains(TagName.RequestStatusCode)) {
+                effectiveTags.add(Tag.of(TagName.RequestStatusCode.toString(),"NONE"));
+            }
+            if (metricTagNames.contains(TagName.PartitionKeyRangeId)) {
+                effectiveTags.add(Tag.of(TagName.PartitionKeyRangeId.toString(),"NONE"));
             }
 
             return Tags.of(effectiveTags);
