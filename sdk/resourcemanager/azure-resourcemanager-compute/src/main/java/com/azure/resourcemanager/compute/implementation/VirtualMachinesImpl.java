@@ -5,9 +5,11 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
@@ -32,11 +34,10 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.PrivilegedAction;
@@ -162,9 +163,9 @@ public class VirtualMachinesImpl
             .map(
                 captureResultInner -> {
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        return mapper.writeValueAsString(captureResultInner);
-                    } catch (JsonProcessingException ex) {
+                        return SerializerFactory.createDefaultManagementSerializerAdapter()
+                            .serialize(captureResultInner, SerializerEncoding.JSON);
+                    } catch (IOException ex) {
                         throw logger.logExceptionAsError(Exceptions.propagate(ex));
                     }
                 });
