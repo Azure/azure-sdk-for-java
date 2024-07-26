@@ -8,14 +8,17 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The class describes a parameter of a template.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = MessageTemplateValue.class, visible = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = MessageTemplateValue.class)
 @JsonTypeName("MessageTemplateValue")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "text", value = MessageTemplateText.class),
@@ -32,7 +35,7 @@ public abstract class MessageTemplateValue {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String refValue;
+    private String refValue;
 
     /**
      * Creates an instance of MessageTemplateValue class.
@@ -53,23 +56,5 @@ public abstract class MessageTemplateValue {
     @Generated
     public String getRefValue() {
         return this.refValue;
-    }
-
-    /*
-     * The type discriminator describing a template parameter type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private MessageTemplateValueKind kind = MessageTemplateValueKind.fromString("MessageTemplateValue");
-
-    /**
-     * Get the kind property: The type discriminator describing a template parameter type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    public MessageTemplateValueKind getKind() {
-        return this.kind;
     }
 }

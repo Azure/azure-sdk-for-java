@@ -19,14 +19,14 @@ public final class MessageReceipt {
      */
     @Generated
     @JsonProperty(value = "messageId")
-    private final String messageId;
+    private String messageId;
 
     /*
      * The native external platform user identifier of the recipient.
      */
     @Generated
     @JsonProperty(value = "to")
-    private final String to;
+    private String to;
 
     /**
      * Creates an instance of MessageReceipt class.

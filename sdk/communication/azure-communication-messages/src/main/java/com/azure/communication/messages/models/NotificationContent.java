@@ -8,7 +8,6 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,7 +15,11 @@ import java.util.List;
 /**
  * Details of the message to send.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = NotificationContent.class, visible = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = NotificationContent.class)
 @JsonTypeName("NotificationContent")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "text", value = TextNotificationContent.class),
@@ -30,14 +33,14 @@ public abstract class NotificationContent {
      */
     @Generated
     @JsonProperty(value = "channelRegistrationId")
-    private final String channelRegistrationId;
+    private String channelRegistrationId;
 
     /*
      * The native external platform user identifiers of the recipient.
      */
     @Generated
     @JsonProperty(value = "to")
-    private final List<String> to;
+    private List<String> to;
 
     /**
      * Creates an instance of NotificationContent class.
@@ -71,23 +74,5 @@ public abstract class NotificationContent {
     @Generated
     public List<String> getTo() {
         return this.to;
-    }
-
-    /*
-     * The type discriminator describing a notification type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private CommunicationMessageKind kind = CommunicationMessageKind.fromString("NotificationContent");
-
-    /**
-     * Get the kind property: The type discriminator describing a notification type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    public CommunicationMessageKind getKind() {
-        return this.kind;
     }
 }
