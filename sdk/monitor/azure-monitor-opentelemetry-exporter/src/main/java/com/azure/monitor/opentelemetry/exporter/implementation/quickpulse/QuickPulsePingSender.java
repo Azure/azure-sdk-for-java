@@ -76,7 +76,10 @@ class QuickPulsePingSender {
     }
 
     QuickPulseHeaderInfo ping(String redirectedEndpoint) {
+        System.out.println("QuickPulsePingSender.ping");
+        System.out.println("redirectedEndpoint = " + redirectedEndpoint);
         String instrumentationKey = getInstrumentationKey();
+        System.out.println("instrumentationKey = " + instrumentationKey);
         if (Strings.isNullOrEmpty(instrumentationKey)) {
             System.out.println("QuickPulsePingSender.ping. Missing instrumentation key");
             // Quick Pulse Ping uri will be null when the instrumentation key is null. When that happens,
@@ -87,6 +90,7 @@ class QuickPulsePingSender {
         Date currentDate = new Date();
         String endpointPrefix =
             Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
+        System.out.println("endpointPrefix = " + endpointPrefix);
         HttpRequest request =
             networkHelper.buildPingRequest(
                 currentDate,
@@ -101,17 +105,24 @@ class QuickPulsePingSender {
         try {
             request.setBody(buildPingEntity(currentDate.getTime()));
             if(httpPipeline == null) {
+                System.out.println("httpPipeline is null");
                 return new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF);
             }
+            System.out.println("QuickPulsePingSender.ping. Sending request");
             response = httpPipeline.send(request).block();
+            System.out.println("QuickPulsePingSender.ping. Response received");
             if (response == null) {
+                System.out.println("QuickPulsePingSender.ping. Response is null");
                 // this shouldn't happen, the mono should complete with a response or a failure
                 throw new AssertionError("http response mono returned empty");
             }
 
             if (networkHelper.isSuccess(response)) {
+                System.out.println("QuickPulsePingSender.ping. Response is success");
                 QuickPulseHeaderInfo quickPulseHeaderInfo = networkHelper.getQuickPulseHeaderInfo(response);
-                switch (quickPulseHeaderInfo.getQuickPulseStatus()) {
+                QuickPulseStatus quickPulseStatus = quickPulseHeaderInfo.getQuickPulseStatus();
+                System.out.println("quickPulseStatus = " + quickPulseStatus);
+                switch (quickPulseStatus) {
                     case QP_IS_OFF:
                     case QP_IS_ON:
                         lastValidTransmission = sendTime;
@@ -122,9 +133,13 @@ class QuickPulsePingSender {
                         break;
                 }
             }
+            else {
+                System.out.println("QuickPulsePingSender.ping. Response is not success");
+            }
         } catch (Throwable t) {
             if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
                 t, getQuickPulseEndpoint(), friendlyExceptionThrown, logger)) {
+                System.out.println("QuickPulsePingSender.ping. Exception occurred");
                 operationLogger.recordFailure(
                     t.getMessage() + " (" + endpointPrefix + ")", t, QUICK_PULSE_PING_ERROR);
             }
@@ -170,11 +185,13 @@ class QuickPulsePingSender {
     }
 
     private QuickPulseHeaderInfo onPingError(long sendTime) {
+        System.out.println("QuickPulsePingSender.onPingError. Handling ping error");
         double timeFromLastValidTransmission = (sendTime - lastValidTransmission) / 1000000000.0;
         if (timeFromLastValidTransmission >= 60.0) {
+            System.out.println("QuickPulsePingSender.onPingError. Time from last valid transmission is greater than 60 seconds");
             return new QuickPulseHeaderInfo(QuickPulseStatus.ERROR);
         }
-
+        System.out.println("QuickPulsePingSender.onPingError. Time from last valid transmission is less than 60 seconds");
         return new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF);
     }
 }

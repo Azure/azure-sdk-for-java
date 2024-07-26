@@ -252,6 +252,7 @@ public final class AzureMonitorExporterBuilder {
      * @return toto
      */
     public LiveMetricsSpanProcessor buildLiveMetricsSpanProcessor() {
+        System.out.println("AzureMonitorExporterBuilder.buildLiveMetricsSpanProcessor");
         ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
         internalBuildAndFreeze(defaultConfig);
         boolean useNormalizedValueForNonNormalizedCpuPercentage = true;
