@@ -200,7 +200,7 @@ com.azure:azure-storage-queue;12.21.1;12.22.0
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-template-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-xml;1.0.0;1.1.1
+com.azure:azure-xml;1.0.0;1.1.0
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-imageanalysis;1.0.0-beta.2;1.0.0-beta.3
 com.azure:identity-test-container;1.0-SNAPSHOT;1.0-SNAPSHOT
