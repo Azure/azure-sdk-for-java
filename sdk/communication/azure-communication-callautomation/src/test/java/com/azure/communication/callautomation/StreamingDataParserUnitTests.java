@@ -5,26 +5,25 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AudioData;
 import com.azure.communication.callautomation.models.AudioMetadata;
-import com.azure.communication.callautomation.models.ResultStatus;
 import com.azure.communication.callautomation.models.TextFormat;
 import com.azure.communication.callautomation.models.TranscriptionData;
 import com.azure.communication.callautomation.models.TranscriptionMetadata;
+import com.azure.communication.callautomation.models.TranscriptionResultState;
 import com.azure.communication.callautomation.models.WordData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StreamingDataParserUnitTests {
     //region Audio
-    @Disabled("disabling until fixing the parser error")
     @Test    
     public void parseAudioDataNoParticipantNoSilent() {
         String audioJson = "{"
@@ -34,12 +33,11 @@ public class StreamingDataParserUnitTests {
             + "\"data\": \"AQIDBAU=\""
             + "}"
             + "}";
-        AudioData audioData = (AudioData) StreamingDataParser.parse(audioJson.getBytes(StandardCharsets.UTF_8));
+        AudioData audioData = (AudioData)StreamingDataParser.parse(audioJson.getBytes());
         assertNotNull(audioData);
         checkAudioDataNoParticipant(audioData);
     }
 
-    @Disabled("disabling until fixing the parser error")
     @Test
     public void parseBinaryArrayAudioData() {
         String jsonData = createAudioDataJson();
@@ -47,7 +45,6 @@ public class StreamingDataParserUnitTests {
         checkAudioData(audioData);
     }
 
-    @Disabled("disabling until fixing the parser error")
     @Test
     public void parseBinaryArrayAudioMetadata() {
         String jsonMetadata = createAudioMetadataJson();
@@ -58,14 +55,14 @@ public class StreamingDataParserUnitTests {
     private void checkAudioData(AudioData mediaStreamingAudio) {
         assertEquals(OffsetDateTime.parse("2022-10-03T19:16:12.925Z"), mediaStreamingAudio.getTimestamp());
         assertEquals("participantId", mediaStreamingAudio.getParticipant().getRawId());
-        assertEquals("AQIDBAU=", mediaStreamingAudio.getData());
+        assertEquals(Base64.getDecoder().decode("AQIDBAU=").length, mediaStreamingAudio.getData().length);
         assertFalse(mediaStreamingAudio.isSilent());
     }
 
     private void checkAudioDataNoParticipant(AudioData mediaStreamingAudio) {
         assertEquals(OffsetDateTime.parse("2022-10-03T19:16:12.925Z"), mediaStreamingAudio.getTimestamp());
         assertNull(mediaStreamingAudio.getParticipant());
-        assertEquals("AQIDBAU=", mediaStreamingAudio.getData());
+        assertEquals(Base64.getDecoder().decode("AQIDBAU=").length, mediaStreamingAudio.getData().length);
         assertFalse(mediaStreamingAudio.isSilent());
     }
 
@@ -116,7 +113,6 @@ public class StreamingDataParserUnitTests {
     //endregion
 
     // region Transcription
-    @Disabled("disabling until fixing the parser error")
     @Test
     public void parseBinaryArrayTranscriptionData() {
         String jsonData = createTranscriptionDataJson();
@@ -125,7 +121,6 @@ public class StreamingDataParserUnitTests {
     }
 
     @Test
-    @Disabled("disabling until fixing the parser error")
     public void parseBinaryArrayTranscriptionMetadata() {
         String jsonMetadata = createTranscriptionMetadataJson();
         TranscriptionMetadata transcriptionMetadata = (TranscriptionMetadata) StreamingDataParser.parse(jsonMetadata.getBytes(StandardCharsets.UTF_8));
@@ -138,21 +133,21 @@ public class StreamingDataParserUnitTests {
         assertEquals(TextFormat.DISPLAY, transcription.getFormat());
         assertEquals(0.98d, transcription.getConfidence());
         assertEquals(1, transcription.getOffset());
-        assertEquals(2, transcription.getDuration());
+        assertEquals(2*100, transcription.getDuration().getNano());
 
         // validate individual words
         List<WordData> words = transcription.getTranscripeWords();
         assertEquals(2, words.size());
         assertEquals("Hello", words.get(0).getText());
         assertEquals(1, words.get(0).getOffset());
-        assertEquals(1, words.get(0).getDuration());
+        assertEquals(1*100, words.get(0).getDuration().getNano());
         assertEquals("World", words.get(1).getText());
         assertEquals(6, words.get(1).getOffset());
-        assertEquals(1, words.get(0).getDuration());
+        assertEquals(1*100, words.get(0).getDuration().getNano());
 
         assertNotNull(transcription.getParticipant());
         assertEquals("abc12345", transcription.getParticipant().getRawId());
-        assertEquals(ResultStatus.FINAL, transcription.getResultStatus());
+        assertEquals(TranscriptionResultState.FINAL, transcription.getResultStatus());
     }
 
     private static void validateTranscriptionMetadata(TranscriptionMetadata transcriptionMetadata) {

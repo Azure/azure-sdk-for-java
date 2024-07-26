@@ -6,14 +6,23 @@ package com.azure.communication.callautomation.models;
 
 /** The locator used for joining or taking action on a call. */
 public abstract class CallLocator {
+
+    /*
+     * The call locator kind.
+     */
+    private final CallLocatorKind kind;
     
     /** Creates an instance of CallLocator class. */
-    public CallLocator() {}
+    public CallLocator(CallLocatorKind kind) {
+        this.kind = kind;
+    }
 
     /**
      * Get the kind property: The call locator kind.
      *
      * @return the kind value.
      */
-    public abstract CallLocatorKind getKind();
+    public CallLocatorKind getKind(){
+        return this.kind;
+    }
 }

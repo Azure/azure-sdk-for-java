@@ -13,18 +13,13 @@ public final class RoomCallLocator extends CallLocator {
      */
     private final String roomId;
 
-    /*
-     * Defines the kind of call locator
-     */
-    private final CallLocatorKind kind;
-
     /**
      * Room call locator
      *
      * @param roomId Specify the room id.
      */
     public RoomCallLocator(String roomId) {
-        this.kind = CallLocatorKind.ROOM_CALL_LOCATOR;
+        super(CallLocatorKind.ROOM_CALL_LOCATOR);
         this.roomId = roomId;
     }
 
@@ -35,14 +30,5 @@ public final class RoomCallLocator extends CallLocator {
      */
     public String getRoomId() {
         return this.roomId;
-    }
-
-    /**
-     * Get the kind property: The call locator kind.
-     *
-     * @return the kind value.
-     */
-    public CallLocatorKind getKind() {
-        return this.kind;
     }
 }

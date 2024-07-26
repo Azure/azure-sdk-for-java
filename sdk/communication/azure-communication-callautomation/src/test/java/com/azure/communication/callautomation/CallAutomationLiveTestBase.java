@@ -62,6 +62,7 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
     protected static final String MEDIA_SOURCE = Configuration.getGlobalConfiguration()
         .get("ACS_MEDIA_SOURCE", "https://contoso.com/music.wav");
     protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
+    protected static final String ACSUserIdInUrlRegex = "[0-9]%3Aacs%3A[a-f0-9-]+_[0-9a-f-]+";
 
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder()
@@ -181,6 +182,7 @@ public class CallAutomationLiveTestBase extends TestProxyTestBase {
         customSanitizers.add(new TestProxySanitizer("$..mediaSubscriptionId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         customSanitizers.add(new TestProxySanitizer("$..dataSubscriptionId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
         customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
+        customSanitizers.add(new TestProxySanitizer(ACSUserIdInUrlRegex, "REDACTED", TestProxySanitizerType.URL));
 
         interceptorManager.addSanitizers(customSanitizers);
 

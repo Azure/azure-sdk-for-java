@@ -14,18 +14,13 @@ public final class ServerCallLocator extends CallLocator {
      */
     private final String serverCallId;
 
-     /*
-     * Defines the kind of call locator
-     */
-    private final CallLocatorKind kind;
-
     /**
      * Group call locator
      *
      * @param serverCallId Specify the group call id.
      */
     public ServerCallLocator(String serverCallId) {
-        this.kind = CallLocatorKind.SERVER_CALL_LOCATOR;
+        super(CallLocatorKind.SERVER_CALL_LOCATOR);
         this.serverCallId = serverCallId;
     }
 
@@ -36,14 +31,5 @@ public final class ServerCallLocator extends CallLocator {
      */
     public String getServerCallId() {
         return this.serverCallId;
-    }
-
-    /**
-     * Get the kind property: The call locator kind.
-     *
-     * @return the kind value.
-     */
-    public CallLocatorKind getKind() {
-        return this.kind;
     }
 }

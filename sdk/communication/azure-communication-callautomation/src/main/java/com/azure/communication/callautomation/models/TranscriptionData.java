@@ -139,6 +139,7 @@ public final class TranscriptionData extends StreamingData {
     }
     /**
      * Get the duration property.
+     * 1 ticks = 100 nanos
      *
      * @return the duration value.
      */
