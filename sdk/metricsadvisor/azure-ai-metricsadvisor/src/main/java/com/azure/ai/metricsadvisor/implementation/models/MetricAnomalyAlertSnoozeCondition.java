@@ -5,41 +5,35 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetricAnomalyAlertSnoozeCondition model.
- */
+/** The MetricAnomalyAlertSnoozeCondition model. */
 @Fluent
-public final class MetricAnomalyAlertSnoozeCondition implements JsonSerializable<MetricAnomalyAlertSnoozeCondition> {
+public final class MetricAnomalyAlertSnoozeCondition {
     /*
      * snooze point count, value range : [0, +∞)
      */
+    @JsonProperty(value = "autoSnooze", required = true)
     private int autoSnooze;
 
     /*
      * snooze scope
      */
+    @JsonProperty(value = "snoozeScope", required = true)
     private SnoozeScope snoozeScope;
 
     /*
      * only snooze for successive anomalies
      */
+    @JsonProperty(value = "onlyForSuccessive", required = true)
     private boolean onlyForSuccessive;
 
-    /**
-     * Creates an instance of MetricAnomalyAlertSnoozeCondition class.
-     */
-    public MetricAnomalyAlertSnoozeCondition() {
-    }
+    /** Creates an instance of MetricAnomalyAlertSnoozeCondition class. */
+    public MetricAnomalyAlertSnoozeCondition() {}
 
     /**
      * Get the autoSnooze property: snooze point count, value range : [0, +∞).
-     * 
+     *
      * @return the autoSnooze value.
      */
     public int getAutoSnooze() {
@@ -48,7 +42,7 @@ public final class MetricAnomalyAlertSnoozeCondition implements JsonSerializable
 
     /**
      * Set the autoSnooze property: snooze point count, value range : [0, +∞).
-     * 
+     *
      * @param autoSnooze the autoSnooze value to set.
      * @return the MetricAnomalyAlertSnoozeCondition object itself.
      */
@@ -59,7 +53,7 @@ public final class MetricAnomalyAlertSnoozeCondition implements JsonSerializable
 
     /**
      * Get the snoozeScope property: snooze scope.
-     * 
+     *
      * @return the snoozeScope value.
      */
     public SnoozeScope getSnoozeScope() {
@@ -68,7 +62,7 @@ public final class MetricAnomalyAlertSnoozeCondition implements JsonSerializable
 
     /**
      * Set the snoozeScope property: snooze scope.
-     * 
+     *
      * @param snoozeScope the snoozeScope value to set.
      * @return the MetricAnomalyAlertSnoozeCondition object itself.
      */
@@ -79,7 +73,7 @@ public final class MetricAnomalyAlertSnoozeCondition implements JsonSerializable
 
     /**
      * Get the onlyForSuccessive property: only snooze for successive anomalies.
-     * 
+     *
      * @return the onlyForSuccessive value.
      */
     public boolean isOnlyForSuccessive() {
@@ -88,54 +82,12 @@ public final class MetricAnomalyAlertSnoozeCondition implements JsonSerializable
 
     /**
      * Set the onlyForSuccessive property: only snooze for successive anomalies.
-     * 
+     *
      * @param onlyForSuccessive the onlyForSuccessive value to set.
      * @return the MetricAnomalyAlertSnoozeCondition object itself.
      */
     public MetricAnomalyAlertSnoozeCondition setOnlyForSuccessive(boolean onlyForSuccessive) {
         this.onlyForSuccessive = onlyForSuccessive;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("autoSnooze", this.autoSnooze);
-        jsonWriter.writeStringField("snoozeScope", this.snoozeScope == null ? null : this.snoozeScope.toString());
-        jsonWriter.writeBooleanField("onlyForSuccessive", this.onlyForSuccessive);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MetricAnomalyAlertSnoozeCondition from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MetricAnomalyAlertSnoozeCondition if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MetricAnomalyAlertSnoozeCondition.
-     */
-    public static MetricAnomalyAlertSnoozeCondition fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MetricAnomalyAlertSnoozeCondition deserializedMetricAnomalyAlertSnoozeCondition
-                = new MetricAnomalyAlertSnoozeCondition();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("autoSnooze".equals(fieldName)) {
-                    deserializedMetricAnomalyAlertSnoozeCondition.autoSnooze = reader.getInt();
-                } else if ("snoozeScope".equals(fieldName)) {
-                    deserializedMetricAnomalyAlertSnoozeCondition.snoozeScope
-                        = SnoozeScope.fromString(reader.getString());
-                } else if ("onlyForSuccessive".equals(fieldName)) {
-                    deserializedMetricAnomalyAlertSnoozeCondition.onlyForSuccessive = reader.getBoolean();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedMetricAnomalyAlertSnoozeCondition;
-        });
     }
 }

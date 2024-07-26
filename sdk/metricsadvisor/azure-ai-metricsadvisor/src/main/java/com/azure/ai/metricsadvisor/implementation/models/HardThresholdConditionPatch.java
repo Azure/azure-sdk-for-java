@@ -5,52 +5,47 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The HardThresholdConditionPatch model.
- */
+/** The HardThresholdConditionPatch model. */
 @Fluent
-public final class HardThresholdConditionPatch implements JsonSerializable<HardThresholdConditionPatch> {
+public final class HardThresholdConditionPatch {
     /*
      * lower bound
-     * 
+     *
      * should be specified when anomalyDetectorDirection is Both or Down
      */
+    @JsonProperty(value = "lowerBound")
     private Double lowerBound;
 
     /*
      * upper bound
-     * 
+     *
      * should be specified when anomalyDetectorDirection is Both or Up
      */
+    @JsonProperty(value = "upperBound")
     private Double upperBound;
 
     /*
      * detection direction
      */
+    @JsonProperty(value = "anomalyDetectorDirection")
     private AnomalyDetectorDirection anomalyDetectorDirection;
 
     /*
      * The suppressCondition property.
      */
+    @JsonProperty(value = "suppressCondition")
     private SuppressConditionPatch suppressCondition;
 
-    /**
-     * Creates an instance of HardThresholdConditionPatch class.
-     */
-    public HardThresholdConditionPatch() {
-    }
+    /** Creates an instance of HardThresholdConditionPatch class. */
+    public HardThresholdConditionPatch() {}
 
     /**
      * Get the lowerBound property: lower bound
-     * 
-     * should be specified when anomalyDetectorDirection is Both or Down.
-     * 
+     *
+     * <p>should be specified when anomalyDetectorDirection is Both or Down.
+     *
      * @return the lowerBound value.
      */
     public Double getLowerBound() {
@@ -59,9 +54,9 @@ public final class HardThresholdConditionPatch implements JsonSerializable<HardT
 
     /**
      * Set the lowerBound property: lower bound
-     * 
-     * should be specified when anomalyDetectorDirection is Both or Down.
-     * 
+     *
+     * <p>should be specified when anomalyDetectorDirection is Both or Down.
+     *
      * @param lowerBound the lowerBound value to set.
      * @return the HardThresholdConditionPatch object itself.
      */
@@ -72,9 +67,9 @@ public final class HardThresholdConditionPatch implements JsonSerializable<HardT
 
     /**
      * Get the upperBound property: upper bound
-     * 
-     * should be specified when anomalyDetectorDirection is Both or Up.
-     * 
+     *
+     * <p>should be specified when anomalyDetectorDirection is Both or Up.
+     *
      * @return the upperBound value.
      */
     public Double getUpperBound() {
@@ -83,9 +78,9 @@ public final class HardThresholdConditionPatch implements JsonSerializable<HardT
 
     /**
      * Set the upperBound property: upper bound
-     * 
-     * should be specified when anomalyDetectorDirection is Both or Up.
-     * 
+     *
+     * <p>should be specified when anomalyDetectorDirection is Both or Up.
+     *
      * @param upperBound the upperBound value to set.
      * @return the HardThresholdConditionPatch object itself.
      */
@@ -96,7 +91,7 @@ public final class HardThresholdConditionPatch implements JsonSerializable<HardT
 
     /**
      * Get the anomalyDetectorDirection property: detection direction.
-     * 
+     *
      * @return the anomalyDetectorDirection value.
      */
     public AnomalyDetectorDirection getAnomalyDetectorDirection() {
@@ -105,7 +100,7 @@ public final class HardThresholdConditionPatch implements JsonSerializable<HardT
 
     /**
      * Set the anomalyDetectorDirection property: detection direction.
-     * 
+     *
      * @param anomalyDetectorDirection the anomalyDetectorDirection value to set.
      * @return the HardThresholdConditionPatch object itself.
      */
@@ -116,7 +111,7 @@ public final class HardThresholdConditionPatch implements JsonSerializable<HardT
 
     /**
      * Get the suppressCondition property: The suppressCondition property.
-     * 
+     *
      * @return the suppressCondition value.
      */
     public SuppressConditionPatch getSuppressCondition() {
@@ -125,56 +120,12 @@ public final class HardThresholdConditionPatch implements JsonSerializable<HardT
 
     /**
      * Set the suppressCondition property: The suppressCondition property.
-     * 
+     *
      * @param suppressCondition the suppressCondition value to set.
      * @return the HardThresholdConditionPatch object itself.
      */
     public HardThresholdConditionPatch setSuppressCondition(SuppressConditionPatch suppressCondition) {
         this.suppressCondition = suppressCondition;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("lowerBound", this.lowerBound);
-        jsonWriter.writeNumberField("upperBound", this.upperBound);
-        jsonWriter.writeStringField("anomalyDetectorDirection",
-            this.anomalyDetectorDirection == null ? null : this.anomalyDetectorDirection.toString());
-        jsonWriter.writeJsonField("suppressCondition", this.suppressCondition);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of HardThresholdConditionPatch from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of HardThresholdConditionPatch if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the HardThresholdConditionPatch.
-     */
-    public static HardThresholdConditionPatch fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            HardThresholdConditionPatch deserializedHardThresholdConditionPatch = new HardThresholdConditionPatch();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("lowerBound".equals(fieldName)) {
-                    deserializedHardThresholdConditionPatch.lowerBound = reader.getNullable(JsonReader::getDouble);
-                } else if ("upperBound".equals(fieldName)) {
-                    deserializedHardThresholdConditionPatch.upperBound = reader.getNullable(JsonReader::getDouble);
-                } else if ("anomalyDetectorDirection".equals(fieldName)) {
-                    deserializedHardThresholdConditionPatch.anomalyDetectorDirection
-                        = AnomalyDetectorDirection.fromString(reader.getString());
-                } else if ("suppressCondition".equals(fieldName)) {
-                    deserializedHardThresholdConditionPatch.suppressCondition = SuppressConditionPatch.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedHardThresholdConditionPatch;
-        });
     }
 }

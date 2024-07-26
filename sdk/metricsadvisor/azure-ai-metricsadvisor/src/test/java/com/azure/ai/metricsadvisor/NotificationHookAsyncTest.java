@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -50,6 +51,7 @@ public final class NotificationHookAsyncTest extends NotificationHookTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     void createWebHook(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();

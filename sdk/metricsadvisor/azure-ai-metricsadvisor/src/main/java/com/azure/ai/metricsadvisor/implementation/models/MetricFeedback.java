@@ -5,54 +5,64 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 import java.util.UUID;
 
-/**
- * The MetricFeedback model.
- */
+/** The MetricFeedback model. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "feedbackType",
+        defaultImpl = MetricFeedback.class)
+@JsonTypeName("MetricFeedback")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Anomaly", value = AnomalyFeedback.class),
+    @JsonSubTypes.Type(name = "ChangePoint", value = ChangePointFeedback.class),
+    @JsonSubTypes.Type(name = "Comment", value = CommentFeedback.class),
+    @JsonSubTypes.Type(name = "Period", value = PeriodFeedback.class)
+})
 @Fluent
-public class MetricFeedback implements JsonSerializable<MetricFeedback> {
+public class MetricFeedback {
     /*
      * feedback unique id
      */
+    @JsonProperty(value = "feedbackId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID feedbackId;
 
     /*
      * feedback created time
      */
+    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * user who gives this feedback
      */
+    @JsonProperty(value = "userPrincipal", access = JsonProperty.Access.WRITE_ONLY)
     private String userPrincipal;
 
     /*
      * metric unique id
      */
+    @JsonProperty(value = "metricId", required = true)
     private UUID metricId;
 
     /*
      * The dimensionFilter property.
      */
+    @JsonProperty(value = "dimensionFilter", required = true)
     private FeedbackDimensionFilter dimensionFilter;
 
-    /**
-     * Creates an instance of MetricFeedback class.
-     */
-    public MetricFeedback() {
-    }
+    /** Creates an instance of MetricFeedback class. */
+    public MetricFeedback() {}
 
     /**
      * Get the feedbackId property: feedback unique id.
-     * 
+     *
      * @return the feedbackId value.
      */
     public UUID getFeedbackId() {
@@ -60,19 +70,8 @@ public class MetricFeedback implements JsonSerializable<MetricFeedback> {
     }
 
     /**
-     * Set the feedbackId property: feedback unique id.
-     * 
-     * @param feedbackId the feedbackId value to set.
-     * @return the MetricFeedback object itself.
-     */
-    MetricFeedback setFeedbackId(UUID feedbackId) {
-        this.feedbackId = feedbackId;
-        return this;
-    }
-
-    /**
      * Get the createdTime property: feedback created time.
-     * 
+     *
      * @return the createdTime value.
      */
     public OffsetDateTime getCreatedTime() {
@@ -80,19 +79,8 @@ public class MetricFeedback implements JsonSerializable<MetricFeedback> {
     }
 
     /**
-     * Set the createdTime property: feedback created time.
-     * 
-     * @param createdTime the createdTime value to set.
-     * @return the MetricFeedback object itself.
-     */
-    MetricFeedback setCreatedTime(OffsetDateTime createdTime) {
-        this.createdTime = createdTime;
-        return this;
-    }
-
-    /**
      * Get the userPrincipal property: user who gives this feedback.
-     * 
+     *
      * @return the userPrincipal value.
      */
     public String getUserPrincipal() {
@@ -100,19 +88,8 @@ public class MetricFeedback implements JsonSerializable<MetricFeedback> {
     }
 
     /**
-     * Set the userPrincipal property: user who gives this feedback.
-     * 
-     * @param userPrincipal the userPrincipal value to set.
-     * @return the MetricFeedback object itself.
-     */
-    MetricFeedback setUserPrincipal(String userPrincipal) {
-        this.userPrincipal = userPrincipal;
-        return this;
-    }
-
-    /**
      * Get the metricId property: metric unique id.
-     * 
+     *
      * @return the metricId value.
      */
     public UUID getMetricId() {
@@ -121,7 +98,7 @@ public class MetricFeedback implements JsonSerializable<MetricFeedback> {
 
     /**
      * Set the metricId property: metric unique id.
-     * 
+     *
      * @param metricId the metricId value to set.
      * @return the MetricFeedback object itself.
      */
@@ -132,7 +109,7 @@ public class MetricFeedback implements JsonSerializable<MetricFeedback> {
 
     /**
      * Get the dimensionFilter property: The dimensionFilter property.
-     * 
+     *
      * @return the dimensionFilter value.
      */
     public FeedbackDimensionFilter getDimensionFilter() {
@@ -141,90 +118,12 @@ public class MetricFeedback implements JsonSerializable<MetricFeedback> {
 
     /**
      * Set the dimensionFilter property: The dimensionFilter property.
-     * 
+     *
      * @param dimensionFilter the dimensionFilter value to set.
      * @return the MetricFeedback object itself.
      */
     public MetricFeedback setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
         this.dimensionFilter = dimensionFilter;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("metricId", Objects.toString(this.metricId, null));
-        jsonWriter.writeJsonField("dimensionFilter", this.dimensionFilter);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MetricFeedback from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MetricFeedback if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the MetricFeedback.
-     */
-    public static MetricFeedback fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
-
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("feedbackType".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
-                }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("Anomaly".equals(discriminatorValue)) {
-                return AnomalyFeedback.fromJson(readerToUse.reset());
-            } else if ("ChangePoint".equals(discriminatorValue)) {
-                return ChangePointFeedback.fromJson(readerToUse.reset());
-            } else if ("Comment".equals(discriminatorValue)) {
-                return CommentFeedback.fromJson(readerToUse.reset());
-            } else if ("Period".equals(discriminatorValue)) {
-                return PeriodFeedback.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
-            }
-        });
-    }
-
-    static MetricFeedback fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            MetricFeedback deserializedMetricFeedback = new MetricFeedback();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("metricId".equals(fieldName)) {
-                    deserializedMetricFeedback.metricId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("dimensionFilter".equals(fieldName)) {
-                    deserializedMetricFeedback.dimensionFilter = FeedbackDimensionFilter.fromJson(reader);
-                } else if ("feedbackId".equals(fieldName)) {
-                    deserializedMetricFeedback.feedbackId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else if ("createdTime".equals(fieldName)) {
-                    deserializedMetricFeedback.createdTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("userPrincipal".equals(fieldName)) {
-                    deserializedMetricFeedback.userPrincipal = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedMetricFeedback;
-        });
     }
 }
