@@ -16,7 +16,8 @@
 
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.core.implementation.jackson.(MemberNameConverterImpl|ObjectMapperFactory|XmlMapperFactory).java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.implementation.AccessTokenCache.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.implementation.(AccessTokenCache|AccessibleByteArrayOutputStream).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.util.logging.LoggingEventBuilder.java"/>
 
   <!-- Exception is logged in an earlier line. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.core.http.policy.HttpLoggingPolicy.java"/>

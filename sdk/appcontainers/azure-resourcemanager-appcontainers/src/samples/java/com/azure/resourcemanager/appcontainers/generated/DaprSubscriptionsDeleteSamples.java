@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class DaprSubscriptionsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/DaprSubscriptions_Delete.
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/DaprSubscriptions_Delete.
      * json
      */
     /**
@@ -19,7 +19,7 @@ public final class DaprSubscriptionsDeleteSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void deleteDaprSubscription(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.daprSubscriptions().deleteWithResponse("examplerg", "myenvironment", "mysubscription",
-            com.azure.core.util.Context.NONE);
+        manager.daprSubscriptions()
+            .deleteWithResponse("examplerg", "myenvironment", "mysubscription", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
  */
 public final class ConnectedEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ConnectedEnvironments_CreateOrUpdate.json
      */
     /**
@@ -20,12 +20,16 @@ public final class ConnectedEnvironmentsCreateOrUpdateSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void createKubeEnvironments(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.connectedEnvironments().define("testenv").withRegion("East US").withExistingResourceGroup("examplerg")
+        manager.connectedEnvironments()
+            .define("testenv")
+            .withRegion("East US")
+            .withExistingResourceGroup("examplerg")
             .withStaticIp("1.2.3.4")
             .withDaprAIConnectionString(
                 "InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northcentralus-0.in.applicationinsights.azure.com/")
             .withCustomDomainConfiguration(new CustomDomainConfiguration().withDnsSuffix("www.my-name.com")
-                .withCertificateValue("Y2VydA==".getBytes()).withCertificatePassword("fakeTokenPlaceholder"))
+                .withCertificateValue("Y2VydA==".getBytes())
+                .withCertificatePassword("fakeTokenPlaceholder"))
             .create();
     }
 }

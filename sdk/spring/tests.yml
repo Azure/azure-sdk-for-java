@@ -4,24 +4,11 @@ extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     stages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
-          UseFederatedAuth: true
-          SupportedClouds: "Public,UsGov,China"
-          Clouds: "Public"
-          CloudConfig:
-            Public:
-              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-              ServiceConnection: azure-sdk-tests
-              SubscriptionConfigurationFilePaths:
-                - eng/common/TestResources/sub-config/AzurePublicMsft.json
-            UsGov:
-              SubscriptionConfiguration: $(sub-config-gov-test-resources)
-              ServiceConnection: usgov_azure-sdk-tests
-            China:
-              SubscriptionConfiguration: $(sub-config-cn-test-resources)
-              ServiceConnection: china_azure-sdk-tests
-              Location: "chinanorth3"
+          TestName: Spring_Integration
+          TimeoutInMinutes: 240
+          TestOptions: "-DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-"
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/common
 #            - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
@@ -36,61 +23,24 @@ extends:
             - name: spring-cloud-azure-integration-tests
               groupId: com.azure.spring
               safeName: springcloudazureintegrationtests
-          TimeoutInMinutes: 240
-          ServiceDirectory: spring
-          TestName: Spring_IT
-          TestGoals: "verify"
-          TestOptions: -DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-
-          MatrixFilters:
-            - JavaTestVersion=^(?!1.8|1.11).*
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
-          UseFederatedAuth: true
-          SupportedClouds: 'Public,UsGov,China'
-          Clouds: 'Public'
-          CloudConfig:
-            Public:
-              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-              ServiceConnection: azure-sdk-tests
-              SubscriptionConfigurationFilePaths:
-                - eng/common/TestResources/sub-config/AzurePublicMsft.json
-            UsGov:
-              SubscriptionConfiguration: $(sub-config-gov-test-resources)
-              ServiceConnection: usgov_azure-sdk-tests
-            China:
-              SubscriptionConfiguration: $(sub-config-cn-test-resources)
-              ServiceConnection: china_azure-sdk-tests
+          TestName: Spring_AppConfig_Integration
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-test-appconfiguration-config
           Artifacts:
             - name: spring-cloud-azure-integration-test-appconfiguration-config
               groupId: com.azure.spring
               safeName: springcloudazureintegrationtestappconfigurationconfig
-          TimeoutInMinutes: 60
-          ServiceDirectory: spring
-          TestName: Spring_App_Config_IT
-          TestGoals: 'verify'
-          MatrixFilters:
-            - JavaTestVersion=^(?!1.8|1.11).*
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+      - template: /sdk/spring/pipeline/tests-supported-spring-versions-template.yml
         parameters:
-          UseFederatedAuth: true
-          SupportedClouds: 'Public,UsGov'
-          Clouds: 'Public'
-          CloudConfig:
-            Public:
-              SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-              ServiceConnection: azure-sdk-tests
-              SubscriptionConfigurationFilePaths:
-                - eng/common/TestResources/sub-config/AzurePublicMsft.json
-            UsGov:
-              SubscriptionConfiguration: $(sub-config-gov-test-resources)
-              ServiceConnection: usgov_azure-sdk-tests
           MatrixConfigs:
             - Name: Cosmos_live_test_integration
               Path: sdk/spring/pipeline/cosmos-integration-matrix.json
               Selection: all
               GenerateVMJobs: true
+              NonSparseParameters:
+                - SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/cosmos-spring
           Artifacts:
@@ -98,11 +48,5 @@ extends:
               groupId: com.azure
               safeName: azurespringdatacosmos
           TimeoutInMinutes: 90
-          PreSteps:
-            - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-          ServiceDirectory: spring
-          TestName: 'Spring_Data_Cosmos_Integration'
-          TestGoals: 'clean verify'
+          TestName: Spring_Data_Cosmos_Integration
           TestOptions: '$(ProfileFlag)'
-          MatrixFilters:
-            - JavaTestVersion=^(?!1.8|1.11).*

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.generated;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.compute.models.AvailabilitySetUpdate;
 import com.azure.resourcemanager.compute.models.Sku;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +22,7 @@ public final class AvailabilitySetsUpdateSamples {
      */
     /**
      * Sample code: AvailabilitySet_Update_MinimumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -42,7 +41,7 @@ public final class AvailabilitySetsUpdateSamples {
      */
     /**
      * Sample code: AvailabilitySet_Update_MaximumSet_Gen.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {

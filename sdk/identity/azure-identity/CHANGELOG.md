@@ -1,14 +1,10 @@
 # Release History
 
-## 1.14.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
+## 1.14.0-beta.1 (2024-07-24)
 
 ### Bugs Fixed
-
-### Other Changes
+- Fixed bugs in `AzurePowerShellCredential` - Fixed break on Windows related to ordering of parameters, and fixed [#41234](https://github.com/Azure/azure-sdk-for-java/issues/41234)
 
 ## 1.13.1 (2024-07-16)
 
@@ -29,16 +25,6 @@
 
 ### Bugs Fixed
 - Fixed an issue which may block `AzurePowershellCredential` from functioning correctly. [#40552](https://github.com/Azure/azure-sdk-for-java/pull/40552/files)
-
-## 1.13.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.13.0-beta.2 (2024-06-10)
 

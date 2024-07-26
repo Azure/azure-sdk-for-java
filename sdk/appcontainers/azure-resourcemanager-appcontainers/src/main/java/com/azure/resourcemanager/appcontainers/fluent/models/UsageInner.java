@@ -6,36 +6,36 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.UsageName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes Compute Resource Usage.
  */
 @Fluent
-public final class UsageInner {
+public final class UsageInner implements JsonSerializable<UsageInner> {
     /*
      * An enum describing the unit of usage measurement.
      */
-    @JsonProperty(value = "unit", required = true)
     private String unit = "Count";
 
     /*
      * The current usage of the resource.
      */
-    @JsonProperty(value = "currentValue", required = true)
     private float currentValue;
 
     /*
      * The maximum permitted usage of the resource.
      */
-    @JsonProperty(value = "limit", required = true)
     private float limit;
 
     /*
      * The name of the type of usage.
      */
-    @JsonProperty(value = "name", required = true)
     private UsageName name;
 
     /**
@@ -131,12 +131,56 @@ public final class UsageInner {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model UsageInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model UsageInner"));
         } else {
             name().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UsageInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeFloatField("currentValue", this.currentValue);
+        jsonWriter.writeFloatField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UsageInner.
+     */
+    public static UsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageInner deserializedUsageInner = new UsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentValue".equals(fieldName)) {
+                    deserializedUsageInner.currentValue = reader.getFloat();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUsageInner.limit = reader.getFloat();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUsageInner.name = UsageName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageInner;
+        });
+    }
 }

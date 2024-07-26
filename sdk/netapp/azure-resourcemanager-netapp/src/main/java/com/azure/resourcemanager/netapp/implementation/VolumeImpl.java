@@ -616,8 +616,13 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public VolumeImpl withProtocolTypes(List<String> protocolTypes) {
-        this.innerModel().withProtocolTypes(protocolTypes);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withProtocolTypes(protocolTypes);
+            return this;
+        } else {
+            this.updateBody.withProtocolTypes(protocolTypes);
+            return this;
+        }
     }
 
     public VolumeImpl withSnapshotId(String snapshotId) {
