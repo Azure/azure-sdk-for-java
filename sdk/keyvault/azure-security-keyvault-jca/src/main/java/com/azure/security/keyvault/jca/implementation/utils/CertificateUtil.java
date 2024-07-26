@@ -19,9 +19,6 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Util used to load certificate from pem file.
- */
 public final class CertificateUtil {
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
     private static final String END_CERTIFICATE = "-----END CERTIFICATE-----";
