@@ -3,24 +3,16 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The ChatThread model.
  */
 @Fluent
-public final class ChatThreadProperties implements JsonSerializable<ChatThreadProperties> {
+public final class ChatThreadProperties {
 
     private String id;
 
@@ -114,53 +106,5 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
     public ChatThreadProperties setCreatedBy(CommunicationIdentifier createdBy) {
         this.createdBy = createdBy;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", id);
-        jsonWriter.writeStringField("topic", topic);
-        jsonWriter.writeStringField("createdOn", createdOn != null ? createdOn.toString() : null);
-        final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(createdBy);
-        jsonWriter.writeJsonField("createdBy", identifier);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChatThreadProperties from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatThreadProperties if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ChatThreadProperties.
-     */
-    public static ChatThreadProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            final ChatThreadProperties properties = new ChatThreadProperties();
-            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    properties.setId(reader.getString());
-                } else if ("topic".equals(fieldName)) {
-                    properties.setTopic(reader.getString());
-                } else if ("createdOn".equals(fieldName)) {
-                    final String value = reader.getString();
-                    if (!CoreUtils.isNullOrEmpty(value)) {
-                        properties.setCreatedOn(OffsetDateTime.parse(value));
-                    }
-                } else if ("createdBy".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
-                    properties.setCreatedBy(CommunicationIdentifierConverter.convert(identifier));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return properties;
-        });
     }
 }
