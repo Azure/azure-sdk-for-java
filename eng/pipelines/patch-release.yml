@@ -40,10 +40,6 @@ extends:
       groupId: com.azure
       safeName: azuremessagingwebpubsubclient
       ServiceDirectory: webpubsub
-    - name: azure-security-keyvault-secrets
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultsecrets
-      ServiceDirectory: keyvault
     - name: azure-messaging-webpubsub
       groupId: com.azure
       safeName: azuremessagingwebpubsub
@@ -60,14 +56,6 @@ extends:
       groupId: com.azure
       safeName: azurecontainerscontainerregistry
       ServiceDirectory: containerregistry
-    - name: azure-security-keyvault-certificates
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultcertificates
-      ServiceDirectory: keyvault
-    - name: azure-security-keyvault-administration
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultadministration
-      ServiceDirectory: keyvault
     - name: azure-communication-identity
       groupId: com.azure
       safeName: azurecommunicationidentity
@@ -96,10 +84,6 @@ extends:
       groupId: com.azure
       safeName: azureaicontentsafety
       ServiceDirectory: contentsafety
-    - name: azure-security-keyvault-keys
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultkeys
-      ServiceDirectory: keyvault
     - name: azure-communication-rooms
       groupId: com.azure
       safeName: azurecommunicationrooms
