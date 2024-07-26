@@ -1760,6 +1760,7 @@ public class ClientMetricsTest extends BatchTestBase {
             }
 
             List<Meter> metersMissingTags = new ArrayList<>();
+            List<Meter> matchingTags = new ArrayList<>();
             List<Meter> metersTagPresent = meterMatches
                 .stream()
                 .filter(meter -> {
@@ -1772,6 +1773,8 @@ public class ClientMetricsTest extends BatchTestBase {
                     }
                     if (numTags != possibleTags.size()) {
                         metersMissingTags.add(meter);
+                    } else {
+                        matchingTags.add(meter);
                     }
                     return numTags == possibleTags.size();
                 } )
@@ -1782,6 +1785,10 @@ public class ClientMetricsTest extends BatchTestBase {
                 System.out.println("All possible tags " + possibleTags);
                 for (Meter meter : metersMissingTags) {
                     System.out.println("Meters missing tags " + meter.getId().getName() + "------" + meter.getId().getTags());
+                }
+
+                for (Meter meter : matchingTags) {
+                    System.out.println("Meters matching tags " + meter.getId().getName() + "------" + meter.getId().getTags());
                 }
             }
             assertThat(metersTagPresent.size()).isEqualTo(meterMatches.size());

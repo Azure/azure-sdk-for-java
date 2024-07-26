@@ -276,6 +276,8 @@ public final class ClientTelemetryMetrics {
         if (registryRefCount
             .computeIfAbsent(registry, (meterRegistry) -> new AtomicLong(0))
             .incrementAndGet() == 1L) {
+
+            System.out.println("Adding new meter registry, total registries  " + registryRefCount.size());
             ClientTelemetryMetrics
                 .compositeRegistry
                 .add(registry);
@@ -289,6 +291,8 @@ public final class ClientTelemetryMetrics {
 
             // reset the cached flag whether any actual meter registry is available
             lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
+        } else {
+            System.out.println("Adding new meter registry is skipped");
         }
     }
 
