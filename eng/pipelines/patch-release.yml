@@ -40,10 +40,6 @@ extends:
       groupId: com.azure
       safeName: azuremessagingwebpubsubclient
       ServiceDirectory: webpubsub
-    - name: azure-ai-metricsadvisor
-      groupId: com.azure
-      safeName: azureaimetricsadvisor
-      ServiceDirectory: metricsadvisor
     - name: azure-security-keyvault-secrets
       groupId: com.azure
       safeName: azuresecuritykeyvaultsecrets
