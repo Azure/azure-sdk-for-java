@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity-extensions</artifactId>
-  <version>1.1.17</version> <!-- {x-version-update;com.azure:azure-identity-extensions;current} -->
+  <version>1.1.18</version> <!-- {x-version-update;com.azure:azure-identity-extensions;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Identity Extensions</name>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
 
     <!-- test   -->
