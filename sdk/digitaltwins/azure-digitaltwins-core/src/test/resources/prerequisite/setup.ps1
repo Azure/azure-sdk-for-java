@@ -4,7 +4,7 @@ param(
 
     [Parameter(Mandatory)]
     [string] $ResourceGroup,
-
+    
     [Parameter(Mandatory)]
     [string] $SubscriptionId,
 
@@ -104,16 +104,22 @@ az deployment group create --resource-group $ResourceGroup --name $($DigitalTwin
 # Even though the output variable names are all capital letters in the script, ARM turns them into a strange casing
 # and we have to use that casing in order to get them from the deployment outputs.
 $dtHostName = az deployment group show -g $ResourceGroup -n $($DigitalTwinName.ToLower()) --query 'properties.outputs.digitaltwinS_URL.value' --output tsv
+
+Write-Host("`nSet a new client secret for $appId`n")
+$appSecret = az ad app credential reset --id $appId --years 2 --query 'password' --output tsv
+
 $outputfileDir = (Get-Item -Path $PSScriptRoot).Parent.Parent.Parent.Parent.Parent.Fullname
 $outputFile = Join-Path -Path $outputfileDir -ChildPath "test-resources.json.env"
 $tenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47"
 
 Add-Type -AssemblyName System.Security
 
+$appSecretJsonEscaped = ConvertTo-Json $appSecret
 $environmentText = @"
 {
     "DIGITALTWINS_URL": "$dtHostName",
     "DIGITALTWINS_CLIENT_ID": "$appId",
+    "DIGITALTWINS_CLIENT_SECRET": $appSecretJsonEscaped,
     "DIGITALTWINS_TENANT_ID":  "$tenantId"
 }
 "@
