@@ -15,7 +15,6 @@
 
 ## 1.0.15 (2024-07-26)
 
-### Other Changes
 
 #### Dependency Updates
 
