@@ -139,12 +139,12 @@ public class SimpleTokenCache {
                             buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now).log("Acquired a new access token");
                             cache = accessToken;
                             sinksOne.tryEmitValue(accessToken);
-                            nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                            nextTokenRefresh = OffsetDateTime.now().plus(refreshDelay);
                             return Mono.just(accessToken);
                         } else if (signal.isOnError() && error != null) { // ERROR
                             buildTokenRefreshLog(LogLevel.ERROR, cache, now)
                                 .log("Failed to acquire a new access token");
-                            nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                            nextTokenRefresh = OffsetDateTime.now().plus(refreshDelay);
                             return fallback.switchIfEmpty(Mono.error(() -> error));
                         } else { // NO REFRESH
                             sinksOne.tryEmitEmpty();
