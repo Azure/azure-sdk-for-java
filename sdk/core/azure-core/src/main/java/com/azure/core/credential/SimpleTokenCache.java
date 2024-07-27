@@ -64,8 +64,8 @@ import java.util.function.Supplier;
  */
 public class SimpleTokenCache {
     // The delay after a refresh to attempt another token refresh
-    private static Duration REFRESH_DELAY = Duration.ofSeconds(30);
-    private static final String REFRESH_DELAY_STRING = String.valueOf(REFRESH_DELAY.getSeconds());
+    private static Duration refreshDelay = Duration.ofSeconds(30);
+    private static final String REFRESH_DELAY_STRING = String.valueOf(refreshDelay.getSeconds());
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     // SimpleTokenCache is commonly used, use a static logger.
@@ -188,7 +188,7 @@ public class SimpleTokenCache {
             .addKeyValue("expired", tte.isNegative());
     }
 
-    void setRefreshDelay(Duration refreshDelay) {
-        REFRESH_DELAY = refreshDelay;
+    void setRefreshDelay(Duration refreshDelayDuration) {
+        refreshDelay = refreshDelayDuration;
     }
 }
