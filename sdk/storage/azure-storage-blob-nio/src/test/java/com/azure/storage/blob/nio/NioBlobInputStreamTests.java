@@ -40,7 +40,12 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        fileBytes = getRandomByteArray(5 * 1024 * 1024);
+        var size = 5 * 1024 * 1024;
+        fileBytes = new byte[size];
+
+        for (int i = 0; i < size; i++){
+            fileBytes[i] = (byte) 0xFC;
+        }
         sourceFile = getRandomFile(fileBytes);
 
         cc.create();
