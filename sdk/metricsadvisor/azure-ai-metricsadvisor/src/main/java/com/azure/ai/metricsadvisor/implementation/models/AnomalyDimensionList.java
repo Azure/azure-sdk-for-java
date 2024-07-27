@@ -5,37 +5,30 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AnomalyDimensionList model.
- */
+/** The AnomalyDimensionList model. */
 @Fluent
-public final class AnomalyDimensionList implements JsonSerializable<AnomalyDimensionList> {
+public final class AnomalyDimensionList {
     /*
      * The @nextLink property.
      */
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * The value property.
      */
+    @JsonProperty(value = "value", required = true)
     private List<String> value;
 
-    /**
-     * Creates an instance of AnomalyDimensionList class.
-     */
-    public AnomalyDimensionList() {
-    }
+    /** Creates an instance of AnomalyDimensionList class. */
+    public AnomalyDimensionList() {}
 
     /**
      * Get the nextLink property: The @nextLink property.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -44,7 +37,7 @@ public final class AnomalyDimensionList implements JsonSerializable<AnomalyDimen
 
     /**
      * Get the value property: The value property.
-     * 
+     *
      * @return the value value.
      */
     public List<String> getValue() {
@@ -53,49 +46,12 @@ public final class AnomalyDimensionList implements JsonSerializable<AnomalyDimen
 
     /**
      * Set the value property: The value property.
-     * 
+     *
      * @param value the value value to set.
      * @return the AnomalyDimensionList object itself.
      */
     public AnomalyDimensionList setValue(List<String> value) {
         this.value = value;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnomalyDimensionList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnomalyDimensionList if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnomalyDimensionList.
-     */
-    public static AnomalyDimensionList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AnomalyDimensionList deserializedAnomalyDimensionList = new AnomalyDimensionList();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    List<String> value = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAnomalyDimensionList.value = value;
-                } else if ("@nextLink".equals(fieldName)) {
-                    deserializedAnomalyDimensionList.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAnomalyDimensionList;
-        });
     }
 }

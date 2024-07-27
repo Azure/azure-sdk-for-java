@@ -9,7 +9,6 @@ of business dataFeedMetrics.
 
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] version 8 or later
-  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Metrics Advisor account][metrics_advisor_account] to use this package.
 
@@ -54,7 +53,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.1.20</version>
+    <version>1.1.27</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -113,7 +112,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.11.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

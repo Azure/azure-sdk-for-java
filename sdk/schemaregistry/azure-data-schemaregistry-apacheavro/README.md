@@ -23,7 +23,7 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.1.11</version>
+  <version>1.1.19</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -51,7 +51,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 

@@ -1,14 +1,13 @@
 trigger: none
 
-extends:
-  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-  parameters:
-    ServiceDirectory: confidentialledger
-    UseFederatedAuth: true
-    Artifacts:
-      - name: azure-security-confidentialledger
-        groupId: com.azure
-        safeName: azuresecurityconfidentialledger
-    EnvVars:
-      LEDGERURI: $(LEDGER_URI)
-      IDENTITYSERVICEURI: https://identity.confidential-ledger.core.azure.com/ledgerIdentity/$(LEDGER_NAME)
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: confidentialledger
+      Artifacts:
+        - name: azure-security-confidentialledger
+          groupId: com.azure
+          safeName: azuresecurityconfidentialledger
+      EnvVars:
+        LEDGERURI: $(LEDGER_URI)
+        IDENTITYSERVICEURI: https://identity.confidential-ledger.core.azure.com/ledgerIdentity/$(LEDGER_NAME)

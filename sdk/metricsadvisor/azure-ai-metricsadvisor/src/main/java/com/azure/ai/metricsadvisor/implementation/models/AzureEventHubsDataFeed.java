@@ -5,34 +5,29 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
-/**
- * The AzureEventHubsDataFeed model.
- */
+/** The AzureEventHubsDataFeed model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
+@JsonTypeName("AzureEventHubs")
 @Fluent
 public final class AzureEventHubsDataFeed extends DataFeedDetail {
     /*
      * The dataSourceParameter property.
      */
+    @JsonProperty(value = "dataSourceParameter", required = true)
     private AzureEventHubsParameter dataSourceParameter;
 
-    /**
-     * Creates an instance of AzureEventHubsDataFeed class.
-     */
-    public AzureEventHubsDataFeed() {
-    }
+    /** Creates an instance of AzureEventHubsDataFeed class. */
+    public AzureEventHubsDataFeed() {}
 
     /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
-     * 
+     *
      * @return the dataSourceParameter value.
      */
     public AzureEventHubsParameter getDataSourceParameter() {
@@ -41,7 +36,7 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
 
     /**
      * Set the dataSourceParameter property: The dataSourceParameter property.
-     * 
+     *
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureEventHubsDataFeed object itself.
      */
@@ -50,364 +45,171 @@ public final class AzureEventHubsDataFeed extends DataFeedDetail {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setGranularityName(Granularity granularityName) {
         super.setGranularityName(granularityName);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setGranularityAmount(Integer granularityAmount) {
         super.setGranularityAmount(granularityAmount);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setMetrics(List<DataFeedMetric> metrics) {
         super.setMetrics(metrics);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setDimension(List<DataFeedDimension> dimension) {
         super.setDimension(dimension);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setAdmins(List<String> admins) {
         super.setAdmins(admins);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setViewers(List<String> viewers) {
         super.setViewers(viewers);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public AzureEventHubsDataFeed setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_EVENT_HUBS == null ? null : DataSourceType.AZURE_EVENT_HUBS.toString());
-        jsonWriter.writeStringField("dataFeedName", getDataFeedName());
-        jsonWriter.writeStringField("granularityName",
-            getGranularityName() == null ? null : getGranularityName().toString());
-        jsonWriter.writeArrayField("metrics", getMetrics(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("dataStartFrom",
-            getDataStartFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDataStartFrom()));
-        jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
-        jsonWriter.writeNumberField("granularityAmount", getGranularityAmount());
-        jsonWriter.writeArrayField("dimension", getDimension(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
-        jsonWriter.writeNumberField("startOffsetInSeconds", getStartOffsetInSeconds());
-        jsonWriter.writeNumberField("maxConcurrency", getMaxConcurrency());
-        jsonWriter.writeNumberField("minRetryIntervalInSeconds", getMinRetryIntervalInSeconds());
-        jsonWriter.writeNumberField("stopRetryAfterInSeconds", getStopRetryAfterInSeconds());
-        jsonWriter.writeStringField("needRollup", getNeedRollup() == null ? null : getNeedRollup().toString());
-        jsonWriter.writeStringField("rollUpMethod", getRollUpMethod() == null ? null : getRollUpMethod().toString());
-        jsonWriter.writeArrayField("rollUpColumns", getRollUpColumns(),
-            (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("allUpIdentification", getAllUpIdentification());
-        jsonWriter.writeStringField("fillMissingPointType",
-            getFillMissingPointType() == null ? null : getFillMissingPointType().toString());
-        jsonWriter.writeNumberField("fillMissingPointValue", getFillMissingPointValue());
-        jsonWriter.writeStringField("viewMode", getViewMode() == null ? null : getViewMode().toString());
-        jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("viewers", getViewers(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("actionLinkTemplate", getActionLinkTemplate());
-        jsonWriter.writeStringField("authenticationType",
-            getAuthenticationType() == null ? null : getAuthenticationType().toString());
-        jsonWriter.writeStringField("credentialId", getCredentialId());
-        jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureEventHubsDataFeed from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureEventHubsDataFeed if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AzureEventHubsDataFeed.
-     */
-    public static AzureEventHubsDataFeed fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureEventHubsDataFeed deserializedAzureEventHubsDataFeed = new AzureEventHubsDataFeed();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"AzureEventHubs".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'AzureEventHubs'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setDataFeedName(reader.getString());
-                } else if ("granularityName".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setGranularityName(Granularity.fromString(reader.getString()));
-                } else if ("metrics".equals(fieldName)) {
-                    List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
-                    deserializedAzureEventHubsDataFeed.setMetrics(metrics);
-                } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed
-                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
-                } else if ("dataFeedDescription".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setDataFeedDescription(reader.getString());
-                } else if ("granularityAmount".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setGranularityAmount(reader.getNullable(JsonReader::getInt));
-                } else if ("dimension".equals(fieldName)) {
-                    List<DataFeedDimension> dimension
-                        = reader.readArray(reader1 -> DataFeedDimension.fromJson(reader1));
-                    deserializedAzureEventHubsDataFeed.setDimension(dimension);
-                } else if ("timestampColumn".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setTimestampColumn(reader.getString());
-                } else if ("startOffsetInSeconds".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("maxConcurrency".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setMaxConcurrency(reader.getNullable(JsonReader::getInt));
-                } else if ("minRetryIntervalInSeconds".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed
-                        .setMinRetryIntervalInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("stopRetryAfterInSeconds".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed
-                        .setStopRetryAfterInSeconds(reader.getNullable(JsonReader::getLong));
-                } else if ("needRollup".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setNeedRollup(NeedRollupEnum.fromString(reader.getString()));
-                } else if ("rollUpMethod".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setRollUpMethod(RollUpMethod.fromString(reader.getString()));
-                } else if ("rollUpColumns".equals(fieldName)) {
-                    List<String> rollUpColumns = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureEventHubsDataFeed.setRollUpColumns(rollUpColumns);
-                } else if ("allUpIdentification".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setAllUpIdentification(reader.getString());
-                } else if ("fillMissingPointType".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed
-                        .setFillMissingPointType(FillMissingPointType.fromString(reader.getString()));
-                } else if ("fillMissingPointValue".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed
-                        .setFillMissingPointValue(reader.getNullable(JsonReader::getDouble));
-                } else if ("viewMode".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setViewMode(ViewMode.fromString(reader.getString()));
-                } else if ("admins".equals(fieldName)) {
-                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureEventHubsDataFeed.setAdmins(admins);
-                } else if ("viewers".equals(fieldName)) {
-                    List<String> viewers = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAzureEventHubsDataFeed.setViewers(viewers);
-                } else if ("isAdmin".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
-                } else if ("creator".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setCreator(reader.getString());
-                } else if ("status".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
-                } else if ("createdTime".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setCreatedTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                } else if ("actionLinkTemplate".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setActionLinkTemplate(reader.getString());
-                } else if ("authenticationType".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed
-                        .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
-                } else if ("credentialId".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.setCredentialId(reader.getString());
-                } else if ("dataSourceParameter".equals(fieldName)) {
-                    deserializedAzureEventHubsDataFeed.dataSourceParameter = AzureEventHubsParameter.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAzureEventHubsDataFeed;
-        });
     }
 }

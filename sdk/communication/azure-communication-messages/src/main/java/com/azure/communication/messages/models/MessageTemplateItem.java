@@ -9,14 +9,17 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The message template as returned from the service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = MessageTemplateItem.class, visible = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = MessageTemplateItem.class)
 @JsonTypeName("MessageTemplateItem")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "whatsApp", value = WhatsAppMessageTemplateItem.class) })
 @Immutable
@@ -35,14 +38,14 @@ public abstract class MessageTemplateItem {
      */
     @Generated
     @JsonProperty(value = "language")
-    private final String language;
+    private String language;
 
     /*
      * The aggregated template status.
      */
     @Generated
     @JsonProperty(value = "status")
-    private final MessageTemplateStatus status;
+    private MessageTemplateStatus status;
 
     /**
      * Creates an instance of MessageTemplateItem class.
@@ -87,23 +90,5 @@ public abstract class MessageTemplateItem {
     @Generated
     public MessageTemplateStatus getStatus() {
         return this.status;
-    }
-
-    /*
-     * The type discriminator describing a template type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private CommunicationMessagesChannel kind = CommunicationMessagesChannel.fromString("MessageTemplateItem");
-
-    /**
-     * Get the kind property: The type discriminator describing a template type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    public CommunicationMessagesChannel getKind() {
-        return this.kind;
     }
 }

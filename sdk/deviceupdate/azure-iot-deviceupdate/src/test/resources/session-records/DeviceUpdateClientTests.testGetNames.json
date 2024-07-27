@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/updates/providers/fabrikam/names?api-version=2022-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "775fb0cf-81eb-46e6-9058-c172306d2f6b"
+    },
+    "Response" : {
+      "content-length" : "20",
+      "traceparent" : "00-b83e1f75784ab84c83c2a39765561a23-d8dff3908b5a4545-00",
+      "mise-correlation-id" : "dd0a1f6d-46cf-4680-bd95-9a2b9138d047",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[\"vacuum\"]}",
+      "Date" : "Wed, 31 Aug 2022 20:16:24 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

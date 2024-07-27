@@ -20,7 +20,7 @@ public final class SendMessageResult {
      */
     @Generated
     @JsonProperty(value = "receipts")
-    private final List<MessageReceipt> receipts;
+    private List<MessageReceipt> receipts;
 
     /**
      * Creates an instance of SendMessageResult class.

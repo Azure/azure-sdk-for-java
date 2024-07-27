@@ -5,25 +5,23 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The RecordingStorageInternal model.
  */
 @Fluent
-public final class RecordingStorageInternal implements JsonSerializable<RecordingStorageInternal> {
+public final class RecordingStorageInternal {
     /*
      * Defines the kind of external storage
      */
-    private RecordingStorageKind recordingStorageKind;
+    @JsonProperty(value = "recordingStorageKind", required = true)
+    private RecordingStorageTypeInternal recordingStorageKind;
 
     /*
      * Uri of a container or a location within a container
      */
+    @JsonProperty(value = "recordingDestinationContainerUrl")
     private String recordingDestinationContainerUrl;
 
     /**
@@ -37,7 +35,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
      * 
      * @return the recordingStorageKind value.
      */
-    public RecordingStorageKind getRecordingStorageKind() {
+    public RecordingStorageTypeInternal getRecordingStorageKind() {
         return this.recordingStorageKind;
     }
 
@@ -47,7 +45,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
      * @param recordingStorageKind the recordingStorageKind value to set.
      * @return the RecordingStorageInternal object itself.
      */
-    public RecordingStorageInternal setRecordingStorageKind(RecordingStorageKind recordingStorageKind) {
+    public RecordingStorageInternal setRecordingStorageKind(RecordingStorageTypeInternal recordingStorageKind) {
         this.recordingStorageKind = recordingStorageKind;
         return this;
     }
@@ -70,47 +68,5 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
     public RecordingStorageInternal setRecordingDestinationContainerUrl(String recordingDestinationContainerUrl) {
         this.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("recordingStorageKind",
-            this.recordingStorageKind == null ? null : this.recordingStorageKind.toString());
-        jsonWriter.writeStringField("recordingDestinationContainerUrl", this.recordingDestinationContainerUrl);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RecordingStorageInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RecordingStorageInternal if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RecordingStorageInternal.
-     */
-    public static RecordingStorageInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RecordingStorageInternal deserializedRecordingStorageInternal = new RecordingStorageInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("recordingStorageKind".equals(fieldName)) {
-                    deserializedRecordingStorageInternal.recordingStorageKind
-                        = RecordingStorageKind.fromString(reader.getString());
-                } else if ("recordingDestinationContainerUrl".equals(fieldName)) {
-                    deserializedRecordingStorageInternal.recordingDestinationContainerUrl = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedRecordingStorageInternal;
-        });
     }
 }

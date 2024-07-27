@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-messages</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-messages;current} -->
+  <version>1.0.5</version> <!-- {x-version-update;com.azure:azure-communication-messages;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for Azure Communication Services - Messaging application</name>
@@ -111,12 +111,6 @@
       <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -155,21 +149,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>java12plus</id>
-      <activation>
-        <jdk>[12,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>

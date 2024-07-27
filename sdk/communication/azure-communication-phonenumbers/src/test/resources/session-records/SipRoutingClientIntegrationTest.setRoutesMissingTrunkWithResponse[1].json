@@ -1,0 +1,72 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "058abff3-e7bf-4309-a20f-1c88e9368dcb"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "172ms",
+      "MS-CV" : "VGzlWQLkyUSeu/763WtAMA.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0NZEIZAAAAAAqsTlbmIM4TLF988nngnjqUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "620",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{\"first.redacted.com\":{\"sipSignalingPort\":1234},\"second.redacted.com\":{\"sipSignalingPort\":2345},\"third.redacted.com\":{\"sipSignalingPort\":3456},\"set.redacted.com\":{\"sipSignalingPort\":4567}},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 13:44:20 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0d508672-0663-44d1-b3a4-1ecaceb07520",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "396ms",
+      "MS-CV" : "Qj/YzV1+kkGKG0yBIma3JQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0NZEIZAAAAAD7hOGNw9SISYRr5eR6+duRUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "Content-Length" : "246",
+      "StatusCode" : "200",
+      "Body" : "{\"trunks\":{},\"routes\":[{\"description\":\"desc0\",\"name\":\"route0\",\"numberPattern\":\"0.*\",\"trunks\":[]},{\"description\":\"desc1\",\"name\":\"route1\",\"numberPattern\":\"1.*\",\"trunks\":[]},{\"description\":\"desc2\",\"name\":\"route2\",\"numberPattern\":\"2.*\",\"trunks\":[]}]}",
+      "Date" : "Wed, 08 Mar 2023 13:44:21 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/sip?api-version=2023-03-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.15 (19.0.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "b0336964-5c2a-49d6-961f-f60400a3db08",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview, 2023-01-01-preview, 2023-03-01",
+      "X-Processing-Time" : "245ms",
+      "MS-CV" : "ka8Nsy2OxUqS9Dt1Lzqgjg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0NpEIZAAAAACxnZp2LgWtTqlrnh5riZ5XUFJHMDFFREdFMDkwNgBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
+      "StatusCode" : "422",
+      "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"MissingTrunk\",\"message\":\"Route targeting a missing trunk.\"}}}",
+      "Date" : "Wed, 08 Mar 2023 13:44:21 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

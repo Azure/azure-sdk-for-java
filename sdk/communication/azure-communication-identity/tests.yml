@@ -1,17 +1,22 @@
 trigger: none
 
-extends:
-  template: /sdk/communication/communication-tests-template.yml
-  parameters:
-    PackageName: azure-communication-identity
-    SafeName: azurecommunicationidentity
-    Clouds: 'Public'
-    UseFederatedAuth: true
-    CloudConfig:
-      Public:
-        ServiceConnection: azure-sdk-tests
-        SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzurePublicMsft.json
-        SubscriptionConfigurations:
-          - $(sub-config-communication-services-cloud-test-resources-common)
-          - $(sub-config-communication-services-cloud-test-resources-java)
+stages:
+  - template: /sdk/communication/communication-tests-template.yml
+    parameters:
+      PackageName: azure-communication-identity
+      SafeName: azurecommunicationidentity
+      Clouds: 'Public,PPE,Int'
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-communication-services-cloud-test-resources-common)
+            - $(sub-config-communication-services-cloud-test-resources-java)
+        Int:
+          SubscriptionConfigurations:
+            - $(sub-config-communication-int-test-resources-common)
+            - $(sub-config-communication-int-test-resources-java)
+        PPE:
+          SubscriptionConfigurations:
+            - $(sub-config-communication-ppe-test-resources-common)
+            - $(sub-config-communication-ppe-test-resources-java)

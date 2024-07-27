@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-metricsadvisor</artifactId>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
+  <version>1.1.27</version> <!-- {x-version-update;com.azure:azure-ai-metricsadvisor;current} -->
 
   <name>Microsoft Azure client library for Metrics Advisor</name>
   <description>This package contains the Microsoft Azure Cognitive Services Metrics Advisor SDK.</description>
@@ -52,11 +52,6 @@
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-json</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
-    </dependency>
 
     <!-- Test Dependencies -->
     <dependency>
@@ -69,12 +64,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -102,21 +91,4 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>java12plus</id>
-      <activation>
-        <jdk>[12,)</jdk>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.14</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-  </profiles>
 </project>

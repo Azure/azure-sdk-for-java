@@ -4,16 +4,116 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-developer-loadtesting
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azuredeveloperloadtesting
+      ServiceDirectory: loadtesting
+    - name: azure-communication-phonenumbers
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azurecommunicationphonenumbers
+      ServiceDirectory: communication
+    - name: azure-iot-deviceupdate
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azureiotdeviceupdate
+      ServiceDirectory: deviceupdate
+    - name: azure-data-tables
+      groupId: com.azure
+      safeName: azuredatatables
+      ServiceDirectory: tables
+    - name: azure-communication-chat
+      groupId: com.azure
+      safeName: azurecommunicationchatclient
+      ServiceDirectory: communication
+    - name: azure-messaging-servicebus
+      groupId: com.azure
+      safeName: azuremessagingservicebus
+      ServiceDirectory: servicebus
+    - name: azure-developer-devcenter
+      groupId: com.azure
+      safeName: azuredeveloperdevcenter
+      ServiceDirectory: devcenter
+    - name: azure-data-schemaregistry
+      groupId: com.azure
+      safeName: azuredataschemaregistry
+      ServiceDirectory: schemaregistry
+    - name: azure-messaging-webpubsub-client
+      groupId: com.azure
+      safeName: azuremessagingwebpubsubclient
+      ServiceDirectory: webpubsub
+    - name: azure-messaging-webpubsub
+      groupId: com.azure
+      safeName: azuremessagingwebpubsub
+      ServiceDirectory: webpubsub
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
+    - name: azure-communication-common
+      groupId: com.azure
+      safeName: azurecommunicationcommon
+      ServiceDirectory: communication
+    - name: azure-containers-containerregistry
+      groupId: com.azure
+      safeName: azurecontainerscontainerregistry
+      ServiceDirectory: containerregistry
+    - name: azure-communication-identity
+      groupId: com.azure
+      safeName: azurecommunicationidentity
+      ServiceDirectory: communication
+    - name: azure-communication-email
+      groupId: com.azure
+      safeName: azurecommunicationemail
+      ServiceDirectory: communication
+    - name: azure-mixedreality-remoterendering
+      groupId: com.azure
+      safeName: azuremixedrealityremoterendering
+      ServiceDirectory: remoterendering
+    - name: azure-mixedreality-authentication
+      groupId: com.azure
+      safeName: azuremixedrealityauthentication
+      ServiceDirectory: mixedreality
+    - name: azure-communication-sms
+      groupId: com.azure
+      safeName: azurecommunicationsms
+      ServiceDirectory: communication
+    - name: azure-ai-contentsafety
+      groupId: com.azure
+      safeName: azureaicontentsafety
+      ServiceDirectory: contentsafety
+    - name: azure-communication-rooms
+      groupId: com.azure
+      safeName: azurecommunicationrooms
+      ServiceDirectory: communication
+    - name: azure-messaging-eventgrid
+      groupId: com.azure
+      safeName: azuremessagingeventgrid
+      ServiceDirectory: eventgrid
+    - name: azure-communication-jobrouter
+      groupId: com.azure
+      safeName: azurecommunicationjobrouterclient
+      ServiceDirectory: communication
+    - name: azure-security-attestation
+      groupId: com.azure
+      safeName: azuresecurityattestation
+      ServiceDirectory: attestation
+    - name: azure-digitaltwins-core
+      groupId: com.azure
+      safeName: azuredigitaltwinscore
+      ServiceDirectory: digitaltwins
+    - name: azure-communication-messages
+      groupId: com.azure
+      safeName: azurecommunicationmessages
+      ServiceDirectory: communication
+    - name: azure-data-schemaregistry-apacheavro
+      groupId: com.azure
+      safeName: azuredataschemaregistryapacheavro
+      ServiceDirectory: schemaregistry
+    - name: azure-communication-callautomation
+      groupId: com.azure
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication
+    - name: azure-security-confidentialledger
+      groupId: com.azure
+      safeName: azuresecurityconfidentialledger
+      ServiceDirectory: confidentialledger
 

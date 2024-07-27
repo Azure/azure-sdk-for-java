@@ -208,7 +208,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData
         jsonWriter.writeStringField("sender", this.sender);
         jsonWriter.writeStringField("recipient", this.recipient);
         jsonWriter.writeStringField("messageId", this.messageId);
-        jsonWriter.writeStringField("userActionTimestamp", this.userActionTimestamp == null ? null
+        jsonWriter.writeStringField("userActionTimeStamp", this.userActionTimestamp == null ? null
             : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.userActionTimestamp));
         jsonWriter.writeStringField("engagementContext", this.engagementContext);
         jsonWriter.writeStringField("userAgent", this.userAgent);
@@ -238,7 +238,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData
                     deserializedAcsEmailEngagementTrackingReportReceivedEventData.recipient = reader.getString();
                 } else if ("messageId".equals(fieldName)) {
                     deserializedAcsEmailEngagementTrackingReportReceivedEventData.messageId = reader.getString();
-                } else if ("userActionTimestamp".equals(fieldName)) {
+                } else if ("userActionTimeStamp".equals(fieldName)) {
                     deserializedAcsEmailEngagementTrackingReportReceivedEventData.userActionTimestamp
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("engagementContext".equals(fieldName)) {

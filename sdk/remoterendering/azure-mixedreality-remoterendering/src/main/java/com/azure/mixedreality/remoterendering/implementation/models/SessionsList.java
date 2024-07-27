@@ -4,42 +4,42 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The result of a list sessions request.
- */
-@Immutable
-public final class SessionsList implements JsonSerializable<SessionsList> {
+/** The result of a list sessions request. */
+@Fluent
+public final class SessionsList {
     /*
-     * The list of rendering sessions. Does not include sessions in 'Stopped' state.
+     * The list of rendering sessions. Does not include sessions in 'Stopped'
+     * state.
      */
-    private final List<SessionProperties> sessions;
+    @JsonProperty(value = "sessions", required = true)
+    private List<SessionProperties> sessions;
 
     /*
-     * If more rendering sessions are available this field will contain a URL where the next batch of sessions can be
-     * requested. This URL will need the same authentication as all calls to the Azure Remote Rendering API.
+     * If more rendering sessions are available this field will contain a URL
+     * where the next batch of sessions can be requested. This URL will need
+     * the same authentication as all calls to the Azure Remote Rendering API.
      */
+    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
      * Creates an instance of SessionsList class.
-     * 
+     *
      * @param sessions the sessions value to set.
      */
-    public SessionsList(List<SessionProperties> sessions) {
+    @JsonCreator
+    public SessionsList(@JsonProperty(value = "sessions", required = true) List<SessionProperties> sessions) {
         this.sessions = sessions;
     }
 
     /**
      * Get the sessions property: The list of rendering sessions. Does not include sessions in 'Stopped' state.
-     * 
+     *
      * @return the sessions value.
      */
     public List<SessionProperties> getSessions() {
@@ -50,57 +50,10 @@ public final class SessionsList implements JsonSerializable<SessionsList> {
      * Get the nextLink property: If more rendering sessions are available this field will contain a URL where the next
      * batch of sessions can be requested. This URL will need the same authentication as all calls to the Azure Remote
      * Rendering API.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("sessions", this.sessions, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SessionsList from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SessionsList if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SessionsList.
-     */
-    public static SessionsList fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean sessionsFound = false;
-            List<SessionProperties> sessions = null;
-            String nextLink = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("sessions".equals(fieldName)) {
-                    sessions = reader.readArray(reader1 -> SessionProperties.fromJson(reader1));
-                    sessionsFound = true;
-                } else if ("@nextLink".equals(fieldName)) {
-                    nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (sessionsFound) {
-                SessionsList deserializedSessionsList = new SessionsList(sessions);
-                deserializedSessionsList.nextLink = nextLink;
-
-                return deserializedSessionsList;
-            }
-            throw new IllegalStateException("Missing required property: sessions");
-        });
     }
 }

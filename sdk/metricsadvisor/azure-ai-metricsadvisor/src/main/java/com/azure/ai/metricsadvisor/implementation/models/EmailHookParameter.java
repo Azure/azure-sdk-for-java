@@ -5,32 +5,24 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The EmailHookParameter model.
- */
+/** The EmailHookParameter model. */
 @Fluent
-public final class EmailHookParameter implements JsonSerializable<EmailHookParameter> {
+public final class EmailHookParameter {
     /*
      * Email TO: list.
      */
+    @JsonProperty(value = "toList", required = true)
     private List<String> toList;
 
-    /**
-     * Creates an instance of EmailHookParameter class.
-     */
-    public EmailHookParameter() {
-    }
+    /** Creates an instance of EmailHookParameter class. */
+    public EmailHookParameter() {}
 
     /**
      * Get the toList property: Email TO: list.
-     * 
+     *
      * @return the toList value.
      */
     public List<String> getToList() {
@@ -39,47 +31,12 @@ public final class EmailHookParameter implements JsonSerializable<EmailHookParam
 
     /**
      * Set the toList property: Email TO: list.
-     * 
+     *
      * @param toList the toList value to set.
      * @return the EmailHookParameter object itself.
      */
     public EmailHookParameter setToList(List<String> toList) {
         this.toList = toList;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("toList", this.toList, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of EmailHookParameter from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of EmailHookParameter if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EmailHookParameter.
-     */
-    public static EmailHookParameter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            EmailHookParameter deserializedEmailHookParameter = new EmailHookParameter();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("toList".equals(fieldName)) {
-                    List<String> toList = reader.readArray(reader1 -> reader1.getString());
-                    deserializedEmailHookParameter.toList = toList;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedEmailHookParameter;
-        });
     }
 }

@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-webpubsub</artifactId>
-  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+  <version>1.2.17</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
 
   <name>Microsoft Azure client library for Azure Web Pub Sub Service</name>
   <description>This package contains the Microsoft Azure Web Pub Sub library.</description>
@@ -33,8 +33,9 @@
   </scm>
 
   <properties>
-    <jacoco.min.linecoverage>0.39</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.29</jacoco.min.branchcoverage>
+    <!-- Once full testing is added this should either be removed or increased -->
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -97,6 +98,12 @@
       <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>javax.websocket</groupId>
@@ -128,6 +135,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.azure:*</include>
                 <include>com.nimbusds:nimbus-jose-jwt:[9.37.3]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
               </includes>
             </bannedDependencies>

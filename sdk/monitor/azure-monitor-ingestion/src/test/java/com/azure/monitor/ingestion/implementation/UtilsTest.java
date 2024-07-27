@@ -5,6 +5,7 @@ package com.azure.monitor.ingestion.implementation;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,6 +17,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -29,11 +31,13 @@ public class UtilsTest {
         Stream<Integer> stream = IntStream.of(100, 4000)
             .boxed()
             .parallel()
-            .map(this::task);
+            .map(i -> task(i));
 
         Future<List<Integer>> tasks = threadPool.submit(() -> stream.collect(Collectors.toList()));
 
+        long start = Instant.now().toEpochMilli();
         hook.run();
+        assertEquals(timeoutSec * 1000, Instant.now().toEpochMilli() - start, 1000);
 
         assertTrue(threadPool.isShutdown());
         assertTrue(threadPool.isTerminated());

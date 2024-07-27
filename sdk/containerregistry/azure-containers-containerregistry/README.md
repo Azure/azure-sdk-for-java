@@ -5,9 +5,9 @@ Azure Container Registry allows you to store and manage container images and art
 Use the client library for Azure Container Registry to:
 
 - List images or artifacts in a registry
-- Upload, download, and delete images and artifacts, repositories and tags
 - Obtain metadata for images and artifacts, repositories and tags
 - Set read/write/delete properties on registry items
+- Delete images and artifacts, repositories and tags
 
 [Source code][source_code] | [Package (Maven)][package] | [Product documentation][product_docs] | [Samples][samples]
 
@@ -56,7 +56,7 @@ and then include the direct dependency in the dependencies section without the v
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-containers-containerregistry</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -110,7 +110,7 @@ registryClient
 
 To authenticate with a registry in a [National Cloud](https://docs.microsoft.com/azure/active-directory/develop/authentication-national-cloud), you will need to make the following additions to your client configuration:
 - Set the `authorityHost` in the credential builder following [Identity client library documentation](https://learn.microsoft.com/java/api/overview/azure/identity-readme) 
-- If ACR access token authentication is disabled for your container Registry resource, you need to configure the audience on the Container Registry client builder.
+- If ACR access token authentication is disabled for yourcontainer Registry resource, you need to configure the audience on the Container Registry client builder.
 
 ```java readme-sample-armTokenChina
 ContainerRegistryClient registryClient = new ContainerRegistryClientBuilder()
@@ -126,10 +126,9 @@ registryClient
 ```
 
 #### Anonymous access support
-
 If the builder is instantiated without any credentials, the SDK creates the service client for the anonymous pull mode.
 The user must use this setting on a registry that has been enabled for anonymous pull.
-In this mode, the user can only call `listRepositoryNames` method and its overload. All the other calls will fail. 
+In this mode, the user can only call listRepositoryNames method and its overload. All the other calls will fail. 
 For more information please read [Anonymous Pull Access](https://docs.microsoft.com/azure/container-registry/container-registry-faq#how-do-i-enable-anonymous-pull-access)
 
 ```java readme-sample-createAnonymousAccessClient
@@ -204,6 +203,7 @@ image.updateTagProperties(
         .setDeleteEnabled(false));
 ```
 
+
 #### Delete Images
 
 ```java readme-sample-deleteImages
@@ -270,12 +270,10 @@ To upload a full image, we need to upload individual layers and configuration. A
 which describes an image or artifact and assign it a tag.  
 
 ```java readme-sample-uploadImage
-BinaryData configContent = BinaryData
-    .fromObject(Collections.singletonMap("hello", "world"));
+BinaryData configContent = BinaryData.fromObject(Collections.singletonMap("hello", "world"));
 
 UploadRegistryBlobResult configUploadResult = contentClient.uploadBlob(configContent);
-System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(),
-    configContent.getLength());
+System.out.printf("Uploaded config: digest - %s, size - %s\n", configUploadResult.getDigest(), configContent.getLength());
 
 OciDescriptor configDescriptor = new OciDescriptor()
     .setMediaType("application/vnd.unknown.config.v1+json")
@@ -284,8 +282,7 @@ OciDescriptor configDescriptor = new OciDescriptor()
 
 BinaryData layerContent = BinaryData.fromString("Hello Azure Container Registry");
 UploadRegistryBlobResult layerUploadResult = contentClient.uploadBlob(layerContent);
-System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(),
-    layerContent.getLength());
+System.out.printf("Uploaded layer: digest - %s, size - %s\n", layerUploadResult.getDigest(), layerContent.getLength());
 
 OciImageManifest manifest = new OciImageManifest()
     .setConfiguration(configDescriptor)
@@ -364,7 +361,7 @@ additional questions or comments.
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/containerregistry/azure-containers-containerregistry/src
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_subscription]: https://azure.microsoft.com/free
-[package]: https://central.sonatype.com/artifact/com.azure/azure-containers-containerregistry
+[package]: https://search.maven.org/artifact/com.azure/azure-containers-containerregisty
 [api_documentation]: https://aka.ms/java-docs
 [rest_docs]: https://docs.microsoft.com/rest/api/containerregistry/
 [product_docs]:  https://docs.microsoft.com/azure/container-registry

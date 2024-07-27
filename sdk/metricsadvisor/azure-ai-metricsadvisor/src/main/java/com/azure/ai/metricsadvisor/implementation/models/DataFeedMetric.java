@@ -5,46 +5,41 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DataFeedMetric model.
- */
+/** The DataFeedMetric model. */
 @Fluent
-public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
+public final class DataFeedMetric {
     /*
      * metric id
      */
+    @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricId;
 
     /*
      * metric name
      */
+    @JsonProperty(value = "metricName", required = true)
     private String metricName;
 
     /*
      * metric display name
      */
+    @JsonProperty(value = "metricDisplayName")
     private String metricDisplayName;
 
     /*
      * metric description
      */
+    @JsonProperty(value = "metricDescription")
     private String metricDescription;
 
-    /**
-     * Creates an instance of DataFeedMetric class.
-     */
-    public DataFeedMetric() {
-    }
+    /** Creates an instance of DataFeedMetric class. */
+    public DataFeedMetric() {}
 
     /**
      * Get the metricId property: metric id.
-     * 
+     *
      * @return the metricId value.
      */
     public String getMetricId() {
@@ -53,7 +48,7 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
 
     /**
      * Get the metricName property: metric name.
-     * 
+     *
      * @return the metricName value.
      */
     public String getMetricName() {
@@ -62,7 +57,7 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
 
     /**
      * Set the metricName property: metric name.
-     * 
+     *
      * @param metricName the metricName value to set.
      * @return the DataFeedMetric object itself.
      */
@@ -73,7 +68,7 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
 
     /**
      * Get the metricDisplayName property: metric display name.
-     * 
+     *
      * @return the metricDisplayName value.
      */
     public String getMetricDisplayName() {
@@ -82,7 +77,7 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
 
     /**
      * Set the metricDisplayName property: metric display name.
-     * 
+     *
      * @param metricDisplayName the metricDisplayName value to set.
      * @return the DataFeedMetric object itself.
      */
@@ -93,7 +88,7 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
 
     /**
      * Get the metricDescription property: metric description.
-     * 
+     *
      * @return the metricDescription value.
      */
     public String getMetricDescription() {
@@ -102,54 +97,12 @@ public final class DataFeedMetric implements JsonSerializable<DataFeedMetric> {
 
     /**
      * Set the metricDescription property: metric description.
-     * 
+     *
      * @param metricDescription the metricDescription value to set.
      * @return the DataFeedMetric object itself.
      */
     public DataFeedMetric setMetricDescription(String metricDescription) {
         this.metricDescription = metricDescription;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("metricName", this.metricName);
-        jsonWriter.writeStringField("metricDisplayName", this.metricDisplayName);
-        jsonWriter.writeStringField("metricDescription", this.metricDescription);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DataFeedMetric from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DataFeedMetric if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DataFeedMetric.
-     */
-    public static DataFeedMetric fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DataFeedMetric deserializedDataFeedMetric = new DataFeedMetric();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("metricName".equals(fieldName)) {
-                    deserializedDataFeedMetric.metricName = reader.getString();
-                } else if ("metricId".equals(fieldName)) {
-                    deserializedDataFeedMetric.metricId = reader.getString();
-                } else if ("metricDisplayName".equals(fieldName)) {
-                    deserializedDataFeedMetric.metricDisplayName = reader.getString();
-                } else if ("metricDescription".equals(fieldName)) {
-                    deserializedDataFeedMetric.metricDescription = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedDataFeedMetric;
-        });
     }
 }

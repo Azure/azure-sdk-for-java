@@ -5,7 +5,6 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.CallConnection;
 import com.azure.communication.callautomation.CallConnectionAsync;
-import com.azure.communication.callautomation.CallAutomationEventProcessor;
 
 /**
  * The abstract class used as parent of [action]CallResult
@@ -26,36 +25,10 @@ public abstract class CallResult {
      */
     private final CallConnectionAsync callConnectionAsync;
 
-    /**
-     * The event processor that handles events.
-     */
-    protected CallAutomationEventProcessor eventProcessor;
-    /**
-     * The call's connection id.
-     */
-    protected String callConnectionId;
-    /**
-     * Operation context from the api request.
-     */
-    protected String operationContextFromRequest;
-
     CallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
         this.callConnectionProperties = callConnectionProperties;
         this.callConnection = callConnection;
         this.callConnectionAsync = callConnectionAsync;
-    }
-
-    /**
-     * Sets the event processor
-     *
-     * @param eventProcessor the event processor
-     * @param callConnectionId the call connection id
-     * @param operationContext the operation context
-     */
-    public void setEventProcessor(CallAutomationEventProcessor eventProcessor, String callConnectionId, String operationContext) {
-        this.eventProcessor = eventProcessor;
-        this.callConnectionId = callConnectionId;
-        this.operationContextFromRequest = operationContext;
     }
 
     /**

@@ -45,14 +45,13 @@ If you want to take dependency on a particular version of the library that is no
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-keys</artifactId>
-    <version>4.8.4</version>
+    <version>4.8.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
-  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - An [Azure Subscription][azure_subscription].
 - One of the following:
   - An existing [Azure Key Vault][azure_keyvault]. If you need to create a key vault, you can do so in the Azure Portal by following the steps in [this document][azure_keyvault_portal]. Alternatively, you can use the Azure CLI by following the steps in [this document][azure_keyvault_cli].

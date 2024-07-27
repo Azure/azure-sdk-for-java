@@ -70,8 +70,7 @@ public final class LogsUploadOptions {
 
     /**
      * Sets  the error handler that is called when a request to the Azure Monitor service to upload logs fails.
-     * @param logsUploadErrorConsumer the error handler that is called when a request to the Azure Monitor service to
-     * upload logs fails.
+     * @param logsUploadErrorConsumer the error handler that is called when a request to the Azure Monitor service to upload logs fails.
      * @return the updated {@link LogsUploadOptions} instance.
      */
     public LogsUploadOptions setLogsUploadErrorConsumer(Consumer<LogsUploadError> logsUploadErrorConsumer) {
