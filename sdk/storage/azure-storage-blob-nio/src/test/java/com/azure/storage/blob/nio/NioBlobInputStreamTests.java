@@ -40,7 +40,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        var size = 5 * 1024 * 1024;
+        int size = 5 * 1024 * 1024;
         fileBytes = new byte[size];
 
         for (int i = 0; i < size; i++){
