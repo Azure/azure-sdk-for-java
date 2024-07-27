@@ -25,7 +25,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-tables</artifactId>
-      <version>12.4.3</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
+      <version>12.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-tables;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
