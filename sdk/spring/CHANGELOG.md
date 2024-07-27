@@ -7,6 +7,7 @@ Upgrade Spring Boot dependencies version to 3.3.2 and Spring Cloud dependencies 
 
 #### Dependency Updates
  - Added a new dependency: `spring-cloud-azure-testcontainers`.
+ - Added a new dependency: `spring-cloud-azure-docker-compose`.
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
