@@ -15,7 +15,6 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.ClientEndpointType;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
@@ -379,7 +378,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
             builder.httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()))
                 .connectionString(TestUtils.getConnectionString());
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(TestUtils.getIdentityTestCredential(interceptorManager));
         }
 
         if (getTestMode() == TestMode.RECORD) {
