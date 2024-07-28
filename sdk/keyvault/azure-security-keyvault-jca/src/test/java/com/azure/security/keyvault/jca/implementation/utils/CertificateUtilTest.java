@@ -24,22 +24,34 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class CertificateUtilTest {
 
     @Test
-    public void loadCertificatesFromSecretBundleValueFromPemTest()
+    public void loadCertificateChainFromSecretBundleValueTest()
         throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException {
-        assertNumberInCertFile("src/test/resources/certificate/download-from-keyvault.pem", 3);
-        assertNumberInCertFile("src/test/resources/certificate/download-from-keyvault.pfx.txt", 3);
-        assertNumberInCertFile("src/test/resources/custom/sideload2.pem", 1);
-        assertNumberInCertFile("src/test/resources/keyvault/sideload2.pem", 1);
-        assertNumberInCertFile("src/test/resources/well-known/sideload.pem", 1);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pem-exportable-key.pem", 1);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pem-non-exportable-key.pem", 1);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-exportable-key.pfx", 1);
+        // This is an unsolved problem: cert chain can't be loaded from this type of certificate.
+        // assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-non-exportable-key.pfx", 1);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem", 3);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pfx", 3);
     }
 
-    private void assertNumberInCertFile(String pemFile, int expectedNumber) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException {
+    private void assertCertNumberInCertChain(String pemFile, int expectedNumber) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException {
         String pemString = new String(Files.readAllBytes(Paths.get(pemFile)), StandardCharsets.UTF_8);
         assertEquals(expectedNumber, CertificateUtil.loadCertificatesFromSecretBundleValue(pemString).length);
     }
 
     @Test
     public void loadX509CertificateFromFileTest() throws IOException, CertificateException {
+        // CertificateUtil#loadX509CertificateFromFile is used in SpecificPathCertificates and ClassPathCertificates.
+        // Not it not support these type of files:
+        //   1. pem file with private key.
+        //   2. pfx files.
+        // It's a new feature to support these files, not implement now.
+        // Now just keep the test files and unit test codes, they may be used when implement the feature.
+        // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pem-exportable-key.pem");
+        certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pem-non-exportable-key.pem");
+        // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pkcs12-exportable-key.pfx");
+        // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pkcs12-non-exportable-key.pfx");
         certificateCanBeLoadFromFile("src/test/resources/custom/sideload.x509");
         certificateCanBeLoadFromFile("src/test/resources/custom/sideload2.pem");
         certificateCanBeLoadFromFile("src/test/resources/keyvault/sideload2.pem");
