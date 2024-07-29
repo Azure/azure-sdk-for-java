@@ -13,6 +13,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -50,6 +51,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Base64;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -79,6 +81,8 @@ public class BlobNioTestBase extends TestProxyTestBase {
     // Note that this value is only used to check if we depend on the received ETag. This value will not actually be
     // used.
     protected static final String RECEIVED_ETAG = "received";
+
+    private static final ClientLogger LOGGER = new ClientLogger(BlobNioTestBase.class);
 
     @Override
     protected void beforeTest() {
@@ -236,9 +240,15 @@ public class BlobNioTestBase extends TestProxyTestBase {
     }
 
     private static void dumpBufferContents(byte[] buffer1, byte[] buffer2) {
-        System.out.println("Buffers do not match at position: ");
-        System.out.println("Buffer1: " + Arrays.toString(buffer1));
-        System.out.println("Buffer2: " + Arrays.toString(buffer2));
+        LOGGER.info("Dumping array buffers:");
+        LOGGER.info("Buffer1: " + Arrays.toString(buffer1));
+        LOGGER.info("Buffer2: " + Arrays.toString(buffer2));
+
+        String encodedBuffer1 = Base64.getEncoder().encodeToString(buffer1);
+        String encodedBuffer2 = Base64.getEncoder().encodeToString(buffer2);
+
+        LOGGER.info("Encoded Buffer1: " + encodedBuffer1);
+        LOGGER.info("Encoded Buffer2: " + encodedBuffer2);
     }
 
     protected static void compareInputStreams(InputStream stream1, InputStream stream2, long count) {
@@ -257,7 +267,9 @@ public class BlobNioTestBase extends TestProxyTestBase {
                 int readCount1 = s1.read(buffer1);
                 int readCount2 = s2.read(buffer2);
 
-                dumpBufferContents(buffer1, buffer2);
+                if (!Arrays.equals(buffer1, buffer2)) {
+                    dumpBufferContents(buffer1, buffer2);
+                }
 
                 // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
                 assertEquals(readCount1, readCount2);
