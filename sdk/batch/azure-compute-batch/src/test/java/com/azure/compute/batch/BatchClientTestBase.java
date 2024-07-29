@@ -43,7 +43,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -198,10 +198,14 @@ class BatchClientTestBase extends TestProxyTestBase {
             }
             System.out.println("wait 30 seconds for pool steady...");
             sleepIfRunningAgainstService(30 * 1000);
-            elapsedTime = (new Date()).getTime() - startTime;
+            if (interceptorManager.isPlaybackMode()) {
+                elapsedTime += 30 * 1000;
+            } else {
+                elapsedTime = (new Date()).getTime() - startTime;
+            }
         }
 
-        Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
+        Assertions.assertTrue(steady, "The pool did not reach a steady state in the allotted time");
 
         return pool;
     }
@@ -334,7 +338,11 @@ class BatchClientTestBase extends TestProxyTestBase {
 
             // Check again after 10 seconds
             sleepIfRunningAgainstService(10 * 1000);
-            elapsedTime = (new Date()).getTime() - startTime;
+            if (interceptorManager.isPlaybackMode()) {
+                elapsedTime += 10 * 1000;
+            } else {
+                elapsedTime = (new Date()).getTime() - startTime;
+            }
         }
 
         // Timeout, return false
@@ -350,7 +358,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         // Wait for the VM to be allocated
         while (elapsedTime < poolAllocationTimeoutInMilliseconds) {
             pool = batchClient.getPool(poolId);
-            Assert.assertNotNull(pool);
+            Assertions.assertNotNull(pool);
 
             if (pool.getAllocationState() == targetState) {
                 allocationStateReached = true;
@@ -359,10 +367,14 @@ class BatchClientTestBase extends TestProxyTestBase {
 
             System.out.println("wait 30 seconds for pool allocationStateReached...");
             sleepIfRunningAgainstService(30 * 1000);
-            elapsedTime = (new Date()).getTime() - startTime;
+            if (interceptorManager.isPlaybackMode()) {
+                elapsedTime += 30 * 1000;
+            } else {
+                elapsedTime = (new Date()).getTime() - startTime;
+            }
         }
 
-        Assert.assertTrue("The pool did not reach a allocationStateReached state in the allotted time", allocationStateReached);
+        Assertions.assertTrue(allocationStateReached, "The pool did not reach a allocationStateReached state in the allotted time");
         return pool;
     }
 
