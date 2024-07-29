@@ -7,6 +7,8 @@ import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Customer;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.CustomerRepository;
+import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -61,6 +63,11 @@ public class CustomerRepositoryIT {
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Customer.class);
         this.repository.saveAll(Arrays.asList(CUSTOMER_0, CUSTOMER_1, CUSTOMER_2));
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        collectionManager.deleteContainer(new CosmosEntityInformation<>(Customer.class));
     }
 
     private void assertCustomerListEquals(@NonNull List<Customer> customers, @NonNull List<Customer> reference) {

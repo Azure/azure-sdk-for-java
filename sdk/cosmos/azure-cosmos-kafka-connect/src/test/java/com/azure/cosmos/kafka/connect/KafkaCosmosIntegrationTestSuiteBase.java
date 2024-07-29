@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -68,13 +69,15 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     private static void setupDockerContainersForLocal() {
         logger.info("Setting up local docker containers...");
         network = Network.newNetwork();
-        kafkaContainer = new KafkaContainer(getDockerImageName("confluentinc/cp-kafka:"))
+        kafkaContainer = new KafkaContainer(getDockerImageName("kafkaconfluentregistry.azurecr.io/cp-kafka:")
+            .asCompatibleSubstituteFor("confluentinc/cp-kafka:" + KafkaCosmosTestConfigurations.CONFLUENT_VERSION))
             .withNetwork(network)
             .withNetworkAliases("broker")
             .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
             .withLogConsumer(new Slf4jLogConsumer(logger));
 
-        schemaRegistryContainer = new KafkaSchemaRegistryContainer(getDockerImageName("confluentinc/cp-schema-registry:"))
+        schemaRegistryContainer = new KafkaSchemaRegistryContainer(getDockerImageName("kafkaconfluentregistry.azurecr.io/cp-schema-registry:")
+            .asCompatibleSubstituteFor("confluentinc/cp-schema-registry:" + KafkaCosmosTestConfigurations.CONFLUENT_VERSION))
             .withNetwork(network)
             .dependsOn(kafkaContainer)
             .withLocalKafkaContainer(kafkaContainer)
@@ -83,7 +86,8 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
 
         Startables.deepStart(Stream.of(kafkaContainer, schemaRegistryContainer)).join();
 
-        kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(getDockerImageName("confluentinc/cp-kafka-connect:"))
+        kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(getDockerImageName("kafkaconfluentregistry.azurecr.io/cp-kafka-connect:")
+            .asCompatibleSubstituteFor("confluentinc/cp-kafka-connect:" + KafkaCosmosTestConfigurations.CONFLUENT_VERSION))
             .withNetwork(network)
             .dependsOn(kafkaContainer, schemaRegistryContainer)
             .withLocalKafkaContainer(kafkaContainer)
@@ -110,7 +114,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     private static void createConnectorJar() throws IOException, InterruptedException {
         logger.info("Start creating connector jars...");
 
-        boolean isWindows = System.getProperty("os.name").startsWith("windows");
+        boolean isWindows = System.getProperty("os.name").toLowerCase(Locale.ROOT).startsWith("windows");
         Path connectorPluginsPath = Paths.get("src/test/connectorPlugins");
 
         ProcessBuilder processBuilder;

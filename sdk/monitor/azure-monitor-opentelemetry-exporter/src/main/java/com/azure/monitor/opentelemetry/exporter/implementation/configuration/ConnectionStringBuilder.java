@@ -135,7 +135,7 @@ class ConnectionStringBuilder {
             String scheme = result.getProtocol();
             if (!"http".equalsIgnoreCase(scheme) && !"https".equalsIgnoreCase(scheme)) {
                 throw new IllegalArgumentException(
-                    field + " must specify supported protocol, either 'http' or 'https': \"" + url + "\"");
+                    field + " of the connection string must specify supported protocol, either 'http' or 'https': \"" + url + "\"");
             }
             return result;
         } catch (MalformedURLException e) {

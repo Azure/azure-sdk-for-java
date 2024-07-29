@@ -15,6 +15,7 @@ import com.azure.spring.data.cosmos.repository.repository.AddressRepository;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.assertj.core.util.Lists;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -80,6 +81,11 @@ public class PersonCrossPartitionIT {
         containerName = personCrossPartitionInfo.getContainerName();
 
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, PersonCrossPartition.class);
+    }
+
+    @AfterClass
+    public static void cleanUp() {
+        collectionManager.deleteContainer(personCrossPartitionInfo);
     }
 
     @Test

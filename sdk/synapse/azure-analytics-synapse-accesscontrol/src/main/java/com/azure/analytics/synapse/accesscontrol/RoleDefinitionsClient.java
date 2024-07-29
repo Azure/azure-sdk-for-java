@@ -7,6 +7,7 @@ package com.azure.analytics.synapse.accesscontrol;
 import com.azure.analytics.synapse.accesscontrol.implementation.RoleDefinitionsImpl;
 import com.azure.analytics.synapse.accesscontrol.models.ErrorContractException;
 import com.azure.analytics.synapse.accesscontrol.models.SynapseRoleDefinition;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -14,23 +15,45 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Initializes a new instance of the synchronous AccessControlClient type. */
+/**
+ * Initializes a new instance of the synchronous AccessControlClient type.
+ */
 @ServiceClient(builder = AccessControlClientBuilder.class)
 public final class RoleDefinitionsClient {
+    @Generated
     private final RoleDefinitionsImpl serviceClient;
 
     /**
-     * Initializes an instance of RoleDefinitions client.
-     *
+     * Initializes an instance of RoleDefinitionsClient class.
+     * 
      * @param serviceClient the service client implementation.
      */
+    @Generated
     RoleDefinitionsClient(RoleDefinitionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * List role definitions.
-     *
+     * 
+     * @param isBuiltIn Is a Synapse Built-In Role or not.
+     * @param scope Scope of the Synapse Built-in Role.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Synapse roles available along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<SynapseRoleDefinition>> listRoleDefinitionsWithResponse(Boolean isBuiltIn, String scope,
+        Context context) {
+        return this.serviceClient.listRoleDefinitionsWithResponse(isBuiltIn, scope, context);
+    }
+
+    /**
+     * List role definitions.
+     * 
      * @param isBuiltIn Is a Synapse Built-In Role or not.
      * @param scope Scope of the Synapse Built-in Role.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,6 +61,7 @@ public final class RoleDefinitionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Synapse roles available.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<SynapseRoleDefinition> listRoleDefinitions(Boolean isBuiltIn, String scope) {
         return this.serviceClient.listRoleDefinitions(isBuiltIn, scope);
@@ -45,85 +69,73 @@ public final class RoleDefinitionsClient {
 
     /**
      * List role definitions.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Synapse roles available.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<SynapseRoleDefinition> listRoleDefinitions() {
         return this.serviceClient.listRoleDefinitions();
     }
 
     /**
-     * List role definitions.
-     *
-     * @param isBuiltIn Is a Synapse Built-In Role or not.
-     * @param scope Scope of the Synapse Built-in Role.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse roles available.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<SynapseRoleDefinition>> listRoleDefinitionsWithResponse(
-            Boolean isBuiltIn, String scope, Context context) {
-        return this.serviceClient.listRoleDefinitionsWithResponse(isBuiltIn, scope, context);
-    }
-
-    /**
      * Get role definition by role definition Id.
-     *
-     * @param roleDefinitionId Synapse Built-In Role Definition Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by role definition Id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SynapseRoleDefinition getRoleDefinitionById(String roleDefinitionId) {
-        return this.serviceClient.getRoleDefinitionById(roleDefinitionId);
-    }
-
-    /**
-     * Get role definition by role definition Id.
-     *
+     * 
      * @param roleDefinitionId Synapse Built-In Role Definition Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role definition by role definition Id.
+     * @return role definition by role definition Id along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynapseRoleDefinition> getRoleDefinitionByIdWithResponse(String roleDefinitionId, Context context) {
         return this.serviceClient.getRoleDefinitionByIdWithResponse(roleDefinitionId, context);
     }
 
     /**
-     * List rbac scopes.
-     *
+     * Get role definition by role definition Id.
+     * 
+     * @param roleDefinitionId Synapse Built-In Role Definition Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse rbac scopes available.
+     * @return role definition by role definition Id.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> listScopes() {
-        return this.serviceClient.listScopes();
+    public SynapseRoleDefinition getRoleDefinitionById(String roleDefinitionId) {
+        return this.serviceClient.getRoleDefinitionById(roleDefinitionId);
     }
 
     /**
      * List rbac scopes.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Synapse rbac scopes available.
+     * @return a list of Synapse rbac scopes available along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<String>> listScopesWithResponse(Context context) {
         return this.serviceClient.listScopesWithResponse(context);
+    }
+
+    /**
+     * List rbac scopes.
+     * 
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Synapse rbac scopes available.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<String> listScopes() {
+        return this.serviceClient.listScopes();
     }
 }

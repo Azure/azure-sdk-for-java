@@ -10,10 +10,10 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponent;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationType;
 import com.azure.resourcemanager.applicationinsights.models.IngestionMode;
@@ -36,7 +36,7 @@ public class ApplicationInsightsManagerTests extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         applicationInsightsManager = ApplicationInsightsManager
@@ -76,7 +76,7 @@ public class ApplicationInsightsManagerTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCreateComponent() {
         ApplicationInsightsComponent component = null;
         String randomPadding = randomPadding();

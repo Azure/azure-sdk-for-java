@@ -7,9 +7,15 @@ import com.azure.spring.messaging.eventhubs.core.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 
 /**
- *
+ *  Event Hubs consumer properties
  */
 public class EventHubsConsumerProperties extends ProcessorProperties {
+
+    /**
+     * Creates an instance of {@link EventHubsConsumerProperties}.
+     */
+    public EventHubsConsumerProperties() {
+    }
 
     private final CheckpointConfig checkpoint = new CheckpointConfig();
 

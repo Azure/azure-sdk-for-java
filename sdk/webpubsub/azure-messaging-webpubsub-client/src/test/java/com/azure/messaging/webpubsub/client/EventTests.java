@@ -3,7 +3,7 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.models.SendEventOptions;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
@@ -21,7 +21,7 @@ public class EventTests extends TestBase {
 
     @Disabled("Require event handler configured in Azure")
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testSendEvent() {
         WebPubSubClient client = getClient();
         try {

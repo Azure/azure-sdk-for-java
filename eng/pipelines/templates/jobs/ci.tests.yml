@@ -45,6 +45,9 @@ parameters:
   - name: TimeoutInMinutes
     type: number
     default: 60
+  - name: EnvVars
+    type: object
+    default: {}
 
 jobs:
   - job:
@@ -146,6 +149,7 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          TestEnvVars: ${{ parameters.EnvVars }}
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 

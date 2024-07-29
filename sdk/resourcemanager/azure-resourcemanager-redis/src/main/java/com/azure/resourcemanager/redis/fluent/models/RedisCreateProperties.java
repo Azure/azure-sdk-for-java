@@ -15,7 +15,9 @@ import com.azure.resourcemanager.redis.models.UpdateChannel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties supplied to Create Redis operation. */
+/**
+ * Properties supplied to Create Redis operation.
+ */
 @Fluent
 public class RedisCreateProperties extends RedisCommonProperties {
     /*
@@ -26,7 +28,8 @@ public class RedisCreateProperties extends RedisCommonProperties {
 
     /*
      * The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/
+     * VirtualNetworks/vnet1/subnets/subnet1
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;
@@ -38,13 +41,15 @@ public class RedisCreateProperties extends RedisCommonProperties {
     @JsonProperty(value = "staticIP")
     private String staticIp;
 
-    /** Creates an instance of RedisCreateProperties class. */
+    /**
+     * Creates an instance of RedisCreateProperties class.
+     */
     public RedisCreateProperties() {
     }
 
     /**
      * Get the sku property: The SKU of the Redis cache to deploy.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -53,7 +58,7 @@ public class RedisCreateProperties extends RedisCommonProperties {
 
     /**
      * Set the sku property: The SKU of the Redis cache to deploy.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RedisCreateProperties object itself.
      */
@@ -66,7 +71,7 @@ public class RedisCreateProperties extends RedisCommonProperties {
      * Get the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
      * Example format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -77,7 +82,7 @@ public class RedisCreateProperties extends RedisCommonProperties {
      * Set the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
      * Example format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the RedisCreateProperties object itself.
      */
@@ -89,7 +94,7 @@ public class RedisCreateProperties extends RedisCommonProperties {
     /**
      * Get the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
      * existing Azure Virtual Network; auto assigned by default.
-     *
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -99,7 +104,7 @@ public class RedisCreateProperties extends RedisCommonProperties {
     /**
      * Set the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
      * existing Azure Virtual Network; auto assigned by default.
-     *
+     * 
      * @param staticIp the staticIp value to set.
      * @return the RedisCreateProperties object itself.
      */
@@ -108,70 +113,90 @@ public class RedisCreateProperties extends RedisCommonProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withRedisConfiguration(RedisConfiguration redisConfiguration) {
         super.withRedisConfiguration(redisConfiguration);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withRedisVersion(String redisVersion) {
         super.withRedisVersion(redisVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withEnableNonSslPort(Boolean enableNonSslPort) {
         super.withEnableNonSslPort(enableNonSslPort);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withReplicasPerMaster(Integer replicasPerMaster) {
         super.withReplicasPerMaster(replicasPerMaster);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withReplicasPerPrimary(Integer replicasPerPrimary) {
         super.withReplicasPerPrimary(replicasPerPrimary);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withTenantSettings(Map<String, String> tenantSettings) {
         super.withTenantSettings(tenantSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withShardCount(Integer shardCount) {
         super.withShardCount(shardCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
         super.withMinimumTlsVersion(minimumTlsVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RedisCreateProperties withUpdateChannel(UpdateChannel updateChannel) {
         super.withUpdateChannel(updateChannel);
@@ -179,17 +204,25 @@ public class RedisCreateProperties extends RedisCommonProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RedisCreateProperties withDisableAccessKeyAuthentication(Boolean disableAccessKeyAuthentication) {
+        super.withDisableAccessKeyAuthentication(disableAccessKeyAuthentication);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model RedisCreateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model RedisCreateProperties"));
         } else {
             sku().validate();
         }

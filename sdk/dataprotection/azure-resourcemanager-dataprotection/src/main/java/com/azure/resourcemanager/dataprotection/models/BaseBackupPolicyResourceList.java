@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dataprotection.fluent.models.BaseBackupPolicyResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,7 +22,6 @@ public final class BaseBackupPolicyResourceList extends DppResourceList {
     /*
      * List of resources.
      */
-    @JsonProperty(value = "value")
     private List<BaseBackupPolicyResourceInner> value;
 
     /**
@@ -68,5 +70,46 @@ public final class BaseBackupPolicyResourceList extends DppResourceList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", nextLink());
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BaseBackupPolicyResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BaseBackupPolicyResourceList if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BaseBackupPolicyResourceList.
+     */
+    public static BaseBackupPolicyResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BaseBackupPolicyResourceList deserializedBaseBackupPolicyResourceList = new BaseBackupPolicyResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedBaseBackupPolicyResourceList.withNextLink(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    List<BaseBackupPolicyResourceInner> value
+                        = reader.readArray(reader1 -> BaseBackupPolicyResourceInner.fromJson(reader1));
+                    deserializedBaseBackupPolicyResourceList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBaseBackupPolicyResourceList;
+        });
     }
 }

@@ -19,8 +19,6 @@ public final class ManagedClusterSku {
     private ManagedClusterSkuName name;
 
     /*
-     * The tier of a managed cluster SKU.
-     * 
      * If not specified, the default is 'Free'. See [AKS Pricing
      * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      */
@@ -54,9 +52,7 @@ public final class ManagedClusterSku {
     }
 
     /**
-     * Get the tier property: The tier of a managed cluster SKU.
-     * 
-     * If not specified, the default is 'Free'. See [AKS Pricing
+     * Get the tier property: If not specified, the default is 'Free'. See [AKS Pricing
      * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      * 
      * @return the tier value.
@@ -66,9 +62,7 @@ public final class ManagedClusterSku {
     }
 
     /**
-     * Set the tier property: The tier of a managed cluster SKU.
-     * 
-     * If not specified, the default is 'Free'. See [AKS Pricing
+     * Set the tier property: If not specified, the default is 'Free'. See [AKS Pricing
      * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
      * 
      * @param tier the tier value to set.

@@ -79,8 +79,7 @@ public final class RelationshipsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> create(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasRelationship, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Post("/atlas/v2/relationship")
         @ExpectedResponses({ 200 })
@@ -89,8 +88,7 @@ public final class RelationshipsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasRelationship, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/relationship")
         @ExpectedResponses({ 200 })
@@ -99,8 +97,7 @@ public final class RelationshipsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> update(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasRelationship, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Put("/atlas/v2/relationship")
         @ExpectedResponses({ 200 })
@@ -109,8 +106,7 @@ public final class RelationshipsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateSync(@HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData atlasRelationship, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("application/json") BinaryData body, RequestOptions requestOptions, Context context);
 
         @Get("/atlas/v2/relationship/guid/{guid}")
         @ExpectedResponses({ 200 })
@@ -211,7 +207,7 @@ public final class RelationshipsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -220,11 +216,10 @@ public final class RelationshipsImpl {
      * @return atlas relationship instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData atlasRelationship,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.create(this.client.getEndpoint(), accept, atlasRelationship, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.create(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
@@ -289,7 +284,7 @@ public final class RelationshipsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -298,9 +293,9 @@ public final class RelationshipsImpl {
      * @return atlas relationship instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
+    public Response<BinaryData> createWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createSync(this.client.getEndpoint(), accept, atlasRelationship, requestOptions, Context.NONE);
+        return service.createSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -365,7 +360,7 @@ public final class RelationshipsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -374,11 +369,10 @@ public final class RelationshipsImpl {
      * @return atlas relationship instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateWithResponseAsync(BinaryData atlasRelationship,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.update(this.client.getEndpoint(), accept, atlasRelationship, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.update(this.client.getEndpoint(), accept, body, requestOptions, context));
     }
 
     /**
@@ -443,7 +437,7 @@ public final class RelationshipsImpl {
      * }
      * }</pre>
      * 
-     * @param atlasRelationship Atlas relationship instance.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -452,9 +446,9 @@ public final class RelationshipsImpl {
      * @return atlas relationship instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(BinaryData atlasRelationship, RequestOptions requestOptions) {
+    public Response<BinaryData> updateWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateSync(this.client.getEndpoint(), accept, atlasRelationship, requestOptions, Context.NONE);
+        return service.updateSync(this.client.getEndpoint(), accept, body, requestOptions, Context.NONE);
     }
 
     /**

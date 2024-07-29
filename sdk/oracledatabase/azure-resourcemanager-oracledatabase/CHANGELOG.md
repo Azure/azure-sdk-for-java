@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-07-04)
+
+- Azure Resource Manager OracleDatabase client library for Java. This package contains Microsoft Azure SDK for OracleDatabase Management SDK.  Package tag package-2023-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DbSystemShapeProperties` was modified
+
+* `int availableCoreCount()` -> `java.lang.Integer availableCoreCount()`
+
+#### `models.DnsPrivateZoneProperties` was modified
+
+* `boolean isProtected()` -> `java.lang.Boolean isProtected()`
+* `int serial()` -> `java.lang.Integer serial()`
+
+#### `models.DnsPrivateViewProperties` was modified
+
+* `boolean isProtected()` -> `java.lang.Boolean isProtected()`
 
 ## 1.0.0-beta.2 (2024-06-26)
 

@@ -21,7 +21,7 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -32,94 +32,87 @@ import java.util.stream.Stream;
 public class TestUtils {
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
-    static MapsPolygon getPolygon(InputStream is) throws IOException {
-        try (JsonReader jsonReader = JsonProviders.createReader(is)) {
-            return MapsPolygon.fromJson(jsonReader);
-        }
-    }
-
-    static List<MapsPolygon> getMultiPolygonsResults() throws IOException {
+    static List<MapsPolygon> getMultiPolygonsResults() {
         List<MapsPolygon> result = new ArrayList<>();
-        InputStream is = ClassLoader.getSystemResourceAsStream("polygon1.json");
-        MapsPolygon polygon1 = TestUtils.getPolygon(is);
-        InputStream is2 = ClassLoader.getSystemResourceAsStream("polygon2.json");
-        MapsPolygon polygon2 = TestUtils.getPolygon(is2);
-        result.add(polygon1);
-        result.add(polygon2);
+        result.add(deserialize("polygon1.json", MapsPolygon::fromJson));
+        result.add(deserialize("polygon2.json", MapsPolygon::fromJson));
         return result;
     }
 
-    static SearchAddressResult getExpectedFuzzySearchResults() throws IOException {
+    static SearchAddressResult getExpectedFuzzySearchResults() {
         return deserialize("searchaddressresult.json", SearchAddressResult::fromJson);
     }
 
-    static SearchAddressResult getExpectedSearchPointOfInterestResults() throws IOException {
+    static SearchAddressResult getExpectedSearchPointOfInterestResults() {
         return deserialize("searchpointofinterestresult.json", SearchAddressResult::fromJson);
     }
 
-    static SearchAddressResult getExpectedSearchNearbyPointOfInterestResults() throws IOException {
+    static SearchAddressResult getExpectedSearchNearbyPointOfInterestResults() {
         return deserialize("searchnearbypointofinterestresult.json", SearchAddressResult::fromJson);
     }
 
-    static SearchAddressResult getExpectedSearchPointOfInterestCategoryResults() throws IOException {
+    static SearchAddressResult getExpectedSearchPointOfInterestCategoryResults() {
         return deserialize("searchpointofinterestcategoryresult.json", SearchAddressResult::fromJson);
     }
 
-    static PointOfInterestCategoryTreeResult getExpectedSearchPointOfInterestCategoryTreeResults() throws IOException {
+    static PointOfInterestCategoryTreeResult getExpectedSearchPointOfInterestCategoryTreeResults() {
         return deserialize("getpointofinterestcategorytreeresult.json", PointOfInterestCategoryTreeResult::fromJson);
     }
 
-    static SearchAddressResult getExpectedSearchAddressResults() throws IOException {
+    static SearchAddressResult getExpectedSearchAddressResults() {
         return deserialize("searchaddressresult.json", SearchAddressResult::fromJson);
     }
 
-    static ReverseSearchAddressResult getExpectedReverseSearchAddressResults() throws IOException {
+    static ReverseSearchAddressResult getExpectedReverseSearchAddressResults() {
         return deserialize("reversesearchaddressresult.json", ReverseSearchAddressResult::fromJson);
     }
 
-    static ReverseSearchCrossStreetAddressResult getExpectedReverseSearchCrossStreetAddressResults()
-        throws IOException {
+    static ReverseSearchCrossStreetAddressResult getExpectedReverseSearchCrossStreetAddressResults() {
         return deserialize("reversesearchcrossstreetaddressresult.json",
             ReverseSearchCrossStreetAddressResult::fromJson);
     }
 
-    static SearchAddressResult getExpectedSearchStructuredAddress() throws IOException {
+    static SearchAddressResult getExpectedSearchStructuredAddress() {
         return deserialize("searchstructuredaddressresult.json", SearchAddressResult::fromJson);
     }
 
-    static GeoObject getGeoObject(File file) throws IOException {
+    static GeoObject getGeoObject(File file) {
         try (JsonReader jsonReader = JsonProviders.createReader(Files.readAllBytes(file.toPath()))) {
             return GeoObject.fromJson(jsonReader);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
     }
 
-    static SearchAddressResult getExpectedSearchInsideGeometryCollection() throws IOException {
+    static SearchAddressResult getExpectedSearchInsideGeometryCollection() {
         return deserialize("searchinsidegeocollectionresult.json", SearchAddressResult::fromJson);
     }
 
-    static SearchAddressResult getExpectedSearchInsideGeometry() throws IOException {
+    static SearchAddressResult getExpectedSearchInsideGeometry() {
         return deserialize("searchinsidegeometryresult.json", SearchAddressResult::fromJson);
     }
 
-    static GeoLineString getGeoLineString(File file) throws IOException {
+    static GeoLineString getGeoLineString(File file) {
         try (JsonReader jsonReader = JsonProviders.createReader(Files.readAllBytes(file.toPath()))) {
             return GeoLineString.fromJson(jsonReader);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
     }
 
-    static SearchAddressResult getExpectedSearchAlongRoute() throws IOException {
+    static SearchAddressResult getExpectedSearchAlongRoute() {
         return deserialize("searchalongrouteresult.json", SearchAddressResult::fromJson);
     }
 
-    static BatchSearchResult getExpectedBeginFuzzySearchBatch() throws IOException {
+    static BatchSearchResult getExpectedBeginFuzzySearchBatch() {
         return deserialize("beginfuzzysearchbatchresult.json", BatchSearchResult::fromJson);
     }
 
-    static BatchSearchResult getExpectedBeginSearchAddressBatch() throws IOException {
+    static BatchSearchResult getExpectedBeginSearchAddressBatch() {
         return deserialize("beginsearchaddressbatchresult.json", BatchSearchResult::fromJson);
     }
 
-    static BatchReverseSearchResult getExpectedReverseSearchAddressBatch() throws IOException {
+    static BatchReverseSearchResult getExpectedReverseSearchAddressBatch() {
         return deserialize("beginreversesearchaddressbatchresult.json", BatchReverseSearchResult::fromJson);
     }
 
@@ -132,20 +125,16 @@ public class TestUtils {
      * @return A stream of HttpClient and service version combinations to test.
      */
     public static Stream<Arguments> getTestParameters() {
-        // when this issues is closed, the newer version of junit will have better support for
-        // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        TestBase.getHttpClients().forEach(httpClient -> {
-            Arrays.stream(MapsSearchServiceVersion.values())
-                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-        });
-        return argumentsList.stream();
+        return TestBase.getHttpClients().flatMap(httpClient -> Arrays.stream(MapsSearchServiceVersion.values())
+            .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
     }
 
     private static <T> T deserialize(String resourceName,
-        ReadValueCallback<JsonReader, T> deserializer) throws IOException {
+        ReadValueCallback<JsonReader, T> deserializer) {
         try (JsonReader jsonReader = JsonProviders.createReader(ClassLoader.getSystemResourceAsStream(resourceName))) {
             return deserializer.read(jsonReader);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
     }
 }

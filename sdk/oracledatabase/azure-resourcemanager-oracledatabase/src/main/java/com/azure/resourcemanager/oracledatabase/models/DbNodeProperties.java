@@ -371,7 +371,6 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
      * @param jsonReader The JsonReader being read.
      * @return An instance of DbNodeProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DbNodeProperties.
      */
     public static DbNodeProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -383,8 +382,6 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
 
                 if ("ocid".equals(fieldName)) {
                     deserializedDbNodeProperties.ocid = reader.getString();
-                } else if ("dbSystemId".equals(fieldName)) {
-                    deserializedDbNodeProperties.dbSystemId = reader.getString();
                 } else if ("additionalDetails".equals(fieldName)) {
                     deserializedDbNodeProperties.additionalDetails = reader.getString();
                 } else if ("backupIpId".equals(fieldName)) {
@@ -399,6 +396,8 @@ public final class DbNodeProperties implements JsonSerializable<DbNodeProperties
                     deserializedDbNodeProperties.dbNodeStorageSizeInGbs = reader.getNullable(JsonReader::getInt);
                 } else if ("dbServerId".equals(fieldName)) {
                     deserializedDbNodeProperties.dbServerId = reader.getString();
+                } else if ("dbSystemId".equals(fieldName)) {
+                    deserializedDbNodeProperties.dbSystemId = reader.getString();
                 } else if ("faultDomain".equals(fieldName)) {
                     deserializedDbNodeProperties.faultDomain = reader.getString();
                 } else if ("hostIpId".equals(fieldName)) {

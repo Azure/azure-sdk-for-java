@@ -109,10 +109,14 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
   private val cosmosBulkExecutionOptions = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
     .getCosmosBulkExecutionOptionsAccessor
-    .setMaxConcurrentCosmosPartitions(
-      new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds),
-      maxConcurrentPartitions
-    )
+    .setSchedulerOverride(
+      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+        .getCosmosBulkExecutionOptionsAccessor
+        .setMaxConcurrentCosmosPartitions(
+          new CosmosBulkExecutionOptions(BulkWriter.bulkProcessingThresholds),
+          maxConcurrentPartitions
+        ),
+      bulkWriterRequestsBoundedElastic)
 
   private class ForwardingMetricTracker(val verboseLoggingEnabled: AtomicBoolean) extends BulkExecutorDiagnosticsTracker {
     override def trackDiagnostics(ctx: CosmosDiagnosticsContext): Unit = {
@@ -1322,17 +1326,19 @@ private object BulkWriter {
 
   private val bulkProcessingThresholds = new CosmosBulkExecutionThresholdsState()
 
+  val maxPendingOperationsPerJVM = DefaultMaxPendingOperationPerCore * SparkUtils.getNumberOfHostCPUCores
+
   // Custom bounded elastic scheduler to consume input flux
   val bulkWriterRequestsBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + DefaultMaxPendingOperationPerCore,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + 2 * maxPendingOperationsPerJVM,
     BULK_WRITER_REQUESTS_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   // Custom bounded elastic scheduler to switch off IO thread to process response.
   val bulkWriterResponsesBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
     Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + DefaultMaxPendingOperationPerCore,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingOperationsPerJVM,
     BULK_WRITER_RESPONSES_BOUNDED_ELASTIC_THREAD_NAME,
     TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
@@ -1340,7 +1346,7 @@ private object BulkWriter {
   // Custom bounded elastic scheduler to switch off IO thread to process response.
   val readManyBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
       2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-      Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + DefaultMaxPendingOperationPerCore,
+      Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE + maxPendingOperationsPerJVM,
       READ_MANY_BOUNDED_ELASTIC_THREAD_NAME,
       TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 

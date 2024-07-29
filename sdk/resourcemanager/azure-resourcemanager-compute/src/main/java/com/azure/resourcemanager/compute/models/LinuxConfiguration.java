@@ -28,8 +28,8 @@ public final class LinuxConfiguration {
 
     /*
      * Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not
-     * specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is
-     * installed on the VM so that extensions can be added to the VM later.
+     * specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed
+     * on the VM so that extensions can be added to the VM later.
      */
     @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;

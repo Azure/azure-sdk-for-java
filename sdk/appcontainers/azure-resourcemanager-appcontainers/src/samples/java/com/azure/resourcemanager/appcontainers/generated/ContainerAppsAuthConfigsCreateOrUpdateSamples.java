@@ -18,7 +18,7 @@ import com.azure.resourcemanager.appcontainers.models.UnauthenticatedClientActio
 public final class ContainerAppsAuthConfigsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/AuthConfigs_CreateOrUpdate.
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/AuthConfigs_CreateOrUpdate.
      * json
      */
     /**
@@ -28,7 +28,8 @@ public final class ContainerAppsAuthConfigsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateContainerAppAuthConfig(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerAppsAuthConfigs().define("current")
+        manager.containerAppsAuthConfigs()
+            .define("current")
             .withExistingContainerApp("workerapps-rg-xj", "testcanadacentral")
             .withPlatform(new AuthPlatform().withEnabled(true))
             .withGlobalValidation(

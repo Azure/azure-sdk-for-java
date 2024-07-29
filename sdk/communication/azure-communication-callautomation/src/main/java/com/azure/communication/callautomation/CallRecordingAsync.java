@@ -51,12 +51,10 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidParameterException;
-import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -121,8 +119,6 @@ public final class CallRecordingAsync {
                 return callRecordingsInternal
                     .startRecordingWithResponseAsync(
                         request,
-                        UUID.randomUUID(),
-                        OffsetDateTime.now(),
                         contextValue)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))
@@ -182,8 +178,8 @@ public final class CallRecordingAsync {
                 request.setExternalStorage(recordingStorageInternal);
             }
         }
-        if (options.getPauseOnStart() != null) {
-            request.setPauseOnStart(options.getPauseOnStart());
+        if (options.isPauseOnStart() != null) {
+            request.setPauseOnStart(options.isPauseOnStart());
         }
 
         return request;

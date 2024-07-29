@@ -34,7 +34,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.monitor.ingestion.implementation.Utils.CONTENT_ENCODING;
 import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
 import static com.azure.monitor.ingestion.implementation.Utils.createThreadPool;
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
@@ -42,8 +41,9 @@ import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownHook;
 
 /**
- * <p>This class provides a synchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace. This client 
- * encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of synchronous operations.</p>
+ * <p>This class provides a synchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
+ * This client encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of synchronous
+ * operations.</p>
  *
  * <h2>Getting Started</h2>
  *
@@ -55,7 +55,8 @@ import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownH
  * See {@link LogsIngestionClientBuilder#endpoint(String) endpoint} method for more details.</li>
  * <li>{@code credential} - The AAD authentication credential that has the "Monitoring Metrics Publisher" role assigned to it.
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
- * provides a variety of AAD credential types that can be used. See {@link LogsIngestionClientBuilder#credential(TokenCredential) credential } method for more details.</li>
+ * provides a variety of AAD credential types that can be used. See
+ * {@link LogsIngestionClientBuilder#credential(TokenCredential) credential} method for more details.</li>
  * </ol>
  *
  * <p><strong>Instantiating a synchronous Logs ingestion client</strong></p>
@@ -76,13 +77,16 @@ import static com.azure.monitor.ingestion.implementation.Utils.registerShutdownH
  *
  * <ul>
  *     <li>
- *         {@link LogsIngestionClient#upload(String, String, Iterable) upload(String, String, Iterable)} - Uploads logs to a Log Analytics workspace.
+ *         {@link #upload(String, String, Iterable) upload(String, String, Iterable)} - Uploads logs to a Log Analytics
+ *         workspace.
  *     </li>
  *     <li>
- *         {@link LogsIngestionClient#upload(String, String, Iterable, LogsUploadOptions) upload(String, String, Iterable, LogsUploadOptions)} - Uploads logs to a Log Analytics workspace with options to configure the upload request.
+ *         {@link #upload(String, String, Iterable, LogsUploadOptions) upload(String, String, Iterable, LogsUploadOptions)}
+ *         - Uploads logs to a Log Analytics workspace with options to configure the upload request.
  *     </li>
  *     <li>
- *         {@link LogsIngestionClient#uploadWithResponse(String, String, BinaryData, RequestOptions) uploadWithResponse(String, String, BinaryData, RequestOptions)} - Uploads logs to a Log Analytics workspace with options to configure the HTTP request.
+ *         {@link #uploadWithResponse(String, String, BinaryData, RequestOptions) uploadWithResponse(String, String, BinaryData, RequestOptions)}
+ *         - Uploads logs to a Log Analytics workspace with options to configure the HTTP request.
  *     </li>
  * </ul>
  *
@@ -147,8 +151,9 @@ public final class LogsIngestionClient implements AutoCloseable {
      * Uploads logs to Azure Monitor with specified data collection rule id and stream name. The input logs may be
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
      * the input logs into multiple smaller requests before sending to the service. This method will block until all
-     * the logs are uploaded or an error occurs. If an {@link LogsUploadOptions#setLogsUploadErrorConsumer(Consumer) error handler} is set,
-     * then the service errors are surfaced to the error handler and this method won't throw an exception.
+     * the logs are uploaded or an error occurs. If an
+     * {@link LogsUploadOptions#setLogsUploadErrorConsumer(Consumer) error handler} is set, then the service errors are
+     * surfaced to the error handler and this method won't throw an exception.
      *
      * <p>
      * Each log in the input collection must be a valid JSON object. The JSON object should match the
@@ -166,6 +171,7 @@ public final class LogsIngestionClient implements AutoCloseable {
      * System.out.println&#40;&quot;Logs uploaded successfully&quot;&#41;;
      * </pre>
      * <!-- end com.azure.monitor.ingestion.LogsIngestionClient.uploadWithConcurrency -->
+     *
      * @param ruleId the data collection rule id that is configured to collect and transform the logs.
      * @param streamName the stream name configured in data collection rule that matches defines the structure of the
      * logs sent in this request.
@@ -175,8 +181,7 @@ public final class LogsIngestionClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upload(String ruleId, String streamName,
-                                   Iterable<Object> logs, LogsUploadOptions options) {
+    public void upload(String ruleId, String streamName, Iterable<Object> logs, LogsUploadOptions options) {
         upload(ruleId, streamName, logs, options, Context.NONE);
     }
 
@@ -184,8 +189,9 @@ public final class LogsIngestionClient implements AutoCloseable {
      * Uploads logs to Azure Monitor with specified data collection rule id and stream name. The input logs may be
      * too large to be sent as a single request to the Azure Monitor service. In such cases, this method will split
      * the input logs into multiple smaller requests before sending to the service. This method will block until all
-     * the logs are uploaded or an error occurs. If an {@link LogsUploadOptions#setLogsUploadErrorConsumer(Consumer) error handler} is set,
-     * then the service errors are surfaced to the error handler and this method won't throw an exception.
+     * the logs are uploaded or an error occurs. If an
+     * {@link LogsUploadOptions#setLogsUploadErrorConsumer(Consumer) error handler} is set, then the service errors are
+     * surfaced to the error handler and this method won't throw an exception.
      *
      * <p>
      * Each log in the input collection must be a valid JSON object. The JSON object should match the
@@ -204,39 +210,38 @@ public final class LogsIngestionClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code logs} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void upload(String ruleId, String streamName,
-                       Iterable<Object> logs, LogsUploadOptions options, Context context) {
+    public void upload(String ruleId, String streamName, Iterable<Object> logs, LogsUploadOptions options,
+        Context context) {
         Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
         Objects.requireNonNull(streamName, "'streamName' cannot be null.");
         Objects.requireNonNull(logs, "'logs' cannot be null.");
 
-        Consumer<LogsUploadError> uploadLogsErrorConsumer = options == null ? null : options.getLogsUploadErrorConsumer();
+        Consumer<LogsUploadError> uploadLogsErrorConsumer = options == null
+            ? null
+            : options.getLogsUploadErrorConsumer();
 
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addHeader(CONTENT_ENCODING, GZIP);
+        requestOptions.addHeader(HttpHeaderName.CONTENT_ENCODING, GZIP);
         requestOptions.setContext(context);
 
-        Stream<UploadLogsResponseHolder> responses = new Batcher(options, logs)
-            .toStream()
+        Stream<UploadLogsResponseHolder> responses = new Batcher(options, logs).toStream()
             .map(r -> uploadToService(ruleId, streamName, requestOptions, r));
 
-        responses = submit(responses, getConcurrency(options))
-            .filter(response -> response.getException() != null);
+        responses = submit(responses, getConcurrency(options)).filter(response -> response.getException() != null);
 
         if (uploadLogsErrorConsumer != null) {
-            responses.forEach(response -> uploadLogsErrorConsumer.accept(new LogsUploadError(response.getException(), response.getRequest().getLogs())));
+            responses.forEach(response -> uploadLogsErrorConsumer.accept(
+                new LogsUploadError(response.getException(), response.getRequest().getLogs())));
             return;
         }
 
         final int[] failedLogCount = new int[1];
-        List<HttpResponseException> exceptions = responses
-            .map(response -> {
-                failedLogCount[0] += response.getRequest().getLogs().size();
-                return response.getException();
-            })
-            .collect(Collectors.toList());
+        List<HttpResponseException> exceptions = responses.map(response -> {
+            failedLogCount[0] += response.getRequest().getLogs().size();
+            return response.getException();
+        }).collect(Collectors.toList());
 
-        if (exceptions.size() > 0) {
+        if (!exceptions.isEmpty()) {
             throw LOGGER.logExceptionAsError(new LogsUploadException(exceptions, failedLogCount[0]));
         }
     }
@@ -253,10 +258,12 @@ public final class LogsIngestionClient implements AutoCloseable {
         }
     }
 
-    private UploadLogsResponseHolder uploadToService(String ruleId, String streamName, RequestOptions requestOptions, LogsIngestionRequest request) {
+    private UploadLogsResponseHolder uploadToService(String ruleId, String streamName, RequestOptions requestOptions,
+        LogsIngestionRequest request) {
         HttpResponseException exception = null;
         try {
-            client.uploadWithResponse(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()), requestOptions);
+            client.uploadWithResponse(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()),
+                requestOptions);
         } catch (HttpResponseException ex) {
             exception = ex;
         }
@@ -265,16 +272,17 @@ public final class LogsIngestionClient implements AutoCloseable {
     }
 
     /**
-     * This method is used to upload logs to Azure Monitor Log Analytics with specified data collection rule id and stream name. This
-     * upload method provides a more granular control of the HTTP request sent to the service. Use {@link RequestOptions}
-     * to configure the HTTP request.
+     * This method is used to upload logs to Azure Monitor Log Analytics with specified data collection rule id and
+     * stream name. This upload method provides a more granular control of the HTTP request sent to the service. Use
+     * {@link RequestOptions} to configure the HTTP request.
      *
      * <p>
      * The input logs should be a JSON array with each element in the array
      * matching the <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-structure#streamdeclarations">schema defined
-     * by the stream name</a>. The stream's schema can be found in the Azure portal. This content will be gzipped before sending to the service.
-     * If the content is already gzipped, then set the {@code Content-Encoding} header to {@code gzip} using {@link RequestOptions#setHeader(HttpHeaderName, String) requestOptions}
-     * and pass the content as is.
+     * by the stream name</a>. The stream's schema can be found in the Azure portal. This content will be gzipped before
+     * sending to the service. If the content is already gzipped, then set the {@code Content-Encoding} header to
+     * {@code gzip} using {@link RequestOptions#setHeader(HttpHeaderName, String) requestOptions} and pass the content
+     * as is.
      * </p>
      *
      * <p><strong>Header Parameters</strong>
@@ -298,15 +306,15 @@ public final class LogsIngestionClient implements AutoCloseable {
      * @param streamName The streamDeclaration name as defined in the Data Collection Rule.
      * @param logs An array of objects matching the schema defined by the provided stream.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the {@link Response}.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> uploadWithResponse(
-            String ruleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
+    public Response<Void> uploadWithResponse(String ruleId, String streamName, BinaryData logs,
+        RequestOptions requestOptions) {
         Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
         Objects.requireNonNull(streamName, "'streamName' cannot be null.");
         Objects.requireNonNull(logs, "'logs' cannot be null.");
@@ -316,11 +324,11 @@ public final class LogsIngestionClient implements AutoCloseable {
         }
 
         requestOptions.addRequestCallback(request -> {
-            HttpHeader httpHeader = request.getHeaders().get(CONTENT_ENCODING);
+            HttpHeader httpHeader = request.getHeaders().get(HttpHeaderName.CONTENT_ENCODING);
             if (httpHeader == null) {
                 BinaryData gzippedRequest = BinaryData.fromBytes(gzipRequest(logs.toBytes()));
                 request.setBody(gzippedRequest);
-                request.setHeader(CONTENT_ENCODING, GZIP);
+                request.setHeader(HttpHeaderName.CONTENT_ENCODING, GZIP);
             }
         });
         return client.uploadWithResponse(ruleId, streamName, logs, requestOptions);

@@ -219,7 +219,7 @@
 # ServiceOwners:                                     @bingisbestest @nerajput1607
 
 # ServiceLabel: %Cognitive - Translator
-# ServiceOwners:                                     @swmachan
+# ServiceOwners:                                     @swmachan @MikeyMCZ
 
 # ServiceLabel: %Cognitive - Speech
 # ServiceOwners:                                     @rhurey
@@ -455,8 +455,16 @@
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-extensions/ @sjkwak
 
+# ServiceLabel: %Health Deidentification
+# PRLabel: %Health Deidentification
+/sdk/healthdataaiservices/                           @GrahamMThomas @danielszaniszlo @billwert
+
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs/            @sjkwak
+
+# ServiceLabel: %Cognitive - Face
+# PRLabel: %Cognitive - Face
+/sdk/face/azure-ai-vision-face/               @leareai
 
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
@@ -512,8 +520,6 @@
 
 # PRLabel: %Load Testing
 /sdk/loadtesting/                                    @Harshan01 @prativen
-
-/sdk/loganalytics/microsoft-azure-loganalytics/      @ischrei
 
 # ServiceLabel: %Logic App
 # ServiceOwners:                                     @Azure/azure-logicapps-team
@@ -654,6 +660,10 @@
 # ServiceLabel: %PostgreSQL
 # ServiceOwners:                                     @sunilagarwal @lfittl-msft @sr-msft @niklarin
 
+# ServiceLabel: %Purview
+# PRLabel: %Purview
+/sdk/purview/                                        @yifan-zhou922
+
 # PRLabel: %Azure Quantum
 /sdk/quantum/                                        @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
 
@@ -773,6 +783,10 @@
 # AzureSdkOwners:                                    @jairmyree
 # ServiceOwners:                                     @klaaslanghout
 
+# ServiceLabel: %Text Translation
+# PRLabel:  %Text Translation
+/sdk/translation/azure-ai-translation-text/         @MikeyMCZ
+
 # PRLabel: %EngSys
 /sdk/template/                                       @hallipr @weshaggard @JimSuplizio
 
@@ -860,13 +874,14 @@
 # ######## Eng Sys ########
 
 /eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
+/eng/automation/                                     @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
 /eng/code-quality-reports/                           @mssfang @JonathanGiles @alzimmermsft @srnagar
 /eng/common/                                         @Azure/azure-sdk-eng
-/eng/mgmt/                                           @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
 /eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
 /eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
 /eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
+/.github/workflows/                                  @Azure/azure-sdk-eng
 
 # Removing owners for these files to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt
@@ -875,3 +890,6 @@
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
 /eng/common/pipelines/codeowners-linter.yml          @alzimmermsft @srnagar @lmolkova
+
+# Add Cosmos source owners as the owners of their specialized matrix
+/eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie

@@ -340,8 +340,10 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     public SyncPoller<PollResult<GalleryApplicationInner>, GalleryApplicationInner> beginCreateOrUpdate(
         String resourceGroupName, String galleryName, String galleryApplicationName,
         GalleryApplicationInner galleryApplication, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication,
-            context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -364,7 +366,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     public Mono<GalleryApplicationInner> createOrUpdateAsync(String resourceGroupName, String galleryName,
         String galleryApplicationName, GalleryApplicationInner galleryApplication) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -689,7 +692,8 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     private Mono<GalleryApplicationInner> updateAsync(String resourceGroupName, String galleryName,
         String galleryApplicationName, GalleryApplicationUpdate galleryApplication, Context context) {
         return beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1268,9 +1272,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1297,9 +1299,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class DaprSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DaprSubscriptions_Get_DefaultRoute.json
      */
     /**
@@ -19,12 +19,12 @@ public final class DaprSubscriptionsGetSamples {
      */
     public static void getDaprSubscriptionWithBulkSubscribeConfigurationAndScopes(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.daprSubscriptions().getWithResponse("examplerg", "myenvironment", "mypubsubcomponent",
-            com.azure.core.util.Context.NONE);
+        manager.daprSubscriptions()
+            .getWithResponse("examplerg", "myenvironment", "mypubsubcomponent", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DaprSubscriptions_Get_BulkSubscribeAndScopes.json
      */
     /**
@@ -34,12 +34,12 @@ public final class DaprSubscriptionsGetSamples {
      */
     public static void getDaprSubscriptionWithDefaultRouteOnly(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.daprSubscriptions().getWithResponse("examplerg", "myenvironment", "mypubsubcomponent",
-            com.azure.core.util.Context.NONE);
+        manager.daprSubscriptions()
+            .getWithResponse("examplerg", "myenvironment", "mypubsubcomponent", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * DaprSubscriptions_Get_RouteRulesAndMetadata.json
      */
     /**
@@ -49,7 +49,7 @@ public final class DaprSubscriptionsGetSamples {
      */
     public static void getDaprSubscriptionWithRouteRulesAndMetadata(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.daprSubscriptions().getWithResponse("examplerg", "myenvironment", "mypubsubcomponent",
-            com.azure.core.util.Context.NONE);
+        manager.daprSubscriptions()
+            .getWithResponse("examplerg", "myenvironment", "mypubsubcomponent", com.azure.core.util.Context.NONE);
     }
 }

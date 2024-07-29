@@ -10,10 +10,10 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationType;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
@@ -46,7 +46,7 @@ public class MachineLearningManagerTests extends TestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         machineLearningManager = MachineLearningManager
@@ -96,7 +96,7 @@ public class MachineLearningManagerTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testCreateWorkSpace() {
         Workspace workspace = null;
         String randomPadding = randomPadding();

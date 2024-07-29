@@ -104,14 +104,16 @@ public final class BuilderResourceImpl implements BuilderResource, BuilderResour
     }
 
     public BuilderResource create() {
-        this.innerObject = serviceManager.serviceClient().getBuilders().createOrUpdate(resourceGroupName, builderName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilders()
+            .createOrUpdate(resourceGroupName, builderName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public BuilderResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBuilders().createOrUpdate(resourceGroupName, builderName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilders()
+            .createOrUpdate(resourceGroupName, builderName, this.innerModel(), context);
         return this;
     }
 
@@ -127,14 +129,16 @@ public final class BuilderResourceImpl implements BuilderResource, BuilderResour
     }
 
     public BuilderResource apply() {
-        this.innerObject = serviceManager.serviceClient().getBuilders().update(resourceGroupName, builderName,
-            updateBuilderEnvelope, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilders()
+            .update(resourceGroupName, builderName, updateBuilderEnvelope, Context.NONE);
         return this;
     }
 
     public BuilderResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBuilders().update(resourceGroupName, builderName,
-            updateBuilderEnvelope, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilders()
+            .update(resourceGroupName, builderName, updateBuilderEnvelope, context);
         return this;
     }
 
@@ -147,14 +151,18 @@ public final class BuilderResourceImpl implements BuilderResource, BuilderResour
     }
 
     public BuilderResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getBuilders()
-            .getByResourceGroupWithResponse(resourceGroupName, builderName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilders()
+            .getByResourceGroupWithResponse(resourceGroupName, builderName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BuilderResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getBuilders()
-            .getByResourceGroupWithResponse(resourceGroupName, builderName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBuilders()
+            .getByResourceGroupWithResponse(resourceGroupName, builderName, context)
+            .getValue();
         return this;
     }
 

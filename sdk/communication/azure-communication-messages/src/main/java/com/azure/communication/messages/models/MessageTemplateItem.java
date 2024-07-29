@@ -30,7 +30,8 @@ public abstract class MessageTemplateItem {
     private String name;
 
     /*
-     * The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional two-letter country code, e.g., 'en' or 'en_US'.
+     * The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional
+     * two-letter country code, e.g., 'en' or 'en_US'.
      */
     @Generated
     @JsonProperty(value = "language")
@@ -53,7 +54,6 @@ public abstract class MessageTemplateItem {
     @JsonCreator
     protected MessageTemplateItem(@JsonProperty(value = "language") String language,
         @JsonProperty(value = "status") MessageTemplateStatus status) {
-        this.kind = CommunicationMessagesChannel.fromString("MessageTemplateItem");
         this.language = language;
         this.status = status;
     }
@@ -95,7 +95,7 @@ public abstract class MessageTemplateItem {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private CommunicationMessagesChannel kind;
+    private CommunicationMessagesChannel kind = CommunicationMessagesChannel.fromString("MessageTemplateItem");
 
     /**
      * Get the kind property: The type discriminator describing a template type.

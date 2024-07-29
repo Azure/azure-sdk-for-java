@@ -7,6 +7,6 @@ module com.azure.analytics.synapse.managedprivateendpoints {
     exports com.azure.analytics.synapse.managedprivateendpoints;
     exports com.azure.analytics.synapse.managedprivateendpoints.models;
 
-    opens com.azure.analytics.synapse.managedprivateendpoints.models to com.fasterxml.jackson.databind;
-
+    opens com.azure.analytics.synapse.managedprivateendpoints.implementation to com.azure.core;
+    opens com.azure.analytics.synapse.managedprivateendpoints.models to com.azure.core;
 }

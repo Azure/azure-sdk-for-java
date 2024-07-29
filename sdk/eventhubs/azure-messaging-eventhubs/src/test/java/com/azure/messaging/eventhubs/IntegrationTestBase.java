@@ -16,7 +16,6 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -30,23 +29,15 @@ import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.URI;
-import java.net.URLEncoder;
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -54,14 +45,11 @@ import java.util.stream.IntStream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Test base for running integration tests.
  */
 public abstract class IntegrationTestBase extends TestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(IntegrationTestBase.class);
-
     // The number of partitions we create in test-resources.json.
     // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
     protected static final int NUMBER_OF_PARTITIONS = 5;
@@ -78,7 +66,6 @@ public abstract class IntegrationTestBase extends TestBase {
     protected final ClientLogger logger;
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
-    private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
 
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
@@ -87,7 +74,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
-    private List<Closeable> toClose = new ArrayList<>();
+    private List<AutoCloseable> toClose = new ArrayList<>();
     protected String testName;
 
     protected IntegrationTestBase(ClientLogger logger) {
@@ -116,7 +103,7 @@ public abstract class IntegrationTestBase extends TestBase {
         beforeTest();
     }
 
-    protected <T extends Closeable> T toClose(T closeable) {
+    protected <T extends AutoCloseable> T toClose(T closeable) {
         toClose.add(closeable);
         return closeable;
     }
@@ -138,68 +125,6 @@ public abstract class IntegrationTestBase extends TestBase {
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMock(this);
-    }
-
-    /**
-     * Gets the test mode for this API test. If AZURE_TEST_MODE equals {@link TestMode#RECORD} and Event Hubs connection
-     * string is set, then we return {@link TestMode#RECORD}. Otherwise, {@link TestMode#PLAYBACK} is returned.
-     */
-    @Override
-    public TestMode getTestMode() {
-        if (super.getTestMode() == TestMode.PLAYBACK) {
-            return TestMode.PLAYBACK;
-        }
-
-        return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
-    }
-
-    static String getConnectionString() {
-        return getConnectionString(false);
-    }
-
-    static String getConnectionString(boolean withSas) {
-        String connectionString = GLOBAL_CONFIGURATION.get(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
-        if (withSas) {
-            String shareAccessSignatureFormat = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
-            String connectionStringWithSasAndEntityFormat = "Endpoint=%s;SharedAccessSignature=%s;EntityPath=%s";
-            String connectionStringWithSasFormat = "Endpoint=%s;SharedAccessSignature=%s";
-
-            ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-            URI endpoint = properties.getEndpoint();
-            String entityPath = properties.getEntityPath();
-            String resourceUrl = entityPath == null || entityPath.trim().length() == 0
-                ? endpoint.toString() : endpoint.toString() +  entityPath;
-
-            String utf8Encoding = UTF_8.name();
-            OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofHours(2L));
-            String expiresOnEpochSeconds = Long.toString(expiresOn.toEpochSecond());
-
-            try {
-                String audienceUri = URLEncoder.encode(resourceUrl, utf8Encoding);
-                String secretToSign = audienceUri + "\n" + expiresOnEpochSeconds;
-                byte[] sasKeyBytes = properties.getSharedAccessKey().getBytes(utf8Encoding);
-
-                Mac hmacsha256 = Mac.getInstance("HMACSHA256");
-                hmacsha256.init(new SecretKeySpec(sasKeyBytes, "HMACSHA256"));
-
-                byte[] signatureBytes = hmacsha256.doFinal(secretToSign.getBytes(utf8Encoding));
-                String signature = Base64.getEncoder().encodeToString(signatureBytes);
-
-                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat,
-                    audienceUri,
-                    URLEncoder.encode(signature, utf8Encoding),
-                    URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
-                    URLEncoder.encode(properties.getSharedAccessKeyName(), utf8Encoding));
-
-                if (entityPath == null) {
-                    return String.format(connectionStringWithSasFormat, endpoint, signatureValue);
-                }
-                return String.format(connectionStringWithSasAndEntityFormat, endpoint, signatureValue, entityPath);
-            } catch (Exception e) {
-                LOGGER.log(LogLevel.VERBOSE, () -> "Error while getting connection string", e);
-            }
-        }
-        return connectionString;
     }
 
     /**
@@ -270,7 +195,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .scheduler(scheduler);
 
         if (useCredentials) {
-            final ConnectionStringProperties properties = getConnectionStringProperties();
+            final ConnectionStringProperties properties = TestUtils.getConnectionStringProperties();
             final String fqdn = properties.getEndpoint().getHost();
             final String eventHubName = properties.getEntityPath();
 
@@ -285,16 +210,8 @@ public abstract class IntegrationTestBase extends TestBase {
 
             return builder.credential(fqdn, eventHubName, clientSecretCredential);
         } else {
-            return builder.connectionString(getConnectionString());
+            return builder.connectionString(TestUtils.getConnectionString());
         }
-    }
-
-    protected static ConnectionStringProperties getConnectionStringProperties() {
-        return new ConnectionStringProperties(getConnectionString(false));
-    }
-
-    protected static ConnectionStringProperties getConnectionStringProperties(boolean withSas) {
-        return new ConnectionStringProperties(getConnectionString(withSas));
     }
 
     /**
@@ -309,7 +226,7 @@ public abstract class IntegrationTestBase extends TestBase {
         final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
 
         try (EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
+            .connectionString(TestUtils.getConnectionString())
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(OPTIONS_WITH_TRACING)
             .buildProducerClient()) {

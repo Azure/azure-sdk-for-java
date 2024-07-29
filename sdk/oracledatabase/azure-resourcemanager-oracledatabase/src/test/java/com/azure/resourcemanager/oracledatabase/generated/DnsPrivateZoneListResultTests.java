@@ -12,8 +12,8 @@ public final class DnsPrivateZoneListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DnsPrivateZoneListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"ocid\":\"u\",\"isProtected\":false,\"lifecycleState\":\"Active\",\"self\":\"r\",\"serial\":1501018415,\"version\":\"wbxqzvszjfau\",\"viewId\":\"fdxxivetvtcqaqtd\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-10-02T10:53:20Z\",\"provisioningState\":\"Failed\"},\"id\":\"vwvxyslqbhsfx\",\"name\":\"blytk\",\"type\":\"lmpewwwfbkr\"}],\"nextLink\":\"nsvs\"}")
+            "{\"value\":[{\"properties\":{\"ocid\":\"swiydmcwyhzdx\",\"isProtected\":true,\"lifecycleState\":\"Active\",\"self\":\"mnvdfzn\",\"serial\":451636387,\"version\":\"dvxzbncblylpst\",\"viewId\":\"hh\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-04-01T15:36:07Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"erscdntne\",\"name\":\"fiwjmygtdssls\",\"type\":\"tmweriofzpyq\"},{\"properties\":{\"ocid\":\"wab\",\"isProtected\":true,\"lifecycleState\":\"Deleting\",\"self\":\"szhedplvw\",\"serial\":523277944,\"version\":\"mwmbes\",\"viewId\":\"nkww\",\"zoneType\":\"Secondary\",\"timeCreated\":\"2021-05-13T14:02:05Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"ogaok\",\"name\":\"nzmnsikvm\",\"type\":\"qzeqqkdltfzxm\"},{\"properties\":{\"ocid\":\"hgure\",\"isProtected\":true,\"lifecycleState\":\"Active\",\"self\":\"dagxtibqd\",\"serial\":1020209011,\"version\":\"akbogqxndlkzgxh\",\"viewId\":\"iplbpodxunkbebxm\",\"zoneType\":\"Primary\",\"timeCreated\":\"2021-12-05T13:10:34Z\",\"provisioningState\":\"Canceled\"},\"id\":\"rbqtkoie\",\"name\":\"seotgqrllt\",\"type\":\"u\"}],\"nextLink\":\"auwzizxbmpgc\"}")
             .toObject(DnsPrivateZoneListResult.class);
-        Assertions.assertEquals("nsvs", model.nextLink());
+        Assertions.assertEquals("auwzizxbmpgc", model.nextLink());
     }
 }

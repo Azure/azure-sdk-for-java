@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Diagnostics data table.
  */
 @Fluent
-public final class DiagnosticDataTableResponseObject {
+public final class DiagnosticDataTableResponseObject implements JsonSerializable<DiagnosticDataTableResponseObject> {
     /*
      * Table name
      */
-    @JsonProperty(value = "tableName")
     private String tableName;
 
     /*
      * Columns in the table
      */
-    @JsonProperty(value = "columns")
     private List<DiagnosticDataTableResponseColumn> columns;
 
     /*
      * Rows in the table
      */
-    @JsonProperty(value = "rows")
     private List<Object> rows;
 
     /**
@@ -106,5 +107,51 @@ public final class DiagnosticDataTableResponseObject {
         if (columns() != null) {
             columns().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tableName", this.tableName);
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("rows", this.rows, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticDataTableResponseObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticDataTableResponseObject if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticDataTableResponseObject.
+     */
+    public static DiagnosticDataTableResponseObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticDataTableResponseObject deserializedDiagnosticDataTableResponseObject
+                = new DiagnosticDataTableResponseObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedDiagnosticDataTableResponseObject.tableName = reader.getString();
+                } else if ("columns".equals(fieldName)) {
+                    List<DiagnosticDataTableResponseColumn> columns
+                        = reader.readArray(reader1 -> DiagnosticDataTableResponseColumn.fromJson(reader1));
+                    deserializedDiagnosticDataTableResponseObject.columns = columns;
+                } else if ("rows".equals(fieldName)) {
+                    List<Object> rows = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedDiagnosticDataTableResponseObject.rows = rows;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticDataTableResponseObject;
+        });
     }
 }

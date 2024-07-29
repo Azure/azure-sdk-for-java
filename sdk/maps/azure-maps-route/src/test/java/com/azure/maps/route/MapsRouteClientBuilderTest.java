@@ -3,8 +3,7 @@
 
 package com.azure.maps.route;
 
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.test.utils.MockTokenCredential;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -13,84 +12,56 @@ public class MapsRouteClientBuilderTest {
     // Test for null RenderClientId, the client ID value
     @Test
     public void missingMapsClientId() {
-        assertThrows(NullPointerException.class, () -> {
-            final MapsRouteClientBuilder builder = new MapsRouteClientBuilder();
-            builder.mapsClientId(null);
-        });
+        assertThrows(NullPointerException.class, () -> new MapsRouteClientBuilder().mapsClientId(null));
     }
 
     // Test for missing endpoint
     @Test
     public void missingEndpoint() {
-        assertThrows(NullPointerException.class, () -> {
-            final MapsRouteClientBuilder builder = new MapsRouteClientBuilder();
-            builder.endpoint(null);
-        });
+        assertThrows(NullPointerException.class, () -> new MapsRouteClientBuilder().endpoint(null));
     }
 
     // Test for missing configuration
     @Test
     public void missingConfiguration() {
-        assertThrows(NullPointerException.class, () -> {
-            final MapsRouteClientBuilder builder = new MapsRouteClientBuilder();
-            builder.configuration(null);
-        });
+        assertThrows(NullPointerException.class, () -> new MapsRouteClientBuilder().configuration(null));
     }
 
     // Test for missing http log options
     @Test
     public void missingHttpLogOptions() {
-        assertThrows(NullPointerException.class, () -> {
-            final MapsRouteClientBuilder builder = new MapsRouteClientBuilder();
-            builder.httpLogOptions(null);
-        });
+        assertThrows(NullPointerException.class, () -> new MapsRouteClientBuilder().httpLogOptions(null));
     }
 
     // Test for missing retry policy
     @Test
     public void missingRetryPolicy() {
-        assertThrows(NullPointerException.class, () -> {
-            final MapsRouteClientBuilder builder = new MapsRouteClientBuilder();
-            builder.retryPolicy(null);
-        });
+        assertThrows(NullPointerException.class, () -> new MapsRouteClientBuilder().retryPolicy(null));
     }
 
     // Test for missing client options
     @Test
     public void missingClientOptions() {
-        assertThrows(NullPointerException.class, () -> {
-            final MapsRouteClientBuilder builder = new MapsRouteClientBuilder();
-            builder.clientOptions(null);
-        });
+        assertThrows(NullPointerException.class, () -> new MapsRouteClientBuilder().clientOptions(null));
     }
 
     // Test for missing add policy
     @Test
     public void missingAddPolicy() {
-        assertThrows(NullPointerException.class, () -> {
-            final MapsRouteClientBuilder builder = new MapsRouteClientBuilder();
-            builder.addPolicy(null);
-        });
+        assertThrows(NullPointerException.class, () -> new MapsRouteClientBuilder().addPolicy(null));
     }
 
     // Test for null map id, valid token credential
     @Test
     public void missingMapsClientIdValidTokenCredential() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final MapsRouteClientBuilder builder = new MapsRouteClientBuilder();
-            DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-            builder.credential(tokenCredential);
-            builder.buildClient();
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new MapsRouteClientBuilder().credential(new MockTokenCredential()).buildClient());
     }
 
     // Test for null key credential and null token credential despite valid mapsClientId
     @Test
     public void missingCredentials() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final MapsRouteClientBuilder builder = new MapsRouteClientBuilder();
-            builder.mapsClientId("mapsClientId");
-            builder.buildClient();
-        });
+        assertThrows(IllegalArgumentException.class,
+            () -> new MapsRouteClientBuilder().mapsClientId("mapsClientId").buildClient());
     }
 }

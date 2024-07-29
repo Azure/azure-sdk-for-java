@@ -11,7 +11,9 @@ import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response to put/get patch schedules for Redis cache. */
+/**
+ * Response to put/get patch schedules for Redis cache.
+ */
 @Fluent
 public final class RedisPatchScheduleInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class RedisPatchScheduleInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of RedisPatchScheduleInner class. */
+    /**
+     * Creates an instance of RedisPatchScheduleInner class.
+     */
     public RedisPatchScheduleInner() {
     }
 
     /**
      * Get the innerProperties property: List of patch schedules for a Redis cache.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduleEntries innerProperties() {
@@ -41,7 +45,7 @@ public final class RedisPatchScheduleInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -50,7 +54,7 @@ public final class RedisPatchScheduleInner extends ProxyResource {
 
     /**
      * Get the scheduleEntries property: List of patch schedules for a Redis cache.
-     *
+     * 
      * @return the scheduleEntries value.
      */
     public List<ScheduleEntry> scheduleEntries() {
@@ -59,7 +63,7 @@ public final class RedisPatchScheduleInner extends ProxyResource {
 
     /**
      * Set the scheduleEntries property: List of patch schedules for a Redis cache.
-     *
+     * 
      * @param scheduleEntries the scheduleEntries value to set.
      * @return the RedisPatchScheduleInner object itself.
      */
@@ -73,15 +77,14 @@ public final class RedisPatchScheduleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model RedisPatchScheduleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model RedisPatchScheduleInner"));
         } else {
             innerProperties().validate();
         }

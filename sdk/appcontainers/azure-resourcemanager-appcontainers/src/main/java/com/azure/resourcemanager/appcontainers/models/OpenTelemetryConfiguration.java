@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Configuration of Open Telemetry.
  */
 @Fluent
-public final class OpenTelemetryConfiguration {
+public final class OpenTelemetryConfiguration implements JsonSerializable<OpenTelemetryConfiguration> {
     /*
      * Open telemetry destinations configuration
      */
-    @JsonProperty(value = "destinationsConfiguration")
     private DestinationsConfiguration destinationsConfiguration;
 
     /*
      * Open telemetry trace configuration
      */
-    @JsonProperty(value = "tracesConfiguration")
     private TracesConfiguration tracesConfiguration;
 
     /*
      * Open telemetry logs configuration
      */
-    @JsonProperty(value = "logsConfiguration")
     private LogsConfiguration logsConfiguration;
 
     /*
      * Open telemetry metrics configuration
      */
-    @JsonProperty(value = "metricsConfiguration")
     private MetricsConfiguration metricsConfiguration;
 
     /**
@@ -141,5 +141,51 @@ public final class OpenTelemetryConfiguration {
         if (metricsConfiguration() != null) {
             metricsConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("destinationsConfiguration", this.destinationsConfiguration);
+        jsonWriter.writeJsonField("tracesConfiguration", this.tracesConfiguration);
+        jsonWriter.writeJsonField("logsConfiguration", this.logsConfiguration);
+        jsonWriter.writeJsonField("metricsConfiguration", this.metricsConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenTelemetryConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenTelemetryConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OpenTelemetryConfiguration.
+     */
+    public static OpenTelemetryConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenTelemetryConfiguration deserializedOpenTelemetryConfiguration = new OpenTelemetryConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destinationsConfiguration".equals(fieldName)) {
+                    deserializedOpenTelemetryConfiguration.destinationsConfiguration
+                        = DestinationsConfiguration.fromJson(reader);
+                } else if ("tracesConfiguration".equals(fieldName)) {
+                    deserializedOpenTelemetryConfiguration.tracesConfiguration = TracesConfiguration.fromJson(reader);
+                } else if ("logsConfiguration".equals(fieldName)) {
+                    deserializedOpenTelemetryConfiguration.logsConfiguration = LogsConfiguration.fromJson(reader);
+                } else if ("metricsConfiguration".equals(fieldName)) {
+                    deserializedOpenTelemetryConfiguration.metricsConfiguration = MetricsConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenTelemetryConfiguration;
+        });
     }
 }

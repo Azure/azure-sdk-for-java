@@ -104,8 +104,9 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
 
     public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(String resourceGroupName,
         String connectedEnvironmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner = this.serviceClient().checkNameAvailabilityWithResponse(
-            resourceGroupName, connectedEnvironmentName, checkNameAvailabilityRequest, context);
+        Response<CheckNameAvailabilityResponseInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(resourceGroupName, connectedEnvironmentName,
+                checkNameAvailabilityRequest, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
@@ -116,8 +117,8 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
 
     public CheckNameAvailabilityResponse checkNameAvailability(String resourceGroupName,
         String connectedEnvironmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(resourceGroupName,
-            connectedEnvironmentName, checkNameAvailabilityRequest);
+        CheckNameAvailabilityResponseInner inner = this.serviceClient()
+            .checkNameAvailability(resourceGroupName, connectedEnvironmentName, checkNameAvailabilityRequest);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {

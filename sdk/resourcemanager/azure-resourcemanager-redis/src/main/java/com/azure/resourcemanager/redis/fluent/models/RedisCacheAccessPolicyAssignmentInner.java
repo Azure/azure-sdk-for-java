@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.redis.models.AccessPolicyAssignmentProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response to an operation on access policy assignment. */
+/**
+ * Response to an operation on access policy assignment.
+ */
 @Fluent
 public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RedisCacheAccessPolicyAssignmentProperties innerProperties;
 
-    /** Creates an instance of RedisCacheAccessPolicyAssignmentInner class. */
+    /**
+     * Creates an instance of RedisCacheAccessPolicyAssignmentInner class.
+     */
     public RedisCacheAccessPolicyAssignmentInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of an access policy assignment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RedisCacheAccessPolicyAssignmentProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of an access policy assignment set.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AccessPolicyAssignmentProvisioningState provisioningState() {
@@ -42,7 +46,7 @@ public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the objectId property: Object Id to assign access policy to.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -51,7 +55,7 @@ public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the objectId property: Object Id to assign access policy to.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the RedisCacheAccessPolicyAssignmentInner object itself.
      */
@@ -66,7 +70,7 @@ public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
     /**
      * Get the objectIdAlias property: User friendly name for object id. Also represents username for token based
      * authentication.
-     *
+     * 
      * @return the objectIdAlias value.
      */
     public String objectIdAlias() {
@@ -76,7 +80,7 @@ public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
     /**
      * Set the objectIdAlias property: User friendly name for object id. Also represents username for token based
      * authentication.
-     *
+     * 
      * @param objectIdAlias the objectIdAlias value to set.
      * @return the RedisCacheAccessPolicyAssignmentInner object itself.
      */
@@ -90,7 +94,7 @@ public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
 
     /**
      * Get the accessPolicyName property: The name of the access policy that is being assigned.
-     *
+     * 
      * @return the accessPolicyName value.
      */
     public String accessPolicyName() {
@@ -99,7 +103,7 @@ public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
 
     /**
      * Set the accessPolicyName property: The name of the access policy that is being assigned.
-     *
+     * 
      * @param accessPolicyName the accessPolicyName value to set.
      * @return the RedisCacheAccessPolicyAssignmentInner object itself.
      */
@@ -113,7 +117,7 @@ public final class RedisCacheAccessPolicyAssignmentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

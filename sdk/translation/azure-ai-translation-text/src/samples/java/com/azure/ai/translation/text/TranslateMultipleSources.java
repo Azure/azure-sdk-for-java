@@ -3,13 +3,13 @@
 
 package com.azure.ai.translation.text;
 
-import java.util.List;
-import java.util.ArrayList;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.text.models.DetectedLanguage;
-import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.core.credential.AzureKeyCredential;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * You can translate multiple text elements with a various length. Each input element can be in different

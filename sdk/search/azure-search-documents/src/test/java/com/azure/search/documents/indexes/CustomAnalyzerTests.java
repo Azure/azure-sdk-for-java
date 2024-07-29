@@ -650,10 +650,10 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     SearchIndex prepareIndexWithAllAnalysisComponentNames() {
-        List<TokenFilterName> tokenFilters = TOKEN_FILTER_NAMES;
+        List<TokenFilterName> tokenFilters = new ArrayList<>(TOKEN_FILTER_NAMES);
         tokenFilters.sort(Comparator.comparing(TokenFilterName::toString));
 
-        List<CharFilterName> charFilters = CHAR_FILTER_NAMES;
+        List<CharFilterName> charFilters = new ArrayList<>(CHAR_FILTER_NAMES);
         charFilters.sort(Comparator.comparing(CharFilterName::toString));
 
         LexicalAnalyzer analyzerWithAllTokenFilterAndCharFilters =

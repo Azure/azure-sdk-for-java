@@ -15,7 +15,7 @@ public final class PrivateLinkScopeValidationDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkScopeValidationDetailsInner model = BinaryData.fromString(
-            "{\"id\":\"rnsvbuswd\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"cnunvjsr\",\"privateIpAddress\":\"f\",\"linkIdentifier\":\"nopqgikyzirtx\",\"groupId\":\"uxzejntpsew\",\"memberName\":\"oi\"},{\"id\":\"ukry\",\"privateIpAddress\":\"tqmieox\",\"linkIdentifier\":\"ggufhyaomtb\",\"groupId\":\"havgrvk\",\"memberName\":\"ovjzhpjbibgjmfx\"},{\"id\":\"vfcluyovwxnbkfe\",\"privateIpAddress\":\"xscyhwzdgirujbz\",\"linkIdentifier\":\"mvzzbtdcqvp\",\"groupId\":\"yujviylwdshfssn\",\"memberName\":\"gy\"},{\"id\":\"rymsgaojfmw\",\"privateIpAddress\":\"otmrfhir\",\"linkIdentifier\":\"ymoxoftpipiwyczu\",\"groupId\":\"a\",\"memberName\":\"qjlihhyuspska\"}]}")
+            "{\"id\":\"dvk\",\"publicNetworkAccess\":\"Enabled\",\"connectionDetails\":[{\"id\":\"nxcvds\",\"privateIpAddress\":\"njivolvtnovq\",\"linkIdentifier\":\"gemjdftuljltdu\",\"groupId\":\"amtmcz\",\"memberName\":\"m\"}]}")
             .toObject(PrivateLinkScopeValidationDetailsInner.class);
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
     }
@@ -24,8 +24,7 @@ public final class PrivateLinkScopeValidationDetailsInnerTests {
     public void testSerialize() throws Exception {
         PrivateLinkScopeValidationDetailsInner model
             = new PrivateLinkScopeValidationDetailsInner().withPublicNetworkAccess(PublicNetworkAccessType.ENABLED)
-                .withConnectionDetails(Arrays.asList(new ConnectionDetail(), new ConnectionDetail(),
-                    new ConnectionDetail(), new ConnectionDetail()));
+                .withConnectionDetails(Arrays.asList(new ConnectionDetail()));
         model = BinaryData.fromObject(model).toObject(PrivateLinkScopeValidationDetailsInner.class);
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
     }

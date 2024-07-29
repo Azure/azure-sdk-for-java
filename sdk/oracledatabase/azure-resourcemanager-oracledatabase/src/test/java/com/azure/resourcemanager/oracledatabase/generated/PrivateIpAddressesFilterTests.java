@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateIpAddressesFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateIpAddressesFilter model = BinaryData.fromString("{\"subnetId\":\"atiz\",\"vnicId\":\"ronasxift\"}")
+        PrivateIpAddressesFilter model = BinaryData.fromString("{\"subnetId\":\"ayjkqa\",\"vnicId\":\"qgzsles\"}")
             .toObject(PrivateIpAddressesFilter.class);
-        Assertions.assertEquals("atiz", model.subnetId());
-        Assertions.assertEquals("ronasxift", model.vnicId());
+        Assertions.assertEquals("ayjkqa", model.subnetId());
+        Assertions.assertEquals("qgzsles", model.vnicId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateIpAddressesFilter model = new PrivateIpAddressesFilter().withSubnetId("atiz").withVnicId("ronasxift");
+        PrivateIpAddressesFilter model = new PrivateIpAddressesFilter().withSubnetId("ayjkqa").withVnicId("qgzsles");
         model = BinaryData.fromObject(model).toObject(PrivateIpAddressesFilter.class);
-        Assertions.assertEquals("atiz", model.subnetId());
-        Assertions.assertEquals("ronasxift", model.vnicId());
+        Assertions.assertEquals("ayjkqa", model.subnetId());
+        Assertions.assertEquals("qgzsles", model.vnicId());
     }
 }

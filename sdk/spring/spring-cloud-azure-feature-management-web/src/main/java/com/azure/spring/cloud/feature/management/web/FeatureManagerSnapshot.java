@@ -23,7 +23,7 @@ public class FeatureManagerSnapshot {
      * return the same value for all checks of the given feature flag.
      * @param featureManager FeatureManager
      */
-    public FeatureManagerSnapshot(FeatureManager featureManager) {
+    FeatureManagerSnapshot(FeatureManager featureManager) {
         this.featureManager = featureManager;
         this.requestMap = new HashMap<>();
     }
