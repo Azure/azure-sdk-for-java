@@ -7,21 +7,27 @@ import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
+import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
+import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
+import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.LocalDateTime;
@@ -314,6 +320,42 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
                 assertNotNull(it.getValue().getSmbProperties().getParentId());
                 assertNotNull(it.getValue().getSmbProperties().getFileId());
             }).verifyComplete();
+    }
+
+    private static Stream<Arguments> setDirectoryHttpHeadersFilePermissionFormatSupplier() {
+        return Stream.of(
+            Arguments.of(FilePermissionFormat.SDDL),
+            Arguments.of(FilePermissionFormat.BINARY),
+            Arguments.of((Object) null));
+    }
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @ParameterizedTest
+    @MethodSource("setDirectoryHttpHeadersFilePermissionFormatSupplier")
+    public void setDirectoryHttpHeadersFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
+
+        ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions()
+            .setFilePermissions(new ShareFilePermission().setPermission(permission).setPermissionFormat(filePermissionFormat));
+
+        Mono<Response<ShareDirectoryInfo>> bagResponse = primaryDirectoryAsyncClient.create()
+            .then(primaryDirectoryAsyncClient.setPropertiesWithResponse(options));
+
+        Mono<Response<ShareDirectoryInfo>> nonBagResponse = primaryDirectoryAsyncClient.setPropertiesWithResponse(null,
+            permission, filePermissionFormat);
+
+        StepVerifier.create(bagResponse)
+            .assertNext(r -> {
+                FileShareTestHelper.assertResponseStatusCode(r, 200);
+                assertNotNull(r.getValue().getSmbProperties().getFilePermissionKey());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(nonBagResponse)
+            .assertNext(r -> {
+                FileShareTestHelper.assertResponseStatusCode(r, 200);
+                assertNotNull(r.getValue().getSmbProperties().getFilePermissionKey());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -828,6 +870,35 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
         ShareDirectoryAsyncClient shareSnapshotClient = directoryBuilderHelper(shareName, directoryPath)
             .snapshot(snapshot).buildDirectoryAsyncClient();
         assertEquals(snapshot, shareSnapshotClient.getShareSnapshotId());
+    }
+
+    private static Stream<Arguments> renameDirectoryFilePermissionFormatSupplier() {
+        return Stream.of(
+            Arguments.of(FilePermissionFormat.SDDL),
+            Arguments.of(FilePermissionFormat.BINARY),
+            Arguments.of((Object) null));
+    }
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @ParameterizedTest
+    @MethodSource("renameDirectoryFilePermissionFormatSupplier")
+    public void renameDirectoryFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
+
+        ShareFileRenameOptions options = new ShareFileRenameOptions(generatePathName()).setFilePermission(permission)
+            .setFilePermissionFormat(filePermissionFormat);
+
+        Mono<ShareDirectoryProperties> response = primaryDirectoryAsyncClient.create()
+            .then(primaryDirectoryAsyncClient.renameWithResponse(options))
+            .flatMap(r -> {
+                FileShareTestHelper.assertResponseStatusCode(r, 200);
+                return r.getValue().getProperties();
+            });
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertNotNull(r.getSmbProperties().getFilePermissionKey());
+            })
+            .verifyComplete();
     }
 
     @Test
