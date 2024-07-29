@@ -151,8 +151,8 @@ com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.6;1.0.0-beta.7
 com.azure:azure-messaging-eventgrid;4.22.4;4.23.0-beta.1
 com.azure:azure-messaging-eventgrid-namespaces;1.0.0;1.1.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventhubs;5.18.5;5.18.6
-com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.19.5;1.19.6
+com.azure:azure-messaging-eventhubs;5.18.6;5.19.0-beta.2
+com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.19.6;1.20.0-beta.2
 com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
