@@ -24,6 +24,7 @@ import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -333,9 +334,10 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @DoNotRecord
+    @Disabled("This test requires a connectionId with SEND_TO_GROUP permission.")
     public void testCheckPermission() {
 
+        // This test is failing consistently, needs to be fixed, disabled. Github issue:
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
         /*

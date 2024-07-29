@@ -23,6 +23,7 @@ import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -391,8 +392,10 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @DoNotRecord
+    @Disabled("This test requires a connectionId with SEND_TO_GROUP permission.")
     public void testCheckPermission() {
+        // This test requires a connectionId with SEND_TO_GROUP permission. Fails consistently in LIVE mode and
+        // needs to be fixed. Github issue:
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
 

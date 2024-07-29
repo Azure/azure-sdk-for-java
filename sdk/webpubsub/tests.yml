@@ -16,6 +16,4 @@ extends:
     SupportedClouds: 'Public,UsGov,China'
     EnvVars:
       AZURE_LOG_LEVEL: 2
-      AZURE_CLIENT_ID: $(WEBPUBSUB_CLIENT_ID)
-      AZURE_TENANT_ID: $(WEBPUBSUB_TENANT_ID)
       AZURE_SUBSCRIPTION_ID: $(WEBPUBSUB_SUBSCRIPTION_ID)
