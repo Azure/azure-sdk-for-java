@@ -52,7 +52,7 @@ class KuduClient {
     private final String host;
     private final KuduService service;
 
-    private final static String DEPLOYER_JAVA_SDK = "JavaSDK";
+    private static final String DEPLOYER_JAVA_SDK = "JavaSDK";
 
     KuduClient(WebAppBase webAppBase) {
         if (webAppBase.defaultHostname() == null) {
@@ -291,14 +291,14 @@ class KuduClient {
 //    Mono<Void> deployFlexConsumptionAsync(InputStream file, long length) {
 //        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
 //        return retryOnError(service.deployFlexConsumption(host, flux, length,
-//            false, "JavaSDK"))
+//            false, DEPLOYER_JAVA_SDK))
 //            .then();
 //    }
 
     Mono<Void> deployFlexConsumptionAsync(File file) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
         return retryOnError(service.deployFlexConsumption(host, FluxUtil.readFile(fileChannel), fileChannel.size(),
-            false, "JavaSDK"))
+            false, DEPLOYER_JAVA_SDK))
             .then()
             .doFinally(ignored -> {
                 try {
