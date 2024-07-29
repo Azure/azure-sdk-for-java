@@ -3,7 +3,7 @@
     "dir": "azure-resourcemanager-appplatform",
     "source": "specification/appplatform/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.appplatform",
-    "args": "--tag=package-2023-12 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability --stream-style-serialization=false"
+    "args": "--tag=package-2023-12 --remove-inner=TestKeys,ResourceSku,ResourceUploadDefinition,CustomDomainValidateResult,NameAvailability"
   },
   "appservice": {
     "dir": "azure-resourcemanager-appservice",
