@@ -4,16 +4,20 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-security-keyvault-secrets
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azuresecuritykeyvaultsecrets
+      ServiceDirectory: keyvault
+    - name: azure-security-keyvault-certificates
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azuresecuritykeyvaultcertificates
+      ServiceDirectory: keyvault
+    - name: azure-security-keyvault-administration
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azuresecuritykeyvaultadministration
+      ServiceDirectory: keyvault
+    - name: azure-security-keyvault-keys
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultkeys
+      ServiceDirectory: keyvault
 
