@@ -18,7 +18,7 @@ import java.time.Duration;
  *  {@link ThresholdBasedAvailabilityStrategy} captures settings concerning the {@code threshold} and {@code thresholdStep}. What these settings
  *  enforce is the time after which the Cosmos DB SDK reaches out to a different region
  *  (enforced by the {@link CosmosClientBuilder#getPreferredRegions()} property) in case the first
- *  preferred region didn't respond in time. Regions can be excluded here though {@link CosmosClientBuilder#getExcludedRegions()}.
+ *  preferred region didn't respond in time. Regions can be excluded here though - see {@link CosmosClientBuilder#getExcludedRegions()}.
  * </p>
  *
  * <p>
