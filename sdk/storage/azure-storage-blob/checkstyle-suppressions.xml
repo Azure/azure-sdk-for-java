@@ -39,4 +39,5 @@
   <suppress files="com.azure.storage.blob.specialized.BlobLeaseAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobInputStream.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="com.azure.storage.blob.specialized.BlobOutputStream.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.storage.blob.specialized.BlobClientBase.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

@@ -332,7 +332,7 @@ public class BlobClientBase {
      *
      * @return the URL.
      */
-    public final String getBlobUrl() {
+    public String getBlobUrl() {
         String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + Utility.urlEncode(blobName);
         if (this.isSnapshot()) {
             blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
