@@ -6,36 +6,30 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the throttling policy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ThrottlingPolicy.class, visible = true)
-@JsonTypeName("ThrottlingPolicy")
 @Fluent
 public final class ThrottlingPolicy extends ApplicationGroupPolicy {
     /*
      * Application Group Policy types
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private ApplicationGroupPolicyType type = ApplicationGroupPolicyType.THROTTLING_POLICY;
 
     /*
      * The Threshold limit above which the application group will be throttled.Rate limit is always per second.
      */
-    @JsonProperty(value = "rateLimitThreshold", required = true)
     private long rateLimitThreshold;
 
     /*
      * Metric Id on which the throttle limit should be set, MetricId can be discovered by hovering over Metric in the
      * Metrics section of Event Hub Namespace inside Azure Portal
      */
-    @JsonProperty(value = "metricId", required = true)
     private MetricId metricId;
 
     /**
@@ -122,4 +116,50 @@ public final class ThrottlingPolicy extends ApplicationGroupPolicy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ThrottlingPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeLongField("rateLimitThreshold", this.rateLimitThreshold);
+        jsonWriter.writeStringField("metricId", this.metricId == null ? null : this.metricId.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThrottlingPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThrottlingPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ThrottlingPolicy.
+     */
+    public static ThrottlingPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThrottlingPolicy deserializedThrottlingPolicy = new ThrottlingPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedThrottlingPolicy.withName(reader.getString());
+                } else if ("rateLimitThreshold".equals(fieldName)) {
+                    deserializedThrottlingPolicy.rateLimitThreshold = reader.getLong();
+                } else if ("metricId".equals(fieldName)) {
+                    deserializedThrottlingPolicy.metricId = MetricId.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedThrottlingPolicy.type = ApplicationGroupPolicyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThrottlingPolicy;
+        });
+    }
 }

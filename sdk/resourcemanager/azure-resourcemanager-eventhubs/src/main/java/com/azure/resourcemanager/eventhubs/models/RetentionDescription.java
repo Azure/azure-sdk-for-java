@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties to configure retention settings for the eventhub.
  */
 @Fluent
-public final class RetentionDescription {
+public final class RetentionDescription implements JsonSerializable<RetentionDescription> {
     /*
      * Enumerates the possible values for cleanup policy
      */
-    @JsonProperty(value = "cleanupPolicy")
     private CleanupPolicyRetentionDescription cleanupPolicy;
 
     /*
      * Number of hours to retain the events for this Event Hub. This value is only used when cleanupPolicy is Delete. If
      * cleanupPolicy is Compact the returned value of this property is Long.MaxValue
      */
-    @JsonProperty(value = "retentionTimeInHours")
     private Long retentionTimeInHours;
 
     /*
@@ -31,7 +33,6 @@ public final class RetentionDescription {
      * time if consumer begins from starting offset to ensure they get a valid snapshot for the specific key described
      * by the tombstone marker within the compacted Event Hub
      */
-    @JsonProperty(value = "tombstoneRetentionTimeInHours")
     private Integer tombstoneRetentionTimeInHours;
 
     /**
@@ -116,5 +117,49 @@ public final class RetentionDescription {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cleanupPolicy", this.cleanupPolicy == null ? null : this.cleanupPolicy.toString());
+        jsonWriter.writeNumberField("retentionTimeInHours", this.retentionTimeInHours);
+        jsonWriter.writeNumberField("tombstoneRetentionTimeInHours", this.tombstoneRetentionTimeInHours);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RetentionDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RetentionDescription if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RetentionDescription.
+     */
+    public static RetentionDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RetentionDescription deserializedRetentionDescription = new RetentionDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cleanupPolicy".equals(fieldName)) {
+                    deserializedRetentionDescription.cleanupPolicy
+                        = CleanupPolicyRetentionDescription.fromString(reader.getString());
+                } else if ("retentionTimeInHours".equals(fieldName)) {
+                    deserializedRetentionDescription.retentionTimeInHours = reader.getNullable(JsonReader::getLong);
+                } else if ("tombstoneRetentionTimeInHours".equals(fieldName)) {
+                    deserializedRetentionDescription.tombstoneRetentionTimeInHours
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRetentionDescription;
+        });
     }
 }
