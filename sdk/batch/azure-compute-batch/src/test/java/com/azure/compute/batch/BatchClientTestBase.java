@@ -4,13 +4,27 @@
 
 package com.azure.compute.batch;
 
-import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.compute.batch.models.*;
+import com.azure.compute.batch.models.AllocationState;
+import com.azure.compute.batch.models.BatchPool;
+import com.azure.compute.batch.models.BatchPoolCreateContent;
+import com.azure.compute.batch.models.BatchTask;
+import com.azure.compute.batch.models.BatchTaskState;
+import com.azure.compute.batch.models.ElevationLevel;
+import com.azure.compute.batch.models.ImageReference;
+import com.azure.compute.batch.models.LinuxUserConfiguration;
+import com.azure.compute.batch.models.ListBatchTasksOptions;
+import com.azure.compute.batch.models.NetworkConfiguration;
+import com.azure.compute.batch.models.UserAccount;
+import com.azure.compute.batch.models.VirtualMachineConfiguration;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -20,31 +34,25 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-import java.time.OffsetDateTime;
-
+import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.models.Network;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.sas.BlobSasPermission;
+import org.junit.Assert;
 import reactor.core.publisher.Mono;
 
-import java.util.*;
-
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.models.Network;
-import com.azure.core.credential.TokenCredential;
-
-import org.junit.Assert;
+import java.io.File;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 
 class BatchClientTestBase extends TestProxyTestBase {
@@ -128,18 +136,18 @@ class BatchClientTestBase extends TestProxyTestBase {
         int remainingSpace = MAX_LEN_ID - name.length();
         if (remainingSpace > 0) {
             if (userName.length() > remainingSpace) {
-                out.append(userName.substring(0, remainingSpace));
+                out.append(userName, 0, remainingSpace);
             } else {
                 out.append(userName);
             }
             out.append(name);
         } else {
-            out.append(name.substring(0, MAX_LEN_ID));
+            out.append(name, 0, MAX_LEN_ID);
         }
         return out.toString();
     }
 
-    BatchPool createIfNotExistIaaSPool(String poolId) throws Exception {
+    BatchPool createIfNotExistIaaSPool(String poolId) {
         // Create a pool with 3 Small VMs
         String poolVmSize = "STANDARD_D1_V2";
         int poolVmCount = 1;
@@ -171,7 +179,7 @@ class BatchClientTestBase extends TestProxyTestBase {
 
             batchClient.createPool(poolToCreate);
         } else {
-            System.out.println(String.format("The %s already exists.", poolId));
+            System.out.printf("The %s already exists.%n", poolId);
             //logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
         }
 
@@ -189,7 +197,7 @@ class BatchClientTestBase extends TestProxyTestBase {
                 break;
             }
             System.out.println("wait 30 seconds for pool steady...");
-            Thread.sleep(30 * 1000);
+            sleepIfRunningAgainstService(30 * 1000);
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
@@ -242,14 +250,6 @@ class BatchClientTestBase extends TestProxyTestBase {
         return new NetworkConfiguration().setSubnetId(vNetResourceId);
     }
 
-    void threadSleepInRecordMode(long millis) throws InterruptedException {
-        // Called for long timeouts which should only happen in Record mode.
-        // Speeds up the tests in Playback mode.
-        if (getTestMode() == TestMode.RECORD) {
-            Thread.sleep(millis);
-        }
-    }
-
     static boolean poolExists(BatchClient batchClient, String poolId) {
         return batchClient.poolExists(poolId);
     }
@@ -259,9 +259,8 @@ class BatchClientTestBase extends TestProxyTestBase {
         // Create storage credential from name and key
         String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", storageAccountName);
         StorageSharedKeyCredential credentials = new StorageSharedKeyCredential(storageAccountName, storageAccountKey);
-        BlobContainerClient containerClient = new BlobContainerClientBuilder().credential(credentials).containerName(containerName).endpoint(endPoint).buildClient();
 
-        return containerClient;
+        return new BlobContainerClientBuilder().credential(credentials).containerName(containerName).endpoint(endPoint).buildClient();
     }
 
     /**
@@ -294,7 +293,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         return blobClient.getBlobUrl() + "?" + sas;
     }
 
-    static String generateContainerSasToken(BlobContainerClient container) throws InvalidKeyException {
+    static String generateContainerSasToken(BlobContainerClient container) {
         container.createIfNotExists();
 
         // Create policy with 1 day read permission
@@ -310,12 +309,11 @@ class BatchClientTestBase extends TestProxyTestBase {
         return container.getBlobContainerUrl() + "?" + sas;
     }
 
-    static boolean waitForTasksToComplete(BatchClient batchClient, String jobId, int expiryTimeInSeconds)
-        throws IOException, InterruptedException {
+    boolean waitForTasksToComplete(BatchClient batchClient, String jobId, int expiryTimeInSeconds) {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
 
-        while (elapsedTime < expiryTimeInSeconds * 1000) {
+        while (elapsedTime < expiryTimeInSeconds * 1000L) {
 
             ListBatchTasksOptions options = new ListBatchTasksOptions();
             options.setSelect(Arrays.asList("id", "state"));
@@ -335,7 +333,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             }
 
             // Check again after 10 seconds
-            Thread.sleep(10 * 1000);
+            sleepIfRunningAgainstService(10 * 1000);
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
@@ -343,7 +341,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         return false;
     }
 
-    BatchPool waitForPoolState(String poolId, AllocationState targetState, long poolAllocationTimeoutInMilliseconds) throws IOException, InterruptedException {
+    BatchPool waitForPoolState(String poolId, AllocationState targetState, long poolAllocationTimeoutInMilliseconds) {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
         boolean allocationStateReached = false;
@@ -360,7 +358,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             }
 
             System.out.println("wait 30 seconds for pool allocationStateReached...");
-            threadSleepInRecordMode(30 * 1000);
+            sleepIfRunningAgainstService(30 * 1000);
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
@@ -368,8 +366,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         return pool;
     }
 
-    static String getContentFromContainer(BlobContainerClient container, String fileName)
-        throws URISyntaxException, IOException {
+    static String getContentFromContainer(BlobContainerClient container, String fileName) {
         BlobClient blobClient = container.getBlobClient(fileName);
         return blobClient.downloadContent().toString();
     }
