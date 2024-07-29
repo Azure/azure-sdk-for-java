@@ -236,9 +236,9 @@ public class BlobNioTestBase extends TestProxyTestBase {
     }
 
     private static void dumpBufferContents(byte[] buffer1, byte[] buffer2) {
-        System.err.println("Buffers do not match at position: ");
-        System.err.println("Buffer1: " + Arrays.toString(buffer1));
-        System.err.println("Buffer2: " + Arrays.toString(buffer2));
+        System.out.println("Buffers do not match at position: ");
+        System.out.println("Buffer1: " + Arrays.toString(buffer1));
+        System.out.println("Buffer2: " + Arrays.toString(buffer2));
     }
 
     protected static void compareInputStreams(InputStream stream1, InputStream stream2, long count) {
