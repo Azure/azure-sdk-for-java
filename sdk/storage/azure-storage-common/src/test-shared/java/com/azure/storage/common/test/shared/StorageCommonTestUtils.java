@@ -310,7 +310,7 @@ public final class StorageCommonTestUtils {
     public static TokenCredential getTokenCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isPlaybackMode()) {
             return new MockTokenCredential();
-        } else if (interceptorManager.isRecordMode()){
+        } else if (interceptorManager.isRecordMode()) {
             return new DefaultAzureCredentialBuilder().build();
         } else { //live
             Configuration config = Configuration.getGlobalConfiguration();
