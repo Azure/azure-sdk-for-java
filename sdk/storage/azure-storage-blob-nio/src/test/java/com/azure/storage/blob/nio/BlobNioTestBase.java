@@ -14,6 +14,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import java.util.UUID;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -241,14 +242,18 @@ public class BlobNioTestBase extends TestProxyTestBase {
 
     private static void dumpBufferContents(byte[] buffer1, byte[] buffer2) {
         LOGGER.info("Dumping array buffers:");
-        LOGGER.info("Buffer1: " + Arrays.toString(buffer1));
-        LOGGER.info("Buffer2: " + Arrays.toString(buffer2));
+
+        String guid1 = UUID.randomUUID().toString();
+        String guid2 = UUID.randomUUID().toString();
+
+        LOGGER.info("Buffer1: " + guid1 + "\n" + Arrays.toString(buffer1) + "\n" + guid1);
+        LOGGER.info("Buffer2: " + guid2 + "\n" + Arrays.toString(buffer2) + "\n" + guid1);
 
         String encodedBuffer1 = Base64.getEncoder().encodeToString(buffer1);
         String encodedBuffer2 = Base64.getEncoder().encodeToString(buffer2);
 
-        LOGGER.info("Encoded Buffer1: " + encodedBuffer1);
-        LOGGER.info("Encoded Buffer2: " + encodedBuffer2);
+        LOGGER.info("Encoded Buffer1: " + guid1 + "\n" + encodedBuffer1 + "\n" + guid1);
+        LOGGER.info("Encoded Buffer2: " + guid2 + "\n" + encodedBuffer2 + "\n" + guid2);
     }
 
     protected static void compareInputStreams(InputStream stream1, InputStream stream2, long count) {
