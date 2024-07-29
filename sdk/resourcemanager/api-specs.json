@@ -82,7 +82,7 @@
     "dir": "azure-resourcemanager-cosmos",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.cosmos",
-    "args": "--tag=package-2024-05 --stream-style-serialization=false"
+    "args": "--tag=package-2024-05"
   },
   "deploymentstacks": {
     "dir": "azure-resourcemanager-resources",
