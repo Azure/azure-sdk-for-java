@@ -199,7 +199,7 @@ class FileApiTests extends FileShareTestBase {
         ShareFileCreateOptions options = new ShareFileCreateOptions(1024).setFilePermission(permission)
             .setFilePermissionFormat(filePermissionFormat);
 
-        Response<ShareFileInfo> bagResponse = primaryFileClient.createWithResponse(options,null,null);
+        Response<ShareFileInfo> bagResponse = primaryFileClient.createWithResponse(options, null, null);
         Response<ShareFileInfo> nonBagResponse = primaryFileClient.createWithResponse(1024, null,
             null, permission, filePermissionFormat, null, null, null, null);
 
