@@ -15,9 +15,7 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
@@ -54,8 +52,6 @@ import java.util.function.Consumer;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public abstract class CryptographyClientTestBase extends TestProxyTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientTestBase.class);
-
     protected boolean isHsmEnabled = false;
     protected boolean runManagedHsmTest = false;
 
@@ -75,11 +71,18 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     KeyClientBuilder getKeyClientBuilder(HttpClient httpClient, String endpoint, KeyServiceVersion serviceVersion) {
         TokenCredential credential;
 
-        if (interceptorManager.isLiveMode()) {
-            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
-        } else if (interceptorManager.isRecordMode()) {
-            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
-        } else  {
+        if (!interceptorManager.isPlaybackMode()) {
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
+                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
+                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
+                .additionallyAllowedTenants("*")
+                .build();
+        } else {
             credential = new MockTokenCredential();
 
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
@@ -109,10 +112,17 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
         CryptographyServiceVersion serviceVersion) {
         TokenCredential credential;
 
-        if (interceptorManager.isLiveMode()) {
-            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
-        } else if (interceptorManager.isRecordMode()) {
-            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
+        if (!interceptorManager.isPlaybackMode()) {
+            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
+            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
+            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+
+            credential = new ClientSecretCredentialBuilder()
+                .clientSecret(Objects.requireNonNull(clientKey, "The client key cannot be null"))
+                .clientId(Objects.requireNonNull(clientId, "The client id cannot be null"))
+                .tenantId(Objects.requireNonNull(tenantId, "The tenant id cannot be null"))
+                .additionallyAllowedTenants("*")
+                .build();
         } else {
             credential = new MockTokenCredential();
 
@@ -328,6 +338,10 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     }
 
     public void sleep(long millis) {
-        sleepIfRunningAgainstService(millis);
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
