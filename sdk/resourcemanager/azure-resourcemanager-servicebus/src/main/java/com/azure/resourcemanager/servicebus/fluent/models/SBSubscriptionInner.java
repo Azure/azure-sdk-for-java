@@ -5,39 +5,62 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
 import com.azure.resourcemanager.servicebus.models.SBClientAffineProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Description of subscription resource. */
+/**
+ * Description of subscription resource.
+ */
 @Fluent
-public final class SBSubscriptionInner extends Resource {
+public final class SBSubscriptionInner extends ProxyResource {
     /*
      * Properties of subscriptions resource.
      */
-    @JsonProperty(value = "properties")
     private SBSubscriptionProperties innerProperties;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SBSubscriptionInner class.
+     */
+    public SBSubscriptionInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of subscriptions resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SBSubscriptionProperties innerProperties() {
@@ -46,7 +69,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -55,7 +78,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -63,8 +86,38 @@ public final class SBSubscriptionInner extends Resource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the messageCount property: Number of messages.
-     *
+     * 
      * @return the messageCount value.
      */
     public Long messageCount() {
@@ -73,7 +126,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the createdAt property: Exact time the message was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -82,7 +135,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the accessedAt property: Last time there was a receive request to this subscription.
-     *
+     * 
      * @return the accessedAt value.
      */
     public OffsetDateTime accessedAt() {
@@ -91,7 +144,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the updatedAt property: The exact time the message was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -100,7 +153,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the countDetails property: Message count details.
-     *
+     * 
      * @return the countDetails value.
      */
     public MessageCountDetails countDetails() {
@@ -110,7 +163,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Get the lockDuration property: ISO 8061 lock duration timespan for the subscription. The default value is 1
      * minute.
-     *
+     * 
      * @return the lockDuration value.
      */
     public Duration lockDuration() {
@@ -120,7 +173,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Set the lockDuration property: ISO 8061 lock duration timespan for the subscription. The default value is 1
      * minute.
-     *
+     * 
      * @param lockDuration the lockDuration value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -134,7 +187,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the requiresSession property: Value indicating if a subscription supports the concept of sessions.
-     *
+     * 
      * @return the requiresSession value.
      */
     public Boolean requiresSession() {
@@ -143,7 +196,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Set the requiresSession property: Value indicating if a subscription supports the concept of sessions.
-     *
+     * 
      * @param requiresSession the requiresSession value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -159,7 +212,7 @@ public final class SBSubscriptionInner extends Resource {
      * Get the defaultMessageTimeToLive property: ISO 8061 Default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @return the defaultMessageTimeToLive value.
      */
     public Duration defaultMessageTimeToLive() {
@@ -170,7 +223,7 @@ public final class SBSubscriptionInner extends Resource {
      * Set the defaultMessageTimeToLive property: ISO 8061 Default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -185,7 +238,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Get the deadLetteringOnFilterEvaluationExceptions property: Value that indicates whether a subscription has dead
      * letter support on filter evaluation exceptions.
-     *
+     * 
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
     public Boolean deadLetteringOnFilterEvaluationExceptions() {
@@ -197,12 +250,12 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Set the deadLetteringOnFilterEvaluationExceptions property: Value that indicates whether a subscription has dead
      * letter support on filter evaluation exceptions.
-     *
+     * 
      * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set.
      * @return the SBSubscriptionInner object itself.
      */
-    public SBSubscriptionInner withDeadLetteringOnFilterEvaluationExceptions(
-        Boolean deadLetteringOnFilterEvaluationExceptions) {
+    public SBSubscriptionInner
+        withDeadLetteringOnFilterEvaluationExceptions(Boolean deadLetteringOnFilterEvaluationExceptions) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SBSubscriptionProperties();
         }
@@ -213,7 +266,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Get the deadLetteringOnMessageExpiration property: Value that indicates whether a subscription has dead letter
      * support when a message expires.
-     *
+     * 
      * @return the deadLetteringOnMessageExpiration value.
      */
     public Boolean deadLetteringOnMessageExpiration() {
@@ -223,7 +276,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Set the deadLetteringOnMessageExpiration property: Value that indicates whether a subscription has dead letter
      * support when a message expires.
-     *
+     * 
      * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -238,7 +291,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Get the duplicateDetectionHistoryTimeWindow property: ISO 8601 timeSpan structure that defines the duration of
      * the duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @return the duplicateDetectionHistoryTimeWindow value.
      */
     public Duration duplicateDetectionHistoryTimeWindow() {
@@ -248,7 +301,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Set the duplicateDetectionHistoryTimeWindow property: ISO 8601 timeSpan structure that defines the duration of
      * the duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @param duplicateDetectionHistoryTimeWindow the duplicateDetectionHistoryTimeWindow value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -262,7 +315,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the maxDeliveryCount property: Number of maximum deliveries.
-     *
+     * 
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
@@ -271,7 +324,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Set the maxDeliveryCount property: Number of maximum deliveries.
-     *
+     * 
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -285,7 +338,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @return the status value.
      */
     public EntityStatus status() {
@@ -294,7 +347,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Set the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @param status the status value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -309,7 +362,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Get the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @return the enableBatchedOperations value.
      */
     public Boolean enableBatchedOperations() {
@@ -319,7 +372,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Set the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -334,7 +387,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Get the autoDeleteOnIdle property: ISO 8061 timeSpan idle interval after which the topic is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @return the autoDeleteOnIdle value.
      */
     public Duration autoDeleteOnIdle() {
@@ -344,7 +397,7 @@ public final class SBSubscriptionInner extends Resource {
     /**
      * Set the autoDeleteOnIdle property: ISO 8061 timeSpan idle interval after which the topic is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -358,7 +411,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the forwardTo property: Queue/Topic name to forward the messages.
-     *
+     * 
      * @return the forwardTo value.
      */
     public String forwardTo() {
@@ -367,7 +420,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Set the forwardTo property: Queue/Topic name to forward the messages.
-     *
+     * 
      * @param forwardTo the forwardTo value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -381,7 +434,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the forwardDeadLetteredMessagesTo property: Queue/Topic name to forward the Dead Letter message.
-     *
+     * 
      * @return the forwardDeadLetteredMessagesTo value.
      */
     public String forwardDeadLetteredMessagesTo() {
@@ -390,7 +443,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Set the forwardDeadLetteredMessagesTo property: Queue/Topic name to forward the Dead Letter message.
-     *
+     * 
      * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -404,7 +457,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the isClientAffine property: Value that indicates whether the subscription has an affinity to the client id.
-     *
+     * 
      * @return the isClientAffine value.
      */
     public Boolean isClientAffine() {
@@ -413,7 +466,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Set the isClientAffine property: Value that indicates whether the subscription has an affinity to the client id.
-     *
+     * 
      * @param isClientAffine the isClientAffine value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -427,7 +480,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Get the clientAffineProperties property: Properties specific to client affine subscriptions.
-     *
+     * 
      * @return the clientAffineProperties value.
      */
     public SBClientAffineProperties clientAffineProperties() {
@@ -436,7 +489,7 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Set the clientAffineProperties property: Properties specific to client affine subscriptions.
-     *
+     * 
      * @param clientAffineProperties the clientAffineProperties value to set.
      * @return the SBSubscriptionInner object itself.
      */
@@ -450,12 +503,59 @@ public final class SBSubscriptionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBSubscriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBSubscriptionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SBSubscriptionInner.
+     */
+    public static SBSubscriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBSubscriptionInner deserializedSBSubscriptionInner = new SBSubscriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSBSubscriptionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSBSubscriptionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSBSubscriptionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSBSubscriptionInner.innerProperties = SBSubscriptionProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSBSubscriptionInner.systemData = SystemData.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedSBSubscriptionInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBSubscriptionInner;
+        });
     }
 }

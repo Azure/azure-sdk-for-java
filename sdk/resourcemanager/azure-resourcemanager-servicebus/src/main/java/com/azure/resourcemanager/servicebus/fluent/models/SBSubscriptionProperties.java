@@ -5,60 +5,56 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
 import com.azure.resourcemanager.servicebus.models.SBClientAffineProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Description of Subscription Resource. */
+/**
+ * Description of Subscription Resource.
+ */
 @Fluent
-public final class SBSubscriptionProperties {
+public final class SBSubscriptionProperties implements JsonSerializable<SBSubscriptionProperties> {
     /*
      * Number of messages.
      */
-    @JsonProperty(value = "messageCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long messageCount;
 
     /*
      * Exact time the message was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * Last time there was a receive request to this subscription.
      */
-    @JsonProperty(value = "accessedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime accessedAt;
 
     /*
      * The exact time the message was updated.
      */
-    @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedAt;
 
     /*
      * Message count details
      */
-    @JsonProperty(value = "countDetails", access = JsonProperty.Access.WRITE_ONLY)
     private MessageCountDetails countDetails;
 
     /*
      * ISO 8061 lock duration timespan for the subscription. The default value is 1 minute.
      */
-    @JsonProperty(value = "lockDuration")
-    @JsonSerialize(using = DurationSerializer.class)
     private Duration lockDuration;
 
     /*
      * Value indicating if a subscription supports the concept of sessions.
      */
-    @JsonProperty(value = "requiresSession")
     private Boolean requiresSession;
 
     /*
@@ -66,83 +62,74 @@ public final class SBSubscriptionProperties {
      * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
      * message itself.
      */
-    @JsonProperty(value = "defaultMessageTimeToLive")
-    @JsonSerialize(using = DurationSerializer.class)
     private Duration defaultMessageTimeToLive;
 
     /*
      * Value that indicates whether a subscription has dead letter support on filter evaluation exceptions.
      */
-    @JsonProperty(value = "deadLetteringOnFilterEvaluationExceptions")
     private Boolean deadLetteringOnFilterEvaluationExceptions;
 
     /*
      * Value that indicates whether a subscription has dead letter support when a message expires.
      */
-    @JsonProperty(value = "deadLetteringOnMessageExpiration")
     private Boolean deadLetteringOnMessageExpiration;
 
     /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is
-     * 10 minutes.
+     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10
+     * minutes.
      */
-    @JsonProperty(value = "duplicateDetectionHistoryTimeWindow")
-    @JsonSerialize(using = DurationSerializer.class)
     private Duration duplicateDetectionHistoryTimeWindow;
 
     /*
      * Number of maximum deliveries.
      */
-    @JsonProperty(value = "maxDeliveryCount")
     private Integer maxDeliveryCount;
 
     /*
      * Enumerates the possible values for the status of a messaging entity.
      */
-    @JsonProperty(value = "status")
     private EntityStatus status;
 
     /*
      * Value that indicates whether server-side batched operations are enabled.
      */
-    @JsonProperty(value = "enableBatchedOperations")
     private Boolean enableBatchedOperations;
 
     /*
      * ISO 8061 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5
      * minutes.
      */
-    @JsonProperty(value = "autoDeleteOnIdle")
-    @JsonSerialize(using = DurationSerializer.class)
     private Duration autoDeleteOnIdle;
 
     /*
      * Queue/Topic name to forward the messages
      */
-    @JsonProperty(value = "forwardTo")
     private String forwardTo;
 
     /*
      * Queue/Topic name to forward the Dead Letter message
      */
-    @JsonProperty(value = "forwardDeadLetteredMessagesTo")
     private String forwardDeadLetteredMessagesTo;
 
     /*
      * Value that indicates whether the subscription has an affinity to the client id.
      */
-    @JsonProperty(value = "isClientAffine")
     private Boolean isClientAffine;
 
     /*
      * Properties specific to client affine subscriptions.
      */
-    @JsonProperty(value = "clientAffineProperties")
     private SBClientAffineProperties clientAffineProperties;
 
     /**
+     * Creates an instance of SBSubscriptionProperties class.
+     */
+    public SBSubscriptionProperties() {
+    }
+
+    /**
      * Get the messageCount property: Number of messages.
-     *
+     * 
      * @return the messageCount value.
      */
     public Long messageCount() {
@@ -151,7 +138,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the createdAt property: Exact time the message was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -160,7 +147,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the accessedAt property: Last time there was a receive request to this subscription.
-     *
+     * 
      * @return the accessedAt value.
      */
     public OffsetDateTime accessedAt() {
@@ -169,7 +156,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the updatedAt property: The exact time the message was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -178,7 +165,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the countDetails property: Message count details.
-     *
+     * 
      * @return the countDetails value.
      */
     public MessageCountDetails countDetails() {
@@ -188,7 +175,7 @@ public final class SBSubscriptionProperties {
     /**
      * Get the lockDuration property: ISO 8061 lock duration timespan for the subscription. The default value is 1
      * minute.
-     *
+     * 
      * @return the lockDuration value.
      */
     public Duration lockDuration() {
@@ -198,7 +185,7 @@ public final class SBSubscriptionProperties {
     /**
      * Set the lockDuration property: ISO 8061 lock duration timespan for the subscription. The default value is 1
      * minute.
-     *
+     * 
      * @param lockDuration the lockDuration value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -209,7 +196,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the requiresSession property: Value indicating if a subscription supports the concept of sessions.
-     *
+     * 
      * @return the requiresSession value.
      */
     public Boolean requiresSession() {
@@ -218,7 +205,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Set the requiresSession property: Value indicating if a subscription supports the concept of sessions.
-     *
+     * 
      * @param requiresSession the requiresSession value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -231,7 +218,7 @@ public final class SBSubscriptionProperties {
      * Get the defaultMessageTimeToLive property: ISO 8061 Default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @return the defaultMessageTimeToLive value.
      */
     public Duration defaultMessageTimeToLive() {
@@ -242,7 +229,7 @@ public final class SBSubscriptionProperties {
      * Set the defaultMessageTimeToLive property: ISO 8061 Default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -254,7 +241,7 @@ public final class SBSubscriptionProperties {
     /**
      * Get the deadLetteringOnFilterEvaluationExceptions property: Value that indicates whether a subscription has dead
      * letter support on filter evaluation exceptions.
-     *
+     * 
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
     public Boolean deadLetteringOnFilterEvaluationExceptions() {
@@ -264,12 +251,12 @@ public final class SBSubscriptionProperties {
     /**
      * Set the deadLetteringOnFilterEvaluationExceptions property: Value that indicates whether a subscription has dead
      * letter support on filter evaluation exceptions.
-     *
+     * 
      * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set.
      * @return the SBSubscriptionProperties object itself.
      */
-    public SBSubscriptionProperties withDeadLetteringOnFilterEvaluationExceptions(
-        Boolean deadLetteringOnFilterEvaluationExceptions) {
+    public SBSubscriptionProperties
+        withDeadLetteringOnFilterEvaluationExceptions(Boolean deadLetteringOnFilterEvaluationExceptions) {
         this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
         return this;
     }
@@ -277,7 +264,7 @@ public final class SBSubscriptionProperties {
     /**
      * Get the deadLetteringOnMessageExpiration property: Value that indicates whether a subscription has dead letter
      * support when a message expires.
-     *
+     * 
      * @return the deadLetteringOnMessageExpiration value.
      */
     public Boolean deadLetteringOnMessageExpiration() {
@@ -287,7 +274,7 @@ public final class SBSubscriptionProperties {
     /**
      * Set the deadLetteringOnMessageExpiration property: Value that indicates whether a subscription has dead letter
      * support when a message expires.
-     *
+     * 
      * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -299,7 +286,7 @@ public final class SBSubscriptionProperties {
     /**
      * Get the duplicateDetectionHistoryTimeWindow property: ISO 8601 timeSpan structure that defines the duration of
      * the duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @return the duplicateDetectionHistoryTimeWindow value.
      */
     public Duration duplicateDetectionHistoryTimeWindow() {
@@ -309,19 +296,19 @@ public final class SBSubscriptionProperties {
     /**
      * Set the duplicateDetectionHistoryTimeWindow property: ISO 8601 timeSpan structure that defines the duration of
      * the duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @param duplicateDetectionHistoryTimeWindow the duplicateDetectionHistoryTimeWindow value to set.
      * @return the SBSubscriptionProperties object itself.
      */
-    public SBSubscriptionProperties withDuplicateDetectionHistoryTimeWindow(
-        Duration duplicateDetectionHistoryTimeWindow) {
+    public SBSubscriptionProperties
+        withDuplicateDetectionHistoryTimeWindow(Duration duplicateDetectionHistoryTimeWindow) {
         this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow;
         return this;
     }
 
     /**
      * Get the maxDeliveryCount property: Number of maximum deliveries.
-     *
+     * 
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
@@ -330,7 +317,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Set the maxDeliveryCount property: Number of maximum deliveries.
-     *
+     * 
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -341,7 +328,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @return the status value.
      */
     public EntityStatus status() {
@@ -350,7 +337,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Set the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @param status the status value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -362,7 +349,7 @@ public final class SBSubscriptionProperties {
     /**
      * Get the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @return the enableBatchedOperations value.
      */
     public Boolean enableBatchedOperations() {
@@ -372,7 +359,7 @@ public final class SBSubscriptionProperties {
     /**
      * Set the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -384,7 +371,7 @@ public final class SBSubscriptionProperties {
     /**
      * Get the autoDeleteOnIdle property: ISO 8061 timeSpan idle interval after which the topic is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @return the autoDeleteOnIdle value.
      */
     public Duration autoDeleteOnIdle() {
@@ -394,7 +381,7 @@ public final class SBSubscriptionProperties {
     /**
      * Set the autoDeleteOnIdle property: ISO 8061 timeSpan idle interval after which the topic is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -405,7 +392,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the forwardTo property: Queue/Topic name to forward the messages.
-     *
+     * 
      * @return the forwardTo value.
      */
     public String forwardTo() {
@@ -414,7 +401,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Set the forwardTo property: Queue/Topic name to forward the messages.
-     *
+     * 
      * @param forwardTo the forwardTo value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -425,7 +412,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the forwardDeadLetteredMessagesTo property: Queue/Topic name to forward the Dead Letter message.
-     *
+     * 
      * @return the forwardDeadLetteredMessagesTo value.
      */
     public String forwardDeadLetteredMessagesTo() {
@@ -434,7 +421,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Set the forwardDeadLetteredMessagesTo property: Queue/Topic name to forward the Dead Letter message.
-     *
+     * 
      * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -445,7 +432,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the isClientAffine property: Value that indicates whether the subscription has an affinity to the client id.
-     *
+     * 
      * @return the isClientAffine value.
      */
     public Boolean isClientAffine() {
@@ -454,7 +441,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Set the isClientAffine property: Value that indicates whether the subscription has an affinity to the client id.
-     *
+     * 
      * @param isClientAffine the isClientAffine value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -465,7 +452,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Get the clientAffineProperties property: Properties specific to client affine subscriptions.
-     *
+     * 
      * @return the clientAffineProperties value.
      */
     public SBClientAffineProperties clientAffineProperties() {
@@ -474,7 +461,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Set the clientAffineProperties property: Properties specific to client affine subscriptions.
-     *
+     * 
      * @param clientAffineProperties the clientAffineProperties value to set.
      * @return the SBSubscriptionProperties object itself.
      */
@@ -485,7 +472,7 @@ public final class SBSubscriptionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -495,5 +482,104 @@ public final class SBSubscriptionProperties {
         if (clientAffineProperties() != null) {
             clientAffineProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lockDuration", CoreUtils.durationToStringWithDays(this.lockDuration));
+        jsonWriter.writeBooleanField("requiresSession", this.requiresSession);
+        jsonWriter.writeStringField("defaultMessageTimeToLive",
+            CoreUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
+        jsonWriter.writeBooleanField("deadLetteringOnFilterEvaluationExceptions",
+            this.deadLetteringOnFilterEvaluationExceptions);
+        jsonWriter.writeBooleanField("deadLetteringOnMessageExpiration", this.deadLetteringOnMessageExpiration);
+        jsonWriter.writeStringField("duplicateDetectionHistoryTimeWindow",
+            CoreUtils.durationToStringWithDays(this.duplicateDetectionHistoryTimeWindow));
+        jsonWriter.writeNumberField("maxDeliveryCount", this.maxDeliveryCount);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeBooleanField("enableBatchedOperations", this.enableBatchedOperations);
+        jsonWriter.writeStringField("autoDeleteOnIdle", CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
+        jsonWriter.writeStringField("forwardTo", this.forwardTo);
+        jsonWriter.writeStringField("forwardDeadLetteredMessagesTo", this.forwardDeadLetteredMessagesTo);
+        jsonWriter.writeBooleanField("isClientAffine", this.isClientAffine);
+        jsonWriter.writeJsonField("clientAffineProperties", this.clientAffineProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBSubscriptionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBSubscriptionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SBSubscriptionProperties.
+     */
+    public static SBSubscriptionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBSubscriptionProperties deserializedSBSubscriptionProperties = new SBSubscriptionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageCount".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.messageCount = reader.getNullable(JsonReader::getLong);
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("accessedAt".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.accessedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("countDetails".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.countDetails = MessageCountDetails.fromJson(reader);
+                } else if ("lockDuration".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.lockDuration
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("requiresSession".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.requiresSession = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultMessageTimeToLive".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.defaultMessageTimeToLive
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("deadLetteringOnFilterEvaluationExceptions".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.deadLetteringOnFilterEvaluationExceptions
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deadLetteringOnMessageExpiration".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.deadLetteringOnMessageExpiration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("duplicateDetectionHistoryTimeWindow".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.duplicateDetectionHistoryTimeWindow
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("maxDeliveryCount".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.maxDeliveryCount = reader.getNullable(JsonReader::getInt);
+                } else if ("status".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.status = EntityStatus.fromString(reader.getString());
+                } else if ("enableBatchedOperations".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.enableBatchedOperations
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoDeleteOnIdle".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.autoDeleteOnIdle
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("forwardTo".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.forwardTo = reader.getString();
+                } else if ("forwardDeadLetteredMessagesTo".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.forwardDeadLetteredMessagesTo = reader.getString();
+                } else if ("isClientAffine".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.isClientAffine = reader.getNullable(JsonReader::getBoolean);
+                } else if ("clientAffineProperties".equals(fieldName)) {
+                    deserializedSBSubscriptionProperties.clientAffineProperties
+                        = SBClientAffineProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBSubscriptionProperties;
+        });
     }
 }

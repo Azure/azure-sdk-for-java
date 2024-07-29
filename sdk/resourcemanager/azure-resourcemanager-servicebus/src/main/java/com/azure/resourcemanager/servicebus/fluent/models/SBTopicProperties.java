@@ -5,52 +5,50 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** The Topic Properties definition. */
+/**
+ * The Topic Properties definition.
+ */
 @Fluent
-public final class SBTopicProperties {
+public final class SBTopicProperties implements JsonSerializable<SBTopicProperties> {
     /*
      * Size of the topic, in bytes.
      */
-    @JsonProperty(value = "sizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long sizeInBytes;
 
     /*
      * Exact time the message was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * The exact time the message was updated.
      */
-    @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedAt;
 
     /*
      * Last time the message was sent, or a request was received, for this topic.
      */
-    @JsonProperty(value = "accessedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime accessedAt;
 
     /*
      * Number of subscriptions.
      */
-    @JsonProperty(value = "subscriptionCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer subscriptionCount;
 
     /*
      * Message count details
      */
-    @JsonProperty(value = "countDetails", access = JsonProperty.Access.WRITE_ONLY)
     private MessageCountDetails countDetails;
 
     /*
@@ -58,80 +56,71 @@ public final class SBTopicProperties {
      * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
      * message itself.
      */
-    @JsonProperty(value = "defaultMessageTimeToLive")
-    @JsonSerialize(using = DurationSerializer.class)
     private Duration defaultMessageTimeToLive;
 
     /*
-     * Maximum size of the topic in megabytes, which is the size of the memory allocated for the topic. Default is
-     * 1024.
+     * Maximum size of the topic in megabytes, which is the size of the memory allocated for the topic. Default is 1024.
      */
-    @JsonProperty(value = "maxSizeInMegabytes")
     private Integer maxSizeInMegabytes;
 
     /*
      * Maximum size (in KB) of the message payload that can be accepted by the topic. This property is only used in
      * Premium today and default is 1024.
      */
-    @JsonProperty(value = "maxMessageSizeInKilobytes")
     private Long maxMessageSizeInKilobytes;
 
     /*
      * Value indicating if this topic requires duplicate detection.
      */
-    @JsonProperty(value = "requiresDuplicateDetection")
     private Boolean requiresDuplicateDetection;
 
     /*
      * ISO8601 timespan structure that defines the duration of the duplicate detection history. The default value is 10
      * minutes.
      */
-    @JsonProperty(value = "duplicateDetectionHistoryTimeWindow")
-    @JsonSerialize(using = DurationSerializer.class)
     private Duration duplicateDetectionHistoryTimeWindow;
 
     /*
      * Value that indicates whether server-side batched operations are enabled.
      */
-    @JsonProperty(value = "enableBatchedOperations")
     private Boolean enableBatchedOperations;
 
     /*
      * Enumerates the possible values for the status of a messaging entity.
      */
-    @JsonProperty(value = "status")
     private EntityStatus status;
 
     /*
      * Value that indicates whether the topic supports ordering.
      */
-    @JsonProperty(value = "supportOrdering")
     private Boolean supportOrdering;
 
     /*
      * ISO 8601 timespan idle interval after which the topic is automatically deleted. The minimum duration is 5
      * minutes.
      */
-    @JsonProperty(value = "autoDeleteOnIdle")
-    @JsonSerialize(using = DurationSerializer.class)
     private Duration autoDeleteOnIdle;
 
     /*
      * Value that indicates whether the topic to be partitioned across multiple message brokers is enabled.
      */
-    @JsonProperty(value = "enablePartitioning")
     private Boolean enablePartitioning;
 
     /*
-     * Value that indicates whether Express Entities are enabled. An express topic holds a message in memory
-     * temporarily before writing it to persistent storage.
+     * Value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily
+     * before writing it to persistent storage.
      */
-    @JsonProperty(value = "enableExpress")
     private Boolean enableExpress;
 
     /**
+     * Creates an instance of SBTopicProperties class.
+     */
+    public SBTopicProperties() {
+    }
+
+    /**
      * Get the sizeInBytes property: Size of the topic, in bytes.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long sizeInBytes() {
@@ -140,7 +129,7 @@ public final class SBTopicProperties {
 
     /**
      * Get the createdAt property: Exact time the message was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -149,7 +138,7 @@ public final class SBTopicProperties {
 
     /**
      * Get the updatedAt property: The exact time the message was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -158,7 +147,7 @@ public final class SBTopicProperties {
 
     /**
      * Get the accessedAt property: Last time the message was sent, or a request was received, for this topic.
-     *
+     * 
      * @return the accessedAt value.
      */
     public OffsetDateTime accessedAt() {
@@ -167,7 +156,7 @@ public final class SBTopicProperties {
 
     /**
      * Get the subscriptionCount property: Number of subscriptions.
-     *
+     * 
      * @return the subscriptionCount value.
      */
     public Integer subscriptionCount() {
@@ -176,7 +165,7 @@ public final class SBTopicProperties {
 
     /**
      * Get the countDetails property: Message count details.
-     *
+     * 
      * @return the countDetails value.
      */
     public MessageCountDetails countDetails() {
@@ -187,7 +176,7 @@ public final class SBTopicProperties {
      * Get the defaultMessageTimeToLive property: ISO 8601 Default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @return the defaultMessageTimeToLive value.
      */
     public Duration defaultMessageTimeToLive() {
@@ -198,7 +187,7 @@ public final class SBTopicProperties {
      * Set the defaultMessageTimeToLive property: ISO 8601 Default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -210,7 +199,7 @@ public final class SBTopicProperties {
     /**
      * Get the maxSizeInMegabytes property: Maximum size of the topic in megabytes, which is the size of the memory
      * allocated for the topic. Default is 1024.
-     *
+     * 
      * @return the maxSizeInMegabytes value.
      */
     public Integer maxSizeInMegabytes() {
@@ -220,7 +209,7 @@ public final class SBTopicProperties {
     /**
      * Set the maxSizeInMegabytes property: Maximum size of the topic in megabytes, which is the size of the memory
      * allocated for the topic. Default is 1024.
-     *
+     * 
      * @param maxSizeInMegabytes the maxSizeInMegabytes value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -232,7 +221,7 @@ public final class SBTopicProperties {
     /**
      * Get the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
      * the topic. This property is only used in Premium today and default is 1024.
-     *
+     * 
      * @return the maxMessageSizeInKilobytes value.
      */
     public Long maxMessageSizeInKilobytes() {
@@ -242,7 +231,7 @@ public final class SBTopicProperties {
     /**
      * Set the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
      * the topic. This property is only used in Premium today and default is 1024.
-     *
+     * 
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -253,7 +242,7 @@ public final class SBTopicProperties {
 
     /**
      * Get the requiresDuplicateDetection property: Value indicating if this topic requires duplicate detection.
-     *
+     * 
      * @return the requiresDuplicateDetection value.
      */
     public Boolean requiresDuplicateDetection() {
@@ -262,7 +251,7 @@ public final class SBTopicProperties {
 
     /**
      * Set the requiresDuplicateDetection property: Value indicating if this topic requires duplicate detection.
-     *
+     * 
      * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -274,7 +263,7 @@ public final class SBTopicProperties {
     /**
      * Get the duplicateDetectionHistoryTimeWindow property: ISO8601 timespan structure that defines the duration of the
      * duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @return the duplicateDetectionHistoryTimeWindow value.
      */
     public Duration duplicateDetectionHistoryTimeWindow() {
@@ -284,7 +273,7 @@ public final class SBTopicProperties {
     /**
      * Set the duplicateDetectionHistoryTimeWindow property: ISO8601 timespan structure that defines the duration of the
      * duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @param duplicateDetectionHistoryTimeWindow the duplicateDetectionHistoryTimeWindow value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -296,7 +285,7 @@ public final class SBTopicProperties {
     /**
      * Get the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @return the enableBatchedOperations value.
      */
     public Boolean enableBatchedOperations() {
@@ -306,7 +295,7 @@ public final class SBTopicProperties {
     /**
      * Set the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -317,7 +306,7 @@ public final class SBTopicProperties {
 
     /**
      * Get the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @return the status value.
      */
     public EntityStatus status() {
@@ -326,7 +315,7 @@ public final class SBTopicProperties {
 
     /**
      * Set the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @param status the status value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -337,7 +326,7 @@ public final class SBTopicProperties {
 
     /**
      * Get the supportOrdering property: Value that indicates whether the topic supports ordering.
-     *
+     * 
      * @return the supportOrdering value.
      */
     public Boolean supportOrdering() {
@@ -346,7 +335,7 @@ public final class SBTopicProperties {
 
     /**
      * Set the supportOrdering property: Value that indicates whether the topic supports ordering.
-     *
+     * 
      * @param supportOrdering the supportOrdering value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -358,7 +347,7 @@ public final class SBTopicProperties {
     /**
      * Get the autoDeleteOnIdle property: ISO 8601 timespan idle interval after which the topic is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @return the autoDeleteOnIdle value.
      */
     public Duration autoDeleteOnIdle() {
@@ -368,7 +357,7 @@ public final class SBTopicProperties {
     /**
      * Set the autoDeleteOnIdle property: ISO 8601 timespan idle interval after which the topic is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -380,7 +369,7 @@ public final class SBTopicProperties {
     /**
      * Get the enablePartitioning property: Value that indicates whether the topic to be partitioned across multiple
      * message brokers is enabled.
-     *
+     * 
      * @return the enablePartitioning value.
      */
     public Boolean enablePartitioning() {
@@ -390,7 +379,7 @@ public final class SBTopicProperties {
     /**
      * Set the enablePartitioning property: Value that indicates whether the topic to be partitioned across multiple
      * message brokers is enabled.
-     *
+     * 
      * @param enablePartitioning the enablePartitioning value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -402,7 +391,7 @@ public final class SBTopicProperties {
     /**
      * Get the enableExpress property: Value that indicates whether Express Entities are enabled. An express topic holds
      * a message in memory temporarily before writing it to persistent storage.
-     *
+     * 
      * @return the enableExpress value.
      */
     public Boolean enableExpress() {
@@ -412,7 +401,7 @@ public final class SBTopicProperties {
     /**
      * Set the enableExpress property: Value that indicates whether Express Entities are enabled. An express topic holds
      * a message in memory temporarily before writing it to persistent storage.
-     *
+     * 
      * @param enableExpress the enableExpress value to set.
      * @return the SBTopicProperties object itself.
      */
@@ -423,12 +412,99 @@ public final class SBTopicProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (countDetails() != null) {
             countDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("defaultMessageTimeToLive",
+            CoreUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
+        jsonWriter.writeNumberField("maxSizeInMegabytes", this.maxSizeInMegabytes);
+        jsonWriter.writeNumberField("maxMessageSizeInKilobytes", this.maxMessageSizeInKilobytes);
+        jsonWriter.writeBooleanField("requiresDuplicateDetection", this.requiresDuplicateDetection);
+        jsonWriter.writeStringField("duplicateDetectionHistoryTimeWindow",
+            CoreUtils.durationToStringWithDays(this.duplicateDetectionHistoryTimeWindow));
+        jsonWriter.writeBooleanField("enableBatchedOperations", this.enableBatchedOperations);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeBooleanField("supportOrdering", this.supportOrdering);
+        jsonWriter.writeStringField("autoDeleteOnIdle", CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
+        jsonWriter.writeBooleanField("enablePartitioning", this.enablePartitioning);
+        jsonWriter.writeBooleanField("enableExpress", this.enableExpress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBTopicProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBTopicProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SBTopicProperties.
+     */
+    public static SBTopicProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBTopicProperties deserializedSBTopicProperties = new SBTopicProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sizeInBytes".equals(fieldName)) {
+                    deserializedSBTopicProperties.sizeInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedSBTopicProperties.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedSBTopicProperties.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("accessedAt".equals(fieldName)) {
+                    deserializedSBTopicProperties.accessedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("subscriptionCount".equals(fieldName)) {
+                    deserializedSBTopicProperties.subscriptionCount = reader.getNullable(JsonReader::getInt);
+                } else if ("countDetails".equals(fieldName)) {
+                    deserializedSBTopicProperties.countDetails = MessageCountDetails.fromJson(reader);
+                } else if ("defaultMessageTimeToLive".equals(fieldName)) {
+                    deserializedSBTopicProperties.defaultMessageTimeToLive
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("maxSizeInMegabytes".equals(fieldName)) {
+                    deserializedSBTopicProperties.maxSizeInMegabytes = reader.getNullable(JsonReader::getInt);
+                } else if ("maxMessageSizeInKilobytes".equals(fieldName)) {
+                    deserializedSBTopicProperties.maxMessageSizeInKilobytes = reader.getNullable(JsonReader::getLong);
+                } else if ("requiresDuplicateDetection".equals(fieldName)) {
+                    deserializedSBTopicProperties.requiresDuplicateDetection
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("duplicateDetectionHistoryTimeWindow".equals(fieldName)) {
+                    deserializedSBTopicProperties.duplicateDetectionHistoryTimeWindow
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("enableBatchedOperations".equals(fieldName)) {
+                    deserializedSBTopicProperties.enableBatchedOperations = reader.getNullable(JsonReader::getBoolean);
+                } else if ("status".equals(fieldName)) {
+                    deserializedSBTopicProperties.status = EntityStatus.fromString(reader.getString());
+                } else if ("supportOrdering".equals(fieldName)) {
+                    deserializedSBTopicProperties.supportOrdering = reader.getNullable(JsonReader::getBoolean);
+                } else if ("autoDeleteOnIdle".equals(fieldName)) {
+                    deserializedSBTopicProperties.autoDeleteOnIdle
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("enablePartitioning".equals(fieldName)) {
+                    deserializedSBTopicProperties.enablePartitioning = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableExpress".equals(fieldName)) {
+                    deserializedSBTopicProperties.enableExpress = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBTopicProperties;
+        });
     }
 }

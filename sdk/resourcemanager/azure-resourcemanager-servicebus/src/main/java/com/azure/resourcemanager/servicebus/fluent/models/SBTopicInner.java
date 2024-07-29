@@ -5,38 +5,61 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Description of topic resource. */
+/**
+ * Description of topic resource.
+ */
 @Fluent
-public final class SBTopicInner extends Resource {
+public final class SBTopicInner extends ProxyResource {
     /*
      * Properties of topic resource.
      */
-    @JsonProperty(value = "properties")
     private SBTopicProperties innerProperties;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SBTopicInner class.
+     */
+    public SBTopicInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of topic resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SBTopicProperties innerProperties() {
@@ -45,7 +68,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -54,7 +77,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -62,8 +85,38 @@ public final class SBTopicInner extends Resource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the sizeInBytes property: Size of the topic, in bytes.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long sizeInBytes() {
@@ -72,7 +125,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the createdAt property: Exact time the message was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -81,7 +134,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the updatedAt property: The exact time the message was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -90,7 +143,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the accessedAt property: Last time the message was sent, or a request was received, for this topic.
-     *
+     * 
      * @return the accessedAt value.
      */
     public OffsetDateTime accessedAt() {
@@ -99,7 +152,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the subscriptionCount property: Number of subscriptions.
-     *
+     * 
      * @return the subscriptionCount value.
      */
     public Integer subscriptionCount() {
@@ -108,7 +161,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the countDetails property: Message count details.
-     *
+     * 
      * @return the countDetails value.
      */
     public MessageCountDetails countDetails() {
@@ -119,7 +172,7 @@ public final class SBTopicInner extends Resource {
      * Get the defaultMessageTimeToLive property: ISO 8601 Default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @return the defaultMessageTimeToLive value.
      */
     public Duration defaultMessageTimeToLive() {
@@ -130,7 +183,7 @@ public final class SBTopicInner extends Resource {
      * Set the defaultMessageTimeToLive property: ISO 8601 Default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the SBTopicInner object itself.
      */
@@ -145,7 +198,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Get the maxSizeInMegabytes property: Maximum size of the topic in megabytes, which is the size of the memory
      * allocated for the topic. Default is 1024.
-     *
+     * 
      * @return the maxSizeInMegabytes value.
      */
     public Integer maxSizeInMegabytes() {
@@ -155,7 +208,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Set the maxSizeInMegabytes property: Maximum size of the topic in megabytes, which is the size of the memory
      * allocated for the topic. Default is 1024.
-     *
+     * 
      * @param maxSizeInMegabytes the maxSizeInMegabytes value to set.
      * @return the SBTopicInner object itself.
      */
@@ -170,7 +223,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Get the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
      * the topic. This property is only used in Premium today and default is 1024.
-     *
+     * 
      * @return the maxMessageSizeInKilobytes value.
      */
     public Long maxMessageSizeInKilobytes() {
@@ -180,7 +233,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Set the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
      * the topic. This property is only used in Premium today and default is 1024.
-     *
+     * 
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
      * @return the SBTopicInner object itself.
      */
@@ -194,7 +247,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the requiresDuplicateDetection property: Value indicating if this topic requires duplicate detection.
-     *
+     * 
      * @return the requiresDuplicateDetection value.
      */
     public Boolean requiresDuplicateDetection() {
@@ -203,7 +256,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Set the requiresDuplicateDetection property: Value indicating if this topic requires duplicate detection.
-     *
+     * 
      * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
      * @return the SBTopicInner object itself.
      */
@@ -218,7 +271,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Get the duplicateDetectionHistoryTimeWindow property: ISO8601 timespan structure that defines the duration of the
      * duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @return the duplicateDetectionHistoryTimeWindow value.
      */
     public Duration duplicateDetectionHistoryTimeWindow() {
@@ -228,7 +281,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Set the duplicateDetectionHistoryTimeWindow property: ISO8601 timespan structure that defines the duration of the
      * duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @param duplicateDetectionHistoryTimeWindow the duplicateDetectionHistoryTimeWindow value to set.
      * @return the SBTopicInner object itself.
      */
@@ -243,7 +296,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Get the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @return the enableBatchedOperations value.
      */
     public Boolean enableBatchedOperations() {
@@ -253,7 +306,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Set the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SBTopicInner object itself.
      */
@@ -267,7 +320,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @return the status value.
      */
     public EntityStatus status() {
@@ -276,7 +329,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Set the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @param status the status value to set.
      * @return the SBTopicInner object itself.
      */
@@ -290,7 +343,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Get the supportOrdering property: Value that indicates whether the topic supports ordering.
-     *
+     * 
      * @return the supportOrdering value.
      */
     public Boolean supportOrdering() {
@@ -299,7 +352,7 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Set the supportOrdering property: Value that indicates whether the topic supports ordering.
-     *
+     * 
      * @param supportOrdering the supportOrdering value to set.
      * @return the SBTopicInner object itself.
      */
@@ -314,7 +367,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Get the autoDeleteOnIdle property: ISO 8601 timespan idle interval after which the topic is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @return the autoDeleteOnIdle value.
      */
     public Duration autoDeleteOnIdle() {
@@ -324,7 +377,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Set the autoDeleteOnIdle property: ISO 8601 timespan idle interval after which the topic is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
      * @return the SBTopicInner object itself.
      */
@@ -339,7 +392,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Get the enablePartitioning property: Value that indicates whether the topic to be partitioned across multiple
      * message brokers is enabled.
-     *
+     * 
      * @return the enablePartitioning value.
      */
     public Boolean enablePartitioning() {
@@ -349,7 +402,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Set the enablePartitioning property: Value that indicates whether the topic to be partitioned across multiple
      * message brokers is enabled.
-     *
+     * 
      * @param enablePartitioning the enablePartitioning value to set.
      * @return the SBTopicInner object itself.
      */
@@ -364,7 +417,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Get the enableExpress property: Value that indicates whether Express Entities are enabled. An express topic holds
      * a message in memory temporarily before writing it to persistent storage.
-     *
+     * 
      * @return the enableExpress value.
      */
     public Boolean enableExpress() {
@@ -374,7 +427,7 @@ public final class SBTopicInner extends Resource {
     /**
      * Set the enableExpress property: Value that indicates whether Express Entities are enabled. An express topic holds
      * a message in memory temporarily before writing it to persistent storage.
-     *
+     * 
      * @param enableExpress the enableExpress value to set.
      * @return the SBTopicInner object itself.
      */
@@ -388,12 +441,59 @@ public final class SBTopicInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBTopicInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBTopicInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SBTopicInner.
+     */
+    public static SBTopicInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBTopicInner deserializedSBTopicInner = new SBTopicInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSBTopicInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSBTopicInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSBTopicInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSBTopicInner.innerProperties = SBTopicProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSBTopicInner.systemData = SystemData.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedSBTopicInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBTopicInner;
+        });
     }
 }

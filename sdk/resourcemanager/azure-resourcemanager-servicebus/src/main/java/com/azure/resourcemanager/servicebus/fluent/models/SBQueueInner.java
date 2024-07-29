@@ -5,38 +5,61 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Description of queue Resource. */
+/**
+ * Description of queue Resource.
+ */
 @Fluent
-public final class SBQueueInner extends Resource {
+public final class SBQueueInner extends ProxyResource {
     /*
      * Queue Properties
      */
-    @JsonProperty(value = "properties")
     private SBQueueProperties innerProperties;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SBQueueInner class.
+     */
+    public SBQueueInner() {
+    }
 
     /**
      * Get the innerProperties property: Queue Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SBQueueProperties innerProperties() {
@@ -45,7 +68,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -54,7 +77,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -62,8 +85,38 @@ public final class SBQueueInner extends Resource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the countDetails property: Message Count Details.
-     *
+     * 
      * @return the countDetails value.
      */
     public MessageCountDetails countDetails() {
@@ -72,7 +125,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the createdAt property: The exact time the message was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -81,7 +134,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the updatedAt property: The exact time the message was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -91,7 +144,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
      * queue.
-     *
+     * 
      * @return the accessedAt value.
      */
     public OffsetDateTime accessedAt() {
@@ -100,7 +153,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the sizeInBytes property: The size of the queue, in bytes.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long sizeInBytes() {
@@ -109,7 +162,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the messageCount property: The number of messages in the queue.
-     *
+     * 
      * @return the messageCount value.
      */
     public Long messageCount() {
@@ -120,7 +173,7 @@ public final class SBQueueInner extends Resource {
      * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
      * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
      * minute.
-     *
+     * 
      * @return the lockDuration value.
      */
     public Duration lockDuration() {
@@ -131,7 +184,7 @@ public final class SBQueueInner extends Resource {
      * Set the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
      * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
      * minute.
-     *
+     * 
      * @param lockDuration the lockDuration value to set.
      * @return the SBQueueInner object itself.
      */
@@ -146,7 +199,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the maxSizeInMegabytes property: The maximum size of the queue in megabytes, which is the size of memory
      * allocated for the queue. Default is 1024.
-     *
+     * 
      * @return the maxSizeInMegabytes value.
      */
     public Integer maxSizeInMegabytes() {
@@ -156,7 +209,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Set the maxSizeInMegabytes property: The maximum size of the queue in megabytes, which is the size of memory
      * allocated for the queue. Default is 1024.
-     *
+     * 
      * @param maxSizeInMegabytes the maxSizeInMegabytes value to set.
      * @return the SBQueueInner object itself.
      */
@@ -171,7 +224,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
      * the queue. This property is only used in Premium today and default is 1024.
-     *
+     * 
      * @return the maxMessageSizeInKilobytes value.
      */
     public Long maxMessageSizeInKilobytes() {
@@ -181,7 +234,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Set the maxMessageSizeInKilobytes property: Maximum size (in KB) of the message payload that can be accepted by
      * the queue. This property is only used in Premium today and default is 1024.
-     *
+     * 
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
      * @return the SBQueueInner object itself.
      */
@@ -195,7 +248,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the requiresDuplicateDetection property: A value indicating if this queue requires duplicate detection.
-     *
+     * 
      * @return the requiresDuplicateDetection value.
      */
     public Boolean requiresDuplicateDetection() {
@@ -204,7 +257,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Set the requiresDuplicateDetection property: A value indicating if this queue requires duplicate detection.
-     *
+     * 
      * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
      * @return the SBQueueInner object itself.
      */
@@ -218,7 +271,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
-     *
+     * 
      * @return the requiresSession value.
      */
     public Boolean requiresSession() {
@@ -227,7 +280,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Set the requiresSession property: A value that indicates whether the queue supports the concept of sessions.
-     *
+     * 
      * @param requiresSession the requiresSession value to set.
      * @return the SBQueueInner object itself.
      */
@@ -243,7 +296,7 @@ public final class SBQueueInner extends Resource {
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @return the defaultMessageTimeToLive value.
      */
     public Duration defaultMessageTimeToLive() {
@@ -254,7 +307,7 @@ public final class SBQueueInner extends Resource {
      * Set the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     *
+     * 
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the SBQueueInner object itself.
      */
@@ -269,7 +322,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
      * support when a message expires.
-     *
+     * 
      * @return the deadLetteringOnMessageExpiration value.
      */
     public Boolean deadLetteringOnMessageExpiration() {
@@ -279,7 +332,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Set the deadLetteringOnMessageExpiration property: A value that indicates whether this queue has dead letter
      * support when a message expires.
-     *
+     * 
      * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
      * @return the SBQueueInner object itself.
      */
@@ -294,7 +347,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the duplicateDetectionHistoryTimeWindow property: ISO 8601 timeSpan structure that defines the duration of
      * the duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @return the duplicateDetectionHistoryTimeWindow value.
      */
     public Duration duplicateDetectionHistoryTimeWindow() {
@@ -304,7 +357,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Set the duplicateDetectionHistoryTimeWindow property: ISO 8601 timeSpan structure that defines the duration of
      * the duplicate detection history. The default value is 10 minutes.
-     *
+     * 
      * @param duplicateDetectionHistoryTimeWindow the duplicateDetectionHistoryTimeWindow value to set.
      * @return the SBQueueInner object itself.
      */
@@ -319,7 +372,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after this
      * number of deliveries. default value is 10.
-     *
+     * 
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
@@ -329,7 +382,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Set the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after this
      * number of deliveries. default value is 10.
-     *
+     * 
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the SBQueueInner object itself.
      */
@@ -343,7 +396,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @return the status value.
      */
     public EntityStatus status() {
@@ -352,7 +405,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Set the status property: Enumerates the possible values for the status of a messaging entity.
-     *
+     * 
      * @param status the status value to set.
      * @return the SBQueueInner object itself.
      */
@@ -367,7 +420,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @return the enableBatchedOperations value.
      */
     public Boolean enableBatchedOperations() {
@@ -377,7 +430,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Set the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     *
+     * 
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SBQueueInner object itself.
      */
@@ -392,7 +445,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the autoDeleteOnIdle property: ISO 8061 timeSpan idle interval after which the queue is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @return the autoDeleteOnIdle value.
      */
     public Duration autoDeleteOnIdle() {
@@ -402,7 +455,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Set the autoDeleteOnIdle property: ISO 8061 timeSpan idle interval after which the queue is automatically
      * deleted. The minimum duration is 5 minutes.
-     *
+     * 
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
      * @return the SBQueueInner object itself.
      */
@@ -417,7 +470,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the enablePartitioning property: A value that indicates whether the queue is to be partitioned across
      * multiple message brokers.
-     *
+     * 
      * @return the enablePartitioning value.
      */
     public Boolean enablePartitioning() {
@@ -427,7 +480,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Set the enablePartitioning property: A value that indicates whether the queue is to be partitioned across
      * multiple message brokers.
-     *
+     * 
      * @param enablePartitioning the enablePartitioning value to set.
      * @return the SBQueueInner object itself.
      */
@@ -442,7 +495,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Get the enableExpress property: A value that indicates whether Express Entities are enabled. An express queue
      * holds a message in memory temporarily before writing it to persistent storage.
-     *
+     * 
      * @return the enableExpress value.
      */
     public Boolean enableExpress() {
@@ -452,7 +505,7 @@ public final class SBQueueInner extends Resource {
     /**
      * Set the enableExpress property: A value that indicates whether Express Entities are enabled. An express queue
      * holds a message in memory temporarily before writing it to persistent storage.
-     *
+     * 
      * @param enableExpress the enableExpress value to set.
      * @return the SBQueueInner object itself.
      */
@@ -466,7 +519,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the forwardTo property: Queue/Topic name to forward the messages.
-     *
+     * 
      * @return the forwardTo value.
      */
     public String forwardTo() {
@@ -475,7 +528,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Set the forwardTo property: Queue/Topic name to forward the messages.
-     *
+     * 
      * @param forwardTo the forwardTo value to set.
      * @return the SBQueueInner object itself.
      */
@@ -489,7 +542,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Get the forwardDeadLetteredMessagesTo property: Queue/Topic name to forward the Dead Letter message.
-     *
+     * 
      * @return the forwardDeadLetteredMessagesTo value.
      */
     public String forwardDeadLetteredMessagesTo() {
@@ -498,7 +551,7 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Set the forwardDeadLetteredMessagesTo property: Queue/Topic name to forward the Dead Letter message.
-     *
+     * 
      * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
      * @return the SBQueueInner object itself.
      */
@@ -512,12 +565,59 @@ public final class SBQueueInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBQueueInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBQueueInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SBQueueInner.
+     */
+    public static SBQueueInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBQueueInner deserializedSBQueueInner = new SBQueueInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSBQueueInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSBQueueInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSBQueueInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSBQueueInner.innerProperties = SBQueueProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSBQueueInner.systemData = SystemData.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedSBQueueInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBQueueInner;
+        });
     }
 }
