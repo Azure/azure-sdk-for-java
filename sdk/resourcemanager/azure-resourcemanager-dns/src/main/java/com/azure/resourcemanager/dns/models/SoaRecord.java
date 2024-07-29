@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An SOA record. */
+/**
+ * An SOA record.
+ */
 @Fluent
-public final class SoaRecord {
+public final class SoaRecord implements JsonSerializable<SoaRecord> {
     /*
      * The domain name of the authoritative name server for this SOA record.
      */
-    @JsonProperty(value = "host")
     private String host;
 
     /*
      * The email contact for this SOA record.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * The serial number for this SOA record.
      */
-    @JsonProperty(value = "serialNumber")
     private Long serialNumber;
 
     /*
      * The refresh value for this SOA record.
      */
-    @JsonProperty(value = "refreshTime")
     private Long refreshTime;
 
     /*
      * The retry time for this SOA record.
      */
-    @JsonProperty(value = "retryTime")
     private Long retryTime;
 
     /*
      * The expire time for this SOA record.
      */
-    @JsonProperty(value = "expireTime")
     private Long expireTime;
 
     /*
      * The minimum value for this SOA record. By convention this is used to determine the negative caching duration.
      */
-    @JsonProperty(value = "minimumTTL")
     private Long minimumTtl;
 
-    /** Creates an instance of SoaRecord class. */
+    /**
+     * Creates an instance of SoaRecord class.
+     */
     public SoaRecord() {
     }
 
     /**
      * Get the host property: The domain name of the authoritative name server for this SOA record.
-     *
+     * 
      * @return the host value.
      */
     public String host() {
@@ -67,7 +68,7 @@ public final class SoaRecord {
 
     /**
      * Set the host property: The domain name of the authoritative name server for this SOA record.
-     *
+     * 
      * @param host the host value to set.
      * @return the SoaRecord object itself.
      */
@@ -78,7 +79,7 @@ public final class SoaRecord {
 
     /**
      * Get the email property: The email contact for this SOA record.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -87,7 +88,7 @@ public final class SoaRecord {
 
     /**
      * Set the email property: The email contact for this SOA record.
-     *
+     * 
      * @param email the email value to set.
      * @return the SoaRecord object itself.
      */
@@ -98,7 +99,7 @@ public final class SoaRecord {
 
     /**
      * Get the serialNumber property: The serial number for this SOA record.
-     *
+     * 
      * @return the serialNumber value.
      */
     public Long serialNumber() {
@@ -107,7 +108,7 @@ public final class SoaRecord {
 
     /**
      * Set the serialNumber property: The serial number for this SOA record.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the SoaRecord object itself.
      */
@@ -118,7 +119,7 @@ public final class SoaRecord {
 
     /**
      * Get the refreshTime property: The refresh value for this SOA record.
-     *
+     * 
      * @return the refreshTime value.
      */
     public Long refreshTime() {
@@ -127,7 +128,7 @@ public final class SoaRecord {
 
     /**
      * Set the refreshTime property: The refresh value for this SOA record.
-     *
+     * 
      * @param refreshTime the refreshTime value to set.
      * @return the SoaRecord object itself.
      */
@@ -138,7 +139,7 @@ public final class SoaRecord {
 
     /**
      * Get the retryTime property: The retry time for this SOA record.
-     *
+     * 
      * @return the retryTime value.
      */
     public Long retryTime() {
@@ -147,7 +148,7 @@ public final class SoaRecord {
 
     /**
      * Set the retryTime property: The retry time for this SOA record.
-     *
+     * 
      * @param retryTime the retryTime value to set.
      * @return the SoaRecord object itself.
      */
@@ -158,7 +159,7 @@ public final class SoaRecord {
 
     /**
      * Get the expireTime property: The expire time for this SOA record.
-     *
+     * 
      * @return the expireTime value.
      */
     public Long expireTime() {
@@ -167,7 +168,7 @@ public final class SoaRecord {
 
     /**
      * Set the expireTime property: The expire time for this SOA record.
-     *
+     * 
      * @param expireTime the expireTime value to set.
      * @return the SoaRecord object itself.
      */
@@ -179,7 +180,7 @@ public final class SoaRecord {
     /**
      * Get the minimumTtl property: The minimum value for this SOA record. By convention this is used to determine the
      * negative caching duration.
-     *
+     * 
      * @return the minimumTtl value.
      */
     public Long minimumTtl() {
@@ -189,7 +190,7 @@ public final class SoaRecord {
     /**
      * Set the minimumTtl property: The minimum value for this SOA record. By convention this is used to determine the
      * negative caching duration.
-     *
+     * 
      * @param minimumTtl the minimumTtl value to set.
      * @return the SoaRecord object itself.
      */
@@ -200,9 +201,63 @@ public final class SoaRecord {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeNumberField("serialNumber", this.serialNumber);
+        jsonWriter.writeNumberField("refreshTime", this.refreshTime);
+        jsonWriter.writeNumberField("retryTime", this.retryTime);
+        jsonWriter.writeNumberField("expireTime", this.expireTime);
+        jsonWriter.writeNumberField("minimumTTL", this.minimumTtl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoaRecord from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoaRecord if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SoaRecord.
+     */
+    public static SoaRecord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoaRecord deserializedSoaRecord = new SoaRecord();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("host".equals(fieldName)) {
+                    deserializedSoaRecord.host = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedSoaRecord.email = reader.getString();
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedSoaRecord.serialNumber = reader.getNullable(JsonReader::getLong);
+                } else if ("refreshTime".equals(fieldName)) {
+                    deserializedSoaRecord.refreshTime = reader.getNullable(JsonReader::getLong);
+                } else if ("retryTime".equals(fieldName)) {
+                    deserializedSoaRecord.retryTime = reader.getNullable(JsonReader::getLong);
+                } else if ("expireTime".equals(fieldName)) {
+                    deserializedSoaRecord.expireTime = reader.getNullable(JsonReader::getLong);
+                } else if ("minimumTTL".equals(fieldName)) {
+                    deserializedSoaRecord.minimumTtl = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoaRecord;
+        });
     }
 }
