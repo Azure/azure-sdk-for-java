@@ -41,11 +41,7 @@ public class NioBlobInputStreamTests extends BlobNioTestBase {
     protected void beforeTest() {
         super.beforeTest();
         int size = 5 * 1024 * 1024;
-        fileBytes = new byte[size];
-
-        for (int i = 0; i < size; i++){
-            fileBytes[i] = (byte) 0xFC;
-        }
+        fileBytes = getRandomByteArray(5 * 1024 * 1024);
         sourceFile = getRandomFile(fileBytes);
 
         cc.create();
