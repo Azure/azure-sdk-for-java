@@ -72,7 +72,7 @@ public final class StorageCommonTestUtils {
     @SuppressWarnings("deprecation")
     private static HttpClient createJdkHttpClient() throws ReflectiveOperationException {
         Class<?> clazz = Class.forName("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
-        return  (HttpClient) clazz.getDeclaredMethod("createInstance").invoke(clazz.newInstance());
+        return (HttpClient) clazz.getDeclaredMethod("createInstance").invoke(clazz.newInstance());
     }
 
     /**
@@ -198,8 +198,8 @@ public final class StorageCommonTestUtils {
      * @return The instrumented builder.
      */
     @SuppressWarnings("unchecked")
-    public static <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder,
-        HttpLogOptions logOptions, InterceptorManager interceptorManager) {
+    public static <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder, HttpLogOptions logOptions,
+        InterceptorManager interceptorManager) {
         // Groovy style reflection. All our builders follow this pattern.
         builder.httpClient(getHttpClient(interceptorManager));
 
@@ -210,12 +210,11 @@ public final class StorageCommonTestUtils {
         if (ENVIRONMENT.getServiceVersion() != null) {
             try {
                 Method serviceVersionMethod = Arrays.stream(builder.getClass().getDeclaredMethods())
-                    .filter(method -> "serviceVersion".equals(method.getName())
-                        && method.getParameterCount() == 1
+                    .filter(method -> "serviceVersion".equals(method.getName()) && method.getParameterCount() == 1
                         && ServiceVersion.class.isAssignableFrom(method.getParameterTypes()[0]))
                     .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Unable to find serviceVersion method for builder: "
-                        + builder.getClass()));
+                    .orElseThrow(() -> new RuntimeException(
+                        "Unable to find serviceVersion method for builder: " + builder.getClass()));
                 Class<E> serviceVersionClass = (Class<E>) serviceVersionMethod.getParameterTypes()[0];
                 ServiceVersion serviceVersion = (ServiceVersion) Enum.valueOf(serviceVersionClass,
                     ENVIRONMENT.getServiceVersion());
@@ -315,8 +314,8 @@ public final class StorageCommonTestUtils {
         } else { //live
             Configuration config = Configuration.getGlobalConfiguration();
 
-            ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-                .addLast(new EnvironmentCredentialBuilder().build())
+            ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder().addLast(
+                    new EnvironmentCredentialBuilder().build())
                 .addLast(new AzureCliCredentialBuilder().build())
                 .addLast(new AzureDeveloperCliCredentialBuilder().build());
 
@@ -325,19 +324,18 @@ public final class StorageCommonTestUtils {
             String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
             String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
 
-            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-                && !CoreUtils.isNullOrEmpty(clientId)
-                && !CoreUtils.isNullOrEmpty(tenantId)
-                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            if (!CoreUtils.isNullOrEmpty(serviceConnectionId) && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId) && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
-                AzurePipelinesCredential pipelinesCredential = new AzurePipelinesCredentialBuilder()
-                    .systemAccessToken(systemAccessToken)
+                AzurePipelinesCredential pipelinesCredential = new AzurePipelinesCredentialBuilder().systemAccessToken(
+                        systemAccessToken)
                     .clientId(clientId)
                     .tenantId(tenantId)
                     .serviceConnectionId(serviceConnectionId)
                     .build();
 
-                builder.addLast(request -> pipelinesCredential.getToken(request).subscribeOn(Schedulers.boundedElastic()));
+                builder.addLast(
+                    request -> pipelinesCredential.getToken(request).subscribeOn(Schedulers.boundedElastic()));
             }
 
             builder.addLast(new AzurePowerShellCredentialBuilder().build());
