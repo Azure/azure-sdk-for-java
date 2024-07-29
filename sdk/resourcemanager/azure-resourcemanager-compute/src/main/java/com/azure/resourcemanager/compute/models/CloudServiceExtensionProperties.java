@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /**
@@ -97,7 +96,7 @@ public final class CloudServiceExtensionProperties {
 
     /**
      * Get the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -106,7 +105,7 @@ public final class CloudServiceExtensionProperties {
 
     /**
      * Set the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
@@ -117,7 +116,7 @@ public final class CloudServiceExtensionProperties {
 
     /**
      * Get the type property: Specifies the type of the extension.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -126,7 +125,7 @@ public final class CloudServiceExtensionProperties {
 
     /**
      * Set the type property: Specifies the type of the extension.
-     *
+     * 
      * @param type the type value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
@@ -142,7 +141,7 @@ public final class CloudServiceExtensionProperties {
      * number (X.), the latest minor version of the specified major version is selected. If a major version number and a
      * minor version number are specified (X.Y), the specific extension version is selected. If a version is specified,
      * an auto-upgrade is performed on the role instance.
-     *
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -156,7 +155,7 @@ public final class CloudServiceExtensionProperties {
      * number (X.), the latest minor version of the specified major version is selected. If a major version number and a
      * minor version number are specified (X.Y), the specific extension version is selected. If a version is specified,
      * an auto-upgrade is performed on the role instance.
-     *
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
@@ -168,7 +167,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Get the autoUpgradeMinorVersion property: Explicitly specify whether platform can automatically upgrade
      * typeHandlerVersion to higher minor versions when they become available.
-     *
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
@@ -178,7 +177,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Set the autoUpgradeMinorVersion property: Explicitly specify whether platform can automatically upgrade
      * typeHandlerVersion to higher minor versions when they become available.
-     *
+     * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
@@ -190,7 +189,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Get the settings property: Public settings for the extension. For JSON extensions, this is the JSON settings for
      * the extension. For XML Extension (like RDP), this is the XML setting for the extension.
-     *
+     * 
      * @return the settings value.
      */
     public Object settings() {
@@ -200,7 +199,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Set the settings property: Public settings for the extension. For JSON extensions, this is the JSON settings for
      * the extension. For XML Extension (like RDP), this is the XML setting for the extension.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
@@ -212,7 +211,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Get the protectedSettings property: Protected settings for the extension which are encrypted before sent to the
      * role instance.
-     *
+     * 
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
@@ -222,7 +221,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Set the protectedSettings property: Protected settings for the extension which are encrypted before sent to the
      * role instance.
-     *
+     * 
      * @param protectedSettings the protectedSettings value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
@@ -234,7 +233,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Get the protectedSettingsFromKeyVault property: Protected settings for the extension, referenced using KeyVault
      * which are encrypted before sent to the role instance.
-     *
+     * 
      * @return the protectedSettingsFromKeyVault value.
      */
     public CloudServiceVaultAndSecretReference protectedSettingsFromKeyVault() {
@@ -244,7 +243,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Set the protectedSettingsFromKeyVault property: Protected settings for the extension, referenced using KeyVault
      * which are encrypted before sent to the role instance.
-     *
+     * 
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
@@ -262,7 +261,7 @@ public final class CloudServiceExtensionProperties {
      * If neither forceUpdateTag nor any of public or protected settings change, extension would flow to the role
      * instance with the same sequence-number, and
      * it is up to handler implementation whether to re-run it or not.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -277,7 +276,7 @@ public final class CloudServiceExtensionProperties {
      * If neither forceUpdateTag nor any of public or protected settings change, extension would flow to the role
      * instance with the same sequence-number, and
      * it is up to handler implementation whether to re-run it or not.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
@@ -288,7 +287,7 @@ public final class CloudServiceExtensionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -298,7 +297,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Get the rolesAppliedTo property: Optional list of roles to apply this extension. If property is not specified or
      * '*' is specified, extension is applied to all roles in the cloud service.
-     *
+     * 
      * @return the rolesAppliedTo value.
      */
     public List<String> rolesAppliedTo() {
@@ -308,7 +307,7 @@ public final class CloudServiceExtensionProperties {
     /**
      * Set the rolesAppliedTo property: Optional list of roles to apply this extension. If property is not specified or
      * '*' is specified, extension is applied to all roles in the cloud service.
-     *
+     * 
      * @param rolesAppliedTo the rolesAppliedTo value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
@@ -319,7 +318,7 @@ public final class CloudServiceExtensionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
