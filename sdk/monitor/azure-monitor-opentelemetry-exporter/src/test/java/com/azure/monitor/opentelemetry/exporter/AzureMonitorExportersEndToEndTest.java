@@ -40,7 +40,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
     @Test
     public void testBuildTraceExporter() throws Exception {
         // create the OpenTelemetry SDK
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+        CountDownLatch countDownLatch = new CountDownLatch(10);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
         HttpPipeline httpPipeline = getHttpPipeline(customValidationPolicy);
         OpenTelemetry openTelemetry =
