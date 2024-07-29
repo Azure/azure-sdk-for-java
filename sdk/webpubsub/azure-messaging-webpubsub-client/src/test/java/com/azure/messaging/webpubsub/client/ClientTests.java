@@ -6,6 +6,7 @@ package com.azure.messaging.webpubsub.client;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
@@ -248,7 +249,7 @@ public class ClientTests extends TestBase {
     @LiveOnly
     public void testInvalidCredential() {
         WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder()
-            .credential(TestUtils.getIdentityTestCredential(interceptorManager))
+            .connectionString(Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_CONNECTION_STRING"))
             .hub("hub1")
             .buildAsyncClient();
 
