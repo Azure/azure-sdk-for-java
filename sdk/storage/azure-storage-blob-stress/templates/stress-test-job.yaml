@@ -53,7 +53,9 @@ spec:
           2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
           code=$?; \
           kill `pidof http-fault-injector`; \
+          echo "HTTP Fault Injector killed";
           exit $code;
+
       imagePullPolicy: Always
       resources:
         limits:
