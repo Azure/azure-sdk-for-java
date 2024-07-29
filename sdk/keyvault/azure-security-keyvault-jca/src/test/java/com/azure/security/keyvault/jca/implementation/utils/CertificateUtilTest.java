@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.utils;
 
+import org.bouncycastle.pkcs.PKCSException;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
@@ -13,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
@@ -25,17 +27,17 @@ public class CertificateUtilTest {
 
     @Test
     public void loadCertificateChainFromSecretBundleValueTest()
-        throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException {
+        throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pem-exportable-key.pem", 1);
         assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pem-non-exportable-key.pem", 1);
         assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-exportable-key.pfx", 1);
-        // This is an unsolved problem: cert chain can't be loaded from this type of certificate.
-        // assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-non-exportable-key.pfx", 1);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-non-exportable-key.pfx", 1);
         assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem", 3);
         assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pfx", 3);
     }
 
-    private void assertCertNumberInCertChain(String pemFile, int expectedNumber) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException {
+    private void assertCertNumberInCertChain(String pemFile, int expectedNumber)
+        throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         String pemString = new String(Files.readAllBytes(Paths.get(pemFile)), StandardCharsets.UTF_8);
         assertEquals(expectedNumber, CertificateUtil.loadCertificatesFromSecretBundleValue(pemString).length);
     }

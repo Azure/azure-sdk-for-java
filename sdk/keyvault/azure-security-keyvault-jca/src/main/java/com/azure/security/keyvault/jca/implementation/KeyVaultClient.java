@@ -13,6 +13,7 @@ import com.azure.security.keyvault.jca.implementation.model.SignResult;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
+import org.bouncycastle.pkcs.PKCSException;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -24,6 +25,7 @@ import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
@@ -323,7 +325,8 @@ public class KeyVaultClient {
         Certificate[] certificates = new Certificate[0];
         try {
             certificates = loadCertificatesFromSecretBundleValue(secretBundle.getValue());
-        } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException e) {
+        } catch (IOException | KeyStoreException | NoSuchAlgorithmException | CertificateException
+                 | NoSuchProviderException | PKCSException e) {
             LOGGER.log(WARNING, "Unable to decode certificate chain", e);
         }
         LOGGER.exiting("KeyVaultClient", "getCertificate", alias);
