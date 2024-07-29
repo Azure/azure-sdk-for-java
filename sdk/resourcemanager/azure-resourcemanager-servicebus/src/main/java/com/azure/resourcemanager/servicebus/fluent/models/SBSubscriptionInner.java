@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
 import com.azure.resourcemanager.servicebus.models.SBClientAffineProperties;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -21,7 +22,7 @@ import java.time.OffsetDateTime;
  * Description of subscription resource.
  */
 @Fluent
-public final class SBSubscriptionInner extends ProxyResource {
+public final class SBSubscriptionInner extends Resource {
     /*
      * Properties of subscriptions resource.
      */

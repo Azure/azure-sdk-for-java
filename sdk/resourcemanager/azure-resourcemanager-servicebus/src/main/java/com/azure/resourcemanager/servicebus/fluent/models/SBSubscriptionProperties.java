@@ -10,9 +10,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
 import com.azure.resourcemanager.servicebus.models.SBClientAffineProperties;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -493,16 +495,16 @@ public final class SBSubscriptionProperties implements JsonSerializable<SBSubscr
         jsonWriter.writeStringField("lockDuration", CoreUtils.durationToStringWithDays(this.lockDuration));
         jsonWriter.writeBooleanField("requiresSession", this.requiresSession);
         jsonWriter.writeStringField("defaultMessageTimeToLive",
-            CoreUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
+            DurationSerializer.serialize(this.defaultMessageTimeToLive));
         jsonWriter.writeBooleanField("deadLetteringOnFilterEvaluationExceptions",
             this.deadLetteringOnFilterEvaluationExceptions);
         jsonWriter.writeBooleanField("deadLetteringOnMessageExpiration", this.deadLetteringOnMessageExpiration);
         jsonWriter.writeStringField("duplicateDetectionHistoryTimeWindow",
-            CoreUtils.durationToStringWithDays(this.duplicateDetectionHistoryTimeWindow));
+            DurationSerializer.serialize(this.duplicateDetectionHistoryTimeWindow));
         jsonWriter.writeNumberField("maxDeliveryCount", this.maxDeliveryCount);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeBooleanField("enableBatchedOperations", this.enableBatchedOperations);
-        jsonWriter.writeStringField("autoDeleteOnIdle", CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
+        jsonWriter.writeStringField("autoDeleteOnIdle", DurationSerializer.serialize(this.autoDeleteOnIdle));
         jsonWriter.writeStringField("forwardTo", this.forwardTo);
         jsonWriter.writeStringField("forwardDeadLetteredMessagesTo", this.forwardDeadLetteredMessagesTo);
         jsonWriter.writeBooleanField("isClientAffine", this.isClientAffine);

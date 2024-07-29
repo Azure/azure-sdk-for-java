@@ -10,8 +10,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -563,20 +565,20 @@ public final class SBQueueProperties implements JsonSerializable<SBQueueProperti
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("lockDuration", CoreUtils.durationToStringWithDays(this.lockDuration));
+        jsonWriter.writeStringField("lockDuration", DurationSerializer.serialize(this.lockDuration));
         jsonWriter.writeNumberField("maxSizeInMegabytes", this.maxSizeInMegabytes);
         jsonWriter.writeNumberField("maxMessageSizeInKilobytes", this.maxMessageSizeInKilobytes);
         jsonWriter.writeBooleanField("requiresDuplicateDetection", this.requiresDuplicateDetection);
         jsonWriter.writeBooleanField("requiresSession", this.requiresSession);
         jsonWriter.writeStringField("defaultMessageTimeToLive",
-            CoreUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
+            DurationSerializer.serialize(this.defaultMessageTimeToLive));
         jsonWriter.writeBooleanField("deadLetteringOnMessageExpiration", this.deadLetteringOnMessageExpiration);
         jsonWriter.writeStringField("duplicateDetectionHistoryTimeWindow",
-            CoreUtils.durationToStringWithDays(this.duplicateDetectionHistoryTimeWindow));
+            DurationSerializer.serialize(this.duplicateDetectionHistoryTimeWindow));
         jsonWriter.writeNumberField("maxDeliveryCount", this.maxDeliveryCount);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeBooleanField("enableBatchedOperations", this.enableBatchedOperations);
-        jsonWriter.writeStringField("autoDeleteOnIdle", CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
+        jsonWriter.writeStringField("autoDeleteOnIdle", DurationSerializer.serialize(this.autoDeleteOnIdle));
         jsonWriter.writeBooleanField("enablePartitioning", this.enablePartitioning);
         jsonWriter.writeBooleanField("enableExpress", this.enableExpress);
         jsonWriter.writeStringField("forwardTo", this.forwardTo);

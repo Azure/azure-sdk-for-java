@@ -245,7 +245,7 @@
     "source": "specification/servicebus/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.servicebus",
     "args": "--tag=package-2021-11",
-    "note": "1. Add '@JsonSerialize(using = DurationSerializer.class)' to properties of 'Duration' type of class 'SBTopicInnerProperties', 'SBTopicInnerProperties', 'SBTopicInnerProperties'; 2. Change parent class of class 'SBTopicInner', 'SBQueueInner' and 'SBSubscriptionInner' to 'Resource', not 'ProxyResource'"
+    "note": "1. Replace `CoreUtils.durationToStringWithDays` with `DurationSerializer.serialize` in `toJson` method of class 'SBTopicProperties', 'SBQueueProperties', 'SBSubscriptionProperties'; 2. Change parent class of class 'SBTopicInner', 'SBQueueInner' and 'SBSubscriptionInner' to 'Resource', not 'ProxyResource'"
   },
   "sql": {
     "dir": "azure-resourcemanager-sql",

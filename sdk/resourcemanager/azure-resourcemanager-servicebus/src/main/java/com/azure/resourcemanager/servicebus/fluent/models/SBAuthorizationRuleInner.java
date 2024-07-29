@@ -5,12 +5,13 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * Description of a namespace authorization rule.
  */
 @Fluent
-public final class SBAuthorizationRuleInner extends ProxyResource {
+public final class SBAuthorizationRuleInner extends Resource {
     /*
      * AuthorizationRule properties.
      */
