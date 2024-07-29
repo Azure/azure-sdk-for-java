@@ -3,6 +3,8 @@
 
 package com.azure.perf.test.core;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import reactor.core.publisher.Mono;
 
 class ExceptionTest extends PerfStressTest<PerfStressOptions> {
@@ -25,5 +27,12 @@ class ExceptionTest extends PerfStressTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return Mono.error(new IllegalArgumentException());
+    }
+
+    @Override
+    public Future<Void> runAsyncCompletableFuture() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        future.completeExceptionally(new IllegalArgumentException());
+        return future;
     }
 }

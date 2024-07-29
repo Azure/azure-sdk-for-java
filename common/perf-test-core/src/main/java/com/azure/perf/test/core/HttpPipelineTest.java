@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import java.util.concurrent.Future;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -60,6 +61,11 @@ public class HttpPipelineTest extends PerfStressTest<HttpPipelineOptions> {
         } else {
             return sendRequest();
         }
+    }
+
+    @Override
+    public Future<Void> runAsyncCompletableFuture() {
+        return runAsync().toFuture();
     }
 
     /**

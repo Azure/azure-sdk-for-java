@@ -17,12 +17,6 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-stress;current} -->
   <packaging>jar</packaging>
 
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <doclint>all,-missing</doclint>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>ch.qos.logback</groupId>

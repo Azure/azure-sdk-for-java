@@ -3,6 +3,11 @@
 
 package com.azure.perf.test.core;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -38,5 +43,23 @@ class SleepTest extends PerfStressTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return Mono.delay(Duration.ofSeconds(secondsPerOperation)).then();
+    }
+
+    @Override
+    public Future<Void> runAsyncCompletableFuture() {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        scheduler.schedule(() -> {
+            try {
+                Thread.sleep(secondsPerOperation * 1000);
+                future.complete(null);
+            } catch (InterruptedException e) {
+                future.completeExceptionally(e);
+                Thread.currentThread().interrupt();
+            } finally {
+                scheduler.shutdown();
+            }
+        }, secondsPerOperation, TimeUnit.SECONDS);
+        return future;
     }
 }

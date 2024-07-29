@@ -1280,7 +1280,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration>
-                  <release>${java.vm.specification.version}</release>
+                  <release>21</release>
                 </configuration>
               </execution>
 
@@ -1294,7 +1294,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration>
-                  <release>11</release>
+                  <release>21</release>
                   <includes>
                     <include>module-info.java</include>
                   </includes>
@@ -1311,7 +1311,7 @@
                   <compilerArgs combine.children="append">
                     <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
                   </compilerArgs>
-                  <release>8</release>
+                  <release>21</release>
                   <excludes>
                     <exclude>module-info.java</exclude>
                   </excludes>
@@ -1386,6 +1386,18 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <!-- Setup for Java 21+ -->
+    <profile>
+      <id>java21</id>
+      <activation>
+        <jdk>[21,)</jdk>
+      </activation>
+      <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+      </properties>
     </profile>
 
     <!-- Skip overview generation unless -Dgenerate-overview is passed as an argument.

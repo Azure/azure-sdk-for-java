@@ -18,6 +18,8 @@ import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -72,6 +74,13 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return Mono.error(new UnsupportedOperationException("Not implemented"));
+    }
+
+    @Override
+    public Future<Void> runAsyncCompletableFuture() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        future.completeExceptionally(new UnsupportedOperationException("Not supported"));
+        return future;
     }
 
     private HttpRequest createRequest() {

@@ -3,6 +3,7 @@
 
 package com.azure.perf.test.core;
 
+import java.util.concurrent.Future;
 import reactor.core.publisher.Mono;
 
 class NoOpTest extends PerfStressTest<PerfStressOptions> {
@@ -22,5 +23,10 @@ class NoOpTest extends PerfStressTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return Mono.empty();
+    }
+
+    @Override
+    public Future<Void> runAsyncCompletableFuture() {
+        return null;
     }
 }
