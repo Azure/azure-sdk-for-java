@@ -64,6 +64,7 @@ public class DeployType extends ExpandableStringEnum<DeployType> {
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public DeployType() {
     }
 
