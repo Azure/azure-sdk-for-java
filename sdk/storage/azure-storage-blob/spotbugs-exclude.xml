@@ -8,6 +8,7 @@
       <Class name="com.azure.storage.blob.implementation.util.BlobSasImplUtil" />
       <Class name="com.azure.storage.blob.models.CustomerProvidedKey" />
       <Class name="com.azure.storage.blob.specialized.BlobAsyncClientBase" />
+      <Class name="com.azure.storage.blob.specialized.BlobClientBase" />
     </Or>
   </Match>
   <Match>
