@@ -247,15 +247,6 @@ class KuduClient {
                 });
     }
 
-//    Mono<Void> zipDeployAsync(InputStream zipFile) {
-//        InputStreamFlux flux = fluxFromInputStream(zipFile);
-//        if (flux.flux != null) {
-//            return withRetry(service.zipDeploy(host, flux.flux, flux.size));
-//        } else {
-//            return withRetry(service.zipDeploy(host, flux.bytes));
-//        }
-//    }
-
     Mono<Void> zipDeployAsync(InputStream zipFile, long length) {
         Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(zipFile);
         return retryOnError(service.zipDeploy(host, flux, length));
@@ -297,12 +288,12 @@ class KuduClient {
             });
     }
 
-    Mono<Void> deployFlexConsumptionAsync(InputStream file, long length) {
-        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
-        return retryOnError(service.deployFlexConsumption(host, flux, length,
-            false, "JavaSDK"))
-            .then();
-    }
+//    Mono<Void> deployFlexConsumptionAsync(InputStream file, long length) {
+//        Flux<ByteBuffer> flux = FluxUtil.toFluxByteBuffer(file);
+//        return retryOnError(service.deployFlexConsumption(host, flux, length,
+//            false, "JavaSDK"))
+//            .then();
+//    }
 
     Mono<Void> deployFlexConsumptionAsync(File file) throws IOException {
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
