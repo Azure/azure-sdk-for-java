@@ -46,17 +46,17 @@ public class ListLabelsAsync {
         // If you want to list labels by exact match, use the exact label name as the filter.
         // If you want to list all labels by wildcard, pass wildcard where AppConfig supports, such as "prod*",
         System.out.println("List all labels:");
-        client.listLabels(null).subscribe(label -> System.out.println("\tLabel name = " + label));
+        client.listLabels(null).subscribe(label -> System.out.println("\tLabel name = " + label.getName()));
         TimeUnit.MILLISECONDS.sleep(1000);
 
         System.out.println("List label by exact match:");
         client.listLabels(new LabelSelector().setLabelFilter("prod2")).subscribe(
-                label -> System.out.println("\tLabel name = " + label));
+                label -> System.out.println("\tLabel name = " + label.getName()));
         TimeUnit.MILLISECONDS.sleep(1000);
 
         System.out.println("List labels by wildcard:");
         client.listLabels(new LabelSelector().setLabelFilter("prod*")).subscribe(
-                label -> System.out.println("\tLabel name = " + label));
+                label -> System.out.println("\tLabel name = " + label.getName()));
         TimeUnit.MILLISECONDS.sleep(1000);
     }
 }

@@ -581,7 +581,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         String labelFilter = "{labelNamePrefix}*";
         client.listLabels(new LabelSelector().setLabelFilter(labelFilter))
                 .forEach(label -> {
-                    System.out.println("label name = " + label);
+                    System.out.println("label name = " + label.getName());
                 });
         // END: com.azure.data.appconfiguration.configurationclient.listLabels
     }
@@ -596,7 +596,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 
         client.listLabels(new LabelSelector().setLabelFilter(labelFilter), ctx)
                 .forEach(label -> {
-                    System.out.println("label name = " + label);
+                    System.out.println("label name = " + label.getName());
                 });
         // END: com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload
     }

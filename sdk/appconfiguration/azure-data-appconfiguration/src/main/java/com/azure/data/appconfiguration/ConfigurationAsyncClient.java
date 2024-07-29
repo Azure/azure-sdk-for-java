@@ -31,6 +31,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.Label;
 import com.azure.data.appconfiguration.models.LabelFields;
 import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -1429,12 +1430,12 @@ public final class ConfigurationAsyncClient {
      * @return a list of labels as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listLabels(LabelSelector selector) {
+    public PagedFlux<Label> listLabels(LabelSelector selector) {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
-        final String acceptDatetime = selector == null ? null : selector.getAcceptDateTime();
+        final String acceptDatetime = selector == null ? null
+            : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
         final List<LabelFields> labelFields = selector == null ? null : selector.getFields();
-        return serviceClient.getLabelsAsync(labelFilter, null, acceptDatetime, labelFields)
-                .mapPage(pagedResponse -> pagedResponse.getName());
+        return serviceClient.getLabelsAsync(labelFilter, null, acceptDatetime, labelFields);
     }
 
     /**

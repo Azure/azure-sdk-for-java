@@ -544,7 +544,7 @@ List multiple labels in the App Configuration store by calling `listLabels`.
 String labelFilter = "{labelNamePrefix}*";
 configurationClient.listLabels(new LabelSelector().setLabelFilter(labelFilter))
         .forEach(label -> {
-            System.out.println("label name = " + label);
+            System.out.println("label name = " + label.getName());
         });
 ```
 

@@ -39,14 +39,14 @@ public class ListLabels {
         // If you want to list all labels by wildcard, pass wildcard where AppConfig supports, such as "prod*",
         System.out.println("List all labels:");
         client.listLabels(null, Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label));
+                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
 
         System.out.println("List label by exact match:");
         client.listLabels(new LabelSelector().setLabelFilter("prod2"), Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label));
+                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
 
         System.out.println("List labels by wildcard:");
         client.listLabels(new LabelSelector().setLabelFilter("prod*"), Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label));
+                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Fluent
 public final class LabelSelector {
     private String labelFilter;
-    private String acceptDatetime;
+    private OffsetDateTime acceptDatetime;
 
     private List<LabelFields> fields;
 
@@ -62,7 +62,7 @@ public final class LabelSelector {
      *
      * @return Gets the currently set datetime in {@link DateTimeFormatter#RFC_1123_DATE_TIME} format.
      */
-    public String getAcceptDateTime() {
+    public OffsetDateTime getAcceptDateTime() {
         return this.acceptDatetime;
     }
 
@@ -73,8 +73,7 @@ public final class LabelSelector {
      * @return The updated LabelSelector object.
      */
     public LabelSelector setAcceptDatetime(OffsetDateTime datetime) {
-        this.acceptDatetime = datetime == null ? null
-                : DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(datetime);
+        this.acceptDatetime = datetime;
         return this;
     }
 

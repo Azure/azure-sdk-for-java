@@ -20,6 +20,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.Label;
 import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -1950,16 +1951,16 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // List only the first label var, 'label'
         String label = setting.getLabel();
         StepVerifier.create(client.listLabels(new LabelSelector().setLabelFilter(label)))
-                .assertNext(actual -> assertEquals(label, actual))
+                .assertNext(actual -> assertEquals(label, actual.getName()))
                 .verifyComplete();
         // List labels with wildcard label filter
         String label2 = setting2.getLabel();
         StepVerifier.create(client.listLabels(new LabelSelector().setLabelFilter("label*")))
-                .assertNext(actual -> assertEquals(label, actual))
-                .assertNext(actual -> assertEquals(label2, actual))
+                .assertNext(actual -> assertEquals(label, actual.getName()))
+                .assertNext(actual -> assertEquals(label2, actual.getName()))
                 .verifyComplete();
         // List all labels
-        List<String> selected = new ArrayList<>();
+        List<Label> selected = new ArrayList<>();
         StepVerifier.create(client.listLabels(null))
                 .consumeNextWith(selected::add)
                 .consumeNextWith(selected::add)

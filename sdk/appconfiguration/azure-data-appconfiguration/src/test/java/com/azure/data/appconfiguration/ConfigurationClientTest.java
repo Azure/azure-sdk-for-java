@@ -20,6 +20,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.Label;
 import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
@@ -1568,17 +1569,17 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         // List only the first label var, 'label'
         String label = setting.getLabel();
-        PagedIterable<String> labels = client.listLabels(new LabelSelector().setLabelFilter(setting.getLabel()));
+        PagedIterable<Label> labels = client.listLabels(new LabelSelector().setLabelFilter(setting.getLabel()));
         assertEquals(1, labels.stream().count());
-        assertEquals(label, labels.iterator().next());
+        assertEquals(label, labels.iterator().next().getName());
         // List labels with wildcard label filter
         String label2 = setting2.getLabel();
-        PagedIterable<String> wildCardLabels = client.listLabels(new LabelSelector().setLabelFilter("label*"));
-        List<String> collect = wildCardLabels.stream().collect(Collectors.toList());
+        PagedIterable<Label> wildCardLabels = client.listLabels(new LabelSelector().setLabelFilter("label*"));
+        List<String> collect = wildCardLabels.stream().collect(Collectors.toList()).stream().map(Label::getName).collect(Collectors.toList());
         assertTrue(collect.contains(label));
         assertTrue(collect.contains(label2));
         // List all labels
-        PagedIterable<String> allLabels = client.listLabels(null);
+        PagedIterable<Label> allLabels = client.listLabels(null);
         assertTrue(allLabels.stream().count() >= 2);
     }
 
