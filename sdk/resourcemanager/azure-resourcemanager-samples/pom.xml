@@ -119,7 +119,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-certificates</artifactId>
-      <version>4.6.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+      <version>4.6.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -156,7 +156,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-administration</artifactId>
-      <version>4.5.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
+      <version>4.5.6</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
