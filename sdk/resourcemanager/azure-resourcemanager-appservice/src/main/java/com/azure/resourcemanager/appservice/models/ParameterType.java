@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class ParameterType extends ExpandableStringEnum<ParameterType> {
      * @param name a name to look for.
      * @return the corresponding ParameterType.
      */
-    @JsonCreator
     public static ParameterType fromString(String name) {
         return fromString(name, ParameterType.class);
     }

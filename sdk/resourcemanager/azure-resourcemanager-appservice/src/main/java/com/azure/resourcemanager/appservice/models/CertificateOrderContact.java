@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The CertificateOrderContact model.
  */
 @Fluent
-public final class CertificateOrderContact {
+public final class CertificateOrderContact implements JsonSerializable<CertificateOrderContact> {
     /*
      * The email property.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * The nameFirst property.
      */
-    @JsonProperty(value = "nameFirst")
     private String nameFirst;
 
     /*
      * The nameLast property.
      */
-    @JsonProperty(value = "nameLast")
     private String nameLast;
 
     /*
      * The phone property.
      */
-    @JsonProperty(value = "phone")
     private String phone;
 
     /**
@@ -128,5 +128,50 @@ public final class CertificateOrderContact {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("nameFirst", this.nameFirst);
+        jsonWriter.writeStringField("nameLast", this.nameLast);
+        jsonWriter.writeStringField("phone", this.phone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateOrderContact from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateOrderContact if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateOrderContact.
+     */
+    public static CertificateOrderContact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateOrderContact deserializedCertificateOrderContact = new CertificateOrderContact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("email".equals(fieldName)) {
+                    deserializedCertificateOrderContact.email = reader.getString();
+                } else if ("nameFirst".equals(fieldName)) {
+                    deserializedCertificateOrderContact.nameFirst = reader.getString();
+                } else if ("nameLast".equals(fieldName)) {
+                    deserializedCertificateOrderContact.nameLast = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedCertificateOrderContact.phone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateOrderContact;
+        });
     }
 }

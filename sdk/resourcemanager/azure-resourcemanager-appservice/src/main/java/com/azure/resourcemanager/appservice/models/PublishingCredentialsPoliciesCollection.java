@@ -6,26 +6,28 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Publishing Credentials Policies entity collection ARM resource.
  */
 @Fluent
-public final class PublishingCredentialsPoliciesCollection {
+public final class PublishingCredentialsPoliciesCollection
+    implements JsonSerializable<PublishingCredentialsPoliciesCollection> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<CsmPublishingCredentialsPoliciesEntityInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -36,7 +38,7 @@ public final class PublishingCredentialsPoliciesCollection {
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<CsmPublishingCredentialsPoliciesEntityInner> value() {
@@ -45,7 +47,7 @@ public final class PublishingCredentialsPoliciesCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PublishingCredentialsPoliciesCollection object itself.
      */
@@ -56,7 +58,7 @@ public final class PublishingCredentialsPoliciesCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +67,7 @@ public final class PublishingCredentialsPoliciesCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,4 +81,46 @@ public final class PublishingCredentialsPoliciesCollection {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PublishingCredentialsPoliciesCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublishingCredentialsPoliciesCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublishingCredentialsPoliciesCollection if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PublishingCredentialsPoliciesCollection.
+     */
+    public static PublishingCredentialsPoliciesCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublishingCredentialsPoliciesCollection deserializedPublishingCredentialsPoliciesCollection
+                = new PublishingCredentialsPoliciesCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CsmPublishingCredentialsPoliciesEntityInner> value
+                        = reader.readArray(reader1 -> CsmPublishingCredentialsPoliciesEntityInner.fromJson(reader1));
+                    deserializedPublishingCredentialsPoliciesCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPublishingCredentialsPoliciesCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublishingCredentialsPoliciesCollection;
+        });
+    }
 }

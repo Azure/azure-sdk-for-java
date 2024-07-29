@@ -5,54 +5,52 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.GitHubActionConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * SiteSourceControl resource specific properties.
  */
 @Fluent
-public final class SiteSourceControlProperties {
+public final class SiteSourceControlProperties implements JsonSerializable<SiteSourceControlProperties> {
     /*
      * Repository or source control URL.
      */
-    @JsonProperty(value = "repoUrl")
     private String repoUrl;
 
     /*
      * Name of branch to use for deployment.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
-     * <code>true</code> to limit to manual integration; <code>false</code> to enable continuous integration (which configures webhooks into online repos like GitHub).
+     * <code>true</code> to limit to manual integration; <code>false</code> to enable continuous integration (which
+     * configures webhooks into online repos like GitHub).
      */
-    @JsonProperty(value = "isManualIntegration")
     private Boolean isManualIntegration;
 
     /*
      * <code>true</code> if this is deployed via GitHub action.
      */
-    @JsonProperty(value = "isGitHubAction")
     private Boolean isGitHubAction;
 
     /*
      * <code>true</code> to enable deployment rollback; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "deploymentRollbackEnabled")
     private Boolean deploymentRollbackEnabled;
 
     /*
      * <code>true</code> for a Mercurial repository; <code>false</code> for a Git repository.
      */
-    @JsonProperty(value = "isMercurial")
     private Boolean isMercurial;
 
     /*
      * If GitHub Action is selected, than the associated configuration.
      */
-    @JsonProperty(value = "gitHubActionConfiguration")
     private GitHubActionConfiguration gitHubActionConfiguration;
 
     /**
@@ -219,5 +217,62 @@ public final class SiteSourceControlProperties {
         if (gitHubActionConfiguration() != null) {
             gitHubActionConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("repoUrl", this.repoUrl);
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeBooleanField("isManualIntegration", this.isManualIntegration);
+        jsonWriter.writeBooleanField("isGitHubAction", this.isGitHubAction);
+        jsonWriter.writeBooleanField("deploymentRollbackEnabled", this.deploymentRollbackEnabled);
+        jsonWriter.writeBooleanField("isMercurial", this.isMercurial);
+        jsonWriter.writeJsonField("gitHubActionConfiguration", this.gitHubActionConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteSourceControlProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteSourceControlProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteSourceControlProperties.
+     */
+    public static SiteSourceControlProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteSourceControlProperties deserializedSiteSourceControlProperties = new SiteSourceControlProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("repoUrl".equals(fieldName)) {
+                    deserializedSiteSourceControlProperties.repoUrl = reader.getString();
+                } else if ("branch".equals(fieldName)) {
+                    deserializedSiteSourceControlProperties.branch = reader.getString();
+                } else if ("isManualIntegration".equals(fieldName)) {
+                    deserializedSiteSourceControlProperties.isManualIntegration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isGitHubAction".equals(fieldName)) {
+                    deserializedSiteSourceControlProperties.isGitHubAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deploymentRollbackEnabled".equals(fieldName)) {
+                    deserializedSiteSourceControlProperties.deploymentRollbackEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isMercurial".equals(fieldName)) {
+                    deserializedSiteSourceControlProperties.isMercurial = reader.getNullable(JsonReader::getBoolean);
+                } else if ("gitHubActionConfiguration".equals(fieldName)) {
+                    deserializedSiteSourceControlProperties.gitHubActionConfiguration
+                        = GitHubActionConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteSourceControlProperties;
+        });
     }
 }

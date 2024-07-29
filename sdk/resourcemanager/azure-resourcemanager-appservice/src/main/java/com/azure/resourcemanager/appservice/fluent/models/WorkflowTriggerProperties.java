@@ -5,71 +5,67 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ResourceReference;
 import com.azure.resourcemanager.appservice.models.WorkflowState;
 import com.azure.resourcemanager.appservice.models.WorkflowStatus;
 import com.azure.resourcemanager.appservice.models.WorkflowTriggerProvisioningState;
 import com.azure.resourcemanager.appservice.models.WorkflowTriggerRecurrence;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The workflow trigger properties.
  */
 @Immutable
-public final class WorkflowTriggerProperties {
+public final class WorkflowTriggerProperties implements JsonSerializable<WorkflowTriggerProperties> {
     /*
      * Gets the provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowTriggerProvisioningState provisioningState;
 
     /*
      * Gets the created time.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * Gets the changed time.
      */
-    @JsonProperty(value = "changedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changedTime;
 
     /*
      * Gets the state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowState state;
 
     /*
      * Gets the status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowStatus status;
 
     /*
      * Gets the last execution time.
      */
-    @JsonProperty(value = "lastExecutionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastExecutionTime;
 
     /*
      * Gets the next execution time.
      */
-    @JsonProperty(value = "nextExecutionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextExecutionTime;
 
     /*
      * Gets the workflow trigger recurrence.
      */
-    @JsonProperty(value = "recurrence", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowTriggerRecurrence recurrence;
 
     /*
      * Gets the reference to workflow.
      */
-    @JsonProperty(value = "workflow", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference workflow;
 
     /**
@@ -171,5 +167,61 @@ public final class WorkflowTriggerProperties {
         if (workflow() != null) {
             workflow().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowTriggerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowTriggerProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowTriggerProperties.
+     */
+    public static WorkflowTriggerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowTriggerProperties deserializedWorkflowTriggerProperties = new WorkflowTriggerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedWorkflowTriggerProperties.provisioningState
+                        = WorkflowTriggerProvisioningState.fromString(reader.getString());
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedWorkflowTriggerProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedWorkflowTriggerProperties.changedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedWorkflowTriggerProperties.state = WorkflowState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedWorkflowTriggerProperties.status = WorkflowStatus.fromString(reader.getString());
+                } else if ("lastExecutionTime".equals(fieldName)) {
+                    deserializedWorkflowTriggerProperties.lastExecutionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("nextExecutionTime".equals(fieldName)) {
+                    deserializedWorkflowTriggerProperties.nextExecutionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recurrence".equals(fieldName)) {
+                    deserializedWorkflowTriggerProperties.recurrence = WorkflowTriggerRecurrence.fromJson(reader);
+                } else if ("workflow".equals(fieldName)) {
+                    deserializedWorkflowTriggerProperties.workflow = ResourceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowTriggerProperties;
+        });
     }
 }
