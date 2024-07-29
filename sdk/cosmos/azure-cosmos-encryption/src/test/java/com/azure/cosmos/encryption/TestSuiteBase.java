@@ -262,6 +262,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
 
     @BeforeSuite(groups = {"unit"})
     public static void parallelizeUnitTests(ITestContext context) {
+        // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
 //        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
 //        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
