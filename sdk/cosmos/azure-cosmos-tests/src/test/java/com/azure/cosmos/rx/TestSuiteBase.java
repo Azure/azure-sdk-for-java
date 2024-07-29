@@ -74,7 +74,6 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
-import org.testng.xml.XmlSuite;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -222,8 +221,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     @BeforeSuite(groups = {"unit"})
     public static void parallelizeUnitTests(ITestContext context) {
-        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
+//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
+//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
     @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)

@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -43,7 +42,6 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
-import org.testng.xml.XmlSuite;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -164,8 +162,8 @@ public class TestSuiteBase extends DocumentClientTest {
 
     @BeforeSuite(groups = {"unit"})
     public static void parallelizeUnitTests(ITestContext context) {
-        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
+//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
+//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
     @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
