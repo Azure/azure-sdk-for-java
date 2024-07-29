@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.RegistryUsage;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result of a request to get container registry quota usages.
  */
 @Fluent
-public final class RegistryUsageListResultInner {
+public final class RegistryUsageListResultInner implements JsonSerializable<RegistryUsageListResultInner> {
     /*
      * The list of container registry quota usages.
      */
-    @JsonProperty(value = "value")
     private List<RegistryUsage> value;
 
     /**
@@ -55,5 +58,42 @@ public final class RegistryUsageListResultInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryUsageListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryUsageListResultInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryUsageListResultInner.
+     */
+    public static RegistryUsageListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryUsageListResultInner deserializedRegistryUsageListResultInner = new RegistryUsageListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RegistryUsage> value = reader.readArray(reader1 -> RegistryUsage.fromJson(reader1));
+                    deserializedRegistryUsageListResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryUsageListResultInner;
+        });
     }
 }

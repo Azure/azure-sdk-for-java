@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.RegistryPassword;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response from the ListCredentials operation.
  */
 @Fluent
-public final class RegistryListCredentialsResultInner {
+public final class RegistryListCredentialsResultInner implements JsonSerializable<RegistryListCredentialsResultInner> {
     /*
      * The username for a container registry.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The list of passwords for a container registry.
      */
-    @JsonProperty(value = "passwords")
     private List<RegistryPassword> passwords;
 
     /**
@@ -81,5 +83,46 @@ public final class RegistryListCredentialsResultInner {
         if (passwords() != null) {
             passwords().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeArrayField("passwords", this.passwords, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistryListCredentialsResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistryListCredentialsResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegistryListCredentialsResultInner.
+     */
+    public static RegistryListCredentialsResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistryListCredentialsResultInner deserializedRegistryListCredentialsResultInner
+                = new RegistryListCredentialsResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedRegistryListCredentialsResultInner.username = reader.getString();
+                } else if ("passwords".equals(fieldName)) {
+                    List<RegistryPassword> passwords = reader.readArray(reader1 -> RegistryPassword.fromJson(reader1));
+                    deserializedRegistryListCredentialsResultInner.passwords = passwords;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistryListCredentialsResultInner;
+        });
     }
 }
