@@ -18,13 +18,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.identity.EnvironmentCredentialBuilder;
-import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.AzureDeveloperCliCredentialBuilder;
-import com.azure.identity.AzurePipelinesCredential;
-import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.*;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -429,40 +423,11 @@ public final class TestHelpers {
 
         if (testMode == TestMode.PLAYBACK) {
             return new MockTokenCredential();
+        } else if (testMode == TestMode.LIVE) {
+            return new AzurePowerShellCredentialBuilder().build();
+        } else {
+            return new DefaultAzureCredentialBuilder().build();
         }
-
-        Configuration config = Configuration.getGlobalConfiguration();
-
-        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-            .addLast(new EnvironmentCredentialBuilder().build())
-            .addLast(new AzureCliCredentialBuilder().build())
-            .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
-
-        String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-        String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
-        String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
-
-        if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-            && !CoreUtils.isNullOrEmpty(clientId)
-            && !CoreUtils.isNullOrEmpty(tenantId)
-            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
-
-            AzurePipelinesCredential azurePipelinesCredential = new AzurePipelinesCredentialBuilder()
-                .systemAccessToken(systemAccessToken)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .serviceConnectionId(serviceConnectionId)
-                .build();
-
-            builder.addLast(trc -> azurePipelinesCredential.getToken(trc).subscribeOn(Schedulers.boundedElastic()));
-        }
-
-        builder.addLast(new AzurePowerShellCredentialBuilder().build());
-
-
-        return builder.build();
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
