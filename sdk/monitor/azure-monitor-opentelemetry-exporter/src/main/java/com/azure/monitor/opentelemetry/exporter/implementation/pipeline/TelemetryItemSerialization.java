@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 
@@ -37,13 +38,21 @@ public final class TelemetryItemSerialization {
     }
 
     // visible for testing
-    // deserialize single TelemetryItem raw bytes to TelemetryItem
-    public static TelemetryItem deserialize(byte[] rawBytes) {
-        try {
-            JsonReader reader = JsonProviders.createReader(rawBytes);
-            return TelemetryItem.fromJson(reader);
-        } catch (Throwable th) {
-            throw new IllegalStateException("failed to deserialize ", th);
+    // deserialize multiple TelemetryItem raw bytes with newline delimiters to a list of TelemetryItems
+    public static List<TelemetryItem> deserialize(byte[] rawBytes) {
+        try (JsonReader jsonReader = JsonProviders.createReader(rawBytes)) {
+            JsonToken token = jsonReader.currentToken();
+            if (token == null) {
+                token = jsonReader.nextToken();
+            }
+
+            List<TelemetryItem> result = new ArrayList<>();
+            do {
+                result.add(TelemetryItem.fromJson(jsonReader));
+            } while (jsonReader.nextToken() == JsonToken.START_OBJECT);
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

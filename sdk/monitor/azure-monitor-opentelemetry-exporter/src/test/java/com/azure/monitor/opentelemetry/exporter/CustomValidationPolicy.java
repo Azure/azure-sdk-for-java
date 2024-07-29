@@ -8,8 +8,6 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.FluxUtil;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +20,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 import java.util.zip.GZIPInputStream;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
 
 final class CustomValidationPolicy implements HttpPipelinePolicy {
 
@@ -43,15 +41,12 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
                 .map(CustomValidationPolicy::ungzip);
         asyncBytes.subscribe(
             value -> {
-                List<byte[]> splitBytesByNewline = splitBytesByNewline(value.getBytes());
-                for (byte[] bytes : splitBytesByNewline) {
-                    try (JsonReader jsonReader = JsonProviders.createReader(bytes)) {
-                        actualTelemetryItems.add(TelemetryItem.fromJson(jsonReader));
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    } finally {
-                        countDown.countDown();
-                    }
+                try {
+                    actualTelemetryItems.addAll(deserialize(value.getBytes(StandardCharsets.UTF_8)));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    countDown.countDown();
                 }
             });
         return next.process();
@@ -77,7 +72,7 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
             while ((read = in.read(data, 0, data.length)) != -1) {
                 baos.write(data, 0, read);
             }
-            return new String(baos.toByteArray(), StandardCharsets.UTF_8);
+            return baos.toString(StandardCharsets.UTF_8);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

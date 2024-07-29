@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -26,7 +27,6 @@ import java.util.Map;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.decode;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -90,15 +90,7 @@ public class Handle206Test {
 
         // load expected telemetry items from the file and split bytes by newline
         String expected = Resources.readString("request_body_result_to_206_status_code.txt");
-
-        // split the raw bytes by newline
-        List<byte[]> expectedRawBytes = splitBytesByNewline(expected.getBytes());
-
-        // deserialize back to List<TelemetryItem>
-        List<TelemetryItem> expectedTelemetryItems = new ArrayList<>();
-        for (byte[] bytes : expectedRawBytes) {
-            expectedTelemetryItems.add(deserialize(bytes));
-        }
+        List<TelemetryItem> expectedTelemetryItems = deserialize(expected.getBytes(StandardCharsets.UTF_8));
 
         // load the actual telemetry raw bytes from disk
         LocalFileLoader.PersistedFile file = localFileLoader.loadTelemetriesFromDisk();
@@ -107,15 +99,8 @@ public class Handle206Test {
         // decode gzipped raw bytes back to original raw bytes
         byte[] decodedRawBytes = decode(file.rawBytes.array());
 
-        // split the raw bytes by newline
-        List<byte[]> actualTelemetryItemsByteArray = splitBytesByNewline(decodedRawBytes);
-
         // deserialize back to List<TelemetryItem>
-        List<TelemetryItem> actualTelemetryItems = new ArrayList<>();
-        for (byte[] bytes : actualTelemetryItemsByteArray) {
-            TelemetryItem telemetryItem = deserialize(bytes);
-            actualTelemetryItems.add(telemetryItem);
-        }
+        List<TelemetryItem> actualTelemetryItems = deserialize(decodedRawBytes);
         assertThat(actualTelemetryItems.size()).isEqualTo(expectedTelemetryItems.size());
 
         sort(expectedTelemetryItems);
