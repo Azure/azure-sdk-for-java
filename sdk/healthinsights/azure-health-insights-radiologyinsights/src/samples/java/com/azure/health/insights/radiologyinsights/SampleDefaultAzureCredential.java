@@ -44,13 +44,20 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * The SampleCriticalResultInferenceSync class processes a sample radiology document 
+ * The SampleDefaultAzureCredential class processes a sample radiology document 
  * with the Radiology Insights service. It will initialize a synchronous 
  * RadiologyInsightsClient, build a Radiology Insights job request with the sample document, submit it to the client 
- * and display the Critical Results extracted by the Radiology Insights service.  
- * 
+ * and display the Critical Results extracted by the Radiology Insights service.
+ *   
+ * This is an example of how to use DefaultAzureCredential to authenticate the RadiologyInsightsClient.
+ *  
+ * Set these environment variables with your own values before running the sample:
+ *   - AZURE_HEALTH_INSIGHTS_ENDPOINT - the endpoint to your source Health Insights resource.
+ *   - AZURE_CLIENT_ID - the client ID of your Azure AD application.
+ *   - AZURE_TENANT_ID - the tenant ID of your Azure AD tenant.
+ *   - AZURE_CLIENT_SECRET - the client secret of your Azure AD application.
  */
-public class SampleCriticalResultInferenceSync {
+public class SampleDefaultAzureCredential {
 
     private static final String DOC_CONTENT = "CLINICAL HISTORY:   "
             + "\r\n20-year-old female presenting with abdominal pain. Surgical history significant for appendectomy."
@@ -81,19 +88,17 @@ public class SampleCriticalResultInferenceSync {
      * @param args The command-line arguments passed to the program.
      */
     public static void main(final String[] args) throws InterruptedException {
-        // BEGIN: com.azure.health.insights.radiologyinsights.buildsyncclient
+        // BEGIN: com.azure.health.insights.radiologyinsights.defaultazurecredential
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-        
+
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint)
                 .credential(credential);
         RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
-        // END: com.azure.health.insights.radiologyinsights.buildsyncclient
+        // END: com.azure.health.insights.radiologyinsights.defaultazurecredential
         
-        // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
         RadiologyInsightsInferenceResult riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob()).getFinalResult();
-        // END: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
 
         displayCriticalResults(riJobResponse);
     }
