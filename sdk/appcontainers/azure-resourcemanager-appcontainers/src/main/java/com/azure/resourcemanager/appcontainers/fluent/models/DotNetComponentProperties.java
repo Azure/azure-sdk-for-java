@@ -5,40 +5,40 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.DotNetComponentConfigurationProperty;
 import com.azure.resourcemanager.appcontainers.models.DotNetComponentProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.DotNetComponentServiceBind;
 import com.azure.resourcemanager.appcontainers.models.DotNetComponentType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * .NET Component resource specific properties.
  */
 @Fluent
-public final class DotNetComponentProperties {
+public final class DotNetComponentProperties implements JsonSerializable<DotNetComponentProperties> {
     /*
      * Type of the .NET Component.
      */
-    @JsonProperty(value = "componentType")
     private DotNetComponentType componentType;
 
     /*
      * Provisioning state of the .NET Component.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DotNetComponentProvisioningState provisioningState;
 
     /*
      * List of .NET Components configuration properties
      */
-    @JsonProperty(value = "configurations")
     private List<DotNetComponentConfigurationProperty> configurations;
 
     /*
      * List of .NET Components that are bound to the .NET component
      */
-    @JsonProperty(value = "serviceBinds")
     private List<DotNetComponentServiceBind> serviceBinds;
 
     /**
@@ -128,5 +128,56 @@ public final class DotNetComponentProperties {
         if (serviceBinds() != null) {
             serviceBinds().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("componentType", this.componentType == null ? null : this.componentType.toString());
+        jsonWriter.writeArrayField("configurations", this.configurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceBinds", this.serviceBinds, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DotNetComponentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DotNetComponentProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DotNetComponentProperties.
+     */
+    public static DotNetComponentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DotNetComponentProperties deserializedDotNetComponentProperties = new DotNetComponentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("componentType".equals(fieldName)) {
+                    deserializedDotNetComponentProperties.componentType
+                        = DotNetComponentType.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDotNetComponentProperties.provisioningState
+                        = DotNetComponentProvisioningState.fromString(reader.getString());
+                } else if ("configurations".equals(fieldName)) {
+                    List<DotNetComponentConfigurationProperty> configurations
+                        = reader.readArray(reader1 -> DotNetComponentConfigurationProperty.fromJson(reader1));
+                    deserializedDotNetComponentProperties.configurations = configurations;
+                } else if ("serviceBinds".equals(fieldName)) {
+                    List<DotNetComponentServiceBind> serviceBinds
+                        = reader.readArray(reader1 -> DotNetComponentServiceBind.fromJson(reader1));
+                    deserializedDotNetComponentProperties.serviceBinds = serviceBinds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDotNetComponentProperties;
+        });
     }
 }

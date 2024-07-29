@@ -69,10 +69,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.mockito.stubbing.Answer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.ITestContext;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
+import org.testng.xml.XmlSuite;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -202,7 +204,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -218,7 +220,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @BeforeSuite(groups = {"unit"})
+    public static void parallelizeUnitTests(ITestContext context) {
+        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
+        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
+    }
+
+    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
 
         logger.info("afterSuite Started");

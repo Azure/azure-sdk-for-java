@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class IngressTargetPortHttpScheme extends ExpandableStringEnum<Ingr
      * @param name a name to look for.
      * @return the corresponding IngressTargetPortHttpScheme.
      */
-    @JsonCreator
     public static IngressTargetPortHttpScheme fromString(String name) {
         return fromString(name, IngressTargetPortHttpScheme.class);
     }

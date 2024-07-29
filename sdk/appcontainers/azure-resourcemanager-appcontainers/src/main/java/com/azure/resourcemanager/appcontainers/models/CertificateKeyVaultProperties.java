@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties for a certificate stored in a Key Vault.
  */
 @Fluent
-public final class CertificateKeyVaultProperties {
+public final class CertificateKeyVaultProperties implements JsonSerializable<CertificateKeyVaultProperties> {
     /*
      * Resource ID of a managed identity to authenticate with Azure Key Vault, or System to use a system-assigned
      * identity.
      */
-    @JsonProperty(value = "identity")
     private String identity;
 
     /*
      * URL pointing to the Azure Key Vault secret that holds the certificate.
      */
-    @JsonProperty(value = "keyVaultUrl")
     private String keyVaultUrl;
 
     /**
@@ -79,5 +81,45 @@ public final class CertificateKeyVaultProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("identity", this.identity);
+        jsonWriter.writeStringField("keyVaultUrl", this.keyVaultUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateKeyVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateKeyVaultProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateKeyVaultProperties.
+     */
+    public static CertificateKeyVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateKeyVaultProperties deserializedCertificateKeyVaultProperties
+                = new CertificateKeyVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedCertificateKeyVaultProperties.identity = reader.getString();
+                } else if ("keyVaultUrl".equals(fieldName)) {
+                    deserializedCertificateKeyVaultProperties.keyVaultUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateKeyVaultProperties;
+        });
     }
 }

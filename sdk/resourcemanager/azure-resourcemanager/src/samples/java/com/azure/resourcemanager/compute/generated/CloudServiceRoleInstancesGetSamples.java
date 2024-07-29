@@ -19,7 +19,10 @@ public final class CloudServiceRoleInstancesGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getCloudServiceRoleInstance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServiceRoleInstances()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServiceRoleInstances()
             .getWithResponse("{roleInstance-name}", "ConstosoRG", "{cs-name}", null, com.azure.core.util.Context.NONE);
     }
 }

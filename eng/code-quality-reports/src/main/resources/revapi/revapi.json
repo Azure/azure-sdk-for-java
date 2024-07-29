@@ -127,44 +127,81 @@
           "justification": "Cosmos SDK removes Beta annotation to GA its APIs and classes."
         },
         {
-          "code": "java.method.visibilityReduced",
-          "old": "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter()",
-          "new": "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
-          "justification": "Shouldn't have been a public API."
-        },
-        {
-          "code": "java.method.visibilityReduced",
-          "old": "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter()",
-          "new": "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
-          "justification": "Shouldn't have been a public API."
-        },
-        {
-          "code": "java.method.removed",
-          "old": "method com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueMessagingAutoConfiguration::messageConverter()",
-          "justification": "Shouldn't have been a public API."
-        },
-        {
           "code": "java.method.added",
           "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(org.springframework.security.web.authentication.logout.LogoutSuccessHandler, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver, org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient<org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest>, org.springframework.boot.web.client.RestTemplateBuilder)",
           "justification": "New method added to fix a bug."
         },
         {
-          "regex": true,
-          "code": "java\\.method\\.removed",
-          "old": "method java\\.lang\\.String com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(getPassword|getRemoteUrl|getUsername)\\(\\)",
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getPassword()",
           "justification": "Remove some meaningless jms properties"
         },
         {
-          "code": "java.annotation.attributeValueChanged",
-          "old": "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
-          "new": "class com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsAutoConfiguration",
-          "justification": "Import ServiceBusJmsPasswordlessConfiguration.class"
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getRemoteUrl()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getUsername()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setPassword(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setRemoteUrl(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setUsername(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
         },
         {
           "regex": true,
-          "code": "java\\.method\\.removed",
-          "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)",
-          "justification": "Remove some meaningless jms properties"
+          "code": "java.method.numberOfParametersChanged",
+          "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.spring.cloud.config.resource.ConnectionPool com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration::initConnectionString(com.azure.spring.cloud.config.properties.AppConfigurationProperties)",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.ConnectionPool",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com\\.azure\\.spring\\.cloud\\.config\\.resource\\.Connection",
+          "justification": "Not a public api"
+        },
+        {
+          "regex": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.spring.cloud.config.stores.ClientStore",
+          "justification": "Not a public api"
+        },
+        {
+          "ignore": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "interface com.azure.spring.cloud.config.AppConfigurationRefresh",
+          "justification": "Thi isn't an external class"
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class|enum) com\\.mysql\\.cj\\..*",
+          "justification": "Mysql driver classes are allowed to be exposed by dependencies using them."
         },
         {
           "code": "java.method.addedToInterface",
@@ -217,11 +254,6 @@
           "code": "java.class.removed",
           "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
           "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
-          "justification": "Bean configuration will not be used by customer in java code."
         },
         {
           "ignore": true,
@@ -318,18 +350,15 @@
           "justification": "Remove this because AZURE_GERMANY is deprecated."
         },
         {
-          "regex": true,
-          "code": "java.annotation.removed",
-          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
-          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
-          "justification": "Element no longer annotated with 'org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean'."
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
+          "justification": "New method added to support more properties."
         },
         {
           "regex": true,
-          "code": "java.annotation.added",
-          "old": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
-          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
-          "justification": "Element newly annotated with 'org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity"
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.(ServiceBusProducerProperties|ServiceBusConsumerProperties)",
+          "justification": "Support new properties."
         },
         {
           "regex": true,
@@ -362,6 +391,21 @@
           "code": "java.annotation.added",
           "new": "class com.azure.cosmos.models.ChangeFeedProcessorItem",
           "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
+        },
+        {
+          "code" : "java.field.removed",
+          "old" : "field com.mysql.cj.conf.PropertyKey.ociConfigProfile",
+          "justification" : "Fix field removed."
+        },
+        {
+          "code" : "java.method.addedToInterface",
+          "new" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
+          "justification" : "Method was added to an interface."
+        },
+        {
+          "code" : "java.method.addedToInterface",
+          "new" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
+          "justification" : "Method was added to an interface."
         },
         {
           "code": "java.annotation.added",
@@ -499,6 +543,45 @@
           "old" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "new" : ".*? com\\.azure\\.communication\\.chat\\.models.*",
           "justification": "Migration to azure-json"
+        },
+        {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "new" : "class com.azure.resourcemanager.eventhubs.models.Identity",
+          "justification": "Class is now final."
+        },
+        {
+          "code": "java.class.nowFinal",
+          "old" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "new" : "class com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity",
+          "justification": "Class is now final."
+        },
+        {
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
+          "new" : "method java.util.List<java.lang.String> com.azure.resourcemanager.compute.models.SecurityPostureReference::excludeExtensions()",
+          "justification": "Service breaks but no customer onboard."
+        },
+        {
+          "code" : "java.method.parameterTypeParameterChanged",
+          "old" : "parameter com.azure.resourcemanager.compute.models.SecurityPostureReference com.azure.resourcemanager.compute.models.SecurityPostureReference::withExcludeExtensions(===java.util.List<com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionInner>===)",
+          "new" : "parameter com.azure.resourcemanager.compute.models.SecurityPostureReference com.azure.resourcemanager.compute.models.SecurityPostureReference::withExcludeExtensions(===java.util.List<java.lang.String>===)",
+          "justification": "Service breaks but no customer onboard."
+        },
+        {
+          "code" : "java.class.removed",
+          "old" : "class com.azure.resourcemanager.containerservice.models.OSOptionProperty",
+          "justification": "Removed non-functional API `getOsOptions` and related models `OSOptionProperty`"
+        },
+        {
+          "code": "java.method.removed",
+          "old" : "method com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters::withId(java.lang.String)",
+          "justification": "service bug fix."
+        },
+        {
+          "code": "java.missing.oldSuperType",
+          "old": "class com.azure.resourcemanager.network.models.FirewallPacketCaptureParameters",
+          "justification": "service bug fix."
         }
       ]
     }

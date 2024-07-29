@@ -66,6 +66,15 @@ public final class NetworkSecurityPerimeterConfigurationsImpl implements Network
             inner1 -> new NetworkSecurityPerimeterConfigurationImpl(inner1, this.manager()));
     }
 
+    public void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName) {
+        this.serviceClient().reconcileForPrivateLinkScope(resourceGroupName, scopeName, perimeterName);
+    }
+
+    public void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName,
+        Context context) {
+        this.serviceClient().reconcileForPrivateLinkScope(resourceGroupName, scopeName, perimeterName, context);
+    }
+
     private NetworkSecurityPerimeterConfigurationsClient serviceClient() {
         return this.innerClient;
     }

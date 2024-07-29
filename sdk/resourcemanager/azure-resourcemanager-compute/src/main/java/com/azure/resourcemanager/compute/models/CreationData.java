@@ -91,8 +91,7 @@ public final class CreationData {
     private String elasticSanResourceId;
 
     /*
-     * If this field is set on a snapshot and createOption is CopyStart, the snapshot will be copied at a quicker
-     * speed.
+     * If this field is set on a snapshot and createOption is CopyStart, the snapshot will be copied at a quicker speed.
      */
     @JsonProperty(value = "provisionedBandwidthCopySpeed")
     private ProvisionedBandwidthCopyOption provisionedBandwidthCopySpeed;
@@ -167,8 +166,8 @@ public final class CreationData {
 
     /**
      * Get the galleryImageReference property: Required if creating from a Gallery Image. The
-     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared
-     * galley image version from which to create a disk.
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
+     * image version from which to create a disk.
      * 
      * @return the galleryImageReference value.
      */
@@ -178,8 +177,8 @@ public final class CreationData {
 
     /**
      * Set the galleryImageReference property: Required if creating from a Gallery Image. The
-     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared
-     * galley image version from which to create a disk.
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
+     * image version from which to create a disk.
      * 
      * @param galleryImageReference the galleryImageReference value to set.
      * @return the CreationData object itself.
@@ -334,8 +333,8 @@ public final class CreationData {
     }
 
     /**
-     * Get the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of
-     * the source elastic san volume snapshot.
+     * Get the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of the
+     * source elastic san volume snapshot.
      * 
      * @return the elasticSanResourceId value.
      */
@@ -344,8 +343,8 @@ public final class CreationData {
     }
 
     /**
-     * Set the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of
-     * the source elastic san volume snapshot.
+     * Set the elasticSanResourceId property: Required if createOption is CopyFromSanSnapshot. This is the ARM id of the
+     * source elastic san volume snapshot.
      * 
      * @param elasticSanResourceId the elasticSanResourceId value to set.
      * @return the CreationData object itself.
@@ -356,8 +355,8 @@ public final class CreationData {
     }
 
     /**
-     * Get the provisionedBandwidthCopySpeed property: If this field is set on a snapshot and createOption is
-     * CopyStart, the snapshot will be copied at a quicker speed.
+     * Get the provisionedBandwidthCopySpeed property: If this field is set on a snapshot and createOption is CopyStart,
+     * the snapshot will be copied at a quicker speed.
      * 
      * @return the provisionedBandwidthCopySpeed value.
      */
@@ -366,8 +365,8 @@ public final class CreationData {
     }
 
     /**
-     * Set the provisionedBandwidthCopySpeed property: If this field is set on a snapshot and createOption is
-     * CopyStart, the snapshot will be copied at a quicker speed.
+     * Set the provisionedBandwidthCopySpeed property: If this field is set on a snapshot and createOption is CopyStart,
+     * the snapshot will be copied at a quicker speed.
      * 
      * @param provisionedBandwidthCopySpeed the provisionedBandwidthCopySpeed value to set.
      * @return the CreationData object itself.
@@ -385,8 +384,8 @@ public final class CreationData {
      */
     public void validate() {
         if (createOption() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property createOption in model CreationData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property createOption in model CreationData"));
         }
         if (imageReference() != null) {
             imageReference().validate();

@@ -12,7 +12,8 @@ import com.azure.resourcemanager.network.models.RouteNextHopType;
  */
 public final class RoutesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RouteTableRouteCreate.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/RouteTableRouteCreate.json
      */
     /**
      * Sample code: Create route.

@@ -268,7 +268,7 @@ public final class AssistantsClient {
     /**
      * Creates a new assistant.
      *
-     * @param body Body parameter.
+     * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -279,10 +279,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Assistant createAssistant(AssistantCreationOptions body) {
+    public Assistant createAssistant(AssistantCreationOptions assistantCreationOptions) {
         // Generated convenience method for createAssistantWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAssistantWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+        return createAssistantWithResponse(BinaryData.fromObject(assistantCreationOptions), requestOptions).getValue()
             .toObject(Assistant.class);
     }
 
@@ -1497,7 +1497,7 @@ public final class AssistantsClient {
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
      *
-     * @param body Body parameter.
+     * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1508,10 +1508,11 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantThread createThread(AssistantThreadCreationOptions body) {
+    public AssistantThread createThread(AssistantThreadCreationOptions assistantThreadCreationOptions) {
         // Generated convenience method for createThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createThreadWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+        return createThreadWithResponse(BinaryData.fromObject(assistantThreadCreationOptions), requestOptions)
+            .getValue()
             .toObject(AssistantThread.class);
     }
 
@@ -1753,7 +1754,7 @@ public final class AssistantsClient {
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
      *
-     * @param body Body parameter.
+     * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1764,10 +1765,11 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun createThreadAndRun(CreateAndRunThreadOptions body) {
+    public ThreadRun createThreadAndRun(CreateAndRunThreadOptions createAndRunThreadOptions) {
         // Generated convenience method for createThreadAndRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createThreadAndRunWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+        return createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
+            .getValue()
             .toObject(ThreadRun.class);
     }
 
@@ -2248,7 +2250,7 @@ public final class AssistantsClient {
      * Modifies an existing assistant.
      *
      * @param assistantId The ID of the assistant to modify.
-     * @param body Body parameter.
+     * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2259,10 +2261,11 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Assistant updateAssistant(String assistantId, UpdateAssistantOptions body) {
+    public Assistant updateAssistant(String assistantId, UpdateAssistantOptions updateAssistantOptions) {
         // Generated convenience method for updateAssistantWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateAssistantWithResponse(assistantId, BinaryData.fromObject(body), requestOptions).getValue()
+        return updateAssistantWithResponse(assistantId, BinaryData.fromObject(updateAssistantOptions), requestOptions)
+            .getValue()
             .toObject(Assistant.class);
     }
 
@@ -2321,7 +2324,7 @@ public final class AssistantsClient {
      * Creates a new run for an assistant thread.
      *
      * @param threadId The ID of the thread to run.
-     * @param createRunOptions The details for the run to create.
+     * @param createRunOptions The details used when creating a new run of an assistant thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3287,7 +3290,7 @@ public final class AssistantsClient {
      * Modifies an existing thread.
      *
      * @param threadId The ID of the thread to modify.
-     * @param body Body parameter.
+     * @param updateAssistantThreadOptions The details used to update an existing assistant thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3298,10 +3301,11 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantThread updateThread(String threadId, UpdateAssistantThreadOptions body) {
+    public AssistantThread updateThread(String threadId, UpdateAssistantThreadOptions updateAssistantThreadOptions) {
         // Generated convenience method for updateThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateThreadWithResponse(threadId, BinaryData.fromObject(body), requestOptions).getValue()
+        return updateThreadWithResponse(threadId, BinaryData.fromObject(updateAssistantThreadOptions), requestOptions)
+            .getValue()
             .toObject(AssistantThread.class);
     }
 
@@ -3393,7 +3397,7 @@ public final class AssistantsClient {
     /**
      * Creates a vector store.
      *
-     * @param body Body parameter.
+     * @param vectorStoreOptions Request object for creating a vector store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3404,10 +3408,10 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VectorStore createVectorStore(VectorStoreOptions body) {
+    public VectorStore createVectorStore(VectorStoreOptions vectorStoreOptions) {
         // Generated convenience method for createVectorStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createVectorStoreWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+        return createVectorStoreWithResponse(BinaryData.fromObject(vectorStoreOptions), requestOptions).getValue()
             .toObject(VectorStore.class);
     }
 
@@ -3435,7 +3439,7 @@ public final class AssistantsClient {
      * The ID of the vector store to modify.
      *
      * @param vectorStoreId The ID of the vector store to modify.
-     * @param body Body parameter.
+     * @param vectorStoreUpdateOptions Request object for updating a vector store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3446,11 +3450,11 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VectorStore modifyVectorStore(String vectorStoreId, VectorStoreUpdateOptions body) {
+    public VectorStore modifyVectorStore(String vectorStoreId, VectorStoreUpdateOptions vectorStoreUpdateOptions) {
         // Generated convenience method for modifyVectorStoreWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return modifyVectorStoreWithResponse(vectorStoreId, BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(VectorStore.class);
+        return modifyVectorStoreWithResponse(vectorStoreId, BinaryData.fromObject(vectorStoreUpdateOptions),
+            requestOptions).getValue().toObject(VectorStore.class);
     }
 
     /**

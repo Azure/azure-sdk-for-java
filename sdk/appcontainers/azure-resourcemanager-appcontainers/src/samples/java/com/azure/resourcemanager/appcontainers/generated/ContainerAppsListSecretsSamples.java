@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsListSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/ContainerApps_ListSecrets.
+     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/ContainerApps_ListSecrets.
      * json
      */
     /**

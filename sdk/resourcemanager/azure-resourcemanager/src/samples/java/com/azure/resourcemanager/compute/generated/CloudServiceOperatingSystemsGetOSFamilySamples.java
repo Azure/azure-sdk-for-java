@@ -19,7 +19,10 @@ public final class CloudServiceOperatingSystemsGetOSFamilySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getCloudServiceOSFamily(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getCloudServiceOperatingSystems()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getCloudServiceOperatingSystems()
             .getOSFamilyWithResponse("westus2", "3", com.azure.core.util.Context.NONE);
     }
 }

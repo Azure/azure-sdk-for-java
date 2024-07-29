@@ -6,7 +6,11 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,27 +19,20 @@ import java.util.List;
  * Source LifeCycle.
  */
 @Fluent
-public final class SourceLifeCycle {
+public final class SourceLifeCycle implements JsonSerializable<SourceLifeCycle> {
     /*
-     * DeleteOption
-     * 
      * Delete Option
      */
-    @JsonProperty(value = "deleteAfter", required = true)
     private DeleteOption deleteAfter;
 
     /*
-     * DataStoreInfoBase
-     * 
      * DataStoreInfo base
      */
-    @JsonProperty(value = "sourceDataStore", required = true)
     private DataStoreInfoBase sourceDataStore;
 
     /*
      * The targetDataStoreCopySettings property.
      */
-    @JsonProperty(value = "targetDataStoreCopySettings")
     private List<TargetCopySetting> targetDataStoreCopySettings;
 
     /**
@@ -45,9 +42,7 @@ public final class SourceLifeCycle {
     }
 
     /**
-     * Get the deleteAfter property: DeleteOption
-     * 
-     * Delete Option.
+     * Get the deleteAfter property: Delete Option.
      * 
      * @return the deleteAfter value.
      */
@@ -56,9 +51,7 @@ public final class SourceLifeCycle {
     }
 
     /**
-     * Set the deleteAfter property: DeleteOption
-     * 
-     * Delete Option.
+     * Set the deleteAfter property: Delete Option.
      * 
      * @param deleteAfter the deleteAfter value to set.
      * @return the SourceLifeCycle object itself.
@@ -69,9 +62,7 @@ public final class SourceLifeCycle {
     }
 
     /**
-     * Get the sourceDataStore property: DataStoreInfoBase
-     * 
-     * DataStoreInfo base.
+     * Get the sourceDataStore property: DataStoreInfo base.
      * 
      * @return the sourceDataStore value.
      */
@@ -80,9 +71,7 @@ public final class SourceLifeCycle {
     }
 
     /**
-     * Set the sourceDataStore property: DataStoreInfoBase
-     * 
-     * DataStoreInfo base.
+     * Set the sourceDataStore property: DataStoreInfo base.
      * 
      * @param sourceDataStore the sourceDataStore value to set.
      * @return the SourceLifeCycle object itself.
@@ -119,14 +108,15 @@ public final class SourceLifeCycle {
      */
     public void validate() {
         if (deleteAfter() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property deleteAfter in model SourceLifeCycle"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property deleteAfter in model SourceLifeCycle"));
         } else {
             deleteAfter().validate();
         }
         if (sourceDataStore() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sourceDataStore in model SourceLifeCycle"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property sourceDataStore in model SourceLifeCycle"));
         } else {
             sourceDataStore().validate();
         }
@@ -136,4 +126,50 @@ public final class SourceLifeCycle {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SourceLifeCycle.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deleteAfter", this.deleteAfter);
+        jsonWriter.writeJsonField("sourceDataStore", this.sourceDataStore);
+        jsonWriter.writeArrayField("targetDataStoreCopySettings", this.targetDataStoreCopySettings,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceLifeCycle from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceLifeCycle if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SourceLifeCycle.
+     */
+    public static SourceLifeCycle fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceLifeCycle deserializedSourceLifeCycle = new SourceLifeCycle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deleteAfter".equals(fieldName)) {
+                    deserializedSourceLifeCycle.deleteAfter = DeleteOption.fromJson(reader);
+                } else if ("sourceDataStore".equals(fieldName)) {
+                    deserializedSourceLifeCycle.sourceDataStore = DataStoreInfoBase.fromJson(reader);
+                } else if ("targetDataStoreCopySettings".equals(fieldName)) {
+                    List<TargetCopySetting> targetDataStoreCopySettings
+                        = reader.readArray(reader1 -> TargetCopySetting.fromJson(reader1));
+                    deserializedSourceLifeCycle.targetDataStoreCopySettings = targetDataStoreCopySettings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceLifeCycle;
+        });
+    }
 }

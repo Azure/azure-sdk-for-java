@@ -14,22 +14,24 @@ public final class LinuxParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinuxParameters model = BinaryData.fromString(
-            "{\"classificationsToInclude\":[\"Security\"],\"packageNameMasksToInclude\":[\"lhrxsbkyvpyc\",\"n\"],\"packageNameMasksToExclude\":[\"p\",\"kafkuwbcrnwbm\",\"hhseyv\"]}")
+            "{\"classificationsToInclude\":[\"Security\",\"Other\",\"Critical\",\"Other\"],\"packageNameMasksToInclude\":[\"nermcl\",\"plpho\",\"uscrpabgyepsb\",\"tazqugxywpmueefj\"],\"packageNameMasksToExclude\":[\"qkqujidsu\",\"onobglaocqx\"]}")
             .toObject(LinuxParameters.class);
         Assertions.assertEquals(VMGuestPatchClassificationLinux.SECURITY, model.classificationsToInclude().get(0));
-        Assertions.assertEquals("lhrxsbkyvpyc", model.packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("p", model.packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("nermcl", model.packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("qkqujidsu", model.packageNameMasksToExclude().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LinuxParameters model = new LinuxParameters()
-            .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationLinux.SECURITY))
-            .withPackageNameMasksToInclude(Arrays.asList("lhrxsbkyvpyc", "n"))
-            .withPackageNameMasksToExclude(Arrays.asList("p", "kafkuwbcrnwbm", "hhseyv"));
+            .withClassificationsToInclude(
+                Arrays.asList(VMGuestPatchClassificationLinux.SECURITY, VMGuestPatchClassificationLinux.OTHER,
+                    VMGuestPatchClassificationLinux.CRITICAL, VMGuestPatchClassificationLinux.OTHER))
+            .withPackageNameMasksToInclude(Arrays.asList("nermcl", "plpho", "uscrpabgyepsb", "tazqugxywpmueefj"))
+            .withPackageNameMasksToExclude(Arrays.asList("qkqujidsu", "onobglaocqx"));
         model = BinaryData.fromObject(model).toObject(LinuxParameters.class);
         Assertions.assertEquals(VMGuestPatchClassificationLinux.SECURITY, model.classificationsToInclude().get(0));
-        Assertions.assertEquals("lhrxsbkyvpyc", model.packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("p", model.packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("nermcl", model.packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("qkqujidsu", model.packageNameMasksToExclude().get(0));
     }
 }

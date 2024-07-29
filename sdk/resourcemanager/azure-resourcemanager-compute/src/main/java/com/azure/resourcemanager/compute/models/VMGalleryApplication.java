@@ -194,8 +194,9 @@ public final class VMGalleryApplication {
      */
     public void validate() {
         if (packageReferenceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property packageReferenceId in model VMGalleryApplication"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property packageReferenceId in model VMGalleryApplication"));
         }
     }
 

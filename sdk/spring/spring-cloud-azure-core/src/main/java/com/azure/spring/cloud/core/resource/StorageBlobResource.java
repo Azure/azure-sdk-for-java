@@ -142,6 +142,7 @@ public final class StorageBlobResource extends AzureStorageResource {
      *
      * @return the URL.
      */
+    @SuppressWarnings("deprecation")
     @Override
     public URL getURL() throws IOException {
         return new URL(this.blockBlobClient.getBlobUrl());

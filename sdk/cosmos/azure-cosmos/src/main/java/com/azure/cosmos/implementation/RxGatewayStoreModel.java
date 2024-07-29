@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
@@ -79,6 +80,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
         ApiType apiType) {
+
         this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
@@ -403,6 +405,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     if (request.requestContext.cosmosDiagnostics != null) {
                         BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
                     }
+
                     return rsp;
                 })
                 .single();
@@ -543,6 +546,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
+
         Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
 
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
@@ -735,7 +739,8 @@ public class RxGatewayStoreModel implements RxStoreModel {
                                 SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
                             }
                         } else if (partitionKeyInternal != null) {
-                            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                            String effectivePartitionKeyString = StringUtils.isNotEmpty(request.getEffectivePartitionKey()) ?
+                                request.getEffectivePartitionKey() : PartitionKeyInternalHelper
                                 .getEffectivePartitionKeyString(
                                     partitionKeyInternal,
                                     collectionValueHolder.v.getPartitionKey());

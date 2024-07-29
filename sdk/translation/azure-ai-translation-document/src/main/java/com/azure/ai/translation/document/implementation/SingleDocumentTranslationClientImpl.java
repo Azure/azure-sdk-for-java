@@ -161,7 +161,7 @@ public final class SingleDocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> documentTranslate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam("targetLanguage") String targetLanguage,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData documentTranslateContent, RequestOptions requestOptions,
             Context context);
 
@@ -174,7 +174,7 @@ public final class SingleDocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> documentTranslateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam("targetLanguage") String targetLanguage,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
             @BodyParam("multipart/form-data") BinaryData documentTranslateContent, RequestOptions requestOptions,
             Context context);
     }

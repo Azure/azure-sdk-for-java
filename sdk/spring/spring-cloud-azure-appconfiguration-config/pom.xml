@@ -1,154 +1,234 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<groupId>com.azure</groupId>
-		<artifactId>azure-client-sdk-parent</artifactId>
-		<version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-		<relativePath>../../parents/azure-client-sdk-parent</relativePath>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.azure.spring</groupId>
-	<artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-	<version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
-	<name>Spring Cloud Azure App Configuration Config</name>
-	<description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
-	<properties>
-		<codesnippet.skip>false</codesnippet.skip>
-		<javadocDoclet></javadocDoclet>
-		<javadocDocletOptions></javadocDocletOptions>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-autoconfigure</artifactId>
-			<version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-bootstrap</artifactId>
-			<version>3.1.8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-context</artifactId>
-			<version>3.1.8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-actuator</artifactId>
-			<version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
-			<scope>compile</scope>
-		</dependency>
-		<!--Azure Java SDK -->
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-core</artifactId>
-			<version>1.49.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-		</dependency>
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-data-appconfiguration</artifactId>
-			<version>1.6.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
-		</dependency>
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-identity</artifactId>
-			<version>1.13.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-		</dependency>
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-security-keyvault-secrets</artifactId>
-			<version>4.8.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
-		</dependency>
-		<dependency>
-			<groupId>com.azure.spring</groupId>
-			<artifactId>spring-cloud-azure-service</artifactId>
-			<version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
-		</dependency>
-		<dependency>
-			<groupId>com.azure.spring</groupId>
-			<artifactId>spring-cloud-azure-autoconfigure</artifactId>
-			<version>4.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
-		</dependency>
-		<!-- Test Dependencies -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-			<scope>test</scope>
-		</dependency>
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
+  <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config;current} -->
+  <name>Spring Cloud Azure App Configuration Config</name>
+  <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
+  <properties>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+      <version>4.1.4</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-context</artifactId>
+      <version>4.1.4</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-context;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-actuator</artifactId>
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-actuator;external_dependency} -->
+      <scope>compile</scope>
+    </dependency>
+    <!--Azure Java SDK -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+      <version>1.50.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-data-appconfiguration</artifactId>
+      <version>1.6.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-security-keyvault-secrets</artifactId>
+      <version>4.8.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-service</artifactId>
+      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-autoconfigure</artifactId>
+      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+    </dependency>
+    <!-- Test Dependencies -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>3.3.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <!-- Add mockito-core 4.11.0 to work with Java 21 -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>5.11.0</version> <!-- {x-version-update;springboot3_org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
     <!-- of Mockito supporting Java 8 as a baseline. -->
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.18</version> <!-- {x-version-update;springboot3_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-		<!-- Added this dependency to include necessary annotations used
+    <!-- Added this dependency to include necessary annotations used
             by reactor core. Without this dependency, javadoc throws a warning as it
             cannot find enum When.MAYBE which is used in @Nullable annotation in reactor
             core classes -->
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>1.3.2</version> <!-- {x-version-update;javax.annotation:javax.annotation-api;external_dependency} -->
-		</dependency>
-	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-				<configuration>
-					<rules>
-						<bannedDependencies>
-							<includes>
-								<include>com.fasterxml.jackson.core:jackson-annotations:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-								<include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-								<include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
-								<include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
-								<include>org.springframework.boot:spring-boot-actuator:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
-								<include>org.springframework.boot:spring-boot-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-								<include>org.springframework.cloud:spring-cloud-context:[3.1.8]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
-								<include>org.springframework.cloud:spring-cloud-starter-bootstrap:[3.1.8]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
-							</includes>
-						</bannedDependencies>
-					</rules>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-				<configuration>
-					<archive>
-						<manifest>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;springboot3_com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.2.0</version> <!-- {x-version-update;springboot3_com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;springboot3_com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.14.6</version> <!-- {x-version-update;springboot3_org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <configuration>
+          <compilerArgs>
+            <arg>-Xlint:deprecation</arg>
+          </compilerArgs>
+        </configuration>
+        <executions>
+          <!-- disabled - the executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+          <execution>
+            <id>base-modules-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile without module-info for Java 8 -->
+          <execution>
+            <id>base-compile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- disabled - compile with Java 8 -->
+          <execution>
+            <id>base-testCompile</id>
+            <phase>none</phase>
+          </execution>
+          <!-- Ensure we compile with Java 17 -->
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <release>17</release>
+              <compilerArgs>
+                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
+              </compilerArgs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>annotation-process</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <compilerArgs>
+                <arg>-proc:only</arg> <!-- Turn on annotation processing -->
+              </compilerArgs>
+              <release>17</release>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.4.1</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-actuator:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-context:[4.1.4]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-context;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-configuration-processor:[3.3.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-starter-bootstrap:[4.1.4]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Automatic-Module-Name>com.azure.spring.cloud.appconfiguration.config</Automatic-Module-Name>
+            </manifestEntries>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+              <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

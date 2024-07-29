@@ -8,8 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Image Cleaner removes unused images from nodes, freeing up disk space and helping to reduce attack surface area.
- * Here are settings for the security profile.
+ * Image Cleaner removes unused images from nodes, freeing up disk space and helping to reduce attack surface area. Here
+ * are settings for the security profile.
  */
 @Fluent
 public final class ManagedClusterSecurityProfileImageCleaner {

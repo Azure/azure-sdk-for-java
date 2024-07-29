@@ -362,9 +362,9 @@ public class EventHubConsumerClientTest {
     private void sendMessages(TestPublisher<Message> publisher, int numberOfEvents, String partitionId) {
         for (int i = 0; i < numberOfEvents; i++) {
             Map<String, String> set = new HashMap<>();
-            set.put(MESSAGE_POSITION_ID, Integer.valueOf(i).toString());
-            set.put(PARTITION_ID_HEADER, partitionId);
-            final Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID, set);
+            final Message message = getMessage(PAYLOAD_BYTES, messageTrackingUUID);
+            message.getApplicationProperties().getValue().put(MESSAGE_POSITION_ID, Integer.valueOf(i).toString());
+            message.getApplicationProperties().getValue().put(PARTITION_ID_HEADER, partitionId);
             publisher.next(message);
         }
     }
