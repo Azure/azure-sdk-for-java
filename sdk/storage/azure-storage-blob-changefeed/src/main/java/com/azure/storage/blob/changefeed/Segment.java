@@ -4,16 +4,16 @@
 package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.SegmentCursor;
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a Segment in Changefeed.
@@ -66,14 +66,15 @@ class Segment {
             .concatMap(Shard::getEvents);
     }
 
-    private List<Shard> getShards(JsonNode node) {
+    @SuppressWarnings("unchecked")
+    private List<Shard> getShards(Map<String, Object> node) {
         List<Shard> shards = new ArrayList<>();
 
         /* Iterate over each shard element. */
-        for (JsonNode shard : node.withArray(CHUNK_FILE_PATHS)) {
+        for (Object shard : (List<Object>) node.get(CHUNK_FILE_PATHS)) {
             /* Strip out the changefeed container name and the subsequent / */
-            String shardPath =
-                shard.asText().substring(BlobChangefeedClientBuilder.CHANGEFEED_CONTAINER_NAME.length() + 1);
+            String shardPath = String.valueOf(shard)
+                .substring(BlobChangefeedClientBuilder.CHANGEFEED_CONTAINER_NAME.length() + 1);
 
             ShardCursor shardCursor = null; /* By default, read shard from the beginning. */
             if (userCursor != null) {
