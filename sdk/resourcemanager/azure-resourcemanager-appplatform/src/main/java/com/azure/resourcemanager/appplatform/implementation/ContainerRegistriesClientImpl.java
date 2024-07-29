@@ -612,8 +612,10 @@ public final class ContainerRegistriesClientImpl implements ContainerRegistriesC
     public SyncPoller<PollResult<ContainerRegistryResourceInner>, ContainerRegistryResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String containerRegistryName,
         ContainerRegistryResourceInner containerRegistryResource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, containerRegistryName,
-            containerRegistryResource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, containerRegistryName, containerRegistryResource,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1120,8 +1122,10 @@ public final class ContainerRegistriesClientImpl implements ContainerRegistriesC
     public SyncPoller<PollResult<ContainerRegistryValidateResultInner>, ContainerRegistryValidateResultInner>
         beginValidate(String resourceGroupName, String serviceName, String containerRegistryName,
             ContainerRegistryProperties containerRegistryProperties, Context context) {
-        return this.beginValidateAsync(resourceGroupName, serviceName, containerRegistryName,
-            containerRegistryProperties, context).getSyncPoller();
+        return this
+            .beginValidateAsync(resourceGroupName, serviceName, containerRegistryName, containerRegistryProperties,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1141,7 +1145,8 @@ public final class ContainerRegistriesClientImpl implements ContainerRegistriesC
     public Mono<ContainerRegistryValidateResultInner> validateAsync(String resourceGroupName, String serviceName,
         String containerRegistryName, ContainerRegistryProperties containerRegistryProperties) {
         return beginValidateAsync(resourceGroupName, serviceName, containerRegistryName, containerRegistryProperties)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1209,9 +1214,7 @@ public final class ContainerRegistriesClientImpl implements ContainerRegistriesC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1237,9 +1240,7 @@ public final class ContainerRegistriesClientImpl implements ContainerRegistriesC
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

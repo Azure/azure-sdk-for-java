@@ -5,63 +5,59 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * API route config of the Spring Cloud Gateway.
  */
 @Fluent
-public final class GatewayRouteConfigProperties {
+public final class GatewayRouteConfigProperties implements JsonSerializable<GatewayRouteConfigProperties> {
     /*
      * State of the Spring Cloud Gateway route config.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GatewayProvisioningState provisioningState;
 
     /*
      * The resource Id of the Azure Spring Apps app, required unless route defines `uri`.
      */
-    @JsonProperty(value = "appResourceId")
     private String appResourceId;
 
     /*
      * OpenAPI properties of Spring Cloud Gateway route config.
      */
-    @JsonProperty(value = "openApi")
     private GatewayRouteConfigOpenApiProperties openApi;
 
     /*
      * Protocol of routed Azure Spring Apps applications.
      */
-    @JsonProperty(value = "protocol")
     private GatewayRouteConfigProtocol protocol;
 
     /*
      * Array of API routes, each route contains properties such as `title`, `uri`, `ssoEnabled`, `predicates`,
      * `filters`.
      */
-    @JsonProperty(value = "routes")
     private List<GatewayApiRoute> routes;
 
     /*
      * Enable Single Sign-On in app level.
      */
-    @JsonProperty(value = "ssoEnabled")
     private Boolean ssoEnabled;
 
     /*
-     * A number of conditions to evaluate a route for each request in app level. Each predicate may be evaluated
-     * against request headers and parameter values. All of the predicates associated with a route must evaluate to
-     * true for the route to be matched to the request.
+     * A number of conditions to evaluate a route for each request in app level. Each predicate may be evaluated against
+     * request headers and parameter values. All of the predicates associated with a route must evaluate to true for the
+     * route to be matched to the request.
      */
-    @JsonProperty(value = "predicates")
     private List<String> predicates;
 
     /*
      * To modify the request before sending it to the target endpoint, or the received response in app level.
      */
-    @JsonProperty(value = "filters")
     private List<String> filters;
 
     /**
@@ -241,5 +237,67 @@ public final class GatewayRouteConfigProperties {
         if (routes() != null) {
             routes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("appResourceId", this.appResourceId);
+        jsonWriter.writeJsonField("openApi", this.openApi);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("ssoEnabled", this.ssoEnabled);
+        jsonWriter.writeArrayField("predicates", this.predicates, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayRouteConfigProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayRouteConfigProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayRouteConfigProperties.
+     */
+    public static GatewayRouteConfigProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayRouteConfigProperties deserializedGatewayRouteConfigProperties = new GatewayRouteConfigProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedGatewayRouteConfigProperties.provisioningState
+                        = GatewayProvisioningState.fromString(reader.getString());
+                } else if ("appResourceId".equals(fieldName)) {
+                    deserializedGatewayRouteConfigProperties.appResourceId = reader.getString();
+                } else if ("openApi".equals(fieldName)) {
+                    deserializedGatewayRouteConfigProperties.openApi
+                        = GatewayRouteConfigOpenApiProperties.fromJson(reader);
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedGatewayRouteConfigProperties.protocol
+                        = GatewayRouteConfigProtocol.fromString(reader.getString());
+                } else if ("routes".equals(fieldName)) {
+                    List<GatewayApiRoute> routes = reader.readArray(reader1 -> GatewayApiRoute.fromJson(reader1));
+                    deserializedGatewayRouteConfigProperties.routes = routes;
+                } else if ("ssoEnabled".equals(fieldName)) {
+                    deserializedGatewayRouteConfigProperties.ssoEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("predicates".equals(fieldName)) {
+                    List<String> predicates = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayRouteConfigProperties.predicates = predicates;
+                } else if ("filters".equals(fieldName)) {
+                    List<String> filters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGatewayRouteConfigProperties.filters = filters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayRouteConfigProperties;
+        });
     }
 }
