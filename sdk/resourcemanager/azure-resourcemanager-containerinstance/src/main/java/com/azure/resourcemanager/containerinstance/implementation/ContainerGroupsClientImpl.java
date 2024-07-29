@@ -45,26 +45,29 @@ import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContainerGroupsClient. */
-public final class ContainerGroupsClientImpl
-    implements InnerSupportsGet<ContainerGroupInner>,
-        InnerSupportsListing<ContainerGroupInner>,
-        InnerSupportsDelete<ContainerGroupInner>,
-        ContainerGroupsClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in ContainerGroupsClient.
+ */
+public final class ContainerGroupsClientImpl implements InnerSupportsGet<ContainerGroupInner>,
+    InnerSupportsListing<ContainerGroupInner>, InnerSupportsDelete<ContainerGroupInner>, ContainerGroupsClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContainerGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerInstanceManagementClientImpl client;
 
     /**
      * Initializes an instance of ContainerGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContainerGroupsClientImpl(ContainerInstanceManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ContainerGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ContainerGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -75,269 +78,192 @@ public final class ContainerGroupsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "ContainerInstanceMan")
     public interface ContainerGroupsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ContainerGroupListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ContainerGroupListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ContainerGroupInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("containerGroupName") String containerGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
-            @BodyParam("application/json") ContainerGroupInner containerGroup,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ContainerGroupInner containerGroup, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContainerGroupInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ContainerGroupInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerGroupName") String containerGroupName,
-            @BodyParam("application/json") Resource resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @BodyParam("application/json") Resource resource, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("containerGroupName") String containerGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/restart")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/restart")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> restart(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("containerGroupName") String containerGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/stop")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/stop")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> stop(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> stop(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("containerGroupName") String containerGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/start")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/start")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("containerGroupName") String containerGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/outboundNetworkDependenciesEndpoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpoints(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpoints(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("containerGroupName") String containerGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("containerGroupName") String containerGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContainerGroupListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of container groups in the specified subscription.
-     *
-     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
-     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
-     * state, and volumes.
-     *
+     * 
+     * Get a list of container groups in the specified subscription. This operation returns properties of each container
+     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
+     * volumes.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in the specified subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ContainerGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of container groups in the specified subscription.
-     *
-     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
-     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
-     * state, and volumes.
-     *
+     * 
+     * Get a list of container groups in the specified subscription. This operation returns properties of each container
+     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
+     * volumes.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in the specified subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of container groups in the specified subscription.
-     *
-     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
-     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
-     * state, and volumes.
-     *
+     * 
+     * Get a list of container groups in the specified subscription. This operation returns properties of each container
+     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
+     * volumes.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in the specified subscription as paginated response with {@link PagedFlux}.
@@ -349,11 +275,11 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Get a list of container groups in the specified subscription.
-     *
-     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
-     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
-     * state, and volumes.
-     *
+     * 
+     * Get a list of container groups in the specified subscription. This operation returns properties of each container
+     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
+     * volumes.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -362,21 +288,21 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ContainerGroupInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of container groups in the specified subscription.
-     *
-     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
-     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
-     * state, and volumes.
-     *
+     * 
+     * Get a list of container groups in the specified subscription. This operation returns properties of each container
+     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
+     * volumes.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of container groups in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupInner> list() {
@@ -385,17 +311,17 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Get a list of container groups in the specified subscription.
-     *
-     * <p>Get a list of container groups in the specified subscription. This operation returns properties of each
-     * container group including containers, image registry credentials, restart policy, IP address type, OS type,
-     * state, and volumes.
-     *
+     * 
+     * Get a list of container groups in the specified subscription. This operation returns properties of each container
+     * group including containers, image registry credentials, restart policy, IP address type, OS type, state, and
+     * volumes.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of container groups in the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupInner> list(Context context) {
@@ -404,31 +330,27 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Get a list of container groups in the specified subscription and resource group.
-     *
-     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
-     * properties of each container group including containers, image registry credentials, restart policy, IP address
-     * type, OS type, state, and volumes.
-     *
+     * 
+     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
+     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
+     * type, state, and volumes.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of container groups in a specified subscription and resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,57 +358,38 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<ContainerGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), resourceGroupName, accept, context))
+            .<PagedResponse<ContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of container groups in the specified subscription and resource group.
-     *
-     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
-     * properties of each container group including containers, image registry credentials, restart policy, IP address
-     * type, OS type, state, and volumes.
-     *
+     * 
+     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
+     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
+     * type, state, and volumes.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of container groups in a specified subscription and resource group along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of container groups in a specified subscription and resource group along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -495,80 +398,66 @@ public final class ContainerGroupsClientImpl
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of container groups in the specified subscription and resource group.
-     *
-     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
-     * properties of each container group including containers, image registry credentials, restart policy, IP address
-     * type, OS type, state, and volumes.
-     *
+     * 
+     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
+     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
+     * type, state, and volumes.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in a specified subscription and resource group as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get a list of container groups in the specified subscription and resource group.
-     *
-     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
-     * properties of each container group including containers, image registry credentials, restart policy, IP address
-     * type, OS type, state, and volumes.
-     *
+     * 
+     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
+     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
+     * type, state, and volumes.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in a specified subscription and resource group as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ContainerGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of container groups in the specified subscription and resource group.
-     *
-     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
-     * properties of each container group including containers, image registry credentials, restart policy, IP address
-     * type, OS type, state, and volumes.
-     *
+     * 
+     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
+     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
+     * type, state, and volumes.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in a specified subscription and resource group as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName) {
@@ -577,18 +466,18 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Get a list of container groups in the specified subscription and resource group.
-     *
-     * <p>Get a list of container groups in a specified subscription and resource group. This operation returns
-     * properties of each container group including containers, image registry credentials, restart policy, IP address
-     * type, OS type, state, and volumes.
-     *
+     * 
+     * Get a list of container groups in a specified subscription and resource group. This operation returns properties
+     * of each container group including containers, image registry credentials, restart policy, IP address type, OS
+     * type, state, and volumes.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container groups in a specified subscription and resource group as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ContainerGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -597,33 +486,29 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Get the properties of the specified container group.
-     *
-     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
+     * 
+     * Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container group in the specified subscription and resource group along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String containerGroupName) {
+    public Mono<Response<ContainerGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String containerGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -636,26 +521,18 @@ public final class ContainerGroupsClientImpl
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), resourceGroupName, containerGroupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the properties of the specified container group.
-     *
-     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
+     * 
+     * Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -663,22 +540,18 @@ public final class ContainerGroupsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container group in the specified subscription and resource group along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
+    private Mono<Response<ContainerGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String containerGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -690,31 +563,24 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), resourceGroupName, containerGroupName, accept, context);
     }
 
     /**
      * Get the properties of the specified container group.
-     *
-     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
+     * 
+     * Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container group in the specified subscription and resource group on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupInner> getByResourceGroupAsync(String resourceGroupName, String containerGroupName) {
@@ -724,11 +590,11 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Get the properties of the specified container group.
-     *
-     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
+     * 
+     * Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -736,21 +602,21 @@ public final class ContainerGroupsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified container group in the specified subscription and resource group along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String containerGroupName, Context context) {
+    public Response<ContainerGroupInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String containerGroupName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, containerGroupName, context).block();
     }
 
     /**
      * Get the properties of the specified container group.
-     *
-     * <p>Gets the properties of the specified container group in the specified subscription and resource group. The
+     * 
+     * Gets the properties of the specified container group in the specified subscription and resource group. The
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -765,9 +631,9 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -777,19 +643,15 @@ public final class ContainerGroupsClientImpl
      * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String containerGroupName, ContainerGroupInner containerGroup) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -806,26 +668,16 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            containerGroup,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, containerGroupName, containerGroup, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -836,19 +688,15 @@ public final class ContainerGroupsClientImpl
      * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String containerGroupName, ContainerGroupInner containerGroup, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -865,23 +713,15 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                containerGroup,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), resourceGroupName, containerGroupName, containerGroup, accept, context);
     }
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -893,23 +733,17 @@ public final class ContainerGroupsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, containerGroupName, containerGroup);
-        return this
-            .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ContainerGroupInner.class,
-                ContainerGroupInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, containerGroupName, containerGroup);
+        return this.client.<ContainerGroupInner, ContainerGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ContainerGroupInner.class, ContainerGroupInner.class, this.client.getContext());
     }
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -923,19 +757,17 @@ public final class ContainerGroupsClientImpl
     private PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, containerGroupName, containerGroup, context);
-        return this
-            .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, containerGroupName, containerGroup, context);
+        return this.client.<ContainerGroupInner, ContainerGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ContainerGroupInner.class, ContainerGroupInner.class, context);
     }
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -945,16 +777,16 @@ public final class ContainerGroupsClientImpl
      * @return the {@link SyncPoller} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
+    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner>
+        beginCreateOrUpdate(String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup).getSyncPoller();
     }
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -967,16 +799,15 @@ public final class ContainerGroupsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -986,18 +817,17 @@ public final class ContainerGroupsClientImpl
      * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup)
-            .last()
+    public Mono<ContainerGroupInner> createOrUpdateAsync(String resourceGroupName, String containerGroupName,
+        ContainerGroupInner containerGroup) {
+        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -1008,18 +838,17 @@ public final class ContainerGroupsClientImpl
      * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContainerGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context)
-            .last()
+    private Mono<ContainerGroupInner> createOrUpdateAsync(String resourceGroupName, String containerGroupName,
+        ContainerGroupInner containerGroup, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -1029,16 +858,16 @@ public final class ContainerGroupsClientImpl
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner createOrUpdate(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup) {
+    public ContainerGroupInner createOrUpdate(String resourceGroupName, String containerGroupName,
+        ContainerGroupInner containerGroup) {
         return createOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup).block();
     }
 
     /**
      * Create or update container groups.
-     *
-     * <p>Create or update container groups with specified configurations.
-     *
+     * 
+     * Create or update container groups with specified configurations.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
@@ -1049,16 +878,16 @@ public final class ContainerGroupsClientImpl
      * @return a container group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerGroupInner createOrUpdate(
-        String resourceGroupName, String containerGroupName, ContainerGroupInner containerGroup, Context context) {
+    public ContainerGroupInner createOrUpdate(String resourceGroupName, String containerGroupName,
+        ContainerGroupInner containerGroup, Context context) {
         return createOrUpdateAsync(resourceGroupName, containerGroupName, containerGroup, context).block();
     }
 
     /**
      * Update container groups.
-     *
-     * <p>Updates container group tags with specified values.
-     *
+     * 
+     * Updates container group tags with specified values.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
@@ -1068,19 +897,15 @@ public final class ContainerGroupsClientImpl
      * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContainerGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Resource resource) {
+    public Mono<Response<ContainerGroupInner>> updateWithResponseAsync(String resourceGroupName,
+        String containerGroupName, Resource resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1095,26 +920,16 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, containerGroupName, resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update container groups.
-     *
-     * <p>Updates container group tags with specified values.
-     *
+     * 
+     * Updates container group tags with specified values.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
@@ -1125,19 +940,15 @@ public final class ContainerGroupsClientImpl
      * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContainerGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Resource resource, Context context) {
+    private Mono<Response<ContainerGroupInner>> updateWithResponseAsync(String resourceGroupName,
+        String containerGroupName, Resource resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1152,23 +963,15 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                resource,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, containerGroupName, resource, accept, context);
     }
 
     /**
      * Update container groups.
-     *
-     * <p>Updates container group tags with specified values.
-     *
+     * 
+     * Updates container group tags with specified values.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
@@ -1178,17 +981,17 @@ public final class ContainerGroupsClientImpl
      * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerGroupInner> updateAsync(
-        String resourceGroupName, String containerGroupName, Resource resource) {
+    public Mono<ContainerGroupInner> updateAsync(String resourceGroupName, String containerGroupName,
+        Resource resource) {
         return updateWithResponseAsync(resourceGroupName, containerGroupName, resource)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update container groups.
-     *
-     * <p>Updates container group tags with specified values.
-     *
+     * 
+     * Updates container group tags with specified values.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
@@ -1199,16 +1002,16 @@ public final class ContainerGroupsClientImpl
      * @return a container group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContainerGroupInner> updateWithResponse(
-        String resourceGroupName, String containerGroupName, Resource resource, Context context) {
+    public Response<ContainerGroupInner> updateWithResponse(String resourceGroupName, String containerGroupName,
+        Resource resource, Context context) {
         return updateWithResponseAsync(resourceGroupName, containerGroupName, resource, context).block();
     }
 
     /**
      * Update container groups.
-     *
-     * <p>Updates container group tags with specified values.
-     *
+     * 
+     * Updates container group tags with specified values.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
@@ -1224,10 +1027,10 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1236,19 +1039,15 @@ public final class ContainerGroupsClientImpl
      * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String containerGroupName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String containerGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1260,26 +1059,17 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, containerGroupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1289,19 +1079,15 @@ public final class ContainerGroupsClientImpl
      * @return a container group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String containerGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1313,23 +1099,16 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, containerGroupName, accept, context);
     }
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1338,25 +1117,19 @@ public final class ContainerGroupsClientImpl
      * @return the {@link PollerFlux} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
-        String resourceGroupName, String containerGroupName) {
+    public PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(String resourceGroupName,
+        String containerGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerGroupName);
-        return this
-            .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ContainerGroupInner.class,
-                ContainerGroupInner.class,
-                this.client.getContext());
+        return this.client.<ContainerGroupInner, ContainerGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ContainerGroupInner.class, ContainerGroupInner.class, this.client.getContext());
     }
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1366,22 +1139,20 @@ public final class ContainerGroupsClientImpl
      * @return the {@link PollerFlux} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
+    private PollerFlux<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDeleteAsync(String resourceGroupName,
+        String containerGroupName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerGroupName, context);
-        return this
-            .client
-            .<ContainerGroupInner, ContainerGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ContainerGroupInner.class, ContainerGroupInner.class, context);
+        return this.client.<ContainerGroupInner, ContainerGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ContainerGroupInner.class, ContainerGroupInner.class, context);
     }
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1390,17 +1161,17 @@ public final class ContainerGroupsClientImpl
      * @return the {@link SyncPoller} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
-        String resourceGroupName, String containerGroupName) {
+    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(String resourceGroupName,
+        String containerGroupName) {
         return this.beginDeleteAsync(resourceGroupName, containerGroupName).getSyncPoller();
     }
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1410,17 +1181,17 @@ public final class ContainerGroupsClientImpl
      * @return the {@link SyncPoller} for polling of a container group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(
-        String resourceGroupName, String containerGroupName, Context context) {
+    public SyncPoller<PollResult<ContainerGroupInner>, ContainerGroupInner> beginDelete(String resourceGroupName,
+        String containerGroupName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
     }
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1430,17 +1201,16 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerGroupInner> deleteAsync(String resourceGroupName, String containerGroupName) {
-        return beginDeleteAsync(resourceGroupName, containerGroupName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, containerGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1450,19 +1220,18 @@ public final class ContainerGroupsClientImpl
      * @return a container group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContainerGroupInner> deleteAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, containerGroupName, context)
-            .last()
+    private Mono<ContainerGroupInner> deleteAsync(String resourceGroupName, String containerGroupName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, containerGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1477,10 +1246,10 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Delete the specified container group.
-     *
-     * <p>Delete the specified container group in the specified subscription and resource group. The operation does not
+     * 
+     * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1496,10 +1265,10 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1508,19 +1277,15 @@ public final class ContainerGroupsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String containerGroupName) {
+    public Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
+        String containerGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1532,26 +1297,17 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restart(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.restart(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, containerGroupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1561,19 +1317,15 @@ public final class ContainerGroupsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
+        String containerGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1585,23 +1337,16 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .restart(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                accept,
-                context);
+        return service.restart(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, containerGroupName, accept, context);
     }
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1612,18 +1357,16 @@ public final class ContainerGroupsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String containerGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, containerGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1633,22 +1376,21 @@ public final class ContainerGroupsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String containerGroupName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restartWithResponseAsync(resourceGroupName, containerGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restartWithResponseAsync(resourceGroupName, containerGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1663,10 +1405,10 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1676,17 +1418,17 @@ public final class ContainerGroupsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String containerGroupName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String containerGroupName,
+        Context context) {
         return this.beginRestartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
     }
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1696,17 +1438,16 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restartAsync(String resourceGroupName, String containerGroupName) {
-        return beginRestartAsync(resourceGroupName, containerGroupName)
-            .last()
+        return beginRestartAsync(resourceGroupName, containerGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1717,17 +1458,16 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> restartAsync(String resourceGroupName, String containerGroupName, Context context) {
-        return beginRestartAsync(resourceGroupName, containerGroupName, context)
-            .last()
+        return beginRestartAsync(resourceGroupName, containerGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1741,10 +1481,10 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Restarts all containers in a container group.
-     *
-     * <p>Restarts all containers in a container group in place. If container image has updates, new image will be
+     * 
+     * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1759,9 +1499,9 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Stops all containers in a container group.
-     *
-     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-     *
+     * 
+     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1772,16 +1512,12 @@ public final class ContainerGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String containerGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1793,25 +1529,16 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, containerGroupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Stops all containers in a container group.
-     *
-     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-     *
+     * 
+     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1821,19 +1548,15 @@ public final class ContainerGroupsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> stopWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
+    private Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String containerGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1845,22 +1568,15 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                accept,
-                context);
+        return service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, containerGroupName, accept, context);
     }
 
     /**
      * Stops all containers in a container group.
-     *
-     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-     *
+     * 
+     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1875,9 +1591,9 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Stops all containers in a container group.
-     *
-     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-     *
+     * 
+     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1893,9 +1609,9 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Stops all containers in a container group.
-     *
-     * <p>Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
-     *
+     * 
+     * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1909,9 +1625,9 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1920,19 +1636,15 @@ public final class ContainerGroupsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String containerGroupName) {
+    public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
+        String containerGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1944,25 +1656,16 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.start(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, containerGroupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -1972,19 +1675,15 @@ public final class ContainerGroupsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String containerGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1996,22 +1695,15 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                accept,
-                context);
+        return service.start(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, containerGroupName, accept, context);
     }
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2022,17 +1714,15 @@ public final class ContainerGroupsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String containerGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, containerGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -2042,20 +1732,19 @@ public final class ContainerGroupsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String containerGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String containerGroupName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, containerGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2070,9 +1759,9 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -2082,16 +1771,16 @@ public final class ContainerGroupsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String containerGroupName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String containerGroupName,
+        Context context) {
         return this.beginStartAsync(resourceGroupName, containerGroupName, context).getSyncPoller();
     }
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2101,16 +1790,15 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String containerGroupName) {
-        return beginStartAsync(resourceGroupName, containerGroupName)
-            .last()
+        return beginStartAsync(resourceGroupName, containerGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -2121,16 +1809,15 @@ public final class ContainerGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String containerGroupName, Context context) {
-        return beginStartAsync(resourceGroupName, containerGroupName, context)
-            .last()
+        return beginStartAsync(resourceGroupName, containerGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2144,9 +1831,9 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Starts all containers in a container group.
-     *
-     * <p>Starts all containers in a container group. Compute resources will be allocated and billing will start.
-     *
+     * 
+     * Starts all containers in a container group. Compute resources will be allocated and billing will start.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -2161,32 +1848,28 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Get all network dependencies for container group.
-     *
-     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
+     * 
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration along with {@link Response} on successful completion of {@link Mono}.
+     * configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpointsWithResponseAsync(
-        String resourceGroupName, String containerGroupName) {
+    public Mono<Response<List<String>>>
+        getOutboundNetworkDependenciesEndpointsWithResponseAsync(String resourceGroupName, String containerGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2198,26 +1881,18 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getOutboundNetworkDependenciesEndpoints(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            containerGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.getOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), resourceGroupName, containerGroupName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all network dependencies for container group.
-     *
-     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
+     * 
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -2225,22 +1900,18 @@ public final class ContainerGroupsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration along with {@link Response} on successful completion of {@link Mono}.
+     * configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<String>>> getOutboundNetworkDependenciesEndpointsWithResponseAsync(
         String resourceGroupName, String containerGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2252,44 +1923,38 @@ public final class ContainerGroupsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getOutboundNetworkDependenciesEndpoints(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                containerGroupName,
-                accept,
-                context);
+        return service.getOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), resourceGroupName, containerGroupName, accept,
+            context);
     }
 
     /**
      * Get all network dependencies for container group.
-     *
-     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
+     * 
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration on successful completion of {@link Mono}.
+     * configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<String>> getOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String containerGroupName) {
+    public Mono<List<String>> getOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName,
+        String containerGroupName) {
         return getOutboundNetworkDependenciesEndpointsWithResponseAsync(resourceGroupName, containerGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get all network dependencies for container group.
-     *
-     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
+     * 
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
@@ -2297,28 +1962,28 @@ public final class ContainerGroupsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration along with {@link Response}.
+     * configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<String>> getOutboundNetworkDependenciesEndpointsWithResponse(
-        String resourceGroupName, String containerGroupName, Context context) {
+    public Response<List<String>> getOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName,
+        String containerGroupName, Context context) {
         return getOutboundNetworkDependenciesEndpointsWithResponseAsync(resourceGroupName, containerGroupName, context)
             .block();
     }
 
     /**
      * Get all network dependencies for container group.
-     *
-     * <p>Gets all the network dependencies for this container group to allow complete control of network setting and
+     * 
+     * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the network dependencies for this container group to allow complete control of network setting and
-     *     configuration.
+     * configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> getOutboundNetworkDependenciesEndpoints(String resourceGroupName, String containerGroupName) {
@@ -2328,14 +1993,13 @@ public final class ContainerGroupsClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the container group list response that contains the container group properties along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -2343,37 +2007,26 @@ public final class ContainerGroupsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ContainerGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the container group list response that contains the container group properties along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2381,36 +2034,25 @@ public final class ContainerGroupsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the container group list response that contains the container group properties along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2418,63 +2060,43 @@ public final class ContainerGroupsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ContainerGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ContainerGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container group list response that contains the container group properties along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the container group list response that contains the container group properties along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ContainerGroupInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
