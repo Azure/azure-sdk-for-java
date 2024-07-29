@@ -20,8 +20,6 @@
 # performance regressions or bugs. They are also responsible for smoke testing their library after every release.
 
 com.azure:azure-ai-contentsafety # Tests owner: zhaiyutong
-com.azure:azure-ai-formrecognizer # Tests owner: samvaity
-com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang
 com.azure:azure-communication-callautomation # Tests owner: minwoolee-msft, juntuchen-msft
 com.azure:azure-communication-chat # Tests owner: jiminwen
@@ -45,8 +43,6 @@ com.azure:azure-identity-broker # Tests owner: billwert, vigera
 com.azure:azure-identity-extensions # Tests owner: saragluna, backwind1233
 com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan
 com.azure:azure-messaging-eventgrid # Tests owner: billwert
-com.azure:azure-messaging-eventhubs # Tests owner: conniey
-com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
 com.azure:azure-messaging-servicebus # Tests owner: ki1729
 com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
 com.azure:azure-messaging-webpubsub-client # Tests owner: weidongxu-microsoft
