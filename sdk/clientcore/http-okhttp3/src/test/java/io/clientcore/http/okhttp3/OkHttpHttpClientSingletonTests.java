@@ -5,13 +5,10 @@ package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-@Execution(ExecutionMode.SAME_THREAD) // To avoid a race condition because of singleton http client.
 public class OkHttpHttpClientSingletonTests {
     @Test
     public void testGetSharedInstance() {
