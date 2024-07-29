@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.0.0-beta.4 (Unreleased)
+### 1.0.0-beta.5 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,11 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 1.0.0-beta.4 (2024-07-26)
+
+#### Other Changes
+* Connector status appears as `FAILED` if try to create a connector with incorrect container names - See [PR 41160](https://github.com/Azure/azure-sdk-for-java/pull/41160) 
 
 ### 1.0.0-beta.3 (2024-06-24)
 

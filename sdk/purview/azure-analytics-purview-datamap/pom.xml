@@ -58,6 +58,11 @@
       <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
