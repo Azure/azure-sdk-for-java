@@ -66,11 +66,11 @@ public class AvroParser {
     Mono<Void> prepareParserToReadBody(long sourceOffset, long thresholdIndex) {
         if (!this.partialRead) {
             return Mono.error(new IllegalStateException(
-                "This method should only be called when parsing header " + "and body separately."));
+                "This method should only be called when parsing header and body separately."));
         }
         if (this.objectType == null || this.syncMarker == null) {
             return Mono.error(
-                new IllegalStateException("Expected to read entire header before preparing " + "parser to read body."));
+                new IllegalStateException("Expected to read entire header before preparing parser to read body."));
         }
         this.state = new AvroParserState(sourceOffset);
         this.objects = new ArrayList<>();
