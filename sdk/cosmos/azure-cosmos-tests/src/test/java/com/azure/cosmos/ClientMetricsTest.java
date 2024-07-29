@@ -1662,7 +1662,7 @@ public class ClientMetricsTest extends BatchTestBase {
     private void assertTagInAllMeters(List<Meter> meters, String prefix) {
         List<Meter> meterMatches = meters
             .stream()
-            .filter(meter -> meter.getId().getName().equals(prefix) && meter.getId().getTags().contains(this.clientCorrelationTag))
+            .filter(meter -> meter.getId().getName().equals(prefix))
             .collect(Collectors.toList());
         if (meterMatches.size() >  0) {
             Set<String> possibleTags = new HashSet<>();
