@@ -71,7 +71,7 @@ public class GeographyPointTests extends SearchTestBase {
         if (TEST_MODE != TestMode.PLAYBACK) {
             searchIndexClient = new SearchIndexClientBuilder()
                 .endpoint(ENDPOINT)
-                .credential(new AzureKeyCredential(API_KEY))
+                .credential(TestHelpers.getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
 

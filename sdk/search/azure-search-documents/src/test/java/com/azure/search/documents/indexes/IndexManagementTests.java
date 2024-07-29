@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
+import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.CorsOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
@@ -68,7 +69,7 @@ public class IndexManagementTests extends SearchTestBase {
     public static void setupSharedResources() {
         sharedIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new AzureKeyCredential(API_KEY))
+            .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
         sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");

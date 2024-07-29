@@ -47,9 +47,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
+import static com.azure.search.documents.TestHelpers.getTestTokenCredential;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,7 +72,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         return new SearchClientBuilder()
             .endpoint(ENDPOINT)
             .indexName("index")
-            .credential(new AzureKeyCredential(API_KEY));
+            .credential(getTestTokenCredential());
     }
 
     private static HttpClient wrapWithAsserting(HttpClient wrappedHttpClient, boolean isSync) {
