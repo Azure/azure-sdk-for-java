@@ -148,7 +148,7 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
     Integer minReplicas();
 
     /**
-     * Deploy a zip file to Azure site.
+     * Deploy a zip file to Azure site, for Flex Consumption plan.
      *
      * @param file the file to upload
      * @return the completion of the operation
@@ -156,7 +156,7 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
     Mono<Void> deployAsync(File file);
 
     /**
-     * Deploy a zip file to Azure site.
+     * Deploy a zip file to Azure site, for Flex Consumption plan.
      *
      * @param file the file to upload
      */
