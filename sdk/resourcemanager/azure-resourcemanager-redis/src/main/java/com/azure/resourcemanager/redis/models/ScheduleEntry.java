@@ -5,31 +5,33 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Patch schedule entry for a Premium Redis Cache.
  */
 @Fluent
-public final class ScheduleEntry {
+public final class ScheduleEntry implements JsonSerializable<ScheduleEntry> {
     /*
      * Day of the week when a cache can be patched.
      */
-    @JsonProperty(value = "dayOfWeek", required = true)
     private DayOfWeek dayOfWeek;
 
     /*
      * Start hour after which cache patching can start.
      */
-    @JsonProperty(value = "startHourUtc", required = true)
     private int startHourUtc;
 
     /*
      * ISO8601 timespan specifying how much time cache patching can take.
      */
-    @JsonProperty(value = "maintenanceWindow")
     private Duration maintenanceWindow;
 
     /**
@@ -111,4 +113,48 @@ public final class ScheduleEntry {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduleEntry.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dayOfWeek", this.dayOfWeek == null ? null : this.dayOfWeek.toString());
+        jsonWriter.writeIntField("startHourUtc", this.startHourUtc);
+        jsonWriter.writeStringField("maintenanceWindow", CoreUtils.durationToStringWithDays(this.maintenanceWindow));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleEntry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleEntry if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleEntry.
+     */
+    public static ScheduleEntry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleEntry deserializedScheduleEntry = new ScheduleEntry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dayOfWeek".equals(fieldName)) {
+                    deserializedScheduleEntry.dayOfWeek = DayOfWeek.fromString(reader.getString());
+                } else if ("startHourUtc".equals(fieldName)) {
+                    deserializedScheduleEntry.startHourUtc = reader.getInt();
+                } else if ("maintenanceWindow".equals(fieldName)) {
+                    deserializedScheduleEntry.maintenanceWindow
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleEntry;
+        });
+    }
 }
