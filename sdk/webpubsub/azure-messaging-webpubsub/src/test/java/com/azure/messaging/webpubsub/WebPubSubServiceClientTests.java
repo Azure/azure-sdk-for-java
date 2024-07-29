@@ -337,7 +337,8 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     @Disabled("This test requires a connectionId with SEND_TO_GROUP permission.")
     public void testCheckPermission() {
 
-        // This test is failing consistently, needs to be fixed, disabled. Github issue:
+        // This test is failing consistently, needs to be fixed, disabled.
+        // Github issue: https://github.com/Azure/azure-sdk-for-java/issues/41343
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
         /*

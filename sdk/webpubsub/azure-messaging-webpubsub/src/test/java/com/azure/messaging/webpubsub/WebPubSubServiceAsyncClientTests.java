@@ -395,7 +395,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     @Disabled("This test requires a connectionId with SEND_TO_GROUP permission.")
     public void testCheckPermission() {
         // This test requires a connectionId with SEND_TO_GROUP permission. Fails consistently in LIVE mode and
-        // needs to be fixed. Github issue:
+        // needs to be fixed. Github issue: https://github.com/Azure/azure-sdk-for-java/issues/41343
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
 
