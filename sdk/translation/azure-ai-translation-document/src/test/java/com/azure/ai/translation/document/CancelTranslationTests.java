@@ -29,8 +29,8 @@ public class CancelTranslationTests extends DocumentTranslationClientTestBase {
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
         BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
-        SyncPoller<TranslationStatus, Void> poller = documentTranslationClient
-                .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest));
+        SyncPoller<TranslationStatus, Void> poller = setPlaybackSyncPollerPollInterval(documentTranslationClient
+            .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Cancel Translation
         String translationId = poller.poll().getValue().getId();

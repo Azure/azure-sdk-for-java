@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2024-07-26)
+
+### Other Changes
+
+- `XmlSerializable.toXml(XmlWriter)` is now a `default` method in the interface. This will call 
+  `XmlSerializable.toXml(XmlWriter, String)` with a null string as the second argument, as the `String` argument was
+  always considered optional.
 
 ## 1.0.0 (2024-04-04)
 
