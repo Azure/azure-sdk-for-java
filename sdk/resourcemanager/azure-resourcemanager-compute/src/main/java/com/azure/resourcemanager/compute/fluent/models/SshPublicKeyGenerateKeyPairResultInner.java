@@ -114,16 +114,19 @@ public final class SshPublicKeyGenerateKeyPairResultInner {
      */
     public void validate() {
         if (privateKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property privateKey in model SshPublicKeyGenerateKeyPairResultInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateKey in model SshPublicKeyGenerateKeyPairResultInner"));
         }
         if (publicKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publicKey in model SshPublicKeyGenerateKeyPairResultInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicKey in model SshPublicKeyGenerateKeyPairResultInner"));
         }
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property id in model SshPublicKeyGenerateKeyPairResultInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model SshPublicKeyGenerateKeyPairResultInner"));
         }
     }
 

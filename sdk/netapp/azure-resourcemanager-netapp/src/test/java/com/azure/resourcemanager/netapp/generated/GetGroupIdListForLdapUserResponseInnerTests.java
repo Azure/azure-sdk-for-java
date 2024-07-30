@@ -13,16 +13,16 @@ public final class GetGroupIdListForLdapUserResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetGroupIdListForLdapUserResponseInner model
-            = BinaryData.fromString("{\"groupIdsForLdapUser\":[\"exkpzksmondjmq\",\"xvy\",\"omgkopkwho\",\"v\"]}")
+            = BinaryData.fromString("{\"groupIdsForLdapUser\":[\"ckcb\",\"uejrjxgc\"]}")
                 .toObject(GetGroupIdListForLdapUserResponseInner.class);
-        Assertions.assertEquals("exkpzksmondjmq", model.groupIdsForLdapUser().get(0));
+        Assertions.assertEquals("ckcb", model.groupIdsForLdapUser().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GetGroupIdListForLdapUserResponseInner model = new GetGroupIdListForLdapUserResponseInner()
-            .withGroupIdsForLdapUser(Arrays.asList("exkpzksmondjmq", "xvy", "omgkopkwho", "v"));
+        GetGroupIdListForLdapUserResponseInner model
+            = new GetGroupIdListForLdapUserResponseInner().withGroupIdsForLdapUser(Arrays.asList("ckcb", "uejrjxgc"));
         model = BinaryData.fromObject(model).toObject(GetGroupIdListForLdapUserResponseInner.class);
-        Assertions.assertEquals("exkpzksmondjmq", model.groupIdsForLdapUser().get(0));
+        Assertions.assertEquals("ckcb", model.groupIdsForLdapUser().get(0));
     }
 }

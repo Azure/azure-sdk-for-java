@@ -160,9 +160,9 @@ public final class VirtualMachineScaleSetExtensionUpdate extends SubResourceRead
     }
 
     /**
-     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
-     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
-     * unless redeployed, even with this property set to true.
+     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
+     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
+     * redeployed, even with this property set to true.
      * 
      * @return the autoUpgradeMinorVersion value.
      */
@@ -171,9 +171,9 @@ public final class VirtualMachineScaleSetExtensionUpdate extends SubResourceRead
     }
 
     /**
-     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
-     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
-     * unless redeployed, even with this property set to true.
+     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
+     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
+     * redeployed, even with this property set to true.
      * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VirtualMachineScaleSetExtensionUpdate object itself.

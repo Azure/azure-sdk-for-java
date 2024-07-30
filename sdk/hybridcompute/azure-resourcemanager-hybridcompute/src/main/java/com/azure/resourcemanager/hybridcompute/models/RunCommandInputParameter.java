@@ -6,23 +6,25 @@ package com.azure.resourcemanager.hybridcompute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the properties of a run command parameter.
  */
 @Fluent
-public final class RunCommandInputParameter {
+public final class RunCommandInputParameter implements JsonSerializable<RunCommandInputParameter> {
     /*
      * The run command parameter name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The run command parameter value.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
@@ -88,4 +90,44 @@ public final class RunCommandInputParameter {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RunCommandInputParameter.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunCommandInputParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunCommandInputParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunCommandInputParameter.
+     */
+    public static RunCommandInputParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunCommandInputParameter deserializedRunCommandInputParameter = new RunCommandInputParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRunCommandInputParameter.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedRunCommandInputParameter.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunCommandInputParameter;
+        });
+    }
 }

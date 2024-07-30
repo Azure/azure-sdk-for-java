@@ -1,6 +1,6 @@
 # Release History
 
-## 2.41.0-beta.1 (Unreleased)
+## 2.42.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.41.0 (2024-07-25)
+
+### Features Added
+
+- Supported enabling zone redundant in `EventHubNamespace` via `enableZoneRedundant()`.
+- Supported setting minimum Tls version in `EventHubNamespace` via `withMinimumTlsVersion(TlsVersion minimumTlsVersion)`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-01-01`.
 
 ## 2.40.0 (2024-06-24)
 

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ConnectedEnvironmentsDaprComponentsGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
      * ConnectedEnvironmentsDaprComponents_Get.json
      */
     /**
@@ -18,7 +18,7 @@ public final class ConnectedEnvironmentsDaprComponentsGetSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void getDaprComponent(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.connectedEnvironmentsDaprComponents().getWithResponse("examplerg", "myenvironment", "reddog",
-            com.azure.core.util.Context.NONE);
+        manager.connectedEnvironmentsDaprComponents()
+            .getWithResponse("examplerg", "myenvironment", "reddog", com.azure.core.util.Context.NONE);
     }
 }

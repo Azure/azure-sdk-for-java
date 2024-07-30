@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
 import com.azure.resourcemanager.netapp.models.VolumeGroupVolumeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Volume group properties.
  */
 @Fluent
-public final class VolumeGroupProperties {
+public final class VolumeGroupProperties implements JsonSerializable<VolumeGroupProperties> {
     /*
      * Azure lifecycle management
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Volume group details
      */
-    @JsonProperty(value = "groupMetaData")
     private VolumeGroupMetadata groupMetadata;
 
     /*
      * List of volumes from group
      */
-    @JsonProperty(value = "volumes")
     private List<VolumeGroupVolumeProperties> volumes;
 
     /**
@@ -100,5 +101,48 @@ public final class VolumeGroupProperties {
         if (volumes() != null) {
             volumes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("groupMetaData", this.groupMetadata);
+        jsonWriter.writeArrayField("volumes", this.volumes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeGroupProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeGroupProperties.
+     */
+    public static VolumeGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeGroupProperties deserializedVolumeGroupProperties = new VolumeGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.provisioningState = reader.getString();
+                } else if ("groupMetaData".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.groupMetadata = VolumeGroupMetadata.fromJson(reader);
+                } else if ("volumes".equals(fieldName)) {
+                    List<VolumeGroupVolumeProperties> volumes
+                        = reader.readArray(reader1 -> VolumeGroupVolumeProperties.fromJson(reader1));
+                    deserializedVolumeGroupProperties.volumes = volumes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeGroupProperties;
+        });
     }
 }

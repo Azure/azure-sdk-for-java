@@ -26,6 +26,7 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
  */
 class AzureMonitorLogRecordExporter implements LogRecordExporter {
 
+    private static final String EXPORTER_LOGGER_PREFIX = "com.azure.monitor.opentelemetry.exporter";
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorLogRecordExporter.class);
     private static final OperationLogger OPERATION_LOGGER =
         new OperationLogger(AzureMonitorLogRecordExporter.class, "Exporting log");
@@ -54,6 +55,10 @@ class AzureMonitorLogRecordExporter implements LogRecordExporter {
 
         List<TelemetryItem> telemetryItems = new ArrayList<>();
         for (LogRecordData log : logs) {
+            // TODO (heya) consider using suppress_instrumentation https://github.com/open-telemetry/opentelemetry-java/pull/6546 later when available
+            if (log.getInstrumentationScopeInfo().getName().startsWith(EXPORTER_LOGGER_PREFIX)) {
+                continue;
+            }
             LOGGER.verbose("exporting log: {}", log);
             try {
                 String stack = log.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);

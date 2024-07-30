@@ -29,13 +29,15 @@ public final class InboundNatPoolPropertiesFormat {
     private TransportProtocol protocol;
 
     /*
-     * The first port number in the range of external ports that will be used to provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65534.
+     * The first port number in the range of external ports that will be used to provide Inbound Nat to NICs associated
+     * with a load balancer. Acceptable values range between 1 and 65534.
      */
     @JsonProperty(value = "frontendPortRangeStart", required = true)
     private int frontendPortRangeStart;
 
     /*
-     * The last port number in the range of external ports that will be used to provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65535.
+     * The last port number in the range of external ports that will be used to provide Inbound Nat to NICs associated
+     * with a load balancer. Acceptable values range between 1 and 65535.
      */
     @JsonProperty(value = "frontendPortRangeEnd", required = true)
     private int frontendPortRangeEnd;
@@ -47,19 +49,23 @@ public final class InboundNatPoolPropertiesFormat {
     private int backendPort;
 
     /*
-     * The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
+     * The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4
+     * minutes. This element is only used when the protocol is set to TCP.
      */
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /*
-     * Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
+     * Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn
+     * Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This
+     * setting can't be changed after you create the endpoint.
      */
     @JsonProperty(value = "enableFloatingIP")
     private Boolean enableFloatingIp;
 
     /*
-     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP.
+     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is
+     * only used when the protocol is set to TCP.
      */
     @JsonProperty(value = "enableTcpReset")
     private Boolean enableTcpReset;

@@ -110,14 +110,20 @@ public class RxDocumentClientImplTest {
         this.defaultItemSerializer = Mockito.mock(CosmosItemSerializer.class);
     }
 
-    @Test(groups = {"unit"})
+    // todo: fix and revert enabled = false when circuit breaker is enabled
+    @Test(groups = {"unit"}, enabled = true)
     public void readMany() {
 
         // setup static method mocks
         MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class);
         MockedStatic<PartitionKeyInternalHelper> partitionKeyInternalHelperMock = Mockito.mockStatic(PartitionKeyInternalHelper.class);
         MockedStatic<DocumentQueryExecutionContextFactory> documentQueryExecutionFactoryMock = Mockito.mockStatic(DocumentQueryExecutionContextFactory.class);
-        MockedStatic<ObservableHelper> observableHelperMock = Mockito.mockStatic(ObservableHelper.class);
+//        MockedStatic<ObservableHelper> observableHelperMock = Mockito.mockStatic(ObservableHelper.class);
+
+        // setup mocks
+        DocumentClientRetryPolicy documentClientRetryPolicyMock = Mockito.mock(DocumentClientRetryPolicy.class);
+        RxGatewayStoreModel gatewayStoreModelMock = Mockito.mock(RxGatewayStoreModel.class);
+        RxStoreModel serverStoreModelMock = Mockito.mock(RxStoreModel.class);
 
         // dummy values
         PartitionKeyRange dummyPartitionKeyRange1 = new PartitionKeyRange()
@@ -196,19 +202,28 @@ public class RxDocumentClientImplTest {
                 Mockito.any()
             ))
             .thenReturn(Flux.just(dummyExecutionContextForQuery(queryResults, headersForQueries, InternalObjectNode.class)));
-        observableHelperMock
-            .when(() -> ObservableHelper.inlineIfPossibleAsObs(Mockito.any(), Mockito.any()))
-            .thenReturn(Mono.just(dummyResourceResponse(pointReadResult, headersForPointReads)));
 
         Mockito
             .when(this.collectionCacheMock.resolveCollectionAsync(Mockito.isNull(), Mockito.any(RxDocumentServiceRequest.class)))
             .thenReturn(Mono.just(dummyCollectionObs()));
+
+        Mockito
+            .when(this.collectionCacheMock.resolveByNameAsync(Mockito.any(), Mockito.anyString(), Mockito.isNull()))
+            .thenReturn(Mono.just(dummyCollectionObs().v));
+
         Mockito
             .when(this.partitionKeyRangeCacheMock.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
             .thenReturn(Mono.just(dummyCollectionRoutingMap(epksPartitionKeyRangeMap)));
 
-        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(null)).thenReturn(dummyDocumentClientRetryPolicy());
+        RetryContext retryContext = new RetryContext();
 
+        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(null)).thenReturn(dummyDocumentClientRetryPolicy());
+        Mockito.when(this.cosmosAuthorizationTokenResolverMock.getAuthorizationToken(Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.any())).thenReturn("abcdefgh");
+        Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy(Mockito.any())).thenReturn(documentClientRetryPolicyMock);
+        Mockito.when(documentClientRetryPolicyMock.getRetryContext()).thenReturn(retryContext);
+        Mockito
+            .when(serverStoreModelMock.processMessage(Mockito.any(RxDocumentServiceRequest.class)))
+            .thenReturn(Mono.just(mockRxDocumentServiceResponse(pointReadResult, headersForPointReads)));
 
         // initialize object to be tested
         RxDocumentClientImpl rxDocumentClient = new RxDocumentClientImpl(
@@ -237,6 +252,8 @@ public class RxDocumentClientImplTest {
             ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
             ReflectionUtils.setPartitionKeyRangeCache(rxDocumentClient, this.partitionKeyRangeCacheMock);
             ReflectionUtils.setResetSessionTokenRetryPolicy(rxDocumentClient, this.resetSessionTokenRetryPolicyMock);
+            ReflectionUtils.setGatewayProxy(rxDocumentClient, gatewayStoreModelMock);
+            ReflectionUtils.setServerStoreModel(rxDocumentClient, serverStoreModelMock);
 
             ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
 
@@ -289,7 +306,6 @@ public class RxDocumentClientImplTest {
             // release static mocks
             httpClientMock.close();
             partitionKeyInternalHelperMock.close();
-            observableHelperMock.close();
             documentQueryExecutionFactoryMock.close();
 
             // de-register client
@@ -413,8 +429,7 @@ public class RxDocumentClientImplTest {
         };
     }
 
-    private static ResourceResponse<Document> dummyResourceResponse(String content, Map<String, String> headers) {
-
+    private static RxDocumentServiceResponse mockRxDocumentServiceResponse(String content, Map<String, String> headers) {
         byte[] blob = content.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
@@ -452,7 +467,7 @@ public class RxDocumentClientImplTest {
 
         documentServiceResponse.setCosmosDiagnostics(dummyCosmosDiagnostics());
 
-        return new ResourceResponse<>(documentServiceResponse, Document.class);
+        return documentServiceResponse;
     }
 
     private static CosmosDiagnostics dummyCosmosDiagnostics() {

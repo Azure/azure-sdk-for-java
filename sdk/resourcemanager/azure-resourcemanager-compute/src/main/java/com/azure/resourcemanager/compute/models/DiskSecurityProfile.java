@@ -52,8 +52,8 @@ public final class DiskSecurityProfile {
     }
 
     /**
-     * Get the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential
-     * VM supported disk encrypted with customer managed key.
+     * Get the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential VM
+     * supported disk encrypted with customer managed key.
      * 
      * @return the secureVMDiskEncryptionSetId value.
      */
@@ -62,8 +62,8 @@ public final class DiskSecurityProfile {
     }
 
     /**
-     * Set the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential
-     * VM supported disk encrypted with customer managed key.
+     * Set the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential VM
+     * supported disk encrypted with customer managed key.
      * 
      * @param secureVMDiskEncryptionSetId the secureVMDiskEncryptionSetId value to set.
      * @return the DiskSecurityProfile object itself.

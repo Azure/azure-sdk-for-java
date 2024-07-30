@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 public class PowershellManager {
@@ -31,9 +32,7 @@ public class PowershellManager {
     public Mono<String> runCommand(String input) {
         return Mono.fromCallable(() -> {
             try {
-                String[] command = Platform.isWindows()
-                    ? new String[]{powershellPath, "-Command", input}
-                    : new String[]{"/bin/bash", "-c", String.format("%s -Command '%s'", powershellPath, input)};
+                String[] command = getCommandLine(input);
 
 
                 ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -53,5 +52,13 @@ public class PowershellManager {
                 throw LOGGER.logExceptionAsError(new CredentialUnavailableException("PowerShell command failure.", e));
             }
         });
+    }
+
+    String[] getCommandLine(String input) {
+        String base64Input = java.util.Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_16LE));
+
+        return Platform.isWindows()
+            ? new String[]{powershellPath, "-NoProfile", "-EncodedCommand", base64Input}
+            : new String[]{"/bin/bash", "-c", String.format("%s -NoProfile -EncodedCommand '%s'", powershellPath, base64Input)};
     }
 }

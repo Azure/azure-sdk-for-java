@@ -13,15 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PortRange {
     /*
-     * The minimum port that is included in the range. It should be ranged from 1 to 65535, and be less than or equal
-     * to portEnd.
+     * The minimum port that is included in the range. It should be ranged from 1 to 65535, and be less than or equal to
+     * portEnd.
      */
     @JsonProperty(value = "portStart")
     private Integer portStart;
 
     /*
-     * The maximum port that is included in the range. It should be ranged from 1 to 65535, and be greater than or
-     * equal to portStart.
+     * The maximum port that is included in the range. It should be ranged from 1 to 65535, and be greater than or equal
+     * to portStart.
      */
     @JsonProperty(value = "portEnd")
     private Integer portEnd;

@@ -23,7 +23,7 @@ public final class AssetUpdate implements JsonSerializable<AssetUpdate> {
     private Map<String, String> tags;
 
     /*
-     * The properties property.
+     * The resource-specific properties for this resource.
      */
     private AssetUpdateProperties properties;
 
@@ -54,7 +54,7 @@ public final class AssetUpdate implements JsonSerializable<AssetUpdate> {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
@@ -63,7 +63,7 @@ public final class AssetUpdate implements JsonSerializable<AssetUpdate> {
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: The resource-specific properties for this resource.
      * 
      * @param properties the properties value to set.
      * @return the AssetUpdate object itself.

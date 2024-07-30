@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class DotNetComponentProvisioningState extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding DotNetComponentProvisioningState.
      */
-    @JsonCreator
     public static DotNetComponentProvisioningState fromString(String name) {
         return fromString(name, DotNetComponentProvisioningState.class);
     }

@@ -31,6 +31,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -41,6 +42,8 @@ import com.azure.cosmos.models.CosmosMicrometerMeterOptions;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -60,11 +63,12 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -83,6 +87,7 @@ public class ClientMetricsTest extends BatchTestBase {
     private String preferredRegion;
     private CosmosClientTelemetryConfig inputClientTelemetryConfig;
     private CosmosMicrometerMetricsOptions inputMetricsOptions;
+    private Tag clientCorrelationTag;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public ClientMetricsTest(CosmosClientBuilder clientBuilder) {
@@ -142,7 +147,7 @@ public class ClientMetricsTest extends BatchTestBase {
         AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(this.client.asyncClient());
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
 
-        Set<String> writeRegions = this.getAvailableRegionNames(rxDocumentClient, true);
+        List<String> writeRegions = this.getAvailableWriteRegionNames(rxDocumentClient);
         assertThat(writeRegions).isNotNull().isNotEmpty();
         this.preferredRegion = writeRegions.iterator().next();
 
@@ -151,6 +156,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.databaseId = asyncContainer.getDatabase().getId();
             this.containerId = asyncContainer.getId();
         }
+        this.clientCorrelationTag = client.asyncClient().getClientCorrelationTag();
 
         container = client.getDatabase(databaseId).getContainer(containerId);
     }
@@ -396,6 +402,95 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(
                     TagName.Operation.toString(), "Document/Read"),
                 Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
+                0,
+                500
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readManySingleItem() throws Exception {
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
+        try {
+            InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+            container.createItem(properties);
+
+            List<CosmosItemIdentity> tuplesToBeRead = new ArrayList<>();
+            tuplesToBeRead.add(new CosmosItemIdentity(
+                new PartitionKey(properties.get("mypk")),
+                properties.getId()
+            ));
+
+            FeedResponse<InternalObjectNode> readManyResponse = container.readMany(
+                tuplesToBeRead,
+                new CosmosReadManyRequestOptions(),
+                InternalObjectNode.class);
+            validateReadManyFeedResponse(Arrays.asList(properties), readManyResponse);
+
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                0,
+                500
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Query/readMany"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
+                0,
+                500
+            );
+
+            Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
+            this.assertMetrics("cosmos.client.req.gw", false, queryPlanTag);
+            this.assertMetrics("cosmos.client.req.rntbd", false, queryPlanTag);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readManyMultipleItems() throws Exception {
+        this.beforeTest(CosmosMetricCategory.DEFAULT);
+
+        List<InternalObjectNode> createdDocs = new ArrayList<>();
+        List<CosmosItemIdentity> tuplesToBeRead = new ArrayList<>();
+        try {
+            for (int i = 0; i < 20; i++) {
+                InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+                container.createItem(properties);
+                createdDocs.add(properties);
+                tuplesToBeRead.add(new CosmosItemIdentity(
+                    new PartitionKey(properties.get("mypk")),
+                    properties.getId()
+                ));
+            }
+
+
+            FeedResponse<InternalObjectNode> readManyResponse = container.readMany(
+                tuplesToBeRead,
+                new CosmosReadManyRequestOptions(),
+                InternalObjectNode.class);
+            validateReadManyFeedResponse(createdDocs, readManyResponse);
+
+            this.validateMetrics(
+                Tag.of(TagName.OperationStatusCode.toString(), "200"),
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                0,
+                500
+            );
+
+            this.validateMetrics(
+                Tag.of(
+                    TagName.Operation.toString(), "Document/Query/readMany"),
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
                 0,
                 500
             );
@@ -687,7 +782,7 @@ public class ClientMetricsTest extends BatchTestBase {
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItems() throws Exception {
-        this.beforeTest(CosmosMetricCategory.DEFAULT);
+        this.beforeTest(CosmosMetricCategory.ALL);
         try {
             InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(properties);
@@ -1033,7 +1128,7 @@ public class ClientMetricsTest extends BatchTestBase {
             RntbdServiceEndpoint.Provider endpointProvider =
                 (RntbdServiceEndpoint.Provider) ReflectionUtils.getRntbdEndpointProvider(transportClient);
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor =
-                    ReflectionUtils.getProactiveOpenConnectionsProcessor(transportClient);
+                ReflectionUtils.getProactiveOpenConnectionsProcessor(transportClient);
             AddressSelector addressSelector = (AddressSelector) FieldUtils.readField(transportClient, "addressSelector", true);
 
             String address = "https://localhost:12345";
@@ -1329,6 +1424,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 .getCosmosClientTelemetryConfigAccessor()
                 .shouldApplyDiagnosticThresholdsForTransportLevelMeters(clientTelemetryConfig);
         assertThat(applyDiagnosticThresholdsForTransportLevelMeters).isTrue();
+        System.clearProperty("COSMOS.METRICS_CONFIG");
     }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {
@@ -1349,6 +1445,19 @@ public class ClientMetricsTest extends BatchTestBase {
         assertThat(BridgeInternal.getProperties(createResponse).getId())
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
+    }
+
+    private void validateReadManyFeedResponse(
+        List<InternalObjectNode> createdDocs,
+        FeedResponse<InternalObjectNode> readManyResponse) {
+        // Basic validation
+        assertThat(readManyResponse).isNotNull();
+        assertThat(readManyResponse.getResults()).isNotNull();
+        List<InternalObjectNode> docsFromResponse = readManyResponse.getResults();
+        assertThat(docsFromResponse).hasSize(createdDocs.size());
+        for (InternalObjectNode doc: createdDocs) {
+            assertThat(docsFromResponse.stream().anyMatch(r -> r.getId() != null && r.getId().equals(doc.getId())));
+        }
     }
 
     private void validateItemCountMetrics(Tag expectedOperationTag) {
@@ -1405,7 +1514,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.assertMetrics(
                 "cosmos.client.op.regionsContacted",
                 true,
-                Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+                Tag.of(TagName.RegionName.toString(), this.preferredRegion.toLowerCase(Locale.ROOT)));
         }
 
         if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestSummary)) {
@@ -1425,7 +1534,7 @@ public class ClientMetricsTest extends BatchTestBase {
             this.assertMetrics(
                 "cosmos.client.req.rntbd.latency",
                 true,
-                Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+                Tag.of(TagName.RegionName.toString(), this.preferredRegion.toLowerCase(Locale.ROOT)));
             this.assertMetrics("cosmos.client.req.rntbd.backendLatency", true, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.rntbd.requests", true, expectedRequestTag);
             Meter reportedRntbdRequestCharge =
@@ -1442,7 +1551,7 @@ public class ClientMetricsTest extends BatchTestBase {
                 this.assertMetrics(
                     "cosmos.client.req.gw.latency",
                     true,
-                    Tag.of(TagName.RegionName.toString(), this.preferredRegion));
+                    Tag.of(TagName.RegionName.toString(), this.preferredRegion.toLowerCase(Locale.ROOT)));
             }
             this.assertMetrics("cosmos.client.req.gw.backendLatency", false, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.gw.requests", true, expectedRequestTag);
@@ -1467,6 +1576,8 @@ public class ClientMetricsTest extends BatchTestBase {
 
         if (expectedToFind) {
             assertThat(meters.size()).isGreaterThan(0);
+            // Makes sure that we stay compatible with prometheus which expects that all the same tags are present for a meter
+            assertTagInAllMeters(meters, prefix);
         }
 
         List<Meter> meterPrefixMatches = meters
@@ -1528,16 +1639,16 @@ public class ClientMetricsTest extends BatchTestBase {
             if (meterMatches.size() > 0) {
                 StringBuilder sb = new StringBuilder();
                 meterMatches.forEach(m -> {
-                        String message = String.format(
-                            "Found unexpected meter '%s' for prefix '%s' withTag '%s' --> '%s'",
-                            m,
-                            prefix,
-                            withTag,
-                            m);
-                        sb.append(message);
-                        sb.append(System.getProperty("line.separator"));
-                        logger.error(message);
-                    });
+                    String message = String.format(
+                        "Found unexpected meter '%s' for prefix '%s' withTag '%s' --> '%s'",
+                        m,
+                        prefix,
+                        withTag,
+                        m);
+                    sb.append(message);
+                    sb.append(System.getProperty("line.separator"));
+                    logger.error(message);
+                });
 
 
                 fail(sb.toString());
@@ -1548,7 +1659,44 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    private Set<String> getAvailableRegionNames(RxDocumentClientImpl rxDocumentClient, boolean isWriteRegion) {
+    private void assertTagInAllMeters(List<Meter> meters, String prefix) {
+        List<Meter> meterMatches = meters
+            .stream()
+            .filter(meter -> meter.getId().getName().equals(prefix) && meter.getId().getTags().contains(this.clientCorrelationTag))
+            .collect(Collectors.toList());
+        if (meterMatches.size() >  0) {
+            Set<String> possibleTags = new HashSet<>();
+            for (Tag tag : meterMatches.get(0).getId().getTags()) {
+                possibleTags.add(tag.getKey());
+            }
+            List<Meter> metersTagPresent = meterMatches
+                .stream()
+                .filter(meter -> {
+                    int numTags = 0;
+                    for (Tag tag : meter.getId().getTags()) {
+                        if (!possibleTags.contains(tag.getKey())) {
+                            return false;
+                        }
+                        numTags++;
+                    }
+                    return numTags == possibleTags.size();
+                } )
+                .collect(Collectors.toList());
+            if (metersTagPresent.size() != meterMatches.size()) {
+                logger.error("MetersTagPresent");
+                for (Meter meter : metersTagPresent) {
+                    logger.error("Meter: {}", meter.getId());
+                }
+                logger.error("MeterMatches");
+                for (Meter meter : meterMatches) {
+                    logger.error("Meter: {}", meter.getId());
+                }
+            }
+            assertThat(metersTagPresent.size()).isEqualTo(meterMatches.size());
+        }
+    }
+
+    private List<String> getAvailableWriteRegionNames(RxDocumentClientImpl rxDocumentClient) {
         try {
             GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
             LocationCache locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
@@ -1559,22 +1707,13 @@ public class ClientMetricsTest extends BatchTestBase {
 
             Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing" +
                 ".LocationCache$DatabaseAccountLocationsInfo");
+            Field availableWriteLocations = DatabaseAccountLocationsInfoClass.getDeclaredField(
+                "availableWriteLocations");
+            availableWriteLocations.setAccessible(true);
+            @SuppressWarnings("unchecked")
+            List<String> list = (List<String>) availableWriteLocations.get(locationInfo);
+            return list;
 
-            if (isWriteRegion) {
-                Field availableWriteEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
-                    "availableWriteEndpointByLocation");
-                availableWriteEndpointByLocation.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                Map<String, URI> map = (Map<String, URI>) availableWriteEndpointByLocation.get(locationInfo);
-                return map.keySet();
-            } else {
-                Field availableReadEndpointByLocation = DatabaseAccountLocationsInfoClass.getDeclaredField(
-                    "availableReadEndpointByLocation");
-                availableReadEndpointByLocation.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                Map<String, URI> map = (Map<String, URI>) availableReadEndpointByLocation.get(locationInfo);
-                return map.keySet();
-            }
         } catch (Exception error) {
             fail(error.toString());
 

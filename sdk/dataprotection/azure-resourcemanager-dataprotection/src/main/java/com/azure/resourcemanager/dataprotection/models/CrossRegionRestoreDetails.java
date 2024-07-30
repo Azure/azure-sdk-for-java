@@ -6,23 +6,25 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cross Region Restore details.
  */
 @Fluent
-public final class CrossRegionRestoreDetails {
+public final class CrossRegionRestoreDetails implements JsonSerializable<CrossRegionRestoreDetails> {
     /*
      * The sourceRegion property.
      */
-    @JsonProperty(value = "sourceRegion", required = true)
     private String sourceRegion;
 
     /*
      * The sourceBackupInstanceId property.
      */
-    @JsonProperty(value = "sourceBackupInstanceId", required = true)
     private String sourceBackupInstanceId;
 
     /**
@@ -78,14 +80,56 @@ public final class CrossRegionRestoreDetails {
      */
     public void validate() {
         if (sourceRegion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceRegion in model CrossRegionRestoreDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceRegion in model CrossRegionRestoreDetails"));
         }
         if (sourceBackupInstanceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceBackupInstanceId in model CrossRegionRestoreDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceBackupInstanceId in model CrossRegionRestoreDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CrossRegionRestoreDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceRegion", this.sourceRegion);
+        jsonWriter.writeStringField("sourceBackupInstanceId", this.sourceBackupInstanceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CrossRegionRestoreDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CrossRegionRestoreDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CrossRegionRestoreDetails.
+     */
+    public static CrossRegionRestoreDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CrossRegionRestoreDetails deserializedCrossRegionRestoreDetails = new CrossRegionRestoreDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRegion".equals(fieldName)) {
+                    deserializedCrossRegionRestoreDetails.sourceRegion = reader.getString();
+                } else if ("sourceBackupInstanceId".equals(fieldName)) {
+                    deserializedCrossRegionRestoreDetails.sourceBackupInstanceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCrossRegionRestoreDetails;
+        });
+    }
 }

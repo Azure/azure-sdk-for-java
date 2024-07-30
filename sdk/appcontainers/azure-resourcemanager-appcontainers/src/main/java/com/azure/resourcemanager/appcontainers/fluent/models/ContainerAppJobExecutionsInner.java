@@ -6,24 +6,26 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Container App executions collection ARM resource.
  */
 @Fluent
-public final class ContainerAppJobExecutionsInner {
+public final class ContainerAppJobExecutionsInner implements JsonSerializable<ContainerAppJobExecutionsInner> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<JobExecutionInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -68,12 +70,54 @@ public final class ContainerAppJobExecutionsInner {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model ContainerAppJobExecutionsInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model ContainerAppJobExecutionsInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContainerAppJobExecutionsInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerAppJobExecutionsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerAppJobExecutionsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerAppJobExecutionsInner.
+     */
+    public static ContainerAppJobExecutionsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerAppJobExecutionsInner deserializedContainerAppJobExecutionsInner
+                = new ContainerAppJobExecutionsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<JobExecutionInner> value = reader.readArray(reader1 -> JobExecutionInner.fromJson(reader1));
+                    deserializedContainerAppJobExecutionsInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedContainerAppJobExecutionsInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerAppJobExecutionsInner;
+        });
+    }
 }

@@ -22,8 +22,8 @@ public final class VirtualMachineScaleSetExtensionListResult {
     private List<VirtualMachineScaleSetExtensionInner> value;
 
     /*
-     * The uri to fetch the next page of VM scale set extensions. Call ListNext() with this to fetch the next page of
-     * VM scale set extensions.
+     * The uri to fetch the next page of VM scale set extensions. Call ListNext() with this to fetch the next page of VM
+     * scale set extensions.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -83,8 +83,9 @@ public final class VirtualMachineScaleSetExtensionListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model VirtualMachineScaleSetExtensionListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model VirtualMachineScaleSetExtensionListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

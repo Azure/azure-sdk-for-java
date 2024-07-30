@@ -20,7 +20,10 @@ public final class VirtualMachineScaleSetsListSamples {
      */
     public static void
         virtualMachineScaleSetListAllMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .list(com.azure.core.util.Context.NONE);
     }
 
@@ -36,7 +39,10 @@ public final class VirtualMachineScaleSetsListSamples {
      */
     public static void
         virtualMachineScaleSetListAllMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachineScaleSets()
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
             .list(com.azure.core.util.Context.NONE);
     }
 }

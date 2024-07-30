@@ -26,8 +26,12 @@ public final class AvailabilitySetsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().updateWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaaa", new AvailabilitySetUpdate(), com.azure.core.util.Context.NONE);
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", new AvailabilitySetUpdate(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,16 +45,20 @@ public final class AvailabilitySetsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void availabilitySetUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getAvailabilitySets().updateWithResponse("rgcompute",
-            "aaaaaaaaaaaaaaaaaaa",
-            new AvailabilitySetUpdate().withTags(mapOf("key2574", "fakeTokenPlaceholder"))
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getAvailabilitySets()
+            .updateWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaa", new AvailabilitySetUpdate()
+                .withTags(mapOf("key2574", "fakeTokenPlaceholder"))
                 .withSku(new Sku().withName("DSv3-Type1").withTier("aaa").withCapacity(7L))
-                .withPlatformUpdateDomainCount(20).withPlatformFaultDomainCount(2)
+                .withPlatformUpdateDomainCount(20)
+                .withPlatformFaultDomainCount(2)
                 .withVirtualMachines(Arrays.asList(new SubResource().withId(
                     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))
                 .withProximityPlacementGroup(new SubResource().withId(
                     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

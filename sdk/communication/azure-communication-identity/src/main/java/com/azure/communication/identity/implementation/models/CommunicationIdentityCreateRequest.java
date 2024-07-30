@@ -6,31 +6,38 @@ package com.azure.communication.identity.implementation.models;
 
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The CommunicationIdentityCreateRequest model. */
+/**
+ * The CommunicationIdentityCreateRequest model.
+ */
 @Fluent
-public final class CommunicationIdentityCreateRequest {
+public final class CommunicationIdentityCreateRequest implements JsonSerializable<CommunicationIdentityCreateRequest> {
     /*
      * Also create access token for the created identity.
      */
-    @JsonProperty(value = "createTokenWithScopes")
     private List<CommunicationTokenScope> createTokenWithScopes;
 
     /*
      * Optional custom validity period of the token within [60,1440] minutes range. If not provided, the default value
      * of 1440 minutes (24 hours) will be used.
      */
-    @JsonProperty(value = "expiresInMinutes")
     private Integer expiresInMinutes;
 
-    /** Creates an instance of CommunicationIdentityCreateRequest class. */
-    public CommunicationIdentityCreateRequest() {}
+    /**
+     * Creates an instance of CommunicationIdentityCreateRequest class.
+     */
+    public CommunicationIdentityCreateRequest() {
+    }
 
     /**
      * Get the createTokenWithScopes property: Also create access token for the created identity.
-     *
+     * 
      * @return the createTokenWithScopes value.
      */
     public List<CommunicationTokenScope> getCreateTokenWithScopes() {
@@ -39,12 +46,12 @@ public final class CommunicationIdentityCreateRequest {
 
     /**
      * Set the createTokenWithScopes property: Also create access token for the created identity.
-     *
+     * 
      * @param createTokenWithScopes the createTokenWithScopes value to set.
      * @return the CommunicationIdentityCreateRequest object itself.
      */
-    public CommunicationIdentityCreateRequest setCreateTokenWithScopes(
-            List<CommunicationTokenScope> createTokenWithScopes) {
+    public CommunicationIdentityCreateRequest
+        setCreateTokenWithScopes(List<CommunicationTokenScope> createTokenWithScopes) {
         this.createTokenWithScopes = createTokenWithScopes;
         return this;
     }
@@ -52,7 +59,7 @@ public final class CommunicationIdentityCreateRequest {
     /**
      * Get the expiresInMinutes property: Optional custom validity period of the token within [60,1440] minutes range.
      * If not provided, the default value of 1440 minutes (24 hours) will be used.
-     *
+     * 
      * @return the expiresInMinutes value.
      */
     public Integer getExpiresInMinutes() {
@@ -62,12 +69,53 @@ public final class CommunicationIdentityCreateRequest {
     /**
      * Set the expiresInMinutes property: Optional custom validity period of the token within [60,1440] minutes range.
      * If not provided, the default value of 1440 minutes (24 hours) will be used.
-     *
+     * 
      * @param expiresInMinutes the expiresInMinutes value to set.
      * @return the CommunicationIdentityCreateRequest object itself.
      */
     public CommunicationIdentityCreateRequest setExpiresInMinutes(Integer expiresInMinutes) {
         this.expiresInMinutes = expiresInMinutes;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("createTokenWithScopes", this.createTokenWithScopes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeNumberField("expiresInMinutes", this.expiresInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunicationIdentityCreateRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunicationIdentityCreateRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommunicationIdentityCreateRequest.
+     */
+    public static CommunicationIdentityCreateRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationIdentityCreateRequest deserializedCommunicationIdentityCreateRequest
+                = new CommunicationIdentityCreateRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createTokenWithScopes".equals(fieldName)) {
+                    List<CommunicationTokenScope> createTokenWithScopes
+                        = reader.readArray(reader1 -> CommunicationTokenScope.fromString(reader1.getString()));
+                    deserializedCommunicationIdentityCreateRequest.createTokenWithScopes = createTokenWithScopes;
+                } else if ("expiresInMinutes".equals(fieldName)) {
+                    deserializedCommunicationIdentityCreateRequest.expiresInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunicationIdentityCreateRequest;
+        });
     }
 }

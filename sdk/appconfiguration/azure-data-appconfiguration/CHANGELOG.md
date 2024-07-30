@@ -1,14 +1,17 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.6.3 (2024-07-26)
 
 ### Bugs Fixed
 
+Fixed `FeatureFlagConfigurationSetting`'s `setKey()` which should always add the feature flag prefix `.appconfig.featureflag/` before the input key. ([#33332](https://github.com/Azure/azure-sdk-for-java/issues/33332))
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 
 ## 1.6.2 (2024-06-25)
 
