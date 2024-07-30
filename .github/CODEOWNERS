@@ -17,8 +17,10 @@
 # SDK
 ###########
 
+/.github/CODEOWNERS                                  @joshfree @alzimmermsft @srnagar @anuchandy @conniey @lmolkova @jonathangiles
+
 # Catch all
-/sdk/                                                @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
+/sdk/                                                @joshfree @alzimmermsft @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 
 # BOM
 
