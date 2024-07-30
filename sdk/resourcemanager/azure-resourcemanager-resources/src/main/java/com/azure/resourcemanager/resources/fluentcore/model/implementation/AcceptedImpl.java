@@ -31,7 +31,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.rest.ActivationResponse;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -301,7 +300,6 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
     }
 
     private static class ResourceWithProvisioningState implements JsonSerializable<ResourceWithProvisioningState> {
-        @JsonProperty(value = "properties")
         private Properties properties;
 
         private String getProvisioningState() {
@@ -338,7 +336,6 @@ public class AcceptedImpl<InnerT, T> implements Accepted<T> {
         }
 
         private static class Properties implements JsonSerializable<Properties> {
-            @JsonProperty(value = "provisioningState")
             private String provisioningState;
 
             @Override
