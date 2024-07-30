@@ -317,6 +317,11 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     public static final HttpHeaderName MAX_FORWARDS = fromString("Max-Forwards");
 
     /**
+     * {@code Operation-Location}/{@code operation-location}
+     */
+    public static final HttpHeaderName OPERATION_LOCATION = fromString("Operation-Location");
+
+    /**
      * {@code Origin}/{@code origin}
      */
     public static final HttpHeaderName ORIGIN = fromString("Origin");
