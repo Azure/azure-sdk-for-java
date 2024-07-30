@@ -222,20 +222,24 @@ public final class Utility {
      */
     public static Throwable mapToHttpResponseExceptionIfExists(Throwable throwable) {
         if (throwable instanceof ErrorResponseException) {
-            ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
-            FormRecognizerErrorInformation formRecognizerErrorInformation = null;
-            if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
-                ErrorInformation errorInformation = errorResponseException.getValue().getError();
-                formRecognizerErrorInformation =
-                    new FormRecognizerErrorInformation(errorInformation.getCode(), errorInformation.getMessage());
-            }
-            return new HttpResponseException(
-                errorResponseException.getMessage(),
-                errorResponseException.getResponse(),
-                formRecognizerErrorInformation
-            );
+            return getHttpResponseException((ErrorResponseException) throwable);
         }
         return throwable;
+    }
+
+    public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
+        ErrorResponseException errorResponseException = throwable;
+        FormRecognizerErrorInformation formRecognizerErrorInformation = null;
+        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
+            ErrorInformation errorInformation = errorResponseException.getValue().getError();
+            formRecognizerErrorInformation =
+                new FormRecognizerErrorInformation(errorInformation.getCode(), errorInformation.getMessage());
+        }
+        return new HttpResponseException(
+            errorResponseException.getMessage(),
+            errorResponseException.getResponse(),
+            formRecognizerErrorInformation
+        );
     }
 
     /*
