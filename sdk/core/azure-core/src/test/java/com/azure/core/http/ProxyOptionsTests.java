@@ -163,8 +163,7 @@ public class ProxyOptionsTests {
 
     @Test
     public void systemPropertiesConfigurationWithPutProperty() {
-        Configuration configuration = new ConfigurationBuilder()
-            .putProperty("https.proxyHost", PROXY_HOST)
+        Configuration configuration = new ConfigurationBuilder().putProperty("https.proxyHost", PROXY_HOST)
             .putProperty("https.proxyPort", "8080")
             .putProperty("https.proxyUser", FAKE_PROXY_USER_PLACEHOLDER)
             .putProperty("https.proxyPassword", FAKE_PROXY_PASSWORD_PLACEHOLDER)
