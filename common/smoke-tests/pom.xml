@@ -118,7 +118,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.62.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
+      <version>4.63.0</version> <!-- {x-version-update;com.azure:azure-cosmos;dependency} -->
     </dependency>
 
     <dependency>
@@ -136,13 +136,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.18.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.18.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.19.5</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.19.6</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
     </dependency>
 
     <dependency>

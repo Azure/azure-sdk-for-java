@@ -9,7 +9,7 @@ Library containing core fault injection classes used to test Azure Cosmos DB SDK
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-test</artifactId>
-  <version>1.0.0-beta.7</version>
+  <version>1.0.0-beta.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
