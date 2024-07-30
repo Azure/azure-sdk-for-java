@@ -24,9 +24,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.decode;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.ungzip;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.toMetricsData;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -98,7 +97,7 @@ public class Handle206Test {
         assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
 
         // decode gzipped raw bytes back to original raw bytes
-        byte[] decodedRawBytes = decode(file.rawBytes.array());
+        byte[] decodedRawBytes = ungzip(file.rawBytes.array());
 
         // deserialize back to List<TelemetryItem>
         List<TelemetryItem> actualTelemetryItems = deserialize(decodedRawBytes);

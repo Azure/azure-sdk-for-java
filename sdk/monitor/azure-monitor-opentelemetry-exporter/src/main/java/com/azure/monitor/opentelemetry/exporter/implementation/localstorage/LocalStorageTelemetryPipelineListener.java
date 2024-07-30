@@ -6,6 +6,8 @@ package com.azure.monitor.opentelemetry.exporter.implementation.localstorage;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.DiagnosticTelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ResponseError;
+import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.AppInsightsByteBufferPool;
+import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.ByteBufferOutputStream;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineRequest;
@@ -13,16 +15,17 @@ import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.Telemetr
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.StatusCode;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.zip.GZIPOutputStream;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.convertByteBufferListToByteArray;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.decode;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.encode;
+import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.ungzip;
 
 public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineListener {
 
@@ -73,7 +76,7 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
         if (!errors.isEmpty()) {
             List<ByteBuffer> originalByteBuffers = request.getByteBuffers();
             byte[] encodedBytes = convertByteBufferListToByteArray(originalByteBuffers);
-            byte[] decodedBytes = decode(encodedBytes); // decode is needed in order to split by newline correctly
+            byte[] decodedBytes = ungzip(encodedBytes); // decode is needed in order to split by newline correctly
             List<byte[]> decodedByteArrayList = splitBytesByNewline(decodedBytes);
             List<ByteBuffer> toBePersisted = new ArrayList<>();
             for (ResponseError error : errors) {
@@ -84,8 +87,48 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
 
             if (!toBePersisted.isEmpty()) {
                 localFileWriter.writeToDisk(
-                    request.getConnectionString(), encode(toBePersisted), "Received partial response code 206");
+                    request.getConnectionString(), gzip(toBePersisted), "Received partial response code 206");
             }
+        }
+    }
+
+    // convert list of byte buffers to byte array
+    private static byte[] convertByteBufferListToByteArray(List<ByteBuffer> byteBuffers) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        for (ByteBuffer buffer : byteBuffers) {
+            byte[] arr = new byte[buffer.remaining()];
+            buffer.get(arr);
+            try {
+                baos.write(arr);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return baos.toByteArray();
+    }
+
+    // gzip and adding newline delimiter are required before persisting to the offline disk for handling 206 status code
+    private static List<ByteBuffer> gzip(List<ByteBuffer> byteBuffers) {
+        try (ByteBufferOutputStream result = new ByteBufferOutputStream(new AppInsightsByteBufferPool())) {
+            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(result);
+            for (int i = 0; i < byteBuffers.size(); i++) {
+                ByteBuffer byteBuffer = byteBuffers.get(i);
+                byte[] arr = new byte[byteBuffer.remaining()];
+                byteBuffer.get(arr);
+                gzipOutputStream.write(arr);
+                if (i < byteBuffers.size() - 1) {
+                    gzipOutputStream.write('\n');
+                }
+            }
+            gzipOutputStream.close();
+            List<ByteBuffer> resultByteBuffers = result.getByteBuffers();
+            for (ByteBuffer byteBuffer : resultByteBuffers) {
+                byteBuffer.flip();
+            }
+            return result.getByteBuffers();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Failed to encode list of ByteBuffers before persisting to the offline disk", e);
         }
     }
 
