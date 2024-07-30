@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.convertByteBufferListToByteArray;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.decode;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.encode;
-import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.splitBytesByNewline;
 
 public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineListener {
 
@@ -88,6 +87,27 @@ public class LocalStorageTelemetryPipelineListener implements TelemetryPipelineL
                     request.getConnectionString(), encode(toBePersisted), "Received partial response code 206");
             }
         }
+    }
+
+    // split the byte array by newline character
+    private static List<byte[]> splitBytesByNewline(byte[] inputBytes) {
+        List<byte[]> lines = new ArrayList<>();
+        int start = 0;
+        for (int i = 0; i < inputBytes.length; i++) {
+            if (inputBytes[i] == '\n') {
+                byte[] line = new byte[i - start];
+                System.arraycopy(inputBytes, start, line, 0, i - start);
+                lines.add(line);
+                start = i + 1;
+            }
+        }
+        // Add the last line (if any)
+        if (start < inputBytes.length) {
+            byte[] lastLine = new byte[inputBytes.length - start];
+            System.arraycopy(inputBytes, start, lastLine, 0, inputBytes.length - start);
+            lines.add(lastLine);
+        }
+        return lines;
     }
 
     @Override

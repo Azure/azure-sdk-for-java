@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.Nullable;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.toMetricsData;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -136,12 +139,18 @@ public class AzureMonitorStatsbeatTest {
                 AttributeKey.stringKey("name"), "apple", AttributeKey.stringKey("color"), "red"));
     }
 
-    private void verifyStatsbeatTelemetry(CustomValidationPolicy customValidationPolicy) {
+    private void verifyStatsbeatTelemetry(CustomValidationPolicy customValidationPolicy) throws IOException {
         TelemetryItem attachStatsbeat =
             customValidationPolicy.getActualTelemetryItems().stream()
                 .filter(item -> item.getName().equals("Statsbeat"))
                 .filter(item -> {
-                    return getMetricName(item).equals("Attach");
+                    MetricsData metricsData = null;
+                    try {
+                        metricsData = toMetricsData(item.getData().getBaseData());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return metricsData.getMetrics().get(0).getName().equals("Attach");
                 })
                 .findFirst()
                 .get();
@@ -151,7 +160,13 @@ public class AzureMonitorStatsbeatTest {
             customValidationPolicy.getActualTelemetryItems().stream()
                 .filter(item -> item.getName().equals("Statsbeat"))
                 .filter(item -> {
-                    return getMetricName(item).equals("Feature");
+                    MetricsData metricsData = null;
+                    try {
+                        metricsData = toMetricsData(item.getData().getBaseData());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return metricsData.getMetrics().get(0).getName().equals("Feature");
                 })
                 .findFirst()
                 .get();
@@ -166,30 +181,20 @@ public class AzureMonitorStatsbeatTest {
         return map;
     }
 
-    private static void validateAttachStatsbeat(TelemetryItem telemetryItem) {
+    private static void validateAttachStatsbeat(TelemetryItem telemetryItem) throws IOException {
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
-        assertThat(getMetricName(telemetryItem)).isEqualTo("Attach");
-        Map<String, String> properties = getMetricProperties(telemetryItem);
-        assertThat(properties).contains(entry("rp", "unknown"), entry("attach", "Manual"), entry("language", "java"));
-        assertThat(properties).containsKeys("attach", "cikey", "language", "os", "rp", "runtimeVersion", "version");
+        MetricsData metricsData = toMetricsData(telemetryItem.getData().getBaseData());
+        assertThat(metricsData.getMetrics().get(0).getName()).isEqualTo("Attach");
+        assertThat(metricsData.getProperties()).contains(entry("rp", "unknown"), entry("attach", "Manual"), entry("language", "java"));
+        assertThat(metricsData.getProperties()).containsKeys("attach", "cikey", "language", "os", "rp", "runtimeVersion", "version");
     }
 
-    private static void validateFeatureStatsbeat(TelemetryItem telemetryItem) {
+    private static void validateFeatureStatsbeat(TelemetryItem telemetryItem) throws IOException {
         assertThat(telemetryItem.getData().getBaseType()).isEqualTo("MetricData");
-        assertThat(getMetricName(telemetryItem)).isEqualTo("Feature");
-        Map<String, String> properties = getMetricProperties(telemetryItem);
-        assertThat(properties).contains(entry("type", "0"), entry("language", "java"));
-        assertThat(properties).containsKeys("feature", "cikey", "language", "os", "rp", "runtimeVersion", "version");
-    }
-
-    @SuppressWarnings("unchecked")
-    private static String getMetricName(TelemetryItem telemetryItem) {
-        return (String) (((List<Map<String, Object>>) telemetryItem.getData().getBaseData().getAdditionalProperties().get("metrics")).get(0)).get("name");
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Map<String, String> getMetricProperties(TelemetryItem telemetryItem) {
-        return (Map<String, String>) telemetryItem.getData().getBaseData().getAdditionalProperties().get("properties");
+        MetricsData metricsData = toMetricsData(telemetryItem.getData().getBaseData());
+        assertThat(metricsData.getMetrics().get(0).getName()).isEqualTo("Feature");
+        assertThat(metricsData.getProperties()).contains(entry("type", "0"), entry("language", "java"));
+        assertThat(metricsData.getProperties()).containsKeys("feature", "cikey", "language", "os", "rp", "runtimeVersion", "version");
     }
 
     private static class MockedHttpClient implements HttpClient {

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.decode;
 import static com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemSerialization.deserialize;
+import static com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.toMetricsData;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -64,7 +66,6 @@ public class Handle206Test {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void statusCode206Test() throws Exception {
         List<TelemetryItem> telemetryItems = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -107,47 +108,39 @@ public class Handle206Test {
         sort(actualTelemetryItems);
 
         for (int i = 0; i < actualTelemetryItems.size(); i++) {
-            TelemetryItem actualItem = actualTelemetryItems.get(i);
-            TelemetryItem expectedItem = expectedTelemetryItems.get(i);
-            Map<String, Object> actualProperties = actualItem.getData().getBaseData().getAdditionalProperties();
-            ArrayList<Map<String, Object>> actualMetricsData = (ArrayList<Map<String, Object>>) actualProperties.get("metrics");
-            Map<String, Object> expectedProperties = expectedItem.getData().getBaseData().getAdditionalProperties();
-            ArrayList<Map<String, Object>> expectedMetricsData = (ArrayList<Map<String, Object>>) expectedProperties.get("metrics");
+            MetricsData expectedMetricsData = toMetricsData(expectedTelemetryItems.get(i).getData().getBaseData());
+            MetricsData actualMetricsData = toMetricsData(actualTelemetryItems.get(i).getData().getBaseData());
 
             // verify metric name
-            String expectedMetricName = expectedMetricsData.get(0).get("name").toString();
-            String actualMetricName = actualMetricsData.get(0).get("name").toString();
-            assertThat(expectedMetricName.startsWith("to_be_persisted_offline_metric2" + i)).isTrue();
-            assertThat(actualMetricName.startsWith("to_be_persisted_offline_metric2" + i)).isTrue();
-            assertThat(expectedMetricName).isEqualTo(actualMetricName);
+            assertThat(expectedMetricsData.getMetrics().get(0).getName().startsWith("to_be_persisted_offline_metric2" + i)).isTrue();
+            assertThat(actualMetricsData.getMetrics().get(0).getName().startsWith("to_be_persisted_offline_metric2" + i)).isTrue();
+            assertThat(expectedMetricsData.getMetrics().get(0).getName()).isEqualTo(actualMetricsData.getMetrics().get(0).getName());
 
             // verify metric value
-            Double expectedMetricValue = (Double)expectedMetricsData.get(0).get("value");
-            Double actualMetricValue = (Double)actualMetricsData.get(0).get("value");
-            assertThat(expectedMetricValue).isEqualTo(actualMetricValue);
+            assertThat(expectedMetricsData.getMetrics().get(0).getValue()).isEqualTo(actualMetricsData.getMetrics().get(0).getValue());
 
             // verify metric count
-            Integer expectedMetricCount = (Integer) expectedMetricsData.get(0).get("count");
-            Integer actualMetricCount = (Integer)actualMetricsData.get(0).get("count");
-            assertThat(expectedMetricCount).isEqualTo(actualMetricCount);
+            assertThat(expectedMetricsData.getMetrics().get(0).getCount()).isEqualTo(actualMetricsData.getMetrics().get(0).getCount());
 
             // verify metric properties
-            Map<String, Object> actualMetricProperties = (Map<String, Object>) actualProperties.get("properties");
-            Map<String, Object> expectedMetricProperties = (Map<String, Object>) expectedProperties.get("properties");
-            assertThat(expectedMetricProperties.get("state")).isEqualTo(actualMetricProperties.get("state")).isEqualTo("to_be_persisted_offline");
+            assertThat(expectedMetricsData.getProperties().get("state")).isEqualTo(actualMetricsData.getProperties().get("state")).isEqualTo("to_be_persisted_offline");
         }
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(0);
     }
 
-    @SuppressWarnings("unchecked")
     private static void sort(List<TelemetryItem> telemetryItems) {
         telemetryItems.sort(new Comparator<TelemetryItem>() {
             @Override
             public int compare(TelemetryItem o1, TelemetryItem o2) {
-                String name1 = (String) ((List<Map<String, Object>>) o1.getData().getBaseData().getAdditionalProperties().get("metrics")).get(0).get("name");
-                String name2 = (String) ((List<Map<String, Object>>) o2.getData().getBaseData().getAdditionalProperties().get("metrics")).get(0).get("name");
-                return name1.compareTo(name2);
+                String name1, name2;
+                try {
+                    name1 = toMetricsData(o1.getData().getBaseData()).getMetrics().get(0).getName();
+                    name2 = toMetricsData(o2.getData().getBaseData()).getMetrics().get(0).getName();
+                    return name1.compareTo(name2);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

@@ -96,27 +96,6 @@ public final class TelemetryItemSerialization {
         }
     }
 
-    // split the byte array by newline character
-    public static List<byte[]> splitBytesByNewline(byte[] inputBytes) {
-        List<byte[]> lines = new ArrayList<>();
-        int start = 0;
-        for (int i = 0; i < inputBytes.length; i++) {
-            if (inputBytes[i] == '\n') {
-                byte[] line = new byte[i - start];
-                System.arraycopy(inputBytes, start, line, 0, i - start);
-                lines.add(line);
-                start = i + 1;
-            }
-        }
-        // Add the last line (if any)
-        if (start < inputBytes.length) {
-            byte[] lastLine = new byte[inputBytes.length - start];
-            System.arraycopy(inputBytes, start, lastLine, 0, inputBytes.length - start);
-            lines.add(lastLine);
-        }
-        return lines;
-    }
-
     // convert list of byte buffers to byte array
     public static byte[] convertByteBufferListToByteArray(List<ByteBuffer> byteBuffers) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

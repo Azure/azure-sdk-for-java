@@ -45,9 +45,8 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
                     actualTelemetryItems.addAll(deserialize(value.getBytes(StandardCharsets.UTF_8)));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
-                } finally {
-                    countDown.countDown();
                 }
+                countDown.countDown();
             });
         return next.process();
     }
