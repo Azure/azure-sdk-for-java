@@ -13,8 +13,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
-
 /**
  * An instance of Exception represents a handled or unhandled exception that occurred during execution of the monitored
  * application.
@@ -175,8 +173,8 @@ public final class TelemetryExceptionData extends MonitorDomain {
         jsonWriter.writeArrayField("exceptions", this.exceptions, JsonWriter::writeJson);
         jsonWriter.writeStringField("severityLevel", this.severityLevel == null ? null : this.severityLevel.toString());
         jsonWriter.writeStringField("problemId", this.problemId);
-        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
-        writeMap(this.measurements, "measurements", jsonWriter, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
+        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble, true);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

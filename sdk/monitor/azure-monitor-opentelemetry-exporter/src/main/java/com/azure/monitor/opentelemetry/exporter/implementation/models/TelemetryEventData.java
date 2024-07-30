@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
-
 /**
  * Instances of Event represent structured event records that can be grouped and searched by their properties. Event
  * data item also creates a metric of event count by name.
@@ -118,8 +116,8 @@ public final class TelemetryEventData extends MonitorDomain {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("ver", getVersion());
         jsonWriter.writeStringField("name", this.name);
-        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
-        writeMap(this.measurements, "measurements", jsonWriter, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
+        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble, true);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

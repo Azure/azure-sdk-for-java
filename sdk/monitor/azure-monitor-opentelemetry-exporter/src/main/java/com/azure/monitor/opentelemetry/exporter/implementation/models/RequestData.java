@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
-
 /**
  * An instance of Request represents completion of an external request to the application to do work and contains a
  * summary of that request execution and the results.
@@ -282,8 +280,8 @@ public final class RequestData extends MonitorDomain {
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("source", this.source);
         jsonWriter.writeStringField("url", this.url);
-        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
-        writeMap(this.measurements, "measurements", jsonWriter, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
+        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble, true);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

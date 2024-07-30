@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
-
 /**
  * Instances of AvailabilityData represent the result of executing an availability test.
  */
@@ -249,8 +247,8 @@ public final class AvailabilityData extends MonitorDomain {
         jsonWriter.writeBooleanField("success", this.success);
         jsonWriter.writeStringField("runLocation", this.runLocation);
         jsonWriter.writeStringField("message", this.message);
-        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
-        writeMap(this.measurements, "measurements", jsonWriter, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
+        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble, true);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

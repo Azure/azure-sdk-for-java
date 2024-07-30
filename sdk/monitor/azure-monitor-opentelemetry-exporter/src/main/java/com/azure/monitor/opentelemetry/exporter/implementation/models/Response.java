@@ -69,7 +69,7 @@ public final class Response implements JsonSerializable<Response> {
             .writeIntField("itemsReceived", itemsReceived)
             .writeIntField("itemsAccepted", itemsAccepted)
             .writeStringField("appId", appId)
-            .writeArrayField("errors", errors, (writer, element) -> writer.writeJson(element))
+            .writeArrayField("errors", errors, JsonWriter::writeJson)
             .writeEndObject();
     }
 

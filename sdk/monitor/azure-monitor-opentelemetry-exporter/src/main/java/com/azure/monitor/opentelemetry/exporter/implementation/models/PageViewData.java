@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
-
 /**
  * An instance of PageView represents a generic action on a page like a button click. It is also the base type for
  * PageView.
@@ -228,7 +226,7 @@ public final class PageViewData extends MonitorDomain {
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("duration", this.duration);
         jsonWriter.writeStringField("referredUri", this.referredUri);
-        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

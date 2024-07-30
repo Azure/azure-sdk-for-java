@@ -19,9 +19,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
-
-import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
 
 /**
  * System variables for a telemetry item.
@@ -323,7 +320,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
         jsonWriter.writeNumberField("sampleRate", this.sampleRate);
         jsonWriter.writeStringField("seq", this.sequence);
         jsonWriter.writeStringField("iKey", this.instrumentationKey);
-        writeMap(this.tags, "tags", jsonWriter, JsonWriter::writeString);
+        jsonWriter.writeMapField("tags", this.tags, JsonWriter::writeString, true);
         jsonWriter.writeJsonField("data", this.data);
         return jsonWriter.writeEndObject();
     }
@@ -358,8 +355,7 @@ public final class TelemetryItem implements JsonSerializable<TelemetryItem> {
                 } else if ("iKey".equals(fieldName)) {
                     deserializedTelemetryItem.instrumentationKey = reader.getString();
                 } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedTelemetryItem.tags = tags;
+                    deserializedTelemetryItem.tags = reader.readMap(JsonReader::getString);
                 } else if ("data".equals(fieldName)) {
                     deserializedTelemetryItem.data = MonitorBase.fromJson(reader);
                 } else {

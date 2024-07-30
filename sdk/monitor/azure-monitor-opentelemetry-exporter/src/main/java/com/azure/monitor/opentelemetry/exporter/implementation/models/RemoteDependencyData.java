@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.models.AzureJsonHelper.writeMap;
-
 /**
  * An instance of Remote Dependency represents an interaction of the monitored component with a remote component/service
  * like SQL or an HTTP endpoint.
@@ -308,8 +306,8 @@ public final class RemoteDependencyData extends MonitorDomain {
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("target", this.target);
         jsonWriter.writeBooleanField("success", this.success);
-        writeMap(this.properties, "properties", jsonWriter, JsonWriter::writeString);
-        writeMap(this.measurements, "measurements", jsonWriter, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString, true);
+        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble, true);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
