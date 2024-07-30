@@ -102,7 +102,7 @@ jobs:
         parameters:
           CheckoutRecordings: true
 
-      - template: /eng/common/testproxy/test-proxy-standalone-tool.yml
+      - template: /eng/pipelines/templates/steps/test-proxy-local-tool.yml
         parameters:
           runProxy: true
 
@@ -151,7 +151,6 @@ jobs:
       # Shut down proxy to prevent file locks on the log file for auto-injected credscan
       # steps on windows
       - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
-
 
       - pwsh: |
           $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log

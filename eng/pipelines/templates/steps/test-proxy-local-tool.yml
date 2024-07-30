@@ -1,0 +1,78 @@
+parameters:
+  rootFolder: '$(Build.SourcesDirectory)'
+  runProxy: true
+
+steps:
+  - task: UseDotNet@2
+    displayName: "Use .NET SDK 6.0.x"
+    retryCountOnTaskFailure: 3
+    inputs:
+      # We must install sdk, not just runtime, as it is required by some of our tools, like test-proxy.
+      # Specifically, test-proxy requires asp.net core runtime, which is installed only when sdk option
+      # is selected, per: https://github.com/microsoft/azure-pipelines-tasks/issues/14405
+      #
+      # For additional context, see:
+      # https://github.com/Azure/azure-sdk-tools/pull/5405#discussion_r1105006774
+      # https://github.com/Azure/azure-sdk-tools/pull/5405
+      packageType: sdk
+      version: 6.0.x
+      # performMultiLevelLookup comes into play when given .NET executable target runtime is different
+      # than the installed .NET SDK. Without this, such runtime would not be found.
+      performMultiLevelLookup: true
+
+
+  - pwsh: |
+      git clone https://github.com/azure/azure-sdk-tools.git --branch additional-debug-output --depth 1 $(Build.BinariesDirectory)
+    displayName: "Install test-proxy from local file"
+    workingDirectory: $(Build.SourcesDirectory)
+
+  - pwsh: |
+      dotnet pack /p:ArtifactsPackagesDir=$(Build.ArtifactStagingDirectory) -c Release
+      dotnet tool install --tool-path $(Build.BinariesDirectory)/test-proxy `
+        --prerelease `
+        --add-source $(Build.ArtifactStagingDirectory) `
+        azure.sdk.tools.testproxy
+    displayName: "Install test-proxy from local file"
+    workingDirectory: $(Build.BinariesDirectory)/tools/test-proxy
+
+  - pwsh: |
+      Write-Host "##vso[task.prependpath]$(Build.BinariesDirectory)/test-proxy"
+    displayName: "Prepend path with test-proxy tool install location"
+
+  - ${{ if eq(parameters.runProxy, 'true') }}:
+    - pwsh: |
+        Write-Host "##vso[task.setvariable variable=ASPNETCORE_Kestrel__Certificates__Default__Path]$(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.pfx"
+        Write-Host "##vso[task.setvariable variable=ASPNETCORE_Kestrel__Certificates__Default__Password]password"
+        Write-Host "##vso[task.setvariable variable=PROXY_MANUAL_START]true"
+      displayName: 'Configure Kestrel and PROXY_MANUAL_START Variables'
+
+    - pwsh: |
+        $Process = Start-Process $(Build.BinariesDirectory)/test-proxy/test-proxy.exe `
+          -ArgumentList "start --storage-location ${{ parameters.rootFolder }} -U" `
+          -NoNewWindow -PassThru -RedirectStandardOutput $(Build.SourcesDirectory)/test-proxy.log
+        Write-Host "##vso[task.setvariable variable=PROXY_PID]$($Process.Id)"
+      displayName: 'Run the testproxy - windows'
+      condition: and(succeeded(), eq(variables['Agent.OS'],'Windows_NT'))
+
+    # nohup does NOT continue beyond the current session if you use it within powershell
+    - bash: |
+        nohup $(Build.BinariesDirectory)/test-proxy/test-proxy &>$(Build.SourcesDirectory)/test-proxy.log &
+        echo $! > $(Build.SourcesDirectory)/test-proxy.pid
+        echo "##vso[task.setvariable variable=PROXY_PID]$(cat $(Build.SourcesDirectory)/test-proxy.pid)"
+      displayName: "Run the testproxy - linux/mac"
+      condition: and(succeeded(), ne(variables['Agent.OS'],'Windows_NT'))
+      workingDirectory: "${{ parameters.rootFolder }}"
+
+    - pwsh: |
+        for ($i = 0; $i -lt 10; $i++) {
+            try {
+                Invoke-WebRequest -Uri "http://localhost:5000/Admin/IsAlive" | Out-Null
+                exit 0
+            } catch {
+                Write-Warning "Failed to successfully connect to test proxy. Retrying..."
+                Start-Sleep 6
+            }
+        }
+        Write-Error "Could not connect to test proxy."
+        exit 1
+      displayName: Test Proxy IsAlive
