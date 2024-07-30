@@ -494,8 +494,8 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
      */
     public void listLabels() {
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listLabels
-        String labelFilter = "{labelNamePrefix}*";
-        client.listLabels(new LabelSelector().setLabelFilter(labelFilter))
+        String labelNameFilter = "{labelNamePrefix}*";
+        client.listLabels(new LabelSelector().setNameFilter(labelNameFilter))
                 .subscribe(label -> {
                     System.out.println("label name = " + label);
                 });

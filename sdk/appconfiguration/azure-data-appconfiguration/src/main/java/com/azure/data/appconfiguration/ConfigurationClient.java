@@ -1509,8 +1509,8 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listLabels -->
      * <pre>
-     * String labelFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
-     * client.listLabels&#40;new LabelSelector&#40;&#41;.setLabelFilter&#40;labelFilter&#41;&#41;
+     * String labelNameFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
+     * client.listLabels&#40;new LabelSelector&#40;&#41;.setNameFilter&#40;labelNameFilter&#41;&#41;
      *         .forEach&#40;label -&gt; &#123;
      *             System.out.println&#40;&quot;label name = &quot; + label.getName&#40;&#41;&#41;;
      *         &#125;&#41;;
@@ -1535,10 +1535,10 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload -->
      * <pre>
-     * String labelFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
+     * String labelNameFilter = &quot;&#123;labelNamePrefix&#125;*&quot;;
      * Context ctx = new Context&#40;key2, value2&#41;;
      *
-     * client.listLabels&#40;new LabelSelector&#40;&#41;.setLabelFilter&#40;labelFilter&#41;, ctx&#41;
+     * client.listLabels&#40;new LabelSelector&#40;&#41;.setNameFilter&#40;labelNameFilter&#41;, ctx&#41;
      *         .forEach&#40;label -&gt; &#123;
      *             System.out.println&#40;&quot;label name = &quot; + label.getName&#40;&#41;&#41;;
      *         &#125;&#41;;
@@ -1554,11 +1554,11 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Label> listLabels(LabelSelector selector, Context context) {
-        final String labelFilter = selector == null ? null : selector.getLabelFilter();
+        final String labelNameFilter = selector == null ? null : selector.getNameFilter();
         final String acceptDatetime = selector == null
             ? null : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
         final List<LabelFields> labelFields = selector == null ? null : selector.getFields();
-        return serviceClient.getLabels(labelFilter, null, acceptDatetime, labelFields, context);
+        return serviceClient.getLabels(labelNameFilter, null, acceptDatetime, labelFields, context);
     }
 
     /**

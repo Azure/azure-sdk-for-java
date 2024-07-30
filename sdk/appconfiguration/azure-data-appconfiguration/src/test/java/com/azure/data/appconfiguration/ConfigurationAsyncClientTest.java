@@ -1950,12 +1950,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         ConfigurationSetting setting2 = preparedSettings.get(1);
         // List only the first label var, 'label'
         String label = setting.getLabel();
-        StepVerifier.create(client.listLabels(new LabelSelector().setLabelFilter(label)))
+        StepVerifier.create(client.listLabels(new LabelSelector().setNameFilter(label)))
                 .assertNext(actual -> assertEquals(label, actual.getName()))
                 .verifyComplete();
         // List labels with wildcard label filter
         String label2 = setting2.getLabel();
-        StepVerifier.create(client.listLabels(new LabelSelector().setLabelFilter("label*")))
+        StepVerifier.create(client.listLabels(new LabelSelector().setNameFilter("label*")))
                 .assertNext(actual -> assertEquals(label, actual.getName()))
                 .assertNext(actual -> assertEquals(label2, actual.getName()))
                 .verifyComplete();

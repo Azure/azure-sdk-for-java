@@ -1569,12 +1569,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
         // List only the first label var, 'label'
         String label = setting.getLabel();
-        PagedIterable<Label> labels = client.listLabels(new LabelSelector().setLabelFilter(setting.getLabel()));
+        PagedIterable<Label> labels = client.listLabels(new LabelSelector().setNameFilter(setting.getLabel()));
         assertEquals(1, labels.stream().count());
         assertEquals(label, labels.iterator().next().getName());
         // List labels with wildcard label filter
         String label2 = setting2.getLabel();
-        PagedIterable<Label> wildCardLabels = client.listLabels(new LabelSelector().setLabelFilter("label*"));
+        PagedIterable<Label> wildCardLabels = client.listLabels(new LabelSelector().setNameFilter("label*"));
         List<String> collect = wildCardLabels.stream().collect(Collectors.toList()).stream().map(Label::getName).collect(Collectors.toList());
         assertTrue(collect.contains(label));
         assertTrue(collect.contains(label2));

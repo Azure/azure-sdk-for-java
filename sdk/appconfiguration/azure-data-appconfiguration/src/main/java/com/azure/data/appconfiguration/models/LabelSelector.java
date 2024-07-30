@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Fluent
 public final class LabelSelector {
-    private String labelFilter;
+    private String nameFilter;
     private OffsetDateTime acceptDatetime;
 
     private List<LabelFields> fields;
@@ -37,8 +37,8 @@ public final class LabelSelector {
      *
      * @return labels The labels used to filter GET requests from the service.
      */
-    public String getLabelFilter() {
-        return labelFilter;
+    public String getNameFilter() {
+        return nameFilter;
     }
 
     /**
@@ -47,12 +47,11 @@ public final class LabelSelector {
      * <p>See <a href="https://docs.microsoft.com/azure/azure-app-configuration/rest-api-key-value#supported-filters">Filtering</a>
      * for more information about these supported filters.</p>
      *
-     * @param labelFilter The expressions to filter ConfigurationSetting labels on.
-     *
+     * @param nameFilter The expressions to filter ConfigurationSetting labels on.
      * @return the updated LabelSelector object.
      */
-    public LabelSelector setLabelFilter(String labelFilter) {
-        this.labelFilter = labelFilter;
+    public LabelSelector setNameFilter(String nameFilter) {
+        this.nameFilter = nameFilter;
         return this;
     }
 

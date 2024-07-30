@@ -471,8 +471,8 @@ public class ReadmeSamples {
 
     public void listLabels() {
         // BEGIN: readme-sample-listLabels
-        String labelFilter = "{labelNamePrefix}*";
-        configurationClient.listLabels(new LabelSelector().setLabelFilter(labelFilter))
+        String labelNameFilter = "{labelNamePrefix}*";
+        configurationClient.listLabels(new LabelSelector().setNameFilter(labelNameFilter))
                 .forEach(label -> {
                     System.out.println("label name = " + label.getName());
                 });

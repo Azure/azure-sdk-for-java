@@ -578,8 +578,8 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void listLabels() {
         // BEGIN: com.azure.data.appconfiguration.configurationclient.listLabels
-        String labelFilter = "{labelNamePrefix}*";
-        client.listLabels(new LabelSelector().setLabelFilter(labelFilter))
+        String labelNameFilter = "{labelNamePrefix}*";
+        client.listLabels(new LabelSelector().setNameFilter(labelNameFilter))
                 .forEach(label -> {
                     System.out.println("label name = " + label.getName());
                 });
@@ -591,10 +591,10 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void listLabelsMaxOverload() {
         // BEGIN: com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload
-        String labelFilter = "{labelNamePrefix}*";
+        String labelNameFilter = "{labelNamePrefix}*";
         Context ctx = new Context(key2, value2);
 
-        client.listLabels(new LabelSelector().setLabelFilter(labelFilter), ctx)
+        client.listLabels(new LabelSelector().setNameFilter(labelNameFilter), ctx)
                 .forEach(label -> {
                     System.out.println("label name = " + label.getName());
                 });
