@@ -77,7 +77,7 @@ public final class TestHelpers {
     public static final String HOTEL_INDEX_NAME = "hotels";
 
 
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
     static {
         // Add a shutdown hook to shut down the executor service gracefully
