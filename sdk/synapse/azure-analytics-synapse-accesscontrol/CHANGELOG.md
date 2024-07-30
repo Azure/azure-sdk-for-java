@@ -2,6 +2,13 @@
 
 ## 1.0.0-beta.5 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
 
 ## 1.0.0-beta.4 (2021-08-10)
 - Update to 2020-12-01 API version

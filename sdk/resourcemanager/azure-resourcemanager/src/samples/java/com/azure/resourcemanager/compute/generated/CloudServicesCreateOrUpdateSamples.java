@@ -22,7 +22,6 @@ import com.azure.resourcemanager.compute.models.LoadBalancerConfiguration;
 import com.azure.resourcemanager.compute.models.LoadBalancerConfigurationProperties;
 import com.azure.resourcemanager.compute.models.LoadBalancerFrontendIpConfiguration;
 import com.azure.resourcemanager.compute.models.LoadBalancerFrontendIpConfigurationProperties;
-
 import java.util.Arrays;
 
 /**
@@ -36,7 +35,7 @@ public final class CloudServicesCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create New Cloud Service with Single Role.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNewCloudServiceWithSingleRole(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -72,7 +71,7 @@ public final class CloudServicesCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create New Cloud Service with Single Role and Certificate from Key Vault.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNewCloudServiceWithSingleRoleAndCertificateFromKeyVault(
@@ -116,7 +115,7 @@ public final class CloudServicesCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create New Cloud Service with Single Role and RDP Extension.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -165,7 +164,7 @@ public final class CloudServicesCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create New Cloud Service with Multiple Roles.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNewCloudServiceWithMultipleRoles(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -203,7 +202,7 @@ public final class CloudServicesCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create New Cloud Service with Multiple Roles in a specific availability zone.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNewCloudServiceWithMultipleRolesInASpecificAvailabilityZone(

@@ -4,12 +4,17 @@
 package com.azure.core.util.logging;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.core.io.JsonStringEncoder;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,14 +48,13 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  */
 @Fluent
 public final class LoggingEventBuilder {
-    private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
     private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
-    private static final String AZURE_SDK_LOG_MESSAGE_JSON_START = "{\"az.sdk.message\":\"";
+    private static final byte[] EMPTY_BYTES = new byte[0];
 
     private final Logger logger;
     private final LogLevel level;
     private List<ContextKeyValuePair> context;
-    private final String globalContextCached;
+    private final Map<String, Object> globalContext;
     private final boolean hasGlobalContext;
 
     // flag for no-op instance instead of inheritance
@@ -60,21 +64,21 @@ public final class LoggingEventBuilder {
      * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
      * If level is disabled, returns no-op instance.
      */
-    static LoggingEventBuilder create(Logger logger, LogLevel level, String globalContextSerialized,
+    static LoggingEventBuilder create(Logger logger, LogLevel level, Map<String, Object> globalContext,
         boolean canLogAtLevel) {
         if (canLogAtLevel) {
-            return new LoggingEventBuilder(logger, level, globalContextSerialized, true);
+            return new LoggingEventBuilder(logger, level, globalContext, true);
         }
 
         return NOOP;
     }
 
-    private LoggingEventBuilder(Logger logger, LogLevel level, String globalContextSerialized, boolean isEnabled) {
+    private LoggingEventBuilder(Logger logger, LogLevel level, Map<String, Object> globalContext, boolean isEnabled) {
         this.logger = logger;
         this.level = level;
         this.isEnabled = isEnabled;
-        this.globalContextCached = globalContextSerialized == null ? "" : globalContextSerialized;
-        this.hasGlobalContext = !this.globalContextCached.isEmpty();
+        this.globalContext = globalContext;
+        this.hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContext);
     }
 
     /**
@@ -280,45 +284,45 @@ public final class LoggingEventBuilder {
         return runtimeException;
     }
 
+    /**
+     * Creates the JSON representation for the logging event.
+     *
+     * @param message the message to log.
+     * @param throwable {@link Throwable} for the message.
+     * @return JSON representation for the logging event.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
     private String getMessageWithContext(String message, Throwable throwable) {
         if (message == null) {
             message = "";
         }
 
-        StringBuilder sb = new StringBuilder(
-            20 + (context == null ? 0 : context.size()) * 20 + message.length() + globalContextCached.length());
-        // message must be first for log parsing tooling to work, key also works as a
-        // marker for Azure SDK logs so we'll write it even if there is no message
-        sb.append(AZURE_SDK_LOG_MESSAGE_JSON_START);
-        JSON_STRING_ENCODER.quoteAsString(message, sb);
-        sb.append('"');
+        try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            jsonWriter.writeStartObject().writeStringField("az.sdk.message", message);
 
-        if (throwable != null) {
-            sb.append(",\"exception\":");
-
-            // todo (alzimmer): Is adding '"exception": null' useful?
-            String exceptionMessage = throwable.getMessage();
-            if (exceptionMessage != null) {
-                sb.append('"');
-                JSON_STRING_ENCODER.quoteAsString(exceptionMessage, sb);
-                sb.append('"');
-            } else {
-                sb.append("null");
+            if (throwable != null) {
+                jsonWriter.writeNullableField("exception", throwable.getMessage(), JsonWriter::writeString);
             }
-        }
 
-        if (hasGlobalContext) {
-            sb.append(',').append(globalContextCached);
-        }
-
-        if (context != null) {
-            for (ContextKeyValuePair contextKeyValuePair : context) {
-                contextKeyValuePair.write(sb.append(','));
+            if (hasGlobalContext) {
+                for (Map.Entry<String, Object> entry : globalContext.entrySet()) {
+                    jsonWriter.writeUntypedField(entry.getKey(), entry.getValue());
+                }
             }
-        }
 
-        sb.append('}');
-        return sb.toString();
+            if (context != null) {
+                for (ContextKeyValuePair contextKeyValuePair : context) {
+                    contextKeyValuePair.write(jsonWriter);
+                }
+            }
+
+            jsonWriter.writeEndObject().flush();
+
+            return outputStream.toString(StandardCharsets.UTF_8);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
     }
 
     private void addKeyValueInternal(String key, Object value) {
@@ -333,7 +337,7 @@ public final class LoggingEventBuilder {
      * Performs the logging.
      *
      * @param format format-able message.
-     * 
+     *
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(LogLevel logLevel, String format, Object... args) {
@@ -385,63 +389,6 @@ public final class LoggingEventBuilder {
         }
     }
 
-    /**
-     * Serializes passed map to string containing valid JSON fragment:
-     * e.g. "k1":"v1","k2":"v2", properly escaped and without trailing comma.
-     * <p>
-     * For complex object serialization, it calls {@code toString()} guarded with null check.
-     *
-     * @param context to serialize.
-     *
-     * @return Serialized JSON fragment or an empty string.
-     */
-    static String writeJsonFragment(Map<String, Object> context) {
-        if (CoreUtils.isNullOrEmpty(context)) {
-            return "";
-        }
-
-        StringBuilder formatter = new StringBuilder(context.size() * 20);
-
-        // Keep track of whether we've written a value yet so we don't write a trailing comma.
-        // The previous implementation would delete the trailing comma, but internally this causes StringBuilder to
-        // copy the entirety of the string to a new buffer, which is very expensive.
-        boolean firstValueWritten = false;
-        for (Map.Entry<String, Object> pair : context.entrySet()) {
-            if (firstValueWritten) {
-                formatter.append(',');
-            } else {
-                firstValueWritten = true;
-            }
-
-            writeKeyAndValue(pair.getKey(), pair.getValue(), formatter);
-        }
-
-        return formatter.toString();
-    }
-
-    private static void writeKeyAndValue(String key, Object value, StringBuilder formatter) {
-        formatter.append('"');
-        JSON_STRING_ENCODER.quoteAsString(key, formatter);
-        formatter.append("\":");
-
-        if (value == null) {
-            formatter.append("null");
-        } else if (isUnquotedType(value)) {
-            JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-        } else {
-            formatter.append('"');
-            JSON_STRING_ENCODER.quoteAsString(value.toString(), formatter);
-            formatter.append('"');
-        }
-    }
-
-    /**
-     *  Returns true if the value is an unquoted JSON type (boolean, number, null).
-     */
-    private static boolean isUnquotedType(Object value) {
-        return value instanceof Boolean || value instanceof Number;
-    }
-
     private static final class ContextKeyValuePair {
         private final String key;
         private final Object value;
@@ -461,13 +408,11 @@ public final class LoggingEventBuilder {
 
         /**
          * Writes "key":"value" json string to provided StringBuilder.
+         *
+         * @throws IOException If an error occurs while writing the JSON.
          */
-        public void write(StringBuilder formatter) {
-            if (valueSupplier == null) {
-                writeKeyAndValue(key, value, formatter);
-            } else {
-                writeKeyAndValue(key, valueSupplier.get(), formatter);
-            }
+        public void write(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeUntypedField(key, (valueSupplier == null) ? value : valueSupplier.get());
         }
     }
 }
