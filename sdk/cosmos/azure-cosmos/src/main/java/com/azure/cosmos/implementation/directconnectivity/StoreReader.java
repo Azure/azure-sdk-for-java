@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -1063,6 +1064,10 @@ public class StoreReader {
         }
 
         if (ex instanceof PartitionIsMigratingException) {
+            throw ex;
+        }
+
+        if (ex instanceof InternalServerErrorException && ex.getCause() instanceof ClosedClientTransportException) {
             throw ex;
         }
 
