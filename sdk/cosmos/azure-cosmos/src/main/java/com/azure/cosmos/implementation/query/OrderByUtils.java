@@ -49,6 +49,7 @@ class OrderByUtils {
                                                        targetRangeToOrderByContinuationTokenMap,
                                                        consumeComparer.getSortOrders(), clientSideRequestStatistics))
                 .toArray(Flux[]::new);
+        // prefetch is set to 1 to minimize the no. prefetched pages per partition
         return Flux.mergeOrdered(1, consumeComparer, fluxes);
     }
 
