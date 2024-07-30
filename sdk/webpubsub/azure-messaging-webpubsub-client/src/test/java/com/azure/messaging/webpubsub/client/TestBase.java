@@ -5,7 +5,6 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
