@@ -26,8 +26,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -274,17 +272,13 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
             .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         while ((Objects.equals(poller.poll().getValue().getStatus().toString(), "NotStarted")) && (retryCount > 0)) {
-            try {
-                Thread.sleep(10000);
-                retryCount--;
-            } catch (InterruptedException ex) {
-                Logger.getLogger(DocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            sleepIfRunningAgainstService(10000);
+            retryCount--;
         }
         String status = poller.poll().getValue().getStatus().toString();
         assertEquals(status, "ValidationFailed");
 
-        String innerErrorCode = poller.poll().getValue().getError().getInnerError().getCode().toString();
+        String innerErrorCode = poller.poll().getValue().getError().getInnerError().getCode();
         assertEquals(innerErrorCode, "InvalidDocumentAccessLevel");
     }
 
@@ -305,18 +299,14 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         SyncPoller<TranslationStatus, Void> poller = setPlaybackSyncPollerPollInterval(documentTranslationClient
             .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
-        while ((poller.poll().getValue().getStatus().toString() == "NotStarted") && (retryCount > 0)) {
-            try {
-                Thread.sleep(10000);
-                retryCount--;
-            } catch (InterruptedException ex) {
-                Logger.getLogger(DocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        while ((Objects.equals(poller.poll().getValue().getStatus().toString(), "NotStarted")) && (retryCount > 0)) {
+            sleepIfRunningAgainstService(10000);
+            retryCount--;
         }
         String status = poller.poll().getValue().getStatus().toString();
         assertEquals("ValidationFailed", status);
 
-        String innerErrorCode = poller.poll().getValue().getError().getInnerError().getCode().toString();
+        String innerErrorCode = poller.poll().getValue().getError().getInnerError().getCode();
         assertEquals("InvalidTargetDocumentAccessLevel", innerErrorCode);
     }
 
@@ -381,7 +371,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         String errorCode = translationStatus.getError().getCode().toString();
         assertEquals("InvalidRequest", errorCode);
 
-        String innerErrorCode = translationStatus.getError().getInnerError().getCode().toString();
+        String innerErrorCode = translationStatus.getError().getInnerError().getCode();
         assertEquals("NoTranslatableText", innerErrorCode);
     }
 
@@ -403,17 +393,13 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
             .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         while ((Objects.equals(poller.poll().getValue().getStatus().toString(), "NotStarted")) && (retryCount > 0)) {
-            try {
-                Thread.sleep(10000);
-                retryCount--;
-            } catch (InterruptedException ex) {
-                Logger.getLogger(DocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            sleepIfRunningAgainstService(10000);
+            retryCount--;
         }
         String status = poller.poll().getValue().getStatus().toString();
         assertEquals("ValidationFailed", status);
 
-        String innerErrorCode = poller.poll().getValue().getError().getInnerError().getCode().toString();
+        String innerErrorCode = poller.poll().getValue().getError().getInnerError().getCode();
         assertEquals("TargetFileAlreadyExists", innerErrorCode);
     }
 
