@@ -38,8 +38,9 @@ public class KafkaCosmosTestConfigurations {
     public final static String ACR_NAME =
         properties
             .getProperty(
-                "COSMOS.ACR_NAME",
-                StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("COSMOS.ACR_NAME")), DEFAULT_ACR_NAME));
+                "COSMOS_ACR_NAME",
+                StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("COSMOS_ACR_NAME")), DEFAULT_ACR_NAME));
+
     public final static String MASTER_KEY =
         properties
             .getProperty(
