@@ -80,7 +80,7 @@ public class Handle206Test {
         telemetryItemExporter.send(telemetryItems);
         telemetryItemExporter.flush().join(30, SECONDS);
 
-        Thread.sleep(10000);
+        Thread.sleep(1000);
 
         LocalFileCache localFileCache = new LocalFileCache(tempFolder);
         LocalFileLoader localFileLoader =
@@ -96,11 +96,11 @@ public class Handle206Test {
         LocalFileLoader.PersistedFile file = localFileLoader.loadTelemetriesFromDisk();
         assertThat(file.connectionString).isEqualTo(CONNECTION_STRING);
 
-        // decode gzipped raw bytes back to original raw bytes
-        byte[] decodedRawBytes = ungzip(file.rawBytes.array());
+        // un-gzip raw bytes back to original raw bytes
+        byte[] ungzippedRawBytes = ungzip(file.rawBytes.array());
 
         // deserialize back to List<TelemetryItem>
-        List<TelemetryItem> actualTelemetryItems = deserialize(decodedRawBytes);
+        List<TelemetryItem> actualTelemetryItems = deserialize(ungzippedRawBytes);
         assertThat(actualTelemetryItems.size()).isEqualTo(expectedTelemetryItems.size());
 
         sort(expectedTelemetryItems);
@@ -111,8 +111,8 @@ public class Handle206Test {
             MetricsData actualMetricsData = toMetricsData(actualTelemetryItems.get(i).getData().getBaseData());
 
             // verify metric name
-            assertThat(expectedMetricsData.getMetrics().get(0).getName().startsWith("to_be_persisted_offline_metric2" + i)).isTrue();
-            assertThat(actualMetricsData.getMetrics().get(0).getName().startsWith("to_be_persisted_offline_metric2" + i)).isTrue();
+            assertThat(expectedMetricsData.getMetrics().get(0).getName()).startsWith("to_be_persisted_offline_metric2" + i);
+            assertThat(actualMetricsData.getMetrics().get(0).getName()).startsWith("to_be_persisted_offline_metric2" + i);
             assertThat(expectedMetricsData.getMetrics().get(0).getName()).isEqualTo(actualMetricsData.getMetrics().get(0).getName());
 
             // verify metric value
@@ -122,7 +122,9 @@ public class Handle206Test {
             assertThat(expectedMetricsData.getMetrics().get(0).getCount()).isEqualTo(actualMetricsData.getMetrics().get(0).getCount());
 
             // verify metric properties
-            assertThat(expectedMetricsData.getProperties().get("state")).isEqualTo(actualMetricsData.getProperties().get("state")).isEqualTo("to_be_persisted_offline");
+            assertThat(expectedMetricsData.getProperties().get("state")).isEqualTo("to_be_persisted_offline");
+            assertThat(actualMetricsData.getProperties().get("state")).isEqualTo("to_be_persisted_offline");
+            assertThat(expectedMetricsData.getProperties().get("state")).isEqualTo(actualMetricsData.getProperties().get("state"));
         }
 
         assertThat(localFileCache.getPersistedFilesCache().size()).isEqualTo(0);

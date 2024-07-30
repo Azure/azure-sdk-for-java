@@ -143,13 +143,7 @@ public class AzureMonitorStatsbeatTest {
             customValidationPolicy.getActualTelemetryItems().stream()
                 .filter(item -> item.getName().equals("Statsbeat"))
                 .filter(item -> {
-                    MetricsData metricsData = null;
-                    try {
-                        metricsData = toMetricsData(item.getData().getBaseData());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    return metricsData.getMetrics().get(0).getName().equals("Attach");
+                    return toMetricsData(item.getData().getBaseData()).getMetrics().get(0).getName().equals("Attach");
                 })
                 .findFirst()
                 .get();
@@ -159,13 +153,7 @@ public class AzureMonitorStatsbeatTest {
             customValidationPolicy.getActualTelemetryItems().stream()
                 .filter(item -> item.getName().equals("Statsbeat"))
                 .filter(item -> {
-                    MetricsData metricsData = null;
-                    try {
-                        metricsData = toMetricsData(item.getData().getBaseData());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    return metricsData.getMetrics().get(0).getName().equals("Feature");
+                    return toMetricsData(item.getData().getBaseData()).getMetrics().get(0).getName().equals("Feature");
                 })
                 .findFirst()
                 .get();

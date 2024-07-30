@@ -96,23 +96,29 @@ public final class TestUtils {
     }
 
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to RemoteDependencyData
-    public static RemoteDependencyData toRemoteDependencyData(MonitorDomain baseData) throws IOException {
+    public static RemoteDependencyData toRemoteDependencyData(MonitorDomain baseData) {
         try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
             return RemoteDependencyData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to MetricsData
-    public static MetricsData toMetricsData(MonitorDomain baseData) throws IOException {
+    public static MetricsData toMetricsData(MonitorDomain baseData) {
         try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
             return MetricsData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     // azure-json doesn't deserialize subtypes yet, so need to convert the abstract MonitorDomain to MessageData
-    public static MessageData toMessageData(MonitorDomain baseData) throws IOException {
+    public static MessageData toMessageData(MonitorDomain baseData) {
         try (JsonReader jsonReader = JsonProviders.createReader(baseData.toJsonString())) {
             return MessageData.fromJson(jsonReader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
